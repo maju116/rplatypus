@@ -1,7 +1,7 @@
 Package: rplatypus
 Type: Package
 Title: Computer Vision for Medical Imaging
-Version: 0.2.1
+Version: 0.3.0
 Authors@R: person("Michal", "Maj", email = "michalmaj116@gmail.com",
                   role = c("aut", "cre"))
 Description: Semantic segmentation and object detection for medical images, from a

@@ -15,7 +15,7 @@ this package reach it - so the pin moving is part of a change here, not housekee
 alongside it. The pin is what stops a release of this package breaking because the engine
 drifted underneath it.
 
-## [0.2.1] - unreleased
+## [0.3.0] - unreleased
 
 ### 2026-10-16 - `classes_from`: one binary mask file per class
 
