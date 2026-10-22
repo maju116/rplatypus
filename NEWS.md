@@ -17,6 +17,45 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-22 - `platypus_fact()`, and a platypus fact when the package is attached
+
+**The pin does not move and the engine needs no release**: this is the first thing in the
+package that has nothing to do with segmentation. The family is named after the animal,
+and `platypus_fact()` says something true about it. One fact is also printed when the
+package is attached in an interactive session; `options(rplatypus.facts = FALSE)`, or
+`PLATYPUS_FACTS=0` in `~/.Renviron`, stops that.
+
+Three things about it are deliberate, and each one is here because of what it prevents.
+
+**Choosing a fact does not touch the random number stream.** `sample()` advances
+`.Random.seed`, so a fact picked at attach time changes what the user's own `set.seed(1)`
+then produces - measured, `runif(1)` goes from 0.2655087 to 0.3721239 - and in a package
+offering seeded splits and `deterministic = TRUE` that is the worst available place for it.
+`suppressPackageStartupMessages()` is not a defence: the arguments are evaluated before the
+condition is signalled, so suppressing the message keeps the side effect and removes the
+evidence. The seed is saved and put back instead, and the test for it carries the naive
+implementation as its positive control.
+
+**Interactive sessions only**, so a fact never lands in an `R CMD check` log, a CI run, a
+knitr render or anybody's reverse-dependency check. And `.onAttach` rather than `.onLoad`,
+which is where this package's other startup work lives: `.onLoad` also runs for
+`rplatypus::fun()`, which would print a platypus fact into the middle of a script that
+never called `library()`.
+
+**Every fact carries the source it was read from, and the numbering is stable.** Four of
+the twenty-five exist to correct a popular claim rather than to state one - the platypus
+does have a stomach, it does not grind food with gravel, "platypi" is not a plural and
+there is no accepted word for a baby platypus - which is the only form this could take in a
+package whose argument is that numbers should be measured rather than felt. A test holds
+every entry to having a source. The numbers are published the moment somebody quotes one,
+so facts are appended and never reordered, and a ledger of each fact's opening in
+`tests/testthat/test-facts.R` fails if one moves.
+
+`tools/reference-groups.yml` gains a group, *The animal*, last in the order. The matching
+line went into `pyplatypus/tests/test_reference_groups.py` at the same time: the shared
+order is an agreement about where a group goes rather than a list both sides fill, so the
+engine carries the title with no contents, as this package does for *Records*.
+
 ### 2026-10-16 - `classes_from`: one binary mask file per class
 
 Needs pyplatypus **0.8.0a28**, and the pin moves with this. `maju116/rplatypus#180`, whose
