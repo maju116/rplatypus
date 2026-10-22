@@ -793,6 +793,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
   <li><a href="#format" id="toc-format" class="nav-link" data-scroll-target="#format">Format</a></li>
   <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
+  <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul></li>
   </ul>
@@ -828,6 +829,10 @@ voc_labels
 <section id="details" class="level3">
 <h3 class="anchored" data-anchor-id="details">Details</h3>
 <p>The labels are the matching class names, for figure legends and <a href="../man/mask_coverage.html"><code>mask_coverage()</code></a>. Position in the list is the class index throughout, counting from 1.</p>
+</section>
+<section id="value" class="level3">
+<h3 class="anchored" data-anchor-id="value">Value</h3>
+<p>Four exported objects rather than functions. <code>binary_colormap</code> and <code>voc_colormap</code> are lists of integer vectors of length three - one RGB triple per class, 2 entries and 21 entries respectively - where position in the list is the class index, counting from 1. <code>binary_labels</code> and <code>voc_labels</code> are character vectors of the matching class names, the same length as their colormap and in the same order, so the nth label names the class the nth triple draws.</p>
 </section>
 <section id="examples" class="level3">
 <h3 class="anchored" data-anchor-id="examples">Examples</h3>
