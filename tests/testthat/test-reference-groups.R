@@ -170,7 +170,10 @@ group_order <- c(
   "Records",
   "Looking at the results",
   "Masks and volumes",
-  "When something is wrong"
+  "When something is wrong",
+  # Added 2026-10-22 with `platypus_fact()`. R-only today, like "Setting up" - the shared
+  # order carries a group both sides agree on the *placement* of, not one both sides fill.
+  "The animal"
 )
 
 test_that("the groups are a subsequence of the order pyplatypus shares", {

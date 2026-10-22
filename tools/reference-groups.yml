@@ -94,3 +94,14 @@ groups:
       Every failure arrives as a classed condition, so a script can tell a specification it
       cannot run from a dataset that is not there. `platypus_error` catches all of them.
     contents: [platypus_conditions]
+
+  # Last, and the one group here that is not about the package. The family is named after the
+  # animal; this is the only page that is about the animal. The title went into the shared
+  # order in pyplatypus's tests/test_reference_groups.py at the same time, which is what that
+  # order is for: it is an agreement about where a group goes, not a list both sides fill, so
+  # the engine carries the title with no contents exactly as this package does for `Records`.
+  - title: The animal
+    desc: >-
+      The package is named after a monotreme, and this says something true about it. A fact
+      is also printed when the package is attached, which can be turned off.
+    contents: [platypus_fact]
