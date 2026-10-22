@@ -33,6 +33,14 @@ There is nothing to set up afterwards. The first call that needs the engine buil
 isolated Python environment for it, and everything after that uses the cache. You never
 choose an interpreter, activate anything, or match a version.
 
+**Two things are worth knowing before that first call, and both are about PyTorch rather
+than about this package.** It downloads about 5 GB, because the wheel carries CUDA whether
+or not there is a GPU - cached afterwards, and portable to a machine with no connection.
+And **on a GeForce GTX 10-series card or older, call `platypus_use_torch("pascal")` first**:
+current builds target CUDA 13, which dropped that generation, so without it everything
+trains on the processor - perhaps ten times slower, with nothing obviously wrong.
+`platypus_device()` says which one you got. *About the engine*, below, has both in full.
+
 **The package was called `platypus` until 2026-10-14** and is `rplatypus` now - one name per
 language, beside the `pyplatypus` engine on PyPI. The repository moved with it, so
 `github.com/maju116/platypus` redirects here and every link anybody already has still works.
@@ -369,9 +377,13 @@ Resampling volumes to isotropic spacing is deliberate rather than automatic: `vo
 reads and reports the spacing, and `target_spacing` applies it, but applying it changes the
 voxel grid the model sees, which is a decision to take rather than a default to inherit.
 
-The package is **not on CRAN**, and not submitted yet. The name also collides,
-case-insensitively, with an unrelated immunology package archived there in February 2026,
-which is a question to settle before a submission rather than after.
+The package is **not on CRAN yet**: `0.2.0` was submitted on 2026-10-14 and sits in the
+incoming queue until CRAN's own checks run and a human looks at it. Its page on CRAN is the
+live answer rather than this sentence, which can only say what was true when it was written.
+The name question that used to stand here is settled, and the answer is the name at the top
+of this page: `Platypus`, unrelated work in immunology, was archived from CRAN in February
+2026, archiving does not release a name, and this package was renamed rather than asking for
+an exception.
 
 ## About the engine
 
