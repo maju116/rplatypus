@@ -128,6 +128,9 @@ website:
           - section: "When something is wrong"
             contents:
               - man/platypus_conditions.qmd
+          - section: "The animal"
+            contents:
+              - man/platypus_fact.qmd
       - section: "About"
         contents:
           - text: Changelog
