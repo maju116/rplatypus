@@ -19,6 +19,14 @@ voc_colormap
 
 voc_labels
 }
+\value{
+Four exported objects rather than functions. \code{binary_colormap} and
+\code{voc_colormap} are lists of integer vectors of length three - one RGB triple per
+class, 2 entries and 21 entries respectively - where position in the list is the class
+index, counting from 1. \code{binary_labels} and \code{voc_labels} are character vectors of the
+matching class names, the same length as their colormap and in the same order, so the
+nth label names the class the nth triple draws.
+}
 \description{
 \code{binary_colormap} is black background, white foreground: the ordinary two-class
 problem. \code{voc_colormap} is the twenty-one class palette used by Pascal VOC, kept

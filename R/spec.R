@@ -222,6 +222,12 @@ segmentation_data <- function(train, validation = NULL, colormap = NULL, labels 
 #' Position in the list is the class index throughout, counting from 1.
 #'
 #' @format A list of RGB triples, or a character vector of names.
+#' @returns Four exported objects rather than functions. `binary_colormap` and
+#'   `voc_colormap` are lists of integer vectors of length three - one RGB triple per
+#'   class, 2 entries and 21 entries respectively - where position in the list is the class
+#'   index, counting from 1. `binary_labels` and `voc_labels` are character vectors of the
+#'   matching class names, the same length as their colormap and in the same order, so the
+#'   nth label names the class the nth triple draws.
 #' @name colormaps
 #' @examples
 #' mask_coverage(matrix(c(1, 2, 2, 1), 2), labels = binary_labels)

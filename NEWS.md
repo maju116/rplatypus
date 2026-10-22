@@ -15,6 +15,13 @@ this package reach it - so the pin moving is part of a change here, not housekee
 alongside it. The pin is what stops a release of this package breaking because the engine
 drifted underneath it.
 
+## [0.2.1] - unreleased
+
+A resubmission to CRAN after the review of `0.2.0`, and nothing else: `Description` writes
+`'PyTorch'` and `'Python'` in single quotes as the policy asks, and `colormaps.Rd` gained
+the `\value` tag it was missing - written in the roxygen source, so the page and the code
+cannot drift. No change to any function, argument or result.
+
 ## [0.2.0] - unreleased
 
 A different package from 0.1.1 under the same name, and the section below says how

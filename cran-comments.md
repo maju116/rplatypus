@@ -1,6 +1,34 @@
 # cran-comments
 
-First submission of `rplatypus`.
+Resubmission of `rplatypus` as `0.2.1`, after Konstanze Lauseker's review of `0.2.0`. Still
+a new submission - nothing of this package has been accepted - so the *New submission* NOTE
+below is expected.
+
+## What changed, and nothing else did
+
+Both points from the review, and only those two. The version is increased as the policy
+asks even though `0.2.0` was not accepted.
+
+**Software names in single quotes in `Title` and `Description`.** `Description` now writes
+`'PyTorch'` and `'Python'`; `'pyplatypus'` already carried them. `Title` names no software.
+`R` itself is left unquoted, following CRAN's own cookbook, whose Title Case example is
+*Web Application Framework for R*.
+
+**`\value` in `colormaps.Rd`.** That page documents four exported objects rather than
+functions - two colormaps and their label vectors - so it had `\format` and no `\value`.
+It now says what each object is structurally and what it means: that `binary_colormap` and
+`voc_colormap` are lists of integer vectors of length three, one RGB triple per class, 2
+and 21 of them, with position in the list the class index counting from 1; and that
+`binary_labels` and `voc_labels` are character vectors of the matching names, the same
+length and in the same order, so the nth label names the class the nth triple draws. The
+tag is written in the roxygen source, so the `.Rd` file and the code cannot drift apart.
+
+Worth reporting rather than hiding: **`R CMD check --as-cran` here never flagged the missing
+tag**, on R 4.5.3 with the manual built, and neither did `tools:::checkRdContents()`. The
+two other pages in the package without `\value` - `encoders.Rd` and
+`platypus_conditions.Rd` - are topic pages with no `\usage` at all, which is why the review
+named one file and not three. A check that reproduces the rule, rather than any tool here,
+now reports zero pages with `\usage` and no `\value`.
 
 ## Test environments
 
@@ -89,4 +117,4 @@ user installs.
 
 ## Downstream dependencies
 
-None — this is a first submission.
+None. `rplatypus` has no reverse dependencies: nothing of it is on CRAN yet.
