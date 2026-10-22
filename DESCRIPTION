@@ -6,10 +6,10 @@ Authors@R: person("Michal", "Maj", email = "michalmaj116@gmail.com",
                   role = c("aut", "cre"))
 Description: Semantic segmentation and object detection for medical images, from a
     folder of pictures to a trained model and a figure, in a handful of lines or one
-    configuration file. Architectures, losses and training run on PyTorch through the
-    'pyplatypus' Python package, which is installed and isolated automatically; nothing
-    has to be set up by hand. R keeps the parts that make an analysis fast - reading and
-    combining masks, drawing boxes, plotting, comparing models.
+    configuration file. Architectures, losses and training run on 'PyTorch' through
+    'pyplatypus', a 'Python' package which is installed and isolated automatically;
+    nothing has to be set up by hand. R keeps the parts that make an analysis fast -
+    reading and combining masks, drawing boxes, plotting, comparing models.
 License: MIT + file LICENSE
 URL: https://github.com/maju116/rplatypus, https://maju116.github.io/rplatypus/
 BugReports: https://github.com/maju116/rplatypus/issues

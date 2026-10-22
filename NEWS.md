@@ -17,6 +17,39 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-22 - what CRAN's review of `0.2.0` asked for, forward-ported
+
+`0.2.1` answered the review on its own branch, from the commit the submitted tarball was
+built from, because sending `main` would have replied to two documentation comments with
+ten new exported functions. The same two fixes belong here as well, or `0.3.0` collects the
+same review.
+
+`Description` writes `'PyTorch'` and `'Python'` in single quotes, as the policy asks of
+software names in `Title` and `Description`. `R` stays unquoted: the cookbook the review
+links does not address it, and its own Title Case example is *Web Application Framework for
+R*.
+
+`colormaps.Rd` gained the `\value` tag it never had. It documents four exported objects
+rather than functions, so it carried `\format` alone; the tag is written in the roxygen
+source and states structure and meaning, not just class.
+
+**Worth keeping because it is a property of the review rather than of this release, and
+the first version of this paragraph understated it.** `R CMD check --as-cran` with the
+manual, on R 4.5.3, does not flag a missing `\value` - `checking Rd contents` says OK with
+the tag absent - and neither does `tools:::checkRdContents()`. That was written as a fact
+about this machine. **It is a fact about both sides:** CRAN's own automated pretest did not
+flag it either. Measured on the two logs, which are byte-comparable because the only
+difference between the submissions is this tag and two quoted names:
+
+    rplatypus 0.2.0, the version sent back    Windows 1 NOTE, Debian 1 NOTE
+    rplatypus 0.2.1, with the tag             Windows 1 NOTE, Debian 1 NOTE
+    mentions of `value` or `colormaps`        0 in all four logs
+
+So the two submissions are indistinguishable to every check that runs, and the difference
+between them is exactly what the reviewer asked for. **A clean pretest says nothing about
+whether the review will pass** - a human read the `.Rd` files. The instrument that does ask
+the question is a check of our own: a page with `\usage` must have `\value`.
+
 ### 2026-10-22 - `platypus_fact()`, and a platypus fact when the package is attached
 
 **The pin does not move and the engine needs no release**: this is the first thing in the
