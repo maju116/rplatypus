@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.10.19">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
 <title>Retinal vessels: tiling, and a metric Dice cannot replace – rplatypus</title>
 <style>
 /* Default styles provided by pandoc.
@@ -60,6 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
+
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
@@ -79,9 +83,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-ee0d825c001f130fb265e92dcb17fa1f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -108,11 +113,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+
+
 </head>
+
 <body class="nav-sidebar docked nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">rplatypus</span>
@@ -124,17 +134,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item compact">
+  <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/maju116/rplatypus"> <i class="bi bi-github" role="img" aria-label="rplatypus GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-</div> <!-- /navcollapse -->
+          </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -142,11 +154,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-<li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
@@ -160,8 +176,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../vignettes/blood-cells.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Finding blood cells with YOLOv3</span></a>
@@ -198,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
@@ -207,8 +223,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../overview.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Overview</span></a>
@@ -222,8 +238,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_status.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Is the engine ready?</span></a>
@@ -242,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
@@ -251,8 +267,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_spec.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Build an experiment specification</span></a>
@@ -301,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
@@ -310,8 +326,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/losses.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Loss functions</span></a>
@@ -384,7 +400,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
@@ -393,8 +409,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/split_dataset.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Split a dataset into training, validation and test sets</span></a>
@@ -437,7 +453,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
@@ -446,8 +462,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_fit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Train the models in a specification</span></a>
@@ -466,7 +482,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false">
@@ -475,8 +491,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/predict.platypus_fit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Predict masks</span></a>
@@ -519,7 +535,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
@@ -528,8 +544,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/export_weights.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Save a trained model’s weights</span></a>
@@ -542,7 +558,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
@@ -551,8 +567,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 "></ul>
-</li>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+      </ul>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false">
@@ -561,8 +578,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/plot_masks.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Look at masks beside the images they came from</span></a>
@@ -617,7 +634,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="false">
@@ -626,8 +643,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/colours_to_classes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Read a colour mask back to class indices</span></a>
@@ -700,7 +717,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false">
@@ -709,10 +726,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 "></ul>
-</li>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
       </ul>
-</li>
+  </li>
+      </ul>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="true">
@@ -721,8 +739,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../NEWS.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Changelog</span></a>
@@ -747,16 +765,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
     </ul>
-</div>
-</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
    
   <ul>
-<li><a href="#why-a-vessel-cannot-be-resized" id="toc-why-a-vessel-cannot-be-resized" class="nav-link active" data-scroll-target="#why-a-vessel-cannot-be-resized">Why a vessel cannot be resized</a></li>
+  <li><a href="#why-a-vessel-cannot-be-resized" id="toc-why-a-vessel-cannot-be-resized" class="nav-link active" data-scroll-target="#why-a-vessel-cannot-be-resized">Why a vessel cannot be resized</a></li>
   <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data">The data</a></li>
   <li><a href="#the-configuration" id="toc-the-configuration" class="nav-link" data-scroll-target="#the-configuration">The configuration</a></li>
   <li><a href="#training" id="toc-training" class="nav-link" data-scroll-target="#training">Training</a></li>
@@ -764,10 +784,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#cldice-beside-dice" id="toc-cldice-beside-dice" class="nav-link" data-scroll-target="#cldice-beside-dice">clDice beside Dice</a></li>
   <li><a href="#the-worst-case-drawn" id="toc-the-worst-case-drawn" class="nav-link" data-scroll-target="#the-worst-case-drawn">The worst case, drawn</a></li>
   <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
-  </ul></nav>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/blood-cells.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/retinal-vessels.html">Retinal vessels: tiling, and a metric Dice cannot replace</a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/blood-cells.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/retinal-vessels.html">Retinal vessels: tiling, and a metric Dice cannot replace</a></li></ol></nav>
+<div class="quarto-title">
 <h1 class="title">Retinal vessels: tiling, and a metric Dice cannot replace</h1>
 </div>
 
@@ -782,181 +806,204 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>The other vignettes work on images small enough to hand a network whole. This one does not, and that is the point: a retinal fundus photograph is 2048 x 2048, the thing to find in it is about nine pixels wide, and resizing to fit the model destroys the measurement before the model ever sees it.</p>
+</header>
+
+
+<p>The other vignettes work on images small enough to hand a network whole. This one does not, and that is the point: a retinal fundus photograph is 2048 x 2048, the thing to find in it is about nine pixels wide, and resizing to fit the model destroys the measurement before the model ever sees it.</p>
 <p>Three things here appear in no other vignette, and each is the reason this dataset was chosen.</p>
 <p><strong>It tiles.</strong> <code>splits</code> reads each image at full resolution and cuts it into a grid of inputs.</p>
 <p><strong>It is scored on a metric Dice cannot stand in for.</strong> clDice asks whether a structure is <em>connected</em> rather than whether its pixels coincide - and a skeleton is a property of a whole mask, so it is measured on the reassembled image rather than on the tiles.</p>
 <p><strong>It reports per disease rather than as one mean</strong>, which is how the interesting thing about this dataset was found - and the interesting thing turns out not to be about the disease.</p>
-<section id="why-a-vessel-cannot-be-resized" class="level2"><h2 class="anchored" data-anchor-id="why-a-vessel-cannot-be-resized">Why a vessel cannot be resized</h2>
+<section id="why-a-vessel-cannot-be-resized" class="level2">
+<h2 class="anchored" data-anchor-id="why-a-vessel-cannot-be-resized">Why a vessel cannot be resized</h2>
 <p>FIVES images are 2048 x 2048, and the obvious move is to resize them to something a U-Net is comfortable with. It is the wrong move here, and the reason is a measurement rather than a preference.</p>
 <p>A FIVES vessel is <strong>about nine pixels wide</strong> - measured as mask area over skeleton length, over six random masks, on the engine side where the skeleton lives. Resized to 256 the same vessels are about 1.2 pixels. That matters because of what happens at one pixel: shift a one-pixel structure by a single pixel and it overlaps the truth <em>nowhere at all</em>, so Dice, IoU and clDice alike read zero and none of them can tell a near miss from a total failure. Tiling keeps the data out of that regime, which is what <code>splits</code> is for.</p>
 <p>(The nine-pixel figure corrects the one-to-five this dataset is usually described with. One to five is what remains after a resize - a property of the preprocessing, not of the retina.)</p>
-</section><section id="the-data" class="level2"><h2 class="anchored" data-anchor-id="the-data">The data</h2>
+</section>
+<section id="the-data" class="level2">
+<h2 class="anchored" data-anchor-id="the-data">The data</h2>
 <p>One 1.7 GB download from <a href="https://doi.org/10.6084/m9.figshare.19688169.v1">figshare 19688169</a>, CC BY 4.0. The authors’ own split is already balanced across the four groups - 150 train and 50 test of each - so it is used rather than replaced. Point <code>PLATYPUS_FIVES</code> at the unpacked directory.</p>
 <p>The dataset is laid out as <code>Original/</code> and <code>Ground truth/</code> with matching file names, which is not a layout <code>platypus</code> discovers on its own, so the pairs are written into a CSV:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">root</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"PLATYPUS_FIVES"</span><span class="op">)</span>,</span>
-<span>  <span class="st">"FIVES A Fundus Image Dataset for AI-based Vessel Segmentation"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.exists</a></span><span class="op">(</span><span class="va">root</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">write_split</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">split</span>, <span class="va">path</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="co"># `pattern` rather than everything in the directory: the archive ships a `Thumbs.db`</span></span>
-<span>  <span class="co"># beside the 600 training images, and a Windows thumbnail cache is not a fundus</span></span>
-<span>  <span class="co"># photograph. Filtering by extension is also what keeps the pairing below honest.</span></span>
-<span>  <span class="va">images</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">root</span>, <span class="va">split</span>, <span class="st">"Original"</span><span class="op">)</span>, pattern <span class="op">=</span> <span class="st">"\\.png$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>  <span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="va">frame</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
-<span>    <span class="co"># The key is what `evaluate_cases()` reports and what `group_by` reads. Without it a</span></span>
-<span>    <span class="co"># case is called `row 55`, which names nothing on disk and cannot be grouped.</span></span>
-<span>    key <span class="op">=</span> <span class="fu">tools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/tools/fileutils.html">file_path_sans_ext</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">images</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    images <span class="op">=</span> <span class="va">images</span>,</span>
-<span>    masks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">root</span>, <span class="va">split</span>, <span class="st">"Ground truth"</span>, <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">images</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span><span class="op">(</span><span class="va">frame</span><span class="op">$</span><span class="va">masks</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">frame</span>, <span class="va">path</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">frame</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="va">splits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>train <span class="op">=</span> <span class="st">"train.csv"</span>, test <span class="op">=</span> <span class="st">"test.csv"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">splits</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"train"</span>, <span class="st">"test"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>train <span class="op">=</span> <span class="fu">write_split</span><span class="op">(</span><span class="st">"train"</span>, <span class="va">splits</span><span class="op">[[</span><span class="st">"train"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, test <span class="op">=</span> <span class="fu">write_split</span><span class="op">(</span><span class="st">"test"</span>, <span class="va">splits</span><span class="op">[[</span><span class="st">"test"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; train  test </span></span>
-<span><span class="co">#&gt;   600   200</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>root <span class="ot">&lt;-</span> <span class="fu">file.path</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Sys.getenv</span>(<span class="st">"PLATYPUS_FIVES"</span>),</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"FIVES A Fundus Image Dataset for AI-based Vessel Segmentation"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">stopifnot</span>(<span class="fu">dir.exists</span>(root))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>write_split <span class="ot">&lt;-</span> <span class="cf">function</span>(split, path) {</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># `pattern` rather than everything in the directory: the archive ships a `Thumbs.db`</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># beside the 600 training images, and a Windows thumbnail cache is not a fundus</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># photograph. Filtering by extension is also what keeps the pairing below honest.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  images <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">list.files</span>(</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">file.path</span>(root, split, <span class="st">"Original"</span>), <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.png$"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  frame <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The key is what `evaluate_cases()` reports and what `group_by` reads. Without it a</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># case is called `row 55`, which names nothing on disk and cannot be grouped.</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">key =</span> tools<span class="sc">::</span><span class="fu">file_path_sans_ext</span>(<span class="fu">basename</span>(images)),</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">images =</span> images,</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">masks =</span> <span class="fu">file.path</span>(root, split, <span class="st">"Ground truth"</span>, <span class="fu">basename</span>(images))</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="fu">all</span>(<span class="fu">file.exists</span>(frame<span class="sc">$</span>masks)))</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(frame, path, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nrow</span>(frame)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>splits <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="fu">c</span>(<span class="at">train =</span> <span class="st">"train.csv"</span>, <span class="at">test =</span> <span class="st">"test.csv"</span>))</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(splits) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"train"</span>, <span class="st">"test"</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">train =</span> <span class="fu">write_split</span>(<span class="st">"train"</span>, splits[[<span class="st">"train"</span>]]), <span class="at">test =</span> <span class="fu">write_split</span>(<span class="st">"test"</span>, splits[[<span class="st">"test"</span>]]))</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; train  test </span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   600   200</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The disease is in the file name - <code>_N</code>, <code>_A</code>, <code>_D</code>, <code>_G</code> for normal, AMD, diabetic retinopathy and glaucoma - which is what the grouping below reads.</p>
 <p>Two things that cost time if taken on trust rather than checked: the archive ships a <code>Thumbs.db</code> beside the training images, so the listing is filtered by extension; and the masks are paired by name, which <code>stopifnot</code> above asserts rather than assumes.</p>
-</section><section id="the-configuration" class="level2"><h2 class="anchored" data-anchor-id="the-configuration">The configuration</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu">platypus_spec</span><span class="op">(</span></span>
-<span>  task <span class="op">=</span> <span class="st">"semantic_segmentation"</span>,</span>
-<span>  data <span class="op">=</span> <span class="fu">segmentation_data</span><span class="op">(</span></span>
-<span>    train <span class="op">=</span> <span class="va">splits</span><span class="op">[[</span><span class="st">"train"</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>    validation <span class="op">=</span> <span class="va">splits</span><span class="op">[[</span><span class="st">"test"</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>    colormap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">255</span>, <span class="fl">255</span>, <span class="fl">255</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    mode <span class="op">=</span> <span class="st">"config_file"</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>    <span class="fu">u_net</span><span class="op">(</span></span>
-<span>      name <span class="op">=</span> <span class="st">"vessels"</span>,</span>
-<span>      input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">512</span>, <span class="fl">512</span><span class="op">)</span>,</span>
-<span>      <span class="co"># 2048 read whole and cut 4 x 4. This is the field the vignette exists for.</span></span>
-<span>      splits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span>,</span>
-<span>      blocks <span class="op">=</span> <span class="fl">4</span>,</span>
-<span>      filters <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>      batch_size <span class="op">=</span> <span class="fl">4</span>,</span>
-<span>      epochs <span class="op">=</span> <span class="fl">15</span>,</span>
-<span>      loss <span class="op">=</span> <span class="fu">loss_cce_dice</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>      metrics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>        <span class="fu">metric_dice</span><span class="op">(</span>include_background <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
-<span>        <span class="fu">metric_iou</span><span class="op">(</span>include_background <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
-<span>        <span class="co"># Measured on the reassembled image by `evaluate_cases()`, not per tile.</span></span>
-<span>        <span class="fu">metric_cldice</span><span class="op">(</span>include_background <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>      <span class="op">)</span>,</span>
-<span>      optimizer <span class="op">=</span> <span class="fu">optimizer_adam</span><span class="op">(</span>learning_rate <span class="op">=</span> <span class="fl">1e-3</span><span class="op">)</span>,</span>
-<span>      augmentation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>        <span class="fu">augmentation_step</span><span class="op">(</span><span class="st">"HorizontalFlip"</span>, p <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>        <span class="fu">augmentation_step</span><span class="op">(</span><span class="st">"VerticalFlip"</span>, p <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
-<span>      <span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  seed <span class="op">=</span> <span class="fl">1</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">spec</span></span>
-<span><span class="co">#&gt; platypus specification</span></span>
-<span><span class="co">#&gt;   data        : /tmp/RtmpkhrXG3/train.csv </span></span>
-<span><span class="co">#&gt;   classes     : 2 </span></span>
-<span><span class="co">#&gt;   models      : 1 </span></span>
-<span><span class="co">#&gt;     vessels        u_net            512x512, tiled 4x4, cce_dice, 15 epochs</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="the-configuration" class="level2">
+<h2 class="anchored" data-anchor-id="the-configuration">The configuration</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="fu">platypus_spec</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">task =</span> <span class="st">"semantic_segmentation"</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">segmentation_data</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">train =</span> splits[[<span class="st">"train"</span>]],</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">validation =</span> splits[[<span class="st">"test"</span>]],</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">colormap =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="fu">c</span>(<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>)),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mode =</span> <span class="st">"config_file"</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">u_net</span>(</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">name =</span> <span class="st">"vessels"</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">512</span>, <span class="dv">512</span>),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      <span class="co"># 2048 read whole and cut 4 x 4. This is the field the vignette exists for.</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">splits =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>),</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">blocks =</span> <span class="dv">4</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">filters =</span> <span class="dv">16</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">batch_size =</span> <span class="dv">4</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">epochs =</span> <span class="dv">15</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">loss =</span> <span class="fu">loss_cce_dice</span>(),</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">metrics =</span> <span class="fu">list</span>(</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="fu">metric_dice</span>(<span class="at">include_background =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        <span class="fu">metric_iou</span>(<span class="at">include_background =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Measured on the reassembled image by `evaluate_cases()`, not per tile.</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="fu">metric_cldice</span>(<span class="at">include_background =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">optimizer =</span> <span class="fu">optimizer_adam</span>(<span class="at">learning_rate =</span> <span class="fl">1e-3</span>),</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">augmentation =</span> <span class="fu">list</span>(</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>        <span class="fu">augmentation_step</span>(<span class="st">"HorizontalFlip"</span>, <span class="at">p =</span> <span class="fl">0.5</span>),</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        <span class="fu">augmentation_step</span>(<span class="st">"VerticalFlip"</span>, <span class="at">p =</span> <span class="fl">0.5</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>spec</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; platypus specification</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   data        : /tmp/RtmpkhrXG3/train.csv </span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   classes     : 2 </span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   models      : 1 </span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     vessels        u_net            512x512, tiled 4x4, cce_dice, 15 epochs</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Two things about that worth saying out loud.</p>
 <p><a href="../man/metrics.html"><code>metric_cldice()</code></a> sits beside <a href="../man/metrics.html"><code>metric_dice()</code></a> even though the run is tiled, and the engine reassembles each case before measuring it. <strong>It will not appear in the epoch log</strong>, and that is deliberate rather than an omission: an epoch averages its metrics over batches, which is exact for Dice - a ratio of sums - and meaningless for a skeleton, because a tile severs every vessel crossing its edge. So there is no <code>val_cldice</code> to watch, and a callback that tried would be refused when the specification is read.</p>
 <p>Fifteen epochs rather than the forty this model wants, because a vignette that takes seven hours to rebuild is a vignette nobody rebuilds. The shape of the result is the same; the numbers are a little worse than the model can do.</p>
-</section><section id="training" class="level2"><h2 class="anchored" data-anchor-id="training">Training</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">platypus_fit</span><span class="op">(</span><span class="va">spec</span><span class="op">)</span></span>
-<span><span class="va">fit</span></span>
-<span><span class="co">#&gt; platypus fit</span></span>
-<span><span class="co">#&gt;   models   : vessels </span></span>
-<span><span class="co">#&gt;   device   : NVIDIA GeForce GTX 1070 (torch 2.7.1+cu126) </span></span>
-<span><span class="co">#&gt;   epochs   : vessels=15 </span></span>
-<span><span class="co">#&gt;   next     : evaluate(fit), predict(fit, "vessels")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="training" class="level2">
+<h2 class="anchored" data-anchor-id="training">Training</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">platypus_fit</span>(spec)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>fit</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; platypus fit</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   models   : vessels </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   device   : NVIDIA GeForce GTX 1070 (torch 2.7.1+cu126) </span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   epochs   : vessels=15 </span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   next     : evaluate(fit), predict(fit, "vessels")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="figure">
-<img src="figures/retinal-vessels-history-1.png" alt="Dice and loss per epoch, training and validation"><p class="caption">
+<img src="figures/retinal-vessels-history-1.png" alt="Dice and loss per epoch, training and validation">
+<p class="caption">
 plot of chunk history
 </p>
 </div>
-</section><section id="one-number-hides-the-finding" class="level2"><h2 class="anchored" data-anchor-id="one-number-hides-the-finding">One number hides the finding</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">evaluate</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     model architecture loss_function parameters epochs_run best_epoch</span></span>
-<span><span class="co">#&gt; 1 vessels        u_net      cce_dice    1942594         15         15</span></span>
-<span><span class="co">#&gt;         loss      dice       iou</span></span>
-<span><span class="co">#&gt; 1 0.07751003 0.8345117 0.7548818</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>That is the whole test set as one row, and it is the least informative view of it. The distribution is the finding, and <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> gives it - including which case is the worst, because the first thing anyone does with a low score is go and look at that image:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">per_case</span> <span class="op">&lt;-</span> <span class="fu">evaluate_cases</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">per_case</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   metric   n      mean        sd    median         min       max worst_case</span></span>
-<span><span class="co">#&gt; 1   dice 200 0.8693033 0.1216219 0.9002321 0.006706456 0.9563482      122_G</span></span>
-<span><span class="co">#&gt; 2    iou 200 0.7836241 0.1415640 0.8185659 0.003380554 0.9163482      122_G</span></span>
-<span><span class="co">#&gt; 3 cldice 200 0.8209798 0.1442591 0.8672186 0.009086774 0.9561177      122_G</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="one-number-hides-the-finding" class="level2">
+<h2 class="anchored" data-anchor-id="one-number-hides-the-finding">One number hides the finding</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate</span>(fit)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     model architecture loss_function parameters epochs_run best_epoch</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 vessels        u_net      cce_dice    1942594         15         15</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         loss      dice       iou</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.07751003 0.8345117 0.7548818</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That is the whole test set as one row, and it is the least informative view of it. The distribution is the finding, and <code>summary()</code> gives it - including which case is the worst, because the first thing anyone does with a low score is go and look at that image:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>per_case <span class="ot">&lt;-</span> <span class="fu">evaluate_cases</span>(fit)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(per_case)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   metric   n      mean        sd    median         min       max worst_case</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1   dice 200 0.8693033 0.1216219 0.9002321 0.006706456 0.9563482      122_G</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    iou 200 0.7836241 0.1415640 0.8185659 0.003380554 0.9163482      122_G</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 cldice 200 0.8209798 0.1442591 0.8672186 0.009086774 0.9561177      122_G</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Now by the disease in the file name. <code>group_by</code> pools a group’s cases into one score, the way a patient’s slices would be pooled:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">evaluate_cases</span><span class="op">(</span><span class="va">fit</span>, group_by <span class="op">=</span> <span class="st">"_([NADG])$"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; platypus scores by group (4 rows)</span></span>
-<span><span class="co">#&gt;  group      dice       iou    cldice</span></span>
-<span><span class="co">#&gt;      A 0.9129010 0.8397590 0.8665145</span></span>
-<span><span class="co">#&gt;      D 0.8882682 0.7989953 0.8136649</span></span>
-<span><span class="co">#&gt;      G 0.8889359 0.8000760 0.7560313</span></span>
-<span><span class="co">#&gt;      N 0.8910453 0.8035004 0.8477083</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate_cases</span>(fit, <span class="at">group_by =</span> <span class="st">"_([NADG])$"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; platypus scores by group (4 rows)</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  group      dice       iou    cldice</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      A 0.9129010 0.8397590 0.8665145</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      D 0.8882682 0.7989953 0.8136649</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      G 0.8889359 0.8000760 0.7560313</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      N 0.8910453 0.8035004 0.8477083</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Pooling answers “how good is it on this group”. It does not show the spread, and the spread is where this dataset is interesting, so that comes off the per-case rows:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">diseases</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>N <span class="op">=</span> <span class="st">"normal"</span>, A <span class="op">=</span> <span class="st">"AMD"</span>, D <span class="op">=</span> <span class="st">"diabetic retinopathy"</span>, G <span class="op">=</span> <span class="st">"glaucoma"</span><span class="op">)</span></span>
-<span><span class="va">per_case</span><span class="op">$</span><span class="va">disease</span> <span class="op">&lt;-</span> <span class="va">diseases</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">sub</a></span><span class="op">(</span><span class="st">".*_([NADG])$"</span>, <span class="st">"\\1"</span>, <span class="va">per_case</span><span class="op">$</span><span class="va">case</span><span class="op">)</span><span class="op">]</span></span>
-<span></span>
-<span><span class="va">spread</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, worst <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/split.html">split</a></span><span class="op">(</span><span class="va">per_case</span><span class="op">$</span><span class="va">dice</span>, <span class="va">per_case</span><span class="op">$</span><span class="va">disease</span><span class="op">)</span>, <span class="va">spread</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                       n   mean     sd  worst</span></span>
-<span><span class="co">#&gt; AMD                  50 0.9048 0.0585 0.7010</span></span>
-<span><span class="co">#&gt; diabetic retinopathy 50 0.8715 0.0823 0.5139</span></span>
-<span><span class="co">#&gt; glaucoma             50 0.8135 0.2053 0.0067</span></span>
-<span><span class="co">#&gt; normal               50 0.8875 0.0542 0.6622</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>diseases <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">N =</span> <span class="st">"normal"</span>, <span class="at">A =</span> <span class="st">"AMD"</span>, <span class="at">D =</span> <span class="st">"diabetic retinopathy"</span>, <span class="at">G =</span> <span class="st">"glaucoma"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>per_case<span class="sc">$</span>disease <span class="ot">&lt;-</span> diseases[<span class="fu">sub</span>(<span class="st">".*_([NADG])$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, per_case<span class="sc">$</span>case)]</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>spread <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">n =</span> <span class="fu">length</span>(x), <span class="at">mean =</span> <span class="fu">mean</span>(x), <span class="at">sd =</span> <span class="fu">sd</span>(x), <span class="at">worst =</span> <span class="fu">min</span>(x))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">t</span>(<span class="fu">vapply</span>(<span class="fu">split</span>(per_case<span class="sc">$</span>dice, per_case<span class="sc">$</span>disease), spread, <span class="fu">numeric</span>(<span class="dv">4</span>))), <span class="dv">4</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                       n   mean     sd  worst</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AMD                  50 0.9048 0.0585 0.7010</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; diabetic retinopathy 50 0.8715 0.0823 0.5139</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; glaucoma             50 0.8135 0.2053 0.0067</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; normal               50 0.8875 0.0542 0.6622</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Compare that table with the pooled one above and the reason for having both becomes concrete. Pooled, glaucoma and diabetic retinopathy are within a few thousandths of each other. Per case, glaucoma’s mean is several points lower and its spread more than twice as wide, with a worst case near zero. (No figure is quoted here on purpose: the table is directly above, and a number repeated in prose is a number that goes stale the next time this is rebuilt.) Pooling hid it because Dice is a ratio of sums: fifty images’ counts added together are dominated by the ones with the most vessel to find, and a photograph the model failed on contributes little to the numerator <em>and</em> little to the denominator.</p>
 <p><strong>Before concluding that the model is worse at the disease whose row is worst, check whether it is the group whose photographs are worse.</strong> FIVES ships a <code>Quality Assessment.xlsx</code> grading every image for illumination, blur and contrast; nothing in this pipeline reads it, and when it is joined to these scores the ordering above changes substantially. The engine’s measurement of that is in <code>measurements/fives/quality.py</code> in the project’s workbench.</p>
 <p>That is the general lesson rather than a fact about retinas: a per-group table is worth having precisely because it invites the question <em>why is this group different</em>, and the first answer is rarely the right one.</p>
-</section><section id="cldice-beside-dice" class="level2"><h2 class="anchored" data-anchor-id="cldice-beside-dice">clDice beside Dice</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span></span>
-<span>  correlation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">per_case</span><span class="op">$</span><span class="va">dice</span>, <span class="va">per_case</span><span class="op">$</span><span class="va">cldice</span><span class="op">)</span>,</span>
-<span>  mean_difference <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">per_case</span><span class="op">$</span><span class="va">cldice</span> <span class="op">-</span> <span class="va">per_case</span><span class="op">$</span><span class="va">dice</span><span class="op">)</span>,</span>
-<span>  sd_of_difference <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">per_case</span><span class="op">$</span><span class="va">cldice</span> <span class="op">-</span> <span class="va">per_case</span><span class="op">$</span><span class="va">dice</span><span class="op">)</span></span>
-<span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      correlation  mean_difference sd_of_difference </span></span>
-<span><span class="co">#&gt;           0.9316          -0.0483           0.0540</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="cldice-beside-dice" class="level2">
+<h2 class="anchored" data-anchor-id="cldice-beside-dice">clDice beside Dice</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">correlation =</span> <span class="fu">cor</span>(per_case<span class="sc">$</span>dice, per_case<span class="sc">$</span>cldice),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_difference =</span> <span class="fu">mean</span>(per_case<span class="sc">$</span>cldice <span class="sc">-</span> per_case<span class="sc">$</span>dice),</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd_of_difference =</span> <span class="fu">sd</span>(per_case<span class="sc">$</span>cldice <span class="sc">-</span> per_case<span class="sc">$</span>dice)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>), <span class="dv">4</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      correlation  mean_difference sd_of_difference </span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           0.9316          -0.0483           0.0540</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Read those two numbers together, because they say different things. The <strong>correlation</strong> is high: the two metrics rank the cases much the same way, so clDice is not finding a different set of bad images. The <strong>mean difference</strong> is negative and not small: clDice sits about five points <em>below</em> Dice, which says the vessels this model draws are less connected than their pixel overlap suggests. It is getting the right pixels and breaking the lines.</p>
 <p>That gap is a property of the model rather than of the metric, and the engine’s own run of the same configuration is the evidence: at forty epochs instead of fifteen the two agree to a correlation of 0.978 and a mean difference of +0.004. <strong>The better-trained model closes the gap.</strong> So a large negative gap here is not clDice being pessimistic - it is clDice measuring the thing that fifteen epochs had not finished learning, and Dice not noticing.</p>
-</section><section id="the-worst-case-drawn" class="level2"><h2 class="anchored" data-anchor-id="the-worst-case-drawn">The worst case, drawn</h2>
+</section>
+<section id="the-worst-case-drawn" class="level2">
+<h2 class="anchored" data-anchor-id="the-worst-case-drawn">The worst case, drawn</h2>
 <p>A table says a case scored near zero. A picture says why — and this is the panel that found the quality finding above, because the worst glaucoma photograph turns out to be nearly black.</p>
-<p>Drawing it needs two images out of two hundred, and the whole split at 2048 x 2048 is about 6.7 GB, so <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> is asked for the two by name. It keeps one answer at a time and returns the pair in the order asked for:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">chosen</span> <span class="op">&lt;-</span> <span class="va">per_case</span><span class="op">$</span><span class="va">case</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span><span class="op">(</span><span class="va">per_case</span><span class="op">$</span><span class="va">dice</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/which.min.html">which.min</a></span><span class="op">(</span><span class="va">per_case</span><span class="op">$</span><span class="va">dice</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">masks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, split <span class="op">=</span> <span class="st">"validation"</span>, cases <span class="op">=</span> <span class="va">chosen</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">at_source</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">what</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">root</span>, <span class="st">"test"</span>, <span class="va">what</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">chosen</span>, <span class="st">".png"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">plot_masks</span><span class="op">(</span></span>
-<span>  images <span class="op">=</span> <span class="fu">read_images</span><span class="op">(</span><span class="fu">at_source</span><span class="op">(</span><span class="st">"Original"</span><span class="op">)</span>, size <span class="op">=</span> <span class="cn">NULL</span>, channels <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
-<span>  <span class="co"># One `height x width` matrix per case, stacked the way plot_masks wants them:</span></span>
-<span>  <span class="co"># image x height x width.</span></span>
-<span>  prediction <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/aperm.html">aperm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">simplify2array</a></span><span class="op">(</span><span class="va">masks</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  truth <span class="op">=</span> <span class="fu">read_masks</span><span class="op">(</span><span class="fu">at_source</span><span class="op">(</span><span class="st">"Ground truth"</span><span class="op">)</span>, colormap <span class="op">=</span> <span class="va">binary_colormap</span>, size <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span>
-<span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"%s  dice %.3f"</span>, <span class="va">chosen</span>, <span class="va">per_case</span><span class="op">$</span><span class="va">dice</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">chosen</span>, <span class="va">per_case</span><span class="op">$</span><span class="va">case</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Drawing it needs two images out of two hundred, and the whole split at 2048 x 2048 is about 6.7 GB, so <code>predict()</code> is asked for the two by name. It keeps one answer at a time and returns the pair in the order asked for:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>chosen <span class="ot">&lt;-</span> per_case<span class="sc">$</span>case[<span class="fu">c</span>(<span class="fu">which.max</span>(per_case<span class="sc">$</span>dice), <span class="fu">which.min</span>(per_case<span class="sc">$</span>dice))]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>masks <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">split =</span> <span class="st">"validation"</span>, <span class="at">cases =</span> chosen)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>at_source <span class="ot">&lt;-</span> <span class="cf">function</span>(what) <span class="fu">file.path</span>(root, <span class="st">"test"</span>, what, <span class="fu">paste0</span>(chosen, <span class="st">".png"</span>))</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_masks</span>(</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">images =</span> <span class="fu">read_images</span>(<span class="fu">at_source</span>(<span class="st">"Original"</span>), <span class="at">size =</span> <span class="cn">NULL</span>, <span class="at">channels =</span> <span class="dv">3</span>),</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># One `height x width` matrix per case, stacked the way plot_masks wants them:</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># image x height x width.</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">prediction =</span> <span class="fu">aperm</span>(<span class="fu">simplify2array</span>(masks), <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>)),</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">truth =</span> <span class="fu">read_masks</span>(<span class="fu">at_source</span>(<span class="st">"Ground truth"</span>), <span class="at">colormap =</span> binary_colormap, <span class="at">size =</span> <span class="cn">NULL</span>),</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">sprintf</span>(<span class="st">"%s  dice %.3f"</span>, chosen, per_case<span class="sc">$</span>dice[<span class="fu">match</span>(chosen, per_case<span class="sc">$</span>case)])</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="figure">
-<img src="figures/retinal-vessels-worst-1.png" alt="The best and the worst validation case: image, truth and prediction"><p class="caption">
+<img src="figures/retinal-vessels-worst-1.png" alt="The best and the worst validation case: image, truth and prediction">
+<p class="caption">
 plot of chunk worst
 </p>
 </div>
-</section><section id="notes" class="level2"><h2 class="anchored" data-anchor-id="notes">Notes</h2>
+</section>
+<section id="notes" class="level2">
+<h2 class="anchored" data-anchor-id="notes">Notes</h2>
 <p><strong>The card.</strong> This was precomputed on a GTX 1070, which is a Pascal-generation GPU and needs the last PyTorch built against CUDA 12. <code>platypus_use_torch("pascal")</code> asks for it, and it has to be called before anything starts the engine. Without it this machine trains on the processor and says so. <a href="../man/platypus_device.html"><code>platypus_device()</code></a> reports what yours can see.</p>
 <p><strong>The cost.</strong> Fifteen epochs over 600 retinas at 2048, cut sixteen ways, takes a few hours on that card; scoring the 200 test images - including reassembling each one for clDice - takes about two minutes. Tiling is what makes the first number bearable: a tiled run reuses each decoded image for all of its tiles, which is worth roughly a factor of two.</p>
 <p><strong>Asking for a few cases is cheap in memory, not in time.</strong> <code>cases =</code> never holds more than one answer, which is what makes the figure above possible at all - but the engine’s stream is sequential, so two cases out of two hundred still run the model over two hundred. Pass a function to <code>each =</code> instead when you want to walk the split and keep a number rather than a mask from each image.</p>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -1357,6 +1404,7 @@ plot of chunk worst
   });
   </script>
 </div> <!-- /content -->
+
 
 
 

@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.10.19">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
 <title>metrics – rplatypus</title>
 <style>
 /* Default styles provided by pandoc.
@@ -60,6 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
+
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
@@ -79,9 +83,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-ee0d825c001f130fb265e92dcb17fa1f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -108,11 +113,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+
+
 </head>
+
 <body class="nav-sidebar docked nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">rplatypus</span>
@@ -124,17 +134,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item compact">
+  <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/maju116/rplatypus"> <i class="bi bi-github" role="img" aria-label="rplatypus GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-</div> <!-- /navcollapse -->
+          </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -142,11 +154,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-<li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
@@ -160,8 +176,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../vignettes/blood-cells.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Finding blood cells with YOLOv3</span></a>
@@ -198,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
@@ -207,8 +223,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../overview.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Overview</span></a>
@@ -222,8 +238,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_status.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Is the engine ready?</span></a>
@@ -242,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
@@ -251,8 +267,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_spec.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Build an experiment specification</span></a>
@@ -301,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
@@ -310,8 +326,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/losses.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Loss functions</span></a>
@@ -384,7 +400,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
@@ -393,8 +409,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/split_dataset.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Split a dataset into training, validation and test sets</span></a>
@@ -437,7 +453,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
@@ -446,8 +462,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_fit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Train the models in a specification</span></a>
@@ -466,7 +482,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false">
@@ -475,8 +491,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/predict.platypus_fit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Predict masks</span></a>
@@ -519,7 +535,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
@@ -528,8 +544,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/export_weights.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Save a trained model’s weights</span></a>
@@ -542,7 +558,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
@@ -551,8 +567,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 "></ul>
-</li>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+      </ul>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false">
@@ -561,8 +578,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/plot_masks.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Look at masks beside the images they came from</span></a>
@@ -617,7 +634,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="false">
@@ -626,8 +643,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/colours_to_classes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Read a colour mask back to class indices</span></a>
@@ -700,7 +717,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false">
@@ -709,10 +726,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 "></ul>
-</li>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
       </ul>
-</li>
+  </li>
+      </ul>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="true">
@@ -721,8 +739,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../NEWS.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Changelog</span></a>
@@ -747,33 +765,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
     </ul>
-</div>
-</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
    
   <ul>
-<li>
-<a href="#metrics" id="toc-metrics" class="nav-link active" data-scroll-target="#metrics">Metrics</a>
+  <li><a href="#metrics" id="toc-metrics" class="nav-link active" data-scroll-target="#metrics">Metrics</a>
   <ul class="collapse">
-<li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
+  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
   <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
   <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
   <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
+  </ul></li>
   </ul>
-</li>
-  </ul></nav>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../overview.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/losses.html">What a model is made of</a></li><li class="breadcrumb-item"><a href="../man/metrics.html">Metrics</a></li></ol></nav></header><section id="metrics" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="metrics">Metrics</h2>
-<section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../overview.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/losses.html">What a model is made of</a></li><li class="breadcrumb-item"><a href="../man/metrics.html">Metrics</a></li></ol></nav></header>
+
+
+
+
+<section id="metrics" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="metrics">Metrics</h2>
+<section id="description" class="level3">
+<h3 class="anchored" data-anchor-id="description">Description</h3>
 <p>What gets reported. Unlike the losses these are computed on the hard prediction - the mask you will actually be handed - because a metric taken on probabilities reads higher than the model deserves.</p>
-</section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
+</section>
+<section id="usage" class="level3">
+<h3 class="anchored" data-anchor-id="usage">Usage</h3>
 <pre><code class="language-R">metric_iou(smooth = 1, include_background = TRUE)
 
 metric_dice(smooth = 1, include_background = TRUE)
@@ -784,7 +812,9 @@ metric_cldice(iterations = 5, smooth = 1, include_background = FALSE)
 
 metric_surface_dice(tau, smooth = 1, include_background = FALSE)
 </code></pre>
-</section><section id="arguments" class="level3"><h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
+</section>
+<section id="arguments" class="level3">
+<h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
 <table role="presentation">
 <tbody><tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
@@ -799,7 +829,7 @@ Smoothing. Zero is allowed and is the honest choice for a reported number: with 
 <code id="include_background">include_background</code>
 </td>
 <td>
-Average over the background class as well. In medical images the background is usually most of the picture, so leaving it in can turn a model that found nothing into one that looks respectable. Papers report foreground only. It defaults to <code>TRUE</code> for the three overlap metrics and <code>FALSE</code> for <code><a href="../man/metrics.html">metric_cldice()</a></code> and <code><a href="../man/metrics.html">metric_surface_dice()</a></code>, where the background class does not merely flatter a model but measures something that is not the question - its skeleton and its boundary are both artefacts of the frame rather than of what was found. The paragraphs above give both measurements.
+Average over the background class as well. In medical images the background is usually most of the picture, so leaving it in can turn a model that found nothing into one that looks respectable. Papers report foreground only. It defaults to <code>TRUE</code> for the three overlap metrics and <code>FALSE</code> for <code>metric_cldice()</code> and <code>metric_surface_dice()</code>, where the background class does not merely flatter a model but measures something that is not the question - its skeleton and its boundary are both artefacts of the frame rather than of what was found. The paragraphs above give both measurements.
 </td>
 </tr>
 <tr>
@@ -823,23 +853,30 @@ For clDice, how many times the skeleton is peeled. It has to reach the half-widt
 <code id="tau">tau</code>
 </td>
 <td>
-For <code><a href="../man/metrics.html">metric_surface_dice()</a></code>, the tolerance a boundary is allowed to be wrong by, and it is <strong>required because no default would be honest</strong>. A tolerance belongs to the structure and the dataset rather than to a package: conventionally it is the inter-observer variability for that structure - the distance two people drawing the same boundary differ by - and published values exist per organ and per challenge. Take one from the protocol you are comparing against. In millimetres where <code>target_spacing</code> puts every case on a common grid, and in voxels where it does not, which is the same pair of answers the signed distance map in <code><a href="../man/loss_boundary.html">loss_boundary()</a></code> gives and for the same reason: a 0.5 mm and a 2.5 mm acquisition are not comparable in voxels at all.
+For <code>metric_surface_dice()</code>, the tolerance a boundary is allowed to be wrong by, and it is <strong>required because no default would be honest</strong>. A tolerance belongs to the structure and the dataset rather than to a package: conventionally it is the inter-observer variability for that structure - the distance two people drawing the same boundary differ by - and published values exist per organ and per challenge. Take one from the protocol you are comparing against. In millimetres where <code>target_spacing</code> puts every case on a common grid, and in voxels where it does not, which is the same pair of answers the signed distance map in <a href="../man/loss_boundary.html"><code>loss_boundary()</code></a> gives and for the same reason: a 0.5 mm and a 2.5 mm acquisition are not comparable in voxels at all.
 </td>
 </tr>
-</tbody></table></section><section id="details" class="level3"><h3 class="anchored" data-anchor-id="details">Details</h3>
-<p><strong>Three of these ask the same question and two ask different ones.</strong> <code><a href="../man/metrics.html">metric_iou()</a></code>, <code><a href="../man/metrics.html">metric_dice()</a></code> and <code><a href="../man/metrics.html">metric_tversky()</a></code> all ask how much of the mask coincides and differ in how they weigh the ways of being wrong. <code><a href="../man/metrics.html">metric_cldice()</a></code> asks whether the <em>structure</em> coincides, and <code><a href="../man/metrics.html">metric_surface_dice()</a></code> asks <strong>how far wrong the boundary is</strong> - which is the question a contour somebody has to approve is actually judged by, and the one nothing here reported until the pin moved to <code style="white-space: pre;">0.8.0a26</code>.</p>
+</tbody></table>
+</section>
+<section id="details" class="level3">
+<h3 class="anchored" data-anchor-id="details">Details</h3>
+<p><strong>Three of these ask the same question and two ask different ones.</strong> <code>metric_iou()</code>, <code>metric_dice()</code> and <code>metric_tversky()</code> all ask how much of the mask coincides and differ in how they weigh the ways of being wrong. <code>metric_cldice()</code> asks whether the <em>structure</em> coincides, and <code>metric_surface_dice()</code> asks <strong>how far wrong the boundary is</strong> - which is the question a contour somebody has to approve is actually judged by, and the one nothing here reported until the pin moved to <code style="white-space: pre;">0.8.0a26</code>.</p>
 <p>For something thin and connected clDice is the question worth asking, and it and Dice disagree in a way worth knowing. Measured on a nine-pixel vessel: one drawn two pixels thin scores Dice 0.875, and the same vessel severed in the middle scores 0.947 - <strong>Dice prefers the severed one</strong>. clDice gives them 1.000 and 0.943.</p>
 <p>Its limit, also measured: at one pixel wide a displacement of one pixel leaves no overlap at all, and every overlap-based metric reads 0, this one included.</p>
-<p><code><a href="../man/metrics.html">metric_surface_dice()</a></code> is the other kind of disagreement. <code><a href="../man/loss_boundary.html">loss_boundary()</a></code>’s own page reports a model at Dice 0.9525 whose volumes run 5% small and 17% wrong per case, and no overlap column says that: a displaced boundary and a correct one of the same area score alike. This is normalised surface Dice (Nikolov et al., 2018), symmetric on purpose - the truth’s surface near the prediction is the boundary’s recall, the prediction’s surface near the truth is its precision - and it is the one metric here that reads the voxel spacing, so <code>tau</code> is in millimetres when <code>target_spacing</code> has put the data on a common grid and in voxels when it has not. It is also what <code><a href="../man/loss_boundary.html">loss_boundary()</a></code> optimises, so until now that loss was being judged by the metric it exists to improve on.</p>
-<p>Like clDice it is a property of a whole mask rather than of a batch of counts, so on a tiled run (<code>splits</code>) it is reported <strong>per case</strong> by <code><a href="../man/evaluate_cases.html">evaluate_cases()</a></code> and is absent from the epoch history - a per-batch average of per-tile boundaries would be a number about nothing. A callback asking to watch <code>val_surface_dice</code> on such a run is refused when the configuration is read, the way one watching <code>val_cldice</code> is - so the choice to tile and the choice of what to stop on are settled together, before anything is trained.</p>
+<p><code>metric_surface_dice()</code> is the other kind of disagreement. <code>loss_boundary()</code>’s own page reports a model at Dice 0.9525 whose volumes run 5% small and 17% wrong per case, and no overlap column says that: a displaced boundary and a correct one of the same area score alike. This is normalised surface Dice (Nikolov et al., 2018), symmetric on purpose - the truth’s surface near the prediction is the boundary’s recall, the prediction’s surface near the truth is its precision - and it is the one metric here that reads the voxel spacing, so <code>tau</code> is in millimetres when <code>target_spacing</code> has put the data on a common grid and in voxels when it has not. It is also what <code>loss_boundary()</code> optimises, so until now that loss was being judged by the metric it exists to improve on.</p>
+<p>Like clDice it is a property of a whole mask rather than of a batch of counts, so on a tiled run (<code>splits</code>) it is reported <strong>per case</strong> by <a href="../man/evaluate_cases.html"><code>evaluate_cases()</code></a> and is absent from the epoch history - a per-batch average of per-tile boundaries would be a number about nothing. A callback asking to watch <code>val_surface_dice</code> on such a run is refused when the configuration is read, the way one watching <code>val_cldice</code> is - so the choice to tile and the choice of what to stop on are settled together, before anything is trained.</p>
 <p><code>include_background</code> defaults to <code>FALSE</code> for those two and <code>TRUE</code> for the three overlap metrics, and each has its own measured reason. The background’s skeleton lies inside the background by construction, so that class scores 1 for clDice whatever the model did - averaging it in moved 0.7865 to 0.8933 on a three-pixel vessel. The background’s <em>boundary</em> is the foreground’s boundary plus the edge of the picture, and that edge agrees between any two masks whatever happened in them: measured on four random pairs at <code>tau = 2</code>, the background scored 0.6110 to 0.7030 against the foreground’s 0.5583 to 0.6266 - higher every time. That is agreement on the field of view rather than on the object.</p>
-</section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
+</section>
+<section id="value" class="level3">
+<h3 class="anchored" data-anchor-id="value">Value</h3>
 <p>A metric specification.</p>
-</section><section id="examples" class="level3"><h3 class="anchored" data-anchor-id="examples">Examples</h3>
+</section>
+<section id="examples" class="level3">
+<h3 class="anchored" data-anchor-id="examples">Examples</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/maju116/rplatypus">"rplatypus"</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="../man/metrics.html">metric_dice</a></span><span class="op">(</span>include_background <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"rplatypus"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">metric_dice</span>(<span class="at">include_background =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$name
 [1] "dice"
@@ -850,8 +887,8 @@ $smooth
 $include_background
 [1] FALSE</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Vessels, airways, neurons, cracks: thin and connected, where Dice asks the wrong thing.</span></span>
-<span><span class="fu"><a href="../man/metrics.html">metric_cldice</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vessels, airways, neurons, cracks: thin and connected, where Dice asks the wrong thing.</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">metric_cldice</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$name
 [1] "cldice"
@@ -865,10 +902,10 @@ $smooth
 $include_background
 [1] FALSE</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># How far wrong the boundary is, rather than how much of the area coincides. 1.5 mm</span></span>
-<span><span class="co"># because that is this structure's inter-observer variability, not because of anything</span></span>
-<span><span class="co"># here.</span></span>
-<span><span class="fu"><a href="../man/metrics.html">metric_surface_dice</a></span><span class="op">(</span>tau <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># How far wrong the boundary is, rather than how much of the area coincides. 1.5 mm</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># because that is this structure's inter-observer variability, not because of anything</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># here.</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">metric_surface_dice</span>(<span class="at">tau =</span> <span class="fl">1.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$name
 [1] "surface_dice"
@@ -885,7 +922,11 @@ $include_background
 </div>
 
 
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -1286,6 +1327,7 @@ $include_background
   });
   </script>
 </div> <!-- /content -->
+
 
 
 

@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.10.19">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
 <title>Segmenting volumes: CT, spacing and per-patient scores – rplatypus</title>
 <style>
 /* Default styles provided by pandoc.
@@ -60,6 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
+
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
@@ -79,9 +83,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-ee0d825c001f130fb265e92dcb17fa1f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -108,11 +113,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+
+
 </head>
+
 <body class="nav-sidebar docked nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">rplatypus</span>
@@ -124,17 +134,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item compact">
+  <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/maju116/rplatypus"> <i class="bi bi-github" role="img" aria-label="rplatypus GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-</div> <!-- /navcollapse -->
+          </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -142,11 +154,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-<li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
@@ -160,8 +176,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../vignettes/blood-cells.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Finding blood cells with YOLOv3</span></a>
@@ -198,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
@@ -207,8 +223,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../overview.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Overview</span></a>
@@ -222,8 +238,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_status.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Is the engine ready?</span></a>
@@ -242,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
@@ -251,8 +267,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_spec.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Build an experiment specification</span></a>
@@ -301,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
@@ -310,8 +326,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/losses.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Loss functions</span></a>
@@ -384,7 +400,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
@@ -393,8 +409,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/split_dataset.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Split a dataset into training, validation and test sets</span></a>
@@ -437,7 +453,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
@@ -446,8 +462,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_fit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Train the models in a specification</span></a>
@@ -466,7 +482,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false">
@@ -475,8 +491,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/predict.platypus_fit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Predict masks</span></a>
@@ -519,7 +535,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
@@ -528,8 +544,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/export_weights.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Save a trained model’s weights</span></a>
@@ -542,7 +558,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
@@ -551,8 +567,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 "></ul>
-</li>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+      </ul>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false">
@@ -561,8 +578,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/plot_masks.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Look at masks beside the images they came from</span></a>
@@ -617,7 +634,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="false">
@@ -626,8 +643,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/colours_to_classes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Read a colour mask back to class indices</span></a>
@@ -700,7 +717,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false">
@@ -709,10 +726,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 "></ul>
-</li>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
       </ul>
-</li>
+  </li>
+      </ul>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="true">
@@ -721,8 +739,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../NEWS.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Changelog</span></a>
@@ -747,16 +765,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
     </ul>
-</div>
-</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
    
   <ul>
-<li><a href="#making-something-to-segment" id="toc-making-something-to-segment" class="nav-link active" data-scroll-target="#making-something-to-segment">Making something to segment</a></li>
+  <li><a href="#making-something-to-segment" id="toc-making-something-to-segment" class="nav-link active" data-scroll-target="#making-something-to-segment">Making something to segment</a></li>
   <li><a href="#splitting-by-patient-not-by-scan" id="toc-splitting-by-patient-not-by-scan" class="nav-link" data-scroll-target="#splitting-by-patient-not-by-scan">Splitting by patient, not by scan</a></li>
   <li><a href="#the-specification" id="toc-the-specification" class="nav-link" data-scroll-target="#the-specification">The specification</a></li>
   <li><a href="#training" id="toc-training" class="nav-link" data-scroll-target="#training">Training</a></li>
@@ -766,10 +786,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#writing-a-mask-back-onto-its-scan" id="toc-writing-a-mask-back-onto-its-scan" class="nav-link" data-scroll-target="#writing-a-mask-back-onto-its-scan">Writing a mask back onto its scan</a></li>
   <li><a href="#dicom-which-is-how-the-data-usually-arrives" id="toc-dicom-which-is-how-the-data-usually-arrives" class="nav-link" data-scroll-target="#dicom-which-is-how-the-data-usually-arrives">DICOM, which is how the data usually arrives</a></li>
   <li><a href="#what-this-leaves-out" id="toc-what-this-leaves-out" class="nav-link" data-scroll-target="#what-this-leaves-out">What this leaves out</a></li>
-  </ul></nav>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/blood-cells.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/volumes.html">Segmenting volumes: CT, spacing and per-patient scores</a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/blood-cells.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/volumes.html">Segmenting volumes: CT, spacing and per-patient scores</a></li></ol></nav>
+<div class="quarto-title">
 <h1 class="title">Segmenting volumes: CT, spacing and per-patient scores</h1>
 </div>
 
@@ -784,256 +808,282 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>The other vignette works on two-dimensional microscopy. This one is about volumes, which is where medical imaging mostly lives: a CT or an MRI is a stack of slices, and three things that do not exist in 2D decide whether a result means anything.</p>
+</header>
+
+
+<p>The other vignette works on two-dimensional microscopy. This one is about volumes, which is where medical imaging mostly lives: a CT or an MRI is a stack of slices, and three things that do not exist in 2D decide whether a result means anything.</p>
 <p><strong>Voxels have a physical size</strong>, and it differs between scans. <strong>Slices belong to a patient</strong>, so a split that ignores who they came from measures memory rather than generalisation. And <strong>a mask has a position in space</strong>, without which it cannot be laid over the scan it describes.</p>
 <p>The data here is synthetic, generated by the code below, so you can run every line of this without downloading anything or registering anywhere. It is deliberately crude - a ball of soft tissue in air - but it is crude in a way that leaves the three problems above fully intact.</p>
-<section id="making-something-to-segment" class="level2"><h2 class="anchored" data-anchor-id="making-something-to-segment">Making something to segment</h2>
+<section id="making-something-to-segment" class="level2">
+<h2 class="anchored" data-anchor-id="making-something-to-segment">Making something to segment</h2>
 <p>Twenty-four scans from twelve patients, two each. Each holds one spherical “lesion” in air, and the scans differ in three ways that matter, all of which are ordinary in clinical data:</p>
 <ul>
-<li>
-<strong>slice thickness</strong> - half at 1 mm, half at 2.5 mm, so the same anatomy occupies a different number of voxels;</li>
-<li>
-<strong>lesion size</strong> - 4 to 12 mm in radius, which on thick slices is the difference between an easy target and two voxels of signal;</li>
-<li>
-<strong>noise</strong> - some scans are much noisier than others.</li>
+<li><strong>slice thickness</strong> - half at 1 mm, half at 2.5 mm, so the same anatomy occupies a different number of voxels;</li>
+<li><strong>lesion size</strong> - 4 to 12 mm in radius, which on thick slices is the difference between an easy target and two voxels of signal;</li>
+<li><strong>noise</strong> - some scans are much noisier than others.</li>
 </ul>
 <p>The variety is the point. A synthetic dataset where every case is equally easy would make the per-patient section below look like a formality, and it is not one.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jonclayden/RNifti">RNifti</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">root</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"scans"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="va">root</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">make_scan</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">patient</span>, <span class="va">study</span>, <span class="va">slice_mm</span>, <span class="va">radius_mm</span>, <span class="va">noise</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">shape</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">48</span>, <span class="fl">48</span>, <span class="fl">32</span><span class="op">)</span></span>
-<span>  <span class="va">spacing</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="va">slice_mm</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="co"># Millimetres from the centre of the volume, per voxel.</span></span>
-<span>  <span class="va">grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="va">shape</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="va">shape</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>                                z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="va">shape</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="va">centre</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">shape</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span></span>
-<span>  <span class="va">offset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sweep.html">sweep</a></span><span class="op">(</span><span class="va">grid</span>, <span class="fl">2</span>, <span class="va">centre</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="va">spacing</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span>, <span class="fl">3</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span>  <span class="co"># Move the lesion per patient, so the model cannot learn one position and be done.</span></span>
-<span>  <span class="va">offset</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">offset</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="op">(</span><span class="va">patient</span> <span class="op">-</span> <span class="fl">6</span><span class="op">)</span> <span class="op">*</span> <span class="fl">1.5</span></span>
-<span>  <span class="va">distance</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowSums</a></span><span class="op">(</span><span class="va">offset</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="va">lesion</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">distance</span> <span class="op">&lt;=</span> <span class="va">radius_mm</span><span class="op">)</span>, dim <span class="op">=</span> <span class="va">shape</span><span class="op">)</span></span>
-<span>  <span class="co"># Hounsfield units: air is -1000, soft tissue about 40, plus scanner noise.</span></span>
-<span>  <span class="va">scan</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html">array</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">lesion</span> <span class="op">==</span> <span class="fl">1</span>, <span class="fl">40</span>, <span class="op">-</span><span class="fl">1000</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/prod.html">prod</a></span><span class="op">(</span><span class="va">shape</span><span class="op">)</span>, sd <span class="op">=</span> <span class="va">noise</span><span class="op">)</span>, dim <span class="op">=</span> <span class="va">shape</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"patient%02d_study%d"</span>, <span class="va">patient</span>, <span class="va">study</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">root</span>, <span class="va">name</span>, <span class="st">"images"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">root</span>, <span class="va">name</span>, <span class="st">"masks"</span><span class="op">)</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span>, showWarnings <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="co"># The datatype goes on the write rather than on asNifti(): asking asNifti() for one returns</span></span>
-<span>  <span class="co"># an image in RNifti's internal C representation, whose pixel dimensions cannot then be set.</span></span>
-<span>  <span class="va">image</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RNifti/man/asNifti.html">asNifti</a></span><span class="op">(</span><span class="va">scan</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/RNifti/man/pixdim.html">pixdim</a></span><span class="op">(</span><span class="va">image</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">spacing</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/RNifti/man/writeNifti.html">writeNifti</a></span><span class="op">(</span><span class="va">image</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">root</span>, <span class="va">name</span>, <span class="st">"images"</span>, <span class="st">"ct.nii.gz"</span><span class="op">)</span>, datatype <span class="op">=</span> <span class="st">"float"</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="va">mask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/RNifti/man/asNifti.html">asNifti</a></span><span class="op">(</span><span class="va">lesion</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/RNifti/man/pixdim.html">pixdim</a></span><span class="op">(</span><span class="va">mask</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">spacing</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/RNifti/man/writeNifti.html">writeNifti</a></span><span class="op">(</span><span class="va">mask</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">root</span>, <span class="va">name</span>, <span class="st">"masks"</span>, <span class="st">"lesion.nii.gz"</span><span class="op">)</span>, datatype <span class="op">=</span> <span class="st">"int16"</span><span class="op">)</span></span>
-<span>  <span class="va">name</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="va">design</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">12</span>, <span class="kw">function</span><span class="op">(</span><span class="va">patient</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">study</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">radius_mm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">10</span>, <span class="fl">8</span>, <span class="fl">6</span>, <span class="fl">5</span>, <span class="fl">4</span><span class="op">)</span><span class="op">[</span><span class="op">(</span><span class="va">patient</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">6</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span></span>
-<span>    <span class="va">key</span> <span class="op">&lt;-</span> <span class="fu">make_scan</span><span class="op">(</span></span>
-<span>      <span class="va">patient</span>, <span class="va">study</span>,</span>
-<span>      slice_mm <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">patient</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">2</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="fl">1</span> <span class="kw">else</span> <span class="fl">2.5</span>,</span>
-<span>      radius_mm <span class="op">=</span> <span class="va">radius_mm</span>,</span>
-<span>      noise <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">40</span>, <span class="fl">60</span>, <span class="fl">80</span><span class="op">)</span><span class="op">[</span><span class="op">(</span><span class="va">patient</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">4</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span></span>
-<span>    <span class="op">)</span></span>
-<span>    <span class="co"># Keeping the truth around: the volume of a sphere is known exactly, which makes it</span></span>
-<span>    <span class="co"># possible to ask later whether the model got the *size* right and not only the overlap.</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>key <span class="op">=</span> <span class="va">key</span>, radius_mm <span class="op">=</span> <span class="va">radius_mm</span>,</span>
-<span>               true_ml <span class="op">=</span> <span class="fl">4</span> <span class="op">/</span> <span class="fl">3</span> <span class="op">*</span> <span class="va">pi</span> <span class="op">*</span> <span class="va">radius_mm</span><span class="op">^</span><span class="fl">3</span> <span class="op">/</span> <span class="fl">1000</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">design</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 24</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RNifti)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>root <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">"scans"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(root, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>make_scan <span class="ot">&lt;-</span> <span class="cf">function</span>(patient, study, slice_mm, radius_mm, noise) {</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  shape <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">48</span>, <span class="dv">48</span>, <span class="dv">32</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  spacing <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, slice_mm)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Millimetres from the centre of the volume, per voxel.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  grid <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">expand.grid</span>(<span class="at">x =</span> <span class="fu">seq_len</span>(shape[<span class="dv">1</span>]), <span class="at">y =</span> <span class="fu">seq_len</span>(shape[<span class="dv">2</span>]),</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                                <span class="at">z =</span> <span class="fu">seq_len</span>(shape[<span class="dv">3</span>])))</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  centre <span class="ot">&lt;-</span> (shape <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  offset <span class="ot">&lt;-</span> <span class="fu">sweep</span>(grid, <span class="dv">2</span>, centre) <span class="sc">*</span> <span class="fu">matrix</span>(spacing, <span class="fu">nrow</span>(grid), <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Move the lesion per patient, so the model cannot learn one position and be done.</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  offset[, <span class="dv">1</span>] <span class="ot">&lt;-</span> offset[, <span class="dv">1</span>] <span class="sc">-</span> (patient <span class="sc">-</span> <span class="dv">6</span>) <span class="sc">*</span> <span class="fl">1.5</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  distance <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">rowSums</span>(offset<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  lesion <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="fu">as.integer</span>(distance <span class="sc">&lt;=</span> radius_mm), <span class="at">dim =</span> shape)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Hounsfield units: air is -1000, soft tissue about 40, plus scanner noise.</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  scan <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="fu">ifelse</span>(lesion <span class="sc">==</span> <span class="dv">1</span>, <span class="dv">40</span>, <span class="sc">-</span><span class="dv">1000</span>) <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">prod</span>(shape), <span class="at">sd =</span> noise), <span class="at">dim =</span> shape)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  name <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"patient%02d_study%d"</span>, patient, study)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="fu">file.path</span>(root, name, <span class="st">"images"</span>), <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(<span class="fu">file.path</span>(root, name, <span class="st">"masks"</span>), <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The datatype goes on the write rather than on asNifti(): asking asNifti() for one returns</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># an image in RNifti's internal C representation, whose pixel dimensions cannot then be set.</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  image <span class="ot">&lt;-</span> <span class="fu">asNifti</span>(scan)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pixdim</span>(image) <span class="ot">&lt;-</span> spacing</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeNifti</span>(image, <span class="fu">file.path</span>(root, name, <span class="st">"images"</span>, <span class="st">"ct.nii.gz"</span>), <span class="at">datatype =</span> <span class="st">"float"</span>)</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  mask <span class="ot">&lt;-</span> <span class="fu">asNifti</span>(lesion)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pixdim</span>(mask) <span class="ot">&lt;-</span> spacing</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeNifti</span>(mask, <span class="fu">file.path</span>(root, name, <span class="st">"masks"</span>, <span class="st">"lesion.nii.gz"</span>), <span class="at">datatype =</span> <span class="st">"int16"</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  name</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>design <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="cf">function</span>(patient) {</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="cf">function</span>(study) {</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    radius_mm <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">10</span>, <span class="dv">8</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">4</span>)[(patient <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%%</span> <span class="dv">6</span> <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    key <span class="ot">&lt;-</span> <span class="fu">make_scan</span>(</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>      patient, study,</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>      <span class="at">slice_mm =</span> <span class="cf">if</span> (patient <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) <span class="dv">1</span> <span class="cf">else</span> <span class="fl">2.5</span>,</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>      <span class="at">radius_mm =</span> radius_mm,</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>      <span class="at">noise =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">60</span>, <span class="dv">80</span>)[(patient <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">%%</span> <span class="dv">4</span> <span class="sc">+</span> <span class="dv">1</span>]</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Keeping the truth around: the volume of a sphere is known exactly, which makes it</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="co"># possible to ask later whether the model got the *size* right and not only the overlap.</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="at">key =</span> key, <span class="at">radius_mm =</span> radius_mm,</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>               <span class="at">true_ml =</span> <span class="dv">4</span> <span class="sc">/</span> <span class="dv">3</span> <span class="sc">*</span> pi <span class="sc">*</span> radius_mm<span class="sc">^</span><span class="dv">3</span> <span class="sc">/</span> <span class="dv">1000</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>  }))</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(design)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 24</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><a href="../man/volume_info.html"><code>volume_info()</code></a> reads what the files say about themselves, through the same pipeline training uses:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">scans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="va">root</span>, pattern <span class="op">=</span> <span class="st">"ct[.]nii[.]gz$"</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">info</span> <span class="op">&lt;-</span> <span class="fu">volume_info</span><span class="op">(</span><span class="va">scans</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="va">info</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"spacing_1"</span>, <span class="st">"spacing_2"</span>, <span class="st">"spacing_3"</span>, <span class="st">"shape_3"</span>, <span class="st">"voxel_ml"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt;   spacing_1 spacing_2 spacing_3 shape_3 voxel_ml</span></span>
-<span><span class="co">#&gt; 1         1         1       2.5      32   0.0025</span></span>
-<span><span class="co">#&gt; 2         1         1       1.0      32   0.0010</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>scans <span class="ot">&lt;-</span> <span class="fu">list.files</span>(root, <span class="at">pattern =</span> <span class="st">"ct[.]nii[.]gz$"</span>, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>info <span class="ot">&lt;-</span> <span class="fu">volume_info</span>(scans[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)])</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>info[, <span class="fu">c</span>(<span class="st">"spacing_1"</span>, <span class="st">"spacing_2"</span>, <span class="st">"spacing_3"</span>, <span class="st">"shape_3"</span>, <span class="st">"voxel_ml"</span>)]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   spacing_1 spacing_2 spacing_3 shape_3 voxel_ml</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1         1       2.5      32   0.0025</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         1         1       1.0      32   0.0010</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Two scans, the same number of slices, and one covers 32 mm of patient where the other covers 80 mm. A voxel in the second is two and a half times the volume of a voxel in the first.</p>
-</section><section id="splitting-by-patient-not-by-scan" class="level2"><h2 class="anchored" data-anchor-id="splitting-by-patient-not-by-scan">Splitting by patient, not by scan</h2>
+</section>
+<section id="splitting-by-patient-not-by-scan" class="level2">
+<h2 class="anchored" data-anchor-id="splitting-by-patient-not-by-scan">Splitting by patient, not by scan</h2>
 <p>Each of these patients has two studies. Split the twenty-four scans at random and both studies of some patient land on opposite sides of the split: the model meets that patient in training and is then tested on the same anatomy. Dice comes out several points too high and nothing in the result says so.</p>
 <p><a href="../man/split_dataset.html"><code>split_dataset()</code></a> takes a pattern that says which part of a name is the patient, and keeps every patient whole:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">split</span> <span class="op">&lt;-</span> <span class="fu">split_dataset</span><span class="op">(</span></span>
-<span>  <span class="va">root</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"splits"</span><span class="op">)</span>,</span>
-<span>  group_by <span class="op">=</span> <span class="st">"^(patient\\d+)_"</span>,</span>
-<span>  fractions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.25</span>, <span class="fl">0.25</span><span class="op">)</span>,</span>
-<span>  seed <span class="op">=</span> <span class="fl">1</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">split</span></span>
-<span><span class="co">#&gt; platypus split</span></span>
-<span><span class="co">#&gt;   train         12 samples in 6 groups</span></span>
-<span><span class="co">#&gt;   validation     6 samples in 3 groups</span></span>
-<span><span class="co">#&gt;   test           6 samples in 3 groups</span></span>
-<span><span class="co">#&gt;   grouped by '^(patient\d+)_'; no group is in two sets</span></span>
-<span><span class="co">#&gt;   seed 1 - the same inputs give this split again</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>split <span class="ot">&lt;-</span> <span class="fu">split_dataset</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  root, <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">"splits"</span>),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">group_by =</span> <span class="st">"^(patient</span><span class="sc">\\</span><span class="st">d+)_"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">fractions =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.25</span>, <span class="fl">0.25</span>),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>split</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; platypus split</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   train         12 samples in 6 groups</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   validation     6 samples in 3 groups</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   test           6 samples in 3 groups</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   grouped by '^(patient\d+)_'; no group is in two sets</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   seed 1 - the same inputs give this split again</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A pattern that matches nothing is an error rather than a fallback, which is the point: a silent fallback to one-group-per-scan would reintroduce exactly the bug the argument exists to prevent.</p>
-</section><section id="the-specification" class="level2"><h2 class="anchored" data-anchor-id="the-specification">The specification</h2>
+</section>
+<section id="the-specification" class="level2">
+<h2 class="anchored" data-anchor-id="the-specification">The specification</h2>
 <p>Three volume-specific arguments carry the weight here.</p>
 <p><code>labels</code> says the mask is a label map rather than a picture - which is how every volume format stores masks, and the reason <code>colormap</code> is not the only way to name classes. <code>window</code> maps Hounsfield units to 0-1 through a fixed window, so the same tissue is the same brightness in every scan. And <code>target_spacing</code> resamples everything to a common voxel size before cropping to the model’s shape.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu">platypus_spec</span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="fu">segmentation_data</span><span class="op">(</span></span>
-<span>    <span class="va">split</span>,</span>
-<span>    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>    window <span class="op">=</span> <span class="st">"soft_tissue"</span>,</span>
-<span>    target_spacing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>    <span class="fu">u_net</span><span class="op">(</span></span>
-<span>      <span class="st">"lesion"</span>,</span>
-<span>      input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">32</span>, <span class="fl">32</span><span class="op">)</span>,</span>
-<span>      channels <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>      blocks <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>      filters <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>      epochs <span class="op">=</span> <span class="fl">12</span>,</span>
-<span>      batch_size <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>      loss <span class="op">=</span> <span class="fu">loss_dice</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>      metrics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu">metric_dice</span><span class="op">(</span>include_background <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>      augmentation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>        <span class="fu">augmentation_step</span><span class="op">(</span><span class="st">"HorizontalFlip"</span>, p <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>        <span class="fu">augmentation_step</span><span class="op">(</span><span class="st">"CubicSymmetry"</span>, p <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
-<span>      <span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">spec</span></span>
-<span><span class="co">#&gt; platypus specification</span></span>
-<span><span class="co">#&gt;   data        : /tmp/RtmpN31LIu/splits/train.csv </span></span>
-<span><span class="co">#&gt;   classes     : 0 </span></span>
-<span><span class="co">#&gt;   models      : 1 </span></span>
-<span><span class="co">#&gt;     lesion         u_net            32x32x32, dice, 12 epochs</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="fu">platypus_spec</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">segmentation_data</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    split,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">window =</span> <span class="st">"soft_tissue"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">target_spacing =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">u_net</span>(</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>      <span class="st">"lesion"</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">32</span>, <span class="dv">32</span>, <span class="dv">32</span>),</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">channels =</span> <span class="dv">1</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">blocks =</span> <span class="dv">3</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">filters =</span> <span class="dv">16</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">epochs =</span> <span class="dv">12</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">batch_size =</span> <span class="dv">2</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">loss =</span> <span class="fu">loss_dice</span>(),</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">metrics =</span> <span class="fu">list</span>(<span class="fu">metric_dice</span>(<span class="at">include_background =</span> <span class="cn">FALSE</span>)),</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">augmentation =</span> <span class="fu">list</span>(</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        <span class="fu">augmentation_step</span>(<span class="st">"HorizontalFlip"</span>, <span class="at">p =</span> <span class="fl">0.5</span>),</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        <span class="fu">augmentation_step</span>(<span class="st">"CubicSymmetry"</span>, <span class="at">p =</span> <span class="fl">0.5</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>spec</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; platypus specification</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   data        : /tmp/RtmpN31LIu/splits/train.csv </span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   classes     : 0 </span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   models      : 1 </span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     lesion         u_net            32x32x32, dice, 12 epochs</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>input_shape</code> has three entries, and that is the only thing that makes this a 3D run. Nothing else in the specification is different - the same losses, the same metrics, the same tiling if you want it.</p>
 <p>Not every augmentation works on a volume. albumentations supports them unevenly, so ask rather than guess:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu">available_transforms</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 118</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html">setdiff</a></span><span class="op">(</span><span class="fu">available_transforms</span><span class="op">(</span><span class="op">)</span>, <span class="fu">available_transforms</span><span class="op">(</span>rank <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "AdditiveNoise"       "BBoxSafeRandomCrop"  "ChannelDropout"     </span></span>
-<span><span class="co">#&gt; [4] "ChromaticAberration"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">available_transforms</span>())</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 118</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">setdiff</span>(<span class="fu">available_transforms</span>(), <span class="fu">available_transforms</span>(<span class="at">rank =</span> <span class="dv">3</span>)), <span class="dv">4</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "AdditiveNoise"       "BBoxSafeRandomCrop"  "ChannelDropout"     </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [4] "ChromaticAberration"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The second call asks the same question at <code>rank = 3</code> and returns fewer names. How many fewer is not printed here on purpose: it is a property of the installed ‘albumentations’ rather than of this package, and <code>?available_transforms</code> says what the engine does and does not promise about it. The names are the useful part anyway.</p>
 <p>A transform from that difference is refused by name when the run starts, rather than raising something from inside the library an hour in.</p>
-</section><section id="training" class="level2"><h2 class="anchored" data-anchor-id="training">Training</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">platypus_fit</span><span class="op">(</span><span class="va">spec</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">fit</span></span>
-<span><span class="co">#&gt; platypus fit</span></span>
-<span><span class="co">#&gt;   models   : lesion </span></span>
-<span><span class="co">#&gt;   device   : NVIDIA GeForce GTX 1070 (torch 2.7.1+cu126) </span></span>
-<span><span class="co">#&gt;   epochs   : lesion=12 </span></span>
-<span><span class="co">#&gt;   next     : evaluate(fit), predict(fit, "lesion")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="training" class="level2">
+<h2 class="anchored" data-anchor-id="training">Training</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">platypus_fit</span>(spec, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>fit</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; platypus fit</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   models   : lesion </span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   device   : NVIDIA GeForce GTX 1070 (torch 2.7.1+cu126) </span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   epochs   : lesion=12 </span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   next     : evaluate(fit), predict(fit, "lesion")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/volumes-history-1.png" class="img-fluid figure-img"></p>
-<figcaption>plot of chunk history</figcaption></figure>
+<figure class="figure">
+<p><img src="figures/volumes-history-1.png" class="img-fluid figure-img"></p>
+<figcaption>plot of chunk history</figcaption>
+</figure>
 </div>
-</section><section id="scores-per-patient-not-per-dataset" class="level2"><h2 class="anchored" data-anchor-id="scores-per-patient-not-per-dataset">Scores per patient, not per dataset</h2>
+</section>
+<section id="scores-per-patient-not-per-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="scores-per-patient-not-per-dataset">Scores per patient, not per dataset</h2>
 <p><a href="../man/evaluate.html"><code>evaluate()</code></a> gives one row per model: one number for the whole validation set.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">evaluate</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"model"</span>, <span class="st">"loss_function"</span>, <span class="st">"dice"</span>, <span class="st">"epochs_run"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt;    model loss_function      dice epochs_run</span></span>
-<span><span class="co">#&gt; 1 lesion          dice 0.9448062         12</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate</span>(fit)[, <span class="fu">c</span>(<span class="st">"model"</span>, <span class="st">"loss_function"</span>, <span class="st">"dice"</span>, <span class="st">"epochs_run"</span>)]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    model loss_function      dice epochs_run</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 lesion          dice 0.9448062         12</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>That number hides the distribution, and the distribution is usually the finding. With <code>group_by</code>, each row is a patient - their slices pooled, the way a volume would be:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cases</span> <span class="op">&lt;-</span> <span class="fu">evaluate_cases</span><span class="op">(</span><span class="va">fit</span>, group_by <span class="op">=</span> <span class="st">"^(patient\\d+)_"</span><span class="op">)</span></span>
-<span><span class="va">cases</span></span>
-<span><span class="co">#&gt; platypus scores by group (3 rows)</span></span>
-<span><span class="co">#&gt;      group      dice</span></span>
-<span><span class="co">#&gt;  patient06 0.9508058</span></span>
-<span><span class="co">#&gt;  patient11 0.9174028</span></span>
-<span><span class="co">#&gt;  patient10 0.9661106</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">cases</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   metric n      mean       sd    median       min       max worst_group</span></span>
-<span><span class="co">#&gt; 1   dice 3 0.9447731 0.024908 0.9508058 0.9174028 0.9661106   patient11</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cases <span class="ot">&lt;-</span> <span class="fu">evaluate_cases</span>(fit, <span class="at">group_by =</span> <span class="st">"^(patient</span><span class="sc">\\</span><span class="st">d+)_"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>cases</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; platypus scores by group (3 rows)</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      group      dice</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  patient06 0.9508058</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  patient11 0.9174028</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  patient10 0.9661106</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cases)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   metric n      mean       sd    median       min       max worst_group</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1   dice 3 0.9447731 0.024908 0.9508058 0.9174028 0.9661106   patient11</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The <code>worst_group</code> column is the one that makes this actionable. A mean of any value with a minimum far below it is a model with a failure mode, and the mean is where it hides.</p>
-</section><section id="looking-at-a-slice" class="level2"><h2 class="anchored" data-anchor-id="looking-at-a-slice">Looking at a slice</h2>
+</section>
+<section id="looking-at-a-slice" class="level2">
+<h2 class="anchored" data-anchor-id="looking-at-a-slice">Looking at a slice</h2>
 <p>A volume cannot honestly be shown as one picture, so <a href="../man/plot_masks.html"><code>plot_masks()</code></a> asks which plane to draw. <code>slice = "middle"</code> is the sensible first look:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">validation</span> <span class="op">&lt;-</span> <span class="fu">split_path</span><span class="op">(</span><span class="va">split</span>, <span class="st">"validation"</span><span class="op">)</span></span>
-<span><span class="va">images</span> <span class="op">&lt;-</span> <span class="fu">read_images</span><span class="op">(</span><span class="va">validation</span><span class="op">$</span><span class="va">images</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">32</span>, <span class="fl">32</span><span class="op">)</span>, channels <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">truth</span> <span class="op">&lt;-</span> <span class="fu">read_masks</span><span class="op">(</span><span class="va">validation</span><span class="op">$</span><span class="va">masks</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">32</span>, <span class="fl">32</span>, <span class="fl">32</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">prediction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, split <span class="op">=</span> <span class="st">"validation"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">plot_masks</span><span class="op">(</span></span>
-<span>  <span class="va">images</span>, prediction <span class="op">=</span> <span class="va">prediction</span>, truth <span class="op">=</span> <span class="va">truth</span>,</span>
-<span>  colormap <span class="op">=</span> <span class="va">binary_colormap</span>, slice <span class="op">=</span> <span class="st">"middle"</span>,</span>
-<span>  which <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, labels <span class="op">=</span> <span class="va">validation</span><span class="op">$</span><span class="va">key</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span></span>
-<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>validation <span class="ot">&lt;-</span> <span class="fu">split_path</span>(split, <span class="st">"validation"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>images <span class="ot">&lt;-</span> <span class="fu">read_images</span>(validation<span class="sc">$</span>images, <span class="at">size =</span> <span class="fu">c</span>(<span class="dv">32</span>, <span class="dv">32</span>, <span class="dv">32</span>), <span class="at">channels =</span> <span class="dv">1</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>truth <span class="ot">&lt;-</span> <span class="fu">read_masks</span>(validation<span class="sc">$</span>masks, <span class="at">labels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">size =</span> <span class="fu">c</span>(<span class="dv">32</span>, <span class="dv">32</span>, <span class="dv">32</span>))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>prediction <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">split =</span> <span class="st">"validation"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_masks</span>(</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  images, <span class="at">prediction =</span> prediction, <span class="at">truth =</span> truth,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">colormap =</span> binary_colormap, <span class="at">slice =</span> <span class="st">"middle"</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">which =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">labels =</span> validation<span class="sc">$</span>key[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/volumes-plot-1.png" class="img-fluid figure-img"></p>
-<figcaption>plot of chunk plot</figcaption></figure>
+<figure class="figure">
+<p><img src="figures/volumes-plot-1.png" class="img-fluid figure-img"></p>
+<figcaption>plot of chunk plot</figcaption>
+</figure>
 </div>
-</section><section id="millilitres-not-voxels" class="level2"><h2 class="anchored" data-anchor-id="millilitres-not-voxels">Millilitres, not voxels</h2>
+</section>
+<section id="millilitres-not-voxels" class="level2">
+<h2 class="anchored" data-anchor-id="millilitres-not-voxels">Millilitres, not voxels</h2>
 <p>The size of a finding is reported in millilitres. A voxel count means nothing outside the scanner that produced it - the same lesion is 4000 voxels on one machine and 12000 on another - and resampling is what makes the conversion trivial: at <code>target_spacing = c(1, 1, 1)</code> a voxel is exactly one cubic millimetre.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">predicted_ml</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">prediction</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>  <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="fu">mask_volume</span><span class="op">(</span><span class="va">prediction</span><span class="op">[</span><span class="va">i</span>, , , <span class="op">]</span>, spacing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, class <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">sizes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>key <span class="op">=</span> <span class="va">validation</span><span class="op">$</span><span class="va">key</span>, predicted_ml <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">predicted_ml</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  <span class="va">design</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"key"</span>, <span class="st">"true_ml"</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="st">"key"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">sizes</span><span class="op">$</span><span class="va">error_pct</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="op">(</span><span class="va">sizes</span><span class="op">$</span><span class="va">predicted_ml</span> <span class="op">-</span> <span class="va">sizes</span><span class="op">$</span><span class="va">true_ml</span><span class="op">)</span> <span class="op">/</span> <span class="va">sizes</span><span class="op">$</span><span class="va">true_ml</span><span class="op">)</span></span>
-<span><span class="va">sizes</span></span>
-<span><span class="co">#&gt;                key predicted_ml   true_ml error_pct</span></span>
-<span><span class="co">#&gt; 1 patient06_study1         0.31 0.2680826        16</span></span>
-<span><span class="co">#&gt; 2 patient06_study2         0.31 0.2680826        16</span></span>
-<span><span class="co">#&gt; 3 patient10_study1         0.98 0.9047787         8</span></span>
-<span><span class="co">#&gt; 4 patient10_study2         0.97 0.9047787         7</span></span>
-<span><span class="co">#&gt; 5 patient11_study1         0.59 0.5235988        13</span></span>
-<span><span class="co">#&gt; 6 patient11_study2         0.59 0.5235988        13</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>predicted_ml <span class="ot">&lt;-</span> <span class="fu">vapply</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">seq_len</span>(<span class="fu">dim</span>(prediction)[<span class="dv">1</span>]),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(i) <span class="fu">mask_volume</span>(prediction[i, , , ], <span class="at">spacing =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">class =</span> <span class="dv">2</span>),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">numeric</span>(<span class="dv">1</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>sizes <span class="ot">&lt;-</span> <span class="fu">merge</span>(</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">key =</span> validation<span class="sc">$</span>key, <span class="at">predicted_ml =</span> <span class="fu">round</span>(predicted_ml, <span class="dv">2</span>)),</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  design[, <span class="fu">c</span>(<span class="st">"key"</span>, <span class="st">"true_ml"</span>)], <span class="at">by =</span> <span class="st">"key"</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>sizes<span class="sc">$</span>error_pct <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> (sizes<span class="sc">$</span>predicted_ml <span class="sc">-</span> sizes<span class="sc">$</span>true_ml) <span class="sc">/</span> sizes<span class="sc">$</span>true_ml)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>sizes</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                key predicted_ml   true_ml error_pct</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 patient06_study1         0.31 0.2680826        16</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 patient06_study2         0.31 0.2680826        16</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 patient10_study1         0.98 0.9047787         8</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 patient10_study2         0.97 0.9047787         7</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5 patient11_study1         0.59 0.5235988        13</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6 patient11_study2         0.59 0.5235988        13</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>These lesions are spheres, so the true volume is known exactly - which is worth doing in a synthetic example, because it asks a question Dice cannot. The overlap scores above were 0.92 to 0.97, respectable by any standard; the volumes are 7% to 16% out.</p>
 <p>Every number in that sentence is computed rather than typed, and the first half is why: it used to read “around 0.88”, against the table directly above it. A stale number next to the measurement it contradicts is the one kind a reader can catch without leaving the page, and it survived anyway.</p>
 <p>That is not a contradiction. Dice is dominated by the interior of an object and forgiving about its boundary, and for a small lesion the boundary <em>is</em> most of it. A model that draws every lesion one voxel too wide scores well and reports a volume that is wrong by a third. If the question is <em>is there a lesion</em>, the Dice is the relevant number. If it is <em>has it grown since March</em>, this table is, and the two do not follow from each other.</p>
-</section><section id="writing-a-mask-back-onto-its-scan" class="level2"><h2 class="anchored" data-anchor-id="writing-a-mask-back-onto-its-scan">Writing a mask back onto its scan</h2>
+</section>
+<section id="writing-a-mask-back-onto-its-scan" class="level2">
+<h2 class="anchored" data-anchor-id="writing-a-mask-back-onto-its-scan">Writing a mask back onto its scan</h2>
 <p><a href="../man/save_volumes.html"><code>save_volumes()</code></a> writes a prediction as NIfTI carrying the affine of the scan it came from. Without that affine a mask cannot be laid over its scan by any viewer or registration tool - it either lands in the wrong place or is refused, and nothing about the file looks wrong.</p>
 <p>Carrying the affine means the mask has to be <strong>on the same grid as the scan</strong>, and after resampling it is not: these scans are 48 x 48 x 32 voxels while the model works at 32 x 32 x 32. <code>space = "source"</code> maps each prediction back out of the model’s grid onto the scan’s, undoing the resampling and the crop:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">masks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, split <span class="op">=</span> <span class="st">"validation"</span>, space <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">masks</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 6</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">masks</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 48 48 32</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>masks <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">split =</span> <span class="st">"validation"</span>, <span class="at">space =</span> <span class="st">"source"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(masks)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 6</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(masks[[<span class="dv">1</span>]])</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 48 48 32</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A list rather than an array, because scans differ in size and a stack needs one shape. That is the API being explicit rather than resizing them to match, which is how a mask ends up describing anatomy it was not computed from.</p>
 <p>Names come from the reference files unless you say otherwise, and here every scan is called <code>ct.nii.gz</code> inside its own directory - so the masks would all be written to one name. That is an error rather than five silently lost files, and the case keys are what to use instead:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">written</span> <span class="op">&lt;-</span> <span class="fu">save_volumes</span><span class="op">(</span><span class="va">masks</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"predictions"</span><span class="op">)</span>,</span>
-<span>                        reference <span class="op">=</span> <span class="va">validation</span><span class="op">$</span><span class="va">images</span>, names <span class="op">=</span> <span class="va">validation</span><span class="op">$</span><span class="va">key</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">written</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "patient06_study1.nii.gz" "patient06_study2.nii.gz"</span></span>
-<span><span class="co">#&gt; [3] "patient11_study1.nii.gz" "patient11_study2.nii.gz"</span></span>
-<span><span class="co">#&gt; [5] "patient10_study1.nii.gz" "patient10_study2.nii.gz"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>written <span class="ot">&lt;-</span> <span class="fu">save_volumes</span>(masks, <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="st">"predictions"</span>),</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">reference =</span> validation<span class="sc">$</span>images, <span class="at">names =</span> validation<span class="sc">$</span>key)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">basename</span>(written)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "patient06_study1.nii.gz" "patient06_study2.nii.gz"</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [3] "patient11_study1.nii.gz" "patient11_study2.nii.gz"</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [5] "patient10_study1.nii.gz" "patient10_study2.nii.gz"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The written masks carry the scans’ geometry, which is what makes them open on top of them:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">volume_info</span><span class="op">(</span><span class="va">written</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"spacing_1"</span>, <span class="st">"spacing_3"</span>, <span class="st">"shape_1"</span>, <span class="st">"shape_3"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt;   spacing_1 spacing_3 shape_1 shape_3</span></span>
-<span><span class="co">#&gt; 1         1       1.0      48      32</span></span>
-<span><span class="co">#&gt; 2         1       1.0      48      32</span></span>
-<span><span class="co">#&gt; 3         1       2.5      48      32</span></span>
-<span><span class="co">#&gt; 4         1       2.5      48      32</span></span>
-<span><span class="co">#&gt; 5         1       1.0      48      32</span></span>
-<span><span class="co">#&gt; 6         1       1.0      48      32</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">volume_info</span>(written)[, <span class="fu">c</span>(<span class="st">"spacing_1"</span>, <span class="st">"spacing_3"</span>, <span class="st">"shape_1"</span>, <span class="st">"shape_3"</span>)]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   spacing_1 spacing_3 shape_1 shape_3</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         1       1.0      48      32</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         1       1.0      48      32</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3         1       2.5      48      32</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4         1       2.5      48      32</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5         1       1.0      48      32</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6         1       1.0      48      32</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Two things are lost on the way back and it is worth knowing which. Interpolation softens a boundary, so the mask is slightly smoother than the model drew it. And where reading cropped anatomy away, the mask returns padded with background - which means <em>not examined</em>, not <em>nothing there</em>. If that distinction matters, give the model an <code>input_shape</code> that covers the anatomy.</p>
-</section><section id="dicom-which-is-how-the-data-usually-arrives" class="level2"><h2 class="anchored" data-anchor-id="dicom-which-is-how-the-data-usually-arrives">DICOM, which is how the data usually arrives</h2>
+</section>
+<section id="dicom-which-is-how-the-data-usually-arrives" class="level2">
+<h2 class="anchored" data-anchor-id="dicom-which-is-how-the-data-usually-arrives">DICOM, which is how the data usually arrives</h2>
 <p>The scans above are NIfTI because that is what research datasets ship. Data out of a hospital arrives as a directory of DICOM files per series, and <code>platypus</code> reads those as volumes too - sorting them by their position in the patient rather than by filename, which is the difference between a scan and a shuffled deck.</p>
 <p>Point the specification at directories of slices and nothing else changes. Before training, though, run the export past <a href="../man/series_report.html"><code>series_report()</code></a>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">report</span> <span class="op">&lt;-</span> <span class="fu">series_report</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.dirs</a></span><span class="op">(</span><span class="st">"dicom_export"</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">report</span><span class="op">[</span><span class="op">!</span><span class="va">report</span><span class="op">$</span><span class="va">ok</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"path"</span>, <span class="st">"problem"</span><span class="op">)</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>report <span class="ot">&lt;-</span> <span class="fu">series_report</span>(<span class="fu">list.dirs</span>(<span class="st">"dicom_export"</span>, <span class="at">recursive =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>report[<span class="sc">!</span>report<span class="sc">$</span>ok, <span class="fu">c</span>(<span class="st">"path"</span>, <span class="st">"problem"</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>It reads no pixels and returns one row per directory, because an archive export of a hundred cases will contain a few with a missing slice, duplicated files, or two series sitting in one folder - and a missing slice does not shorten a volume, it moves everything past the gap.</p>
-</section><section id="what-this-leaves-out" class="level2"><h2 class="anchored" data-anchor-id="what-this-leaves-out">What this leaves out</h2>
+</section>
+<section id="what-this-leaves-out" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-leaves-out">What this leaves out</h2>
 <p>Resampling is offered, not imposed. Several volumes per sample - one per modality, as BraTS ships - works through <code>channels_from</code>, where the order is stated rather than inferred.</p>
 <p>Object detection, ensembling and pretrained encoders are not here at all.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">platypus_device</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; torch      : 2.7.1+cu126 </span></span>
-<span><span class="co">#&gt; cuda build : 12.6 </span></span>
-<span><span class="co">#&gt; device     : NVIDIA GeForce GTX 1070</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">platypus_device</span>()</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; torch      : 2.7.1+cu126 </span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cuda build : 12.6 </span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; device     : NVIDIA GeForce GTX 1070</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -1434,6 +1484,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   });
   </script>
 </div> <!-- /content -->
+
 
 
 

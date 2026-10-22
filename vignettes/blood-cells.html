@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.10.19">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
 <title>Finding blood cells with YOLOv3 – rplatypus</title>
 <style>
 /* Default styles provided by pandoc.
@@ -60,6 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
+
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
@@ -79,9 +83,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-ee0d825c001f130fb265e92dcb17fa1f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -108,11 +113,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+
+
 </head>
+
 <body class="nav-sidebar docked nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">rplatypus</span>
@@ -124,17 +134,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item compact">
+  <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/maju116/rplatypus"> <i class="bi bi-github" role="img" aria-label="rplatypus GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-</div> <!-- /navcollapse -->
+          </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -142,11 +154,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-<li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
@@ -160,8 +176,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../vignettes/blood-cells.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Finding blood cells with YOLOv3</span></a>
@@ -198,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
@@ -207,8 +223,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../overview.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Overview</span></a>
@@ -222,8 +238,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_status.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Is the engine ready?</span></a>
@@ -242,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
@@ -251,8 +267,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_spec.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Build an experiment specification</span></a>
@@ -301,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
@@ -310,8 +326,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/losses.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Loss functions</span></a>
@@ -384,7 +400,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
@@ -393,8 +409,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/split_dataset.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Split a dataset into training, validation and test sets</span></a>
@@ -437,7 +453,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
@@ -446,8 +462,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_fit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Train the models in a specification</span></a>
@@ -466,7 +482,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false">
@@ -475,8 +491,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/predict.platypus_fit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Predict masks</span></a>
@@ -519,7 +535,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
@@ -528,8 +544,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/export_weights.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Save a trained model’s weights</span></a>
@@ -542,7 +558,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
@@ -551,8 +567,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 "></ul>
-</li>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+      </ul>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false">
@@ -561,8 +578,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/plot_masks.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Look at masks beside the images they came from</span></a>
@@ -617,7 +634,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="false">
@@ -626,8 +643,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/colours_to_classes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Read a colour mask back to class indices</span></a>
@@ -700,7 +717,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false">
@@ -709,10 +726,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 "></ul>
-</li>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
       </ul>
-</li>
+  </li>
+      </ul>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="true">
@@ -721,8 +739,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../NEWS.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Changelog</span></a>
@@ -747,37 +765,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
     </ul>
-</div>
-</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
    
   <ul>
-<li>
-<a href="#before-any-of-that-boxes-in-a-few-lines" id="toc-before-any-of-that-boxes-in-a-few-lines" class="nav-link active" data-scroll-target="#before-any-of-that-boxes-in-a-few-lines">Before any of that: boxes in a few lines</a>
+  <li><a href="#before-any-of-that-boxes-in-a-few-lines" id="toc-before-any-of-that-boxes-in-a-few-lines" class="nav-link active" data-scroll-target="#before-any-of-that-boxes-in-a-few-lines">Before any of that: boxes in a few lines</a>
   <ul class="collapse">
-<li><a href="#and-here-unlike-the-nuclei-vignette-a-score-means-something" id="toc-and-here-unlike-the-nuclei-vignette-a-score-means-something" class="nav-link" data-scroll-target="#and-here-unlike-the-nuclei-vignette-a-score-means-something">And here, unlike the nuclei vignette, a score means something</a></li>
+  <li><a href="#and-here-unlike-the-nuclei-vignette-a-score-means-something" id="toc-and-here-unlike-the-nuclei-vignette-a-score-means-something" class="nav-link" data-scroll-target="#and-here-unlike-the-nuclei-vignette-a-score-means-something">And here, unlike the nuclei vignette, a score means something</a></li>
   <li><a href="#one-refusal-worth-meeting-now" id="toc-one-refusal-worth-meeting-now" class="nav-link" data-scroll-target="#one-refusal-worth-meeting-now">One refusal worth meeting now</a></li>
-  </ul>
-</li>
+  </ul></li>
   <li><a href="#anchors-which-a-detector-has-and-a-u-net-does-not" id="toc-anchors-which-a-detector-has-and-a-u-net-does-not" class="nav-link" data-scroll-target="#anchors-which-a-detector-has-and-a-u-net-does-not">Anchors, which a detector has and a U-Net does not</a></li>
   <li><a href="#what-the-loss-is-doing" id="toc-what-the-loss-is-doing" class="nav-link" data-scroll-target="#what-the-loss-is-doing">What the loss is doing</a></li>
-  <li>
-<a href="#scoring-and-the-number-that-is-missing-on-purpose" id="toc-scoring-and-the-number-that-is-missing-on-purpose" class="nav-link" data-scroll-target="#scoring-and-the-number-that-is-missing-on-purpose">Scoring, and the number that is missing on purpose</a>
+  <li><a href="#scoring-and-the-number-that-is-missing-on-purpose" id="toc-scoring-and-the-number-that-is-missing-on-purpose" class="nav-link" data-scroll-target="#scoring-and-the-number-that-is-missing-on-purpose">Scoring, and the number that is missing on purpose</a>
   <ul class="collapse">
-<li><a href="#map0.5-map.50.95-and-which-to-believe" id="toc-map0.5-map.50.95-and-which-to-believe" class="nav-link" data-scroll-target="#map0.5-map.50.95-and-which-to-believe">mAP@0.5, mAP@[.50:.95], and which to believe</a></li>
-  </ul>
-</li>
+  <li><a href="#map0.5-map.50.95-and-which-to-believe" id="toc-map0.5-map.50.95-and-which-to-believe" class="nav-link" data-scroll-target="#map0.5-map.50.95-and-which-to-believe">mAP@0.5, mAP@[.50:.95], and which to believe</a></li>
+  </ul></li>
   <li><a href="#looking-at-it" id="toc-looking-at-it" class="nav-link" data-scroll-target="#looking-at-it">Looking at it</a></li>
   <li><a href="#what-this-does-not-do" id="toc-what-this-does-not-do" class="nav-link" data-scroll-target="#what-this-does-not-do">What this does not do</a></li>
   <li><a href="#notes-on-the-machine" id="toc-notes-on-the-machine" class="nav-link" data-scroll-target="#notes-on-the-machine">Notes on the machine</a></li>
-  </ul></nav>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/blood-cells.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/blood-cells.html">Finding blood cells with YOLOv3</a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/blood-cells.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/blood-cells.html">Finding blood cells with YOLOv3</a></li></ol></nav>
+<div class="quarto-title">
 <h1 class="title">Finding blood cells with YOLOv3</h1>
 </div>
 
@@ -792,170 +812,193 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>Segmentation asks which pixels are tissue. Detection asks how many objects there are and where, which is a different question and needs a different answer: boxes, not masks.</p>
+</header>
+
+
+<p>Segmentation asks which pixels are tissue. Detection asks how many objects there are and where, which is a different question and needs a different answer: boxes, not masks.</p>
 <p><a href="https://github.com/Shenggan/BCCD_Dataset">BCCD</a> is 364 photographs of blood smears with 4,888 boxes in three classes - red cells, white cells, platelets - and its own train/validation/test split. It is small, it is MIT-licensed, and its classes are wildly unbalanced, which turns out to be the most instructive thing about it.</p>
 <p>Every number and every picture below was produced by running the code shown.</p>
-<section id="before-any-of-that-boxes-in-a-few-lines" class="level2"><h2 class="anchored" data-anchor-id="before-any-of-that-boxes-in-a-few-lines">Before any of that: boxes in a few lines</h2>
+<section id="before-any-of-that-boxes-in-a-few-lines" class="level2">
+<h2 class="anchored" data-anchor-id="before-any-of-that-boxes-in-a-few-lines">Before any of that: boxes in a few lines</h2>
 <p>A detector trained on this data is published, so the shortest way to see whether this works is to borrow it. No training, no GPU, no waiting.</p>
 <p>A detection dataset arrives in Pascal VOC’s layout - one flat directory of images beside one flat directory of XML - which is neither of the two layouts the package reads. Turning it into one is the only data wrangling here, and it is a dozen lines:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">voc_split</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">root</span>, <span class="va">listed</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">root</span>, <span class="st">"ImageSets"</span>, <span class="st">"Main"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">listed</span>, <span class="st">".txt"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="va">names</span> <span class="op">&lt;-</span> <span class="va">names</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/nchar.html">nzchar</a></span><span class="op">(</span><span class="va">names</span><span class="op">)</span><span class="op">]</span></span>
-<span>  <span class="va">frame</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
-<span>    key <span class="op">=</span> <span class="va">names</span>,</span>
-<span>    images <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">root</span>, <span class="st">"JPEGImages"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">names</span>, <span class="st">".jpg"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    <span class="co"># `annotations`, not `masks`: a detection specification looks for that column, because</span></span>
-<span>    <span class="co"># what labels an image here is an annotation file and not a picture.</span></span>
-<span>    annotations <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">root</span>, <span class="st">"Annotations"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">names</span>, <span class="st">".xml"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span>  <span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"bccd-"</span>, <span class="va">listed</span>, <span class="st">".csv"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">frame</span>, <span class="va">path</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="va">path</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="va">splits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"train"</span>, <span class="st">"val"</span>, <span class="st">"test"</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">s</span><span class="op">)</span> <span class="fu">voc_split</span><span class="op">(</span><span class="va">data_dir</span>, <span class="va">s</span><span class="op">)</span>,</span>
-<span>                 <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">splits</span>, <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html">integer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; train   val  test </span></span>
-<span><span class="co">#&gt;   205    87    72</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>voc_split <span class="ot">&lt;-</span> <span class="cf">function</span>(root, listed) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  names <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(root, <span class="st">"ImageSets"</span>, <span class="st">"Main"</span>, <span class="fu">paste0</span>(listed, <span class="st">".txt"</span>)))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  names <span class="ot">&lt;-</span> names[<span class="fu">nzchar</span>(names)]</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  frame <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">key =</span> names,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">images =</span> <span class="fu">file.path</span>(root, <span class="st">"JPEGImages"</span>, <span class="fu">paste0</span>(names, <span class="st">".jpg"</span>)),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># `annotations`, not `masks`: a detection specification looks for that column, because</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># what labels an image here is an annotation file and not a picture.</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">annotations =</span> <span class="fu">file.path</span>(root, <span class="st">"Annotations"</span>, <span class="fu">paste0</span>(names, <span class="st">".xml"</span>))</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="fu">paste0</span>(<span class="st">"bccd-"</span>, listed, <span class="st">".csv"</span>))</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(frame, path, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  path</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>splits <span class="ot">&lt;-</span> <span class="fu">vapply</span>(<span class="fu">c</span>(<span class="st">"train"</span>, <span class="st">"val"</span>, <span class="st">"test"</span>), <span class="cf">function</span>(s) <span class="fu">voc_split</span>(data_dir, s),</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">character</span>(<span class="dv">1</span>))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">vapply</span>(splits, <span class="cf">function</span>(p) <span class="fu">nrow</span>(<span class="fu">read.csv</span>(p)), <span class="fu">integer</span>(<span class="dv">1</span>))</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; train   val  test </span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   205    87    72</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>BCCD’s own split, not one invented here - which is the only reason the numbers below can be compared with anybody else’s on this dataset.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"RBC"</span>, <span class="st">"WBC"</span>, <span class="st">"Platelets"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">published</span> <span class="op">&lt;-</span> <span class="fu">platypus_spec</span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="fu">detection_data</span><span class="op">(</span><span class="va">splits</span><span class="op">[[</span><span class="st">"train"</span><span class="op">]</span><span class="op">]</span>, <span class="va">splits</span><span class="op">[[</span><span class="st">"val"</span><span class="op">]</span><span class="op">]</span>, test <span class="op">=</span> <span class="va">splits</span><span class="op">[[</span><span class="st">"test"</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>                        classes <span class="op">=</span> <span class="va">cells</span>, mode <span class="op">=</span> <span class="st">"config_file"</span><span class="op">)</span>,</span>
-<span>  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu">yolo3</span><span class="op">(</span><span class="st">"cells"</span>, input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">416</span>, <span class="fl">416</span><span class="op">)</span>,</span>
-<span>                      weights <span class="op">=</span> <span class="st">"bccd-yolo3"</span>, fit <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">borrowed</span> <span class="op">&lt;-</span> <span class="fu">platypus_fit</span><span class="op">(</span><span class="va">published</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">found</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">borrowed</span>, split <span class="op">=</span> <span class="st">"test"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">found</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 72</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">found</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        xmin     ymin     xmax     ymax     score label name</span></span>
-<span><span class="co">#&gt; 1  19.93539 300.9871 139.2865 392.0793 0.9999792     1  RBC</span></span>
-<span><span class="co">#&gt; 2  27.77121 126.9517 140.5794 234.9014 0.9999719     1  RBC</span></span>
-<span><span class="co">#&gt; 3 492.09385 303.5892 603.1343 396.8544 0.9999502     1  RBC</span></span>
-<span><span class="co">#&gt; 4 213.10871  99.1100 404.4725 275.4815 0.9996140     2  WBC</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>cells <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"RBC"</span>, <span class="st">"WBC"</span>, <span class="st">"Platelets"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>published <span class="ot">&lt;-</span> <span class="fu">platypus_spec</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">detection_data</span>(splits[[<span class="st">"train"</span>]], splits[[<span class="st">"val"</span>]], <span class="at">test =</span> splits[[<span class="st">"test"</span>]],</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">classes =</span> cells, <span class="at">mode =</span> <span class="st">"config_file"</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(<span class="fu">yolo3</span>(<span class="st">"cells"</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">416</span>, <span class="dv">416</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">weights =</span> <span class="st">"bccd-yolo3"</span>, <span class="at">fit =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>borrowed <span class="ot">&lt;-</span> <span class="fu">platypus_fit</span>(published, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>found <span class="ot">&lt;-</span> <span class="fu">predict</span>(borrowed, <span class="at">split =</span> <span class="st">"test"</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(found)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 72</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(found[[<span class="dv">1</span>]], <span class="dv">4</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        xmin     ymin     xmax     ymax     score label name</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  19.93539 300.9871 139.2865 392.0793 0.9999792     1  RBC</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  27.77121 126.9517 140.5794 234.9014 0.9999719     1  RBC</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 492.09385 303.5892 603.1343 396.8544 0.9999502     1  RBC</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4 213.10871  99.1100 404.4725 275.4815 0.9996140     2  WBC</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>One data frame per image, named by the sample key, in the <strong>photograph’s own pixels</strong> - so the boxes land on the picture without anything being undone first:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">found</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span>
-<span><span class="co">#&gt; [1] "BloodImage_00007" "BloodImage_00011"</span></span>
-<span><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">splits</span><span class="op">[[</span><span class="st">"test"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="va">images</span> <span class="op">&lt;-</span> <span class="fu">read_images</span><span class="op">(</span><span class="va">files</span><span class="op">$</span><span class="va">images</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, size <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">plot_boxes</span><span class="op">(</span><span class="va">images</span>, <span class="va">found</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, min_score <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(found)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "BloodImage_00007" "BloodImage_00011"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(splits[[<span class="st">"test"</span>]])</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>images <span class="ot">&lt;-</span> <span class="fu">read_images</span>(files<span class="sc">$</span>images[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="at">size =</span> <span class="cn">NULL</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_boxes</span>(images, found[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="at">min_score =</span> <span class="fl">0.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/bccd-bccd-published-plot-1.png" class="img-fluid figure-img"></p>
-<figcaption>plot of chunk bccd-published-plot</figcaption></figure>
+<figure class="figure">
+<p><img src="figures/bccd-bccd-published-plot-1.png" class="img-fluid figure-img"></p>
+<figcaption>plot of chunk bccd-published-plot</figcaption>
+</figure>
 </div>
-<section id="and-here-unlike-the-nuclei-vignette-a-score-means-something" class="level3"><h3 class="anchored" data-anchor-id="and-here-unlike-the-nuclei-vignette-a-score-means-something">And here, unlike the nuclei vignette, a score means something</h3>
+<section id="and-here-unlike-the-nuclei-vignette-a-score-means-something" class="level3">
+<h3 class="anchored" data-anchor-id="and-here-unlike-the-nuclei-vignette-a-score-means-something">And here, unlike the nuclei vignette, a score means something</h3>
 <p>Those weights were trained on BCCD’s 205 training images. This is its 72 test images, which the model has never seen, so measuring on them is honest:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">evaluate</span><span class="op">(</span><span class="va">borrowed</span>, split <span class="op">=</span> <span class="st">"test"</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"map_50"</span>, <span class="st">"map_50_95"</span>, <span class="st">"mean_matched_iou"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt;      map_50 map_50_95 mean_matched_iou</span></span>
-<span><span class="co">#&gt; 1 0.8570754 0.5003368        0.8058061</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate</span>(borrowed, <span class="at">split =</span> <span class="st">"test"</span>)[, <span class="fu">c</span>(<span class="st">"map_50"</span>, <span class="st">"map_50_95"</span>, <span class="st">"mean_matched_iou"</span>)]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      map_50 map_50_95 mean_matched_iou</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.8570754 0.5003368        0.8058061</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>That is the figure on the model card, which anybody can check:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">available_weights</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fu">available_weights</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">name</span> <span class="op">==</span> <span class="st">"bccd-yolo3"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"name"</span>, <span class="st">"revision"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt;         name                                 revision</span></span>
-<span><span class="co">#&gt; 1 bccd-yolo3 24fbff0833455a747c7bac9c2b8dc43073ce4e82</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">available_weights</span>()[<span class="fu">available_weights</span>()<span class="sc">$</span>name <span class="sc">==</span> <span class="st">"bccd-yolo3"</span>, <span class="fu">c</span>(<span class="st">"name"</span>, <span class="st">"revision"</span>)]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         name                                 revision</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 bccd-yolo3 24fbff0833455a747c7bac9c2b8dc43073ce4e82</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>The description in that table is the part to read before trusting them.</strong> Published is the <em>median</em> of five seeds rather than the best - the spread is wide enough that a single number would be whichever seed was reported - and platelets are the unreliable class, which the next section shows rather than asserts.</p>
-</section><section id="one-refusal-worth-meeting-now" class="level3"><h3 class="anchored" data-anchor-id="one-refusal-worth-meeting-now">One refusal worth meeting now</h3>
+</section>
+<section id="one-refusal-worth-meeting-now" class="level3">
+<h3 class="anchored" data-anchor-id="one-refusal-worth-meeting-now">One refusal worth meeting now</h3>
 <p>A detector’s weights decode boxes <strong>relative to the anchors they were trained with</strong>. Read with any others, the same numbers produce boxes scaled by a fixed factor: plausible boxes, plausible scores, wrong places, and nothing in any output to say so. So loading takes the anchors recorded beside the file, and a specification that also names some is two claims about one model with one of them untrue:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">yolo3</span><span class="op">(</span><span class="st">"cells"</span>, input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">416</span>, <span class="fl">416</span><span class="op">)</span>, weights <span class="op">=</span> <span class="st">"bccd-yolo3"</span>,</span>
-<span>      anchors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.3</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error:</span></span>
-<span><span class="co">#&gt; ! give `weights` or `anchors`, not both. A detector's weights decode boxes relative to the anchors they were trained with, so loading uses the ones recorded beside the file - which would leave these describing nothing.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">yolo3</span>(<span class="st">"cells"</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">416</span>, <span class="dv">416</span>), <span class="at">weights =</span> <span class="st">"bccd-yolo3"</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>      <span class="at">anchors =</span> <span class="fu">list</span>(<span class="fu">list</span>(<span class="fu">c</span>(<span class="fl">0.3</span>, <span class="fl">0.3</span>)), <span class="fu">list</span>(<span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.2</span>)), <span class="fu">list</span>(<span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.1</span>))))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error:</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ! give `weights` or `anchors`, not both. A detector's weights decode boxes relative to the anchors they were trained with, so loading uses the ones recorded beside the file - which would leave these describing nothing.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Refused before anything was built. Everything below trains from scratch instead, which is what you will do on your own data.</p>
-</section></section><section id="anchors-which-a-detector-has-and-a-u-net-does-not" class="level2"><h2 class="anchored" data-anchor-id="anchors-which-a-detector-has-and-a-u-net-does-not">Anchors, which a detector has and a U-Net does not</h2>
+</section>
+</section>
+<section id="anchors-which-a-detector-has-and-a-u-net-does-not" class="level2">
+<h2 class="anchored" data-anchor-id="anchors-which-a-detector-has-and-a-u-net-does-not">Anchors, which a detector has and a U-Net does not</h2>
 <p>YOLOv3 does not predict a box from nothing. It predicts a correction to one of nine <strong>anchors</strong> - fixed shapes, three per grid - and which anchors you use decides how much correcting is left to learn. Unset, they are fitted to your own boxes:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu">platypus_spec</span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="fu">detection_data</span><span class="op">(</span><span class="va">splits</span><span class="op">[[</span><span class="st">"train"</span><span class="op">]</span><span class="op">]</span>, <span class="va">splits</span><span class="op">[[</span><span class="st">"val"</span><span class="op">]</span><span class="op">]</span>, test <span class="op">=</span> <span class="va">splits</span><span class="op">[[</span><span class="st">"test"</span><span class="op">]</span><span class="op">]</span>,</span>
-<span>                        classes <span class="op">=</span> <span class="va">cells</span>, mode <span class="op">=</span> <span class="st">"config_file"</span><span class="op">)</span>,</span>
-<span>  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu">yolo3</span><span class="op">(</span></span>
-<span>    <span class="st">"cells"</span>,</span>
-<span>    input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">416</span>, <span class="fl">416</span><span class="op">)</span>,</span>
-<span>    epochs <span class="op">=</span> <span class="fl">150</span>,</span>
-<span>    batch_size <span class="op">=</span> <span class="fl">8</span>,</span>
-<span>    optimizer <span class="op">=</span> <span class="fu">optimizer_adam</span><span class="op">(</span>learning_rate <span class="op">=</span> <span class="fl">1e-4</span><span class="op">)</span>,</span>
-<span>    <span class="co"># A smear has no up or down, and a left-right flip is free: the boxes follow it</span></span>
-<span>    <span class="co"># exactly, with no interpolation and no rounding.</span></span>
-<span>    augmentation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu">augmentation_step</span><span class="op">(</span><span class="st">"HorizontalFlip"</span>, p <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    callbacks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu">callback_cosine_annealing</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span><span class="op">)</span>,</span>
-<span>  seed <span class="op">=</span> <span class="fl">1</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">platypus_fit</span><span class="op">(</span><span class="va">spec</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">anchors</span> <span class="op">&lt;-</span> <span class="fu">detection_anchors</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
-<span><span class="va">anchors</span><span class="op">$</span><span class="va">fitted</span></span>
-<span><span class="co">#&gt; [1] TRUE</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">anchors</span><span class="op">$</span><span class="va">mean_iou</span>, <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.8772</span></span>
-<span><span class="va">anchors</span><span class="op">$</span><span class="va">per_anchor</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"grid"</span>, <span class="st">"slot"</span>, <span class="st">"width_pixels"</span>, <span class="st">"height_pixels"</span>, <span class="st">"boxes"</span>,</span>
-<span>                       <span class="st">"mean_iou"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt;   grid slot width_pixels height_pixels boxes  mean_iou</span></span>
-<span><span class="co">#&gt; 1    0    0    147.38592     137.40874   103 0.8696796</span></span>
-<span><span class="co">#&gt; 2    0    1    118.59296     101.74789    71 0.8102370</span></span>
-<span><span class="co">#&gt; 3    0    2     81.30258      74.30011   445 0.8863117</span></span>
-<span><span class="co">#&gt; 4    1    0     68.32447      70.38699   803 0.9089707</span></span>
-<span><span class="co">#&gt; 5    1    1     72.38382      58.75508   581 0.8836537</span></span>
-<span><span class="co">#&gt; 6    1    2     55.40458      67.64656   349 0.8541086</span></span>
-<span><span class="co">#&gt; 7    2    0     59.82368      50.76842   247 0.8363835</span></span>
-<span><span class="co">#&gt; 8    2    1     30.99390      29.78902    82 0.8265114</span></span>
-<span><span class="co">#&gt; 9    2    2     23.79106      23.37358   123 0.8322202</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="fu">platypus_spec</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">detection_data</span>(splits[[<span class="st">"train"</span>]], splits[[<span class="st">"val"</span>]], <span class="at">test =</span> splits[[<span class="st">"test"</span>]],</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">classes =</span> cells, <span class="at">mode =</span> <span class="st">"config_file"</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(<span class="fu">yolo3</span>(</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cells"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">416</span>, <span class="dv">416</span>),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">epochs =</span> <span class="dv">150</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">batch_size =</span> <span class="dv">8</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">optimizer =</span> <span class="fu">optimizer_adam</span>(<span class="at">learning_rate =</span> <span class="fl">1e-4</span>),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># A smear has no up or down, and a left-right flip is free: the boxes follow it</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># exactly, with no interpolation and no rounding.</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">augmentation =</span> <span class="fu">list</span>(<span class="fu">augmentation_step</span>(<span class="st">"HorizontalFlip"</span>, <span class="at">p =</span> <span class="fl">0.5</span>)),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">callbacks =</span> <span class="fu">list</span>(<span class="fu">callback_cosine_annealing</span>())</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  )),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">1</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">platypus_fit</span>(spec, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>anchors <span class="ot">&lt;-</span> <span class="fu">detection_anchors</span>(fit)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>anchors<span class="sc">$</span>fitted</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(anchors<span class="sc">$</span>mean_iou, <span class="dv">4</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8772</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>anchors<span class="sc">$</span>per_anchor[, <span class="fu">c</span>(<span class="st">"grid"</span>, <span class="st">"slot"</span>, <span class="st">"width_pixels"</span>, <span class="st">"height_pixels"</span>, <span class="st">"boxes"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"mean_iou"</span>)]</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   grid slot width_pixels height_pixels boxes  mean_iou</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    0    0    147.38592     137.40874   103 0.8696796</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    0    1    118.59296     101.74789    71 0.8102370</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    0    2     81.30258      74.30011   445 0.8863117</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4    1    0     68.32447      70.38699   803 0.9089707</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5    1    1     72.38382      58.75508   581 0.8836537</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6    1    2     55.40458      67.64656   349 0.8541086</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7    2    0     59.82368      50.76842   247 0.8363835</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8    2    1     30.99390      29.78902    82 0.8265114</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9    2    2     23.79106      23.37358   123 0.8322202</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Fitted anchors cover these boxes at a mean overlap of 0.88. COCO’s own nine, borrowed, manage 0.65 on the same boxes - which is the difference between a correction and a rewrite, and it costs nothing to avoid.</p>
 <p><strong>A mean hides which class it is made of.</strong> A coverage of 0.65 is either “every class covered adequately” or “two covered well and the third not at all”, and those want different fixes. The picture tells them apart:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">plot_anchors</span><span class="op">(</span><span class="va">fit</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_anchors</span>(fit, <span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/bccd-bccd-anchor-plot-1.png" class="img-fluid figure-img"></p>
-<figcaption>plot of chunk bccd-anchor-plot</figcaption></figure>
+<figure class="figure">
+<p><img src="figures/bccd-bccd-anchor-plot-1.png" class="img-fluid figure-img"></p>
+<figcaption>plot of chunk bccd-anchor-plot</figcaption>
+</figure>
 </div>
 <p>Each point is one annotated box - its width against its height, both as fractions of the 416 x 416 input - and the diamonds are the anchors. Log axes, because the fitted anchors alone run from 24 to 147 pixels a side, and on linear ones the smallest class collapses into the corner.</p>
 <p>Three clouds, because the three cell types are three sizes, and a diamond near each one. The diamonds are not spread evenly: most sit in the crowded middle where the red cells are, which is k-means doing exactly what it was asked - put the anchors where the boxes are, not where the classes are.</p>
 <p><strong>And one point sits far below everything else, at about two thirds of a pixel a side.</strong> That is not a drawing error and not an outlier in the statistical sense - it is a bad row. BCCD carries one annotation of zero extent in the training split and another in the validation split, and a zero-width box read under Pascal VOC’s inclusive convention comes out one pixel across. k-means drops it, because an overlap with a box that has no area is undefined, which is why the anchors above were fitted to 2,804 boxes while the picture draws 2,805. The plot keeps it deliberately: a dataset’s bad rows are worth seeing once, and this is the only place in the whole run where that one is visible at all.</p>
 <p>It is also the clearest way to see why COCO’s nine manage only 0.65 here. Those span 10 to 373 pixels a side, because COCO holds objects of every size; these three cell types span about 6-fold. Most of that range is spent on boxes this dataset does not contain.</p>
 <p>Worth drawing for the split they were <em>not</em> fitted on. Anchors covering the training boxes well and the validation boxes badly would say the two halves hold different objects, and no training curve shows that:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">plot_anchors</span><span class="op">(</span><span class="va">fit</span>, split <span class="op">=</span> <span class="st">"validation"</span>, log <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_anchors</span>(fit, <span class="at">split =</span> <span class="st">"validation"</span>, <span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/bccd-bccd-anchor-plot-valid-1.png" class="img-fluid figure-img"></p>
-<figcaption>plot of chunk bccd-anchor-plot-valid</figcaption></figure>
+<figure class="figure">
+<p><img src="figures/bccd-bccd-anchor-plot-valid-1.png" class="img-fluid figure-img"></p>
+<figcaption>plot of chunk bccd-anchor-plot-valid</figcaption>
+</figure>
 </div>
-</section><section id="what-the-loss-is-doing" class="level2"><h2 class="anchored" data-anchor-id="what-the-loss-is-doing">What the loss is doing</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">history</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"epoch"</span>, <span class="st">"train_loss"</span>, <span class="st">"train_coordinates"</span>, <span class="st">"train_objectness"</span>,</span>
-<span>                     <span class="st">"val_loss"</span><span class="op">)</span><span class="op">]</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co">#&gt;     epoch train_loss train_coordinates train_objectness val_loss</span></span>
-<span><span class="co">#&gt; 148   148   5.922336          5.917977     0.0006621822 9.890312</span></span>
-<span><span class="co">#&gt; 149   149   5.926137          5.921691     0.0006329013 9.905824</span></span>
-<span><span class="co">#&gt; 150   150   5.946839          5.942373     0.0006673209 9.966823</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="what-the-loss-is-doing" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-loss-is-doing">What the loss is doing</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(fit<span class="sc">$</span>history[, <span class="fu">c</span>(<span class="st">"epoch"</span>, <span class="st">"train_loss"</span>, <span class="st">"train_coordinates"</span>, <span class="st">"train_objectness"</span>,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"val_loss"</span>)], <span class="dv">3</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     epoch train_loss train_coordinates train_objectness val_loss</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 148   148   5.922336          5.917977     0.0006621822 9.890312</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 149   149   5.926137          5.921691     0.0006329013 9.905824</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 150   150   5.946839          5.942373     0.0006673209 9.966823</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>The total does not reach zero and that is not a stall.</strong> Cross-entropy against a soft target bottoms out at the target’s own entropy, so the coordinate term has a floor above zero that depends on the data. Which is exactly why the four parts are reported separately: a total of 5.95 means nothing alone, while <code>coordinates 5.94</code> beside <code>objectness 6.7 &amp;times; 10&lt;sup&gt;-4&lt;/sup&gt;</code> says the model has learned what is where and is still refining the boxes.</p>
-</section><section id="scoring-and-the-number-that-is-missing-on-purpose" class="level2"><h2 class="anchored" data-anchor-id="scoring-and-the-number-that-is-missing-on-purpose">Scoring, and the number that is missing on purpose</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">evaluate</span><span class="op">(</span><span class="va">fit</span>, split <span class="op">=</span> <span class="st">"test"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   model architecture parameters epochs_run    map_50 map_50_95 mean_matched_iou</span></span>
-<span><span class="co">#&gt; 1 cells        yolo3   61534504        150 0.8517078 0.5052384        0.8046374</span></span>
-<span><span class="co">#&gt;   n_truth n_predicted classes_without_truth</span></span>
-<span><span class="co">#&gt; 1     945        2740                     0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="scoring-and-the-number-that-is-missing-on-purpose" class="level2">
+<h2 class="anchored" data-anchor-id="scoring-and-the-number-that-is-missing-on-purpose">Scoring, and the number that is missing on purpose</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate</span>(fit, <span class="at">split =</span> <span class="st">"test"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   model architecture parameters epochs_run    map_50 map_50_95 mean_matched_iou</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 cells        yolo3   61534504        150 0.8517078 0.5052384        0.8046374</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   n_truth n_predicted classes_without_truth</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     945        2740                     0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>This run’s <code>map_50</code> of 0.8517 sits below the range of the five in the table further down (0.853 to 0.887), and that is the point of the table rather than a problem with it.</strong> A seed pins which random numbers are drawn; it does not pin the order they are consumed in, and the number of loader workers - <code>num_workers = "auto"</code> here, four in the script that produced the published weights - changes that order. So “the same seed” means the same recipe on one machine with one worker count, and not a guarantee of the same number. Knits of this very document at the same seed have differed by more than a point of <code>map_50</code>, which is how the paragraph you are reading came to be written: the first version of it quoted a number, and the next knit disagreed with it.</p>
 <p>Which is the argument for reading <code>mean_matched_iou</code> first, and it holds here: the overlap came out at 0.8046 against the five-run mean of 0.8040, a difference of 0.0006.</p>
 <p>There is no overall precision and no overall recall in that table, and the absence is deliberate. Averaging them over classes needs a weighting, and every choice of weighting is a different claim: over BCCD’s 4,155 red cells, 372 white and 361 platelets, a single precision is a statement about red cells wearing the costume of a statement about the model.</p>
 <p>Per class is the form in which they mean something:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">evaluate_classes</span><span class="op">(</span><span class="va">fit</span>, split <span class="op">=</span> <span class="st">"test"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;       class average_precision mean_matched_iou n_truth n_predicted precision</span></span>
-<span><span class="co">#&gt; 1       RBC         0.8061110        0.8075923     805         906 0.7152318</span></span>
-<span><span class="co">#&gt; 2       WBC         0.9585804        0.8469938      71          77 0.9220779</span></span>
-<span><span class="co">#&gt; 3 Platelets         0.7904320        0.7264113      69         111 0.5585586</span></span>
-<span><span class="co">#&gt;      recall</span></span>
-<span><span class="co">#&gt; 1 0.8049689</span></span>
-<span><span class="co">#&gt; 2 1.0000000</span></span>
-<span><span class="co">#&gt; 3 0.8985507</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate_classes</span>(fit, <span class="at">split =</span> <span class="st">"test"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       class average_precision mean_matched_iou n_truth n_predicted precision</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       RBC         0.8061110        0.8075923     805         906 0.7152318</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       WBC         0.9585804        0.8469938      71          77 0.9220779</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Platelets         0.7904320        0.7264113      69         111 0.5585586</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      recall</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.8049689</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 1.0000000</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.8985507</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Read that table rather than the mean. White cells are nearly perfect - there is one per image and it is large. Platelets come back at a precision of 0.56 at this confidence, meaning 44% of the platelets reported are not there, and their boxes fit worst of the three at an overlap of 0.73.</p>
-<section id="map0.5-map.50.95-and-which-to-believe" class="level3"><h3 class="anchored" data-anchor-id="map0.5-map.50.95-and-which-to-believe">mAP@0.5, mAP@[.50:.95], and which to believe</h3>
+<section id="map0.5-map.50.95-and-which-to-believe" class="level3">
+<h3 class="anchored" data-anchor-id="map0.5-map.50.95-and-which-to-believe">mAP@0.5, mAP@[.50:.95], and which to believe</h3>
 <p>Two averages and they answer different questions. The first asks whether an object was found; the second averages over ten overlap thresholds and so also asks how well the box fits. The gap between them is localisation, and <code>mean_matched_iou</code> says that in one number instead of through a difference.</p>
 <p>On this dataset, <strong>the overlap is far steadier than the average precision</strong>. Five runs of the recipe above, differing only in the seed - and measured with the engine on its own, four loader workers, rather than through this vignette:</p>
 <table class="caption-top table">
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th></th>
 <th>mean</th>
 <th>sd</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>mAP@0.5</td>
@@ -975,44 +1018,56 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <p>Six times steadier. Which rank the model gives a borderline platelet moves average precision and leaves the overlap alone - so on a dataset this size, a point of mAP is not a result, and <code>mean_matched_iou</code> is the number to read first. That is not a general law about detection; it is what these 364 images do, and it was found by running five seeds rather than one.</p>
-</section></section><section id="looking-at-it" class="level2"><h2 class="anchored" data-anchor-id="looking-at-it">Looking at it</h2>
+</section>
+</section>
+<section id="looking-at-it" class="level2">
+<h2 class="anchored" data-anchor-id="looking-at-it">Looking at it</h2>
 <p>The comparison is the point. Truth in one colour, predictions in another, on the same image:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">truth</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">splits</span><span class="op">[[</span><span class="st">"test"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">$</span><span class="va">annotations</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="kw">function</span><span class="op">(</span><span class="va">path</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">xml</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span><span class="op">(</span><span class="va">path</span>, warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>  <span class="va">nodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/regmatches.html">regmatches</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">xml</span>, collapse <span class="op">=</span> <span class="st">""</span><span class="op">)</span>,</span>
-<span>                      <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gregexpr</a></span><span class="op">(</span><span class="st">"&lt;object&gt;.*?&lt;/object&gt;"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">xml</span>, collapse <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
-<span>  <span class="va">pull</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">node</span>, <span class="va">tag</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">sub</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">".*&lt;"</span>, <span class="va">tag</span>, <span class="st">"&gt;([^&lt;]*)&lt;/"</span>, <span class="va">tag</span>, <span class="st">"&gt;.*"</span><span class="op">)</span>, <span class="st">"\\1"</span>, <span class="va">node</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
-<span>    <span class="co"># Pascal VOC is 1-based and inclusive of both ends, so a box written xmin=1 xmax=10 is</span></span>
-<span>    <span class="co"># 0..10 as a continuous interval. Reading it as 0-based shifts every box by a pixel and</span></span>
-<span>    <span class="co"># shrinks it by one - invisible by eye, and real IoU on a platelet 41 pixels across.</span></span>
-<span>    xmin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">nodes</span>, <span class="va">pull</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="st">"xmin"</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>,</span>
-<span>    ymin <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">nodes</span>, <span class="va">pull</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="st">"ymin"</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>,</span>
-<span>    xmax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">nodes</span>, <span class="va">pull</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="st">"xmax"</span><span class="op">)</span>,</span>
-<span>    ymax <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">nodes</span>, <span class="va">pull</span>, <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">numeric</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="st">"ymax"</span><span class="op">)</span>,</span>
-<span>    name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">sub</a></span><span class="op">(</span><span class="st">".*&lt;name&gt;([^&lt;]*)&lt;/name&gt;.*"</span>, <span class="st">"\\1"</span>, <span class="va">nodes</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">mine</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, split <span class="op">=</span> <span class="st">"test"</span><span class="op">)</span></span>
-<span><span class="fu">plot_boxes</span><span class="op">(</span><span class="va">images</span>, <span class="va">mine</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, truth <span class="op">=</span> <span class="va">truth</span>, min_score <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>truth <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">read.csv</span>(splits[[<span class="st">"test"</span>]])<span class="sc">$</span>annotations[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="cf">function</span>(path) {</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  xml <span class="ot">&lt;-</span> <span class="fu">readLines</span>(path, <span class="at">warn =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  nodes <span class="ot">&lt;-</span> <span class="fu">regmatches</span>(<span class="fu">paste</span>(xml, <span class="at">collapse =</span> <span class="st">""</span>),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                      <span class="fu">gregexpr</span>(<span class="st">"&lt;object&gt;.*?&lt;/object&gt;"</span>, <span class="fu">paste</span>(xml, <span class="at">collapse =</span> <span class="st">""</span>)))[[<span class="dv">1</span>]]</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  pull <span class="ot">&lt;-</span> <span class="cf">function</span>(node, tag) {</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="fu">paste0</span>(<span class="st">".*&lt;"</span>, tag, <span class="st">"&gt;([^&lt;]*)&lt;/"</span>, tag, <span class="st">"&gt;.*"</span>), <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, node))</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pascal VOC is 1-based and inclusive of both ends, so a box written xmin=1 xmax=10 is</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 0..10 as a continuous interval. Reading it as 0-based shifts every box by a pixel and</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># shrinks it by one - invisible by eye, and real IoU on a platelet 41 pixels across.</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">xmin =</span> <span class="fu">vapply</span>(nodes, pull, <span class="fu">numeric</span>(<span class="dv">1</span>), <span class="st">"xmin"</span>) <span class="sc">-</span> <span class="dv">1</span>,</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">ymin =</span> <span class="fu">vapply</span>(nodes, pull, <span class="fu">numeric</span>(<span class="dv">1</span>), <span class="st">"ymin"</span>) <span class="sc">-</span> <span class="dv">1</span>,</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">xmax =</span> <span class="fu">vapply</span>(nodes, pull, <span class="fu">numeric</span>(<span class="dv">1</span>), <span class="st">"xmax"</span>),</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">ymax =</span> <span class="fu">vapply</span>(nodes, pull, <span class="fu">numeric</span>(<span class="dv">1</span>), <span class="st">"ymax"</span>),</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="fu">sub</span>(<span class="st">".*&lt;name&gt;([^&lt;]*)&lt;/name&gt;.*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, nodes)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>mine <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">split =</span> <span class="st">"test"</span>)</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_boxes</span>(images, mine[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>], <span class="at">truth =</span> truth, <span class="at">min_score =</span> <span class="fl">0.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/bccd-bccd-compare-1.png" class="img-fluid figure-img"></p>
-<figcaption>plot of chunk bccd-compare</figcaption></figure>
+<figure class="figure">
+<p><img src="figures/bccd-bccd-compare-1.png" class="img-fluid figure-img"></p>
+<figcaption>plot of chunk bccd-compare</figcaption>
+</figure>
 </div>
 <p>A detector that found the right number of objects in the wrong places and one that found the wrong number in the right places score similarly and look nothing alike, which is why this picture is worth more than either average.</p>
-</section><section id="what-this-does-not-do" class="level2"><h2 class="anchored" data-anchor-id="what-this-does-not-do">What this does not do</h2>
+</section>
+<section id="what-this-does-not-do" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-does-not-do">What this does not do</h2>
 <p><strong>It is not a cell count.</strong> A precision of 0.56 on platelets means a count taken from these boxes is too high by about 79%. Counting needs either a better model for the small class or a threshold chosen for counting rather than for a figure, and either way it needs measuring against truth on your own data.</p>
 <p><strong>It is one small collection.</strong> 205 training images at one magnification, stained one way. BCCD is a demonstration dataset.</p>
 <p><strong>It is not a diagnostic tool</strong>, and a result from it is not a laboratory result.</p>
-</section><section id="notes-on-the-machine" class="level2"><h2 class="anchored" data-anchor-id="notes-on-the-machine">Notes on the machine</h2>
+</section>
+<section id="notes-on-the-machine" class="level2">
+<h2 class="anchored" data-anchor-id="notes-on-the-machine">Notes on the machine</h2>
 <p>Trained on a GTX 1070: 150 epochs, about 37 minutes. YOLOv3 is 61.5 million parameters, thirty times a U-Net at the settings in the nuclei vignette, so this is the one place in the package where the hardware matters.</p>
 <p>A card of that generation needs the CUDA 12 build of PyTorch, which <code>platypus_use_torch("pascal")</code> selects - see <code>?platypus_device</code>. Without it the run falls back to the processor, and the warning that says so is printed before the wait rather than after, because a run that quietly went to the CPU looks exactly like a run that is simply slow.</p>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -1413,6 +1468,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   });
   </script>
 </div> <!-- /content -->
+
 
 
 

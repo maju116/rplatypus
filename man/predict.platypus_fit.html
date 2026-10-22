@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.10.19">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
 <title>predict.platypus_fit – rplatypus</title>
 <style>
 /* Default styles provided by pandoc.
@@ -60,6 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
+
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
@@ -79,9 +83,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-ee0d825c001f130fb265e92dcb17fa1f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -108,11 +113,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+
+
 </head>
+
 <body class="nav-sidebar docked nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">rplatypus</span>
@@ -124,17 +134,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item compact">
+  <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/maju116/rplatypus"> <i class="bi bi-github" role="img" aria-label="rplatypus GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-</div> <!-- /navcollapse -->
+          </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -142,11 +154,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-<li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
@@ -160,8 +176,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../vignettes/blood-cells.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Finding blood cells with YOLOv3</span></a>
@@ -198,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
@@ -207,8 +223,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../overview.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Overview</span></a>
@@ -222,8 +238,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_status.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Is the engine ready?</span></a>
@@ -242,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
@@ -251,8 +267,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_spec.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Build an experiment specification</span></a>
@@ -301,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
@@ -310,8 +326,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/losses.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Loss functions</span></a>
@@ -384,7 +400,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
@@ -393,8 +409,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/split_dataset.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Split a dataset into training, validation and test sets</span></a>
@@ -437,7 +453,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
@@ -446,8 +462,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_fit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Train the models in a specification</span></a>
@@ -466,7 +482,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true">
@@ -475,8 +491,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/predict.platypus_fit.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Predict masks</span></a>
@@ -519,7 +535,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
@@ -528,8 +544,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/export_weights.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Save a trained model’s weights</span></a>
@@ -542,7 +558,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
@@ -551,8 +567,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 "></ul>
-</li>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+      </ul>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false">
@@ -561,8 +578,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/plot_masks.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Look at masks beside the images they came from</span></a>
@@ -617,7 +634,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="false">
@@ -626,8 +643,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/colours_to_classes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Read a colour mask back to class indices</span></a>
@@ -700,7 +717,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false">
@@ -709,10 +726,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 "></ul>
-</li>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
       </ul>
-</li>
+  </li>
+      </ul>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="true">
@@ -721,8 +739,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../NEWS.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Changelog</span></a>
@@ -747,34 +765,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
     </ul>
-</div>
-</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
    
   <ul>
-<li>
-<a href="#predict-masks" id="toc-predict-masks" class="nav-link active" data-scroll-target="#predict-masks">Predict masks</a>
+  <li><a href="#predict-masks" id="toc-predict-masks" class="nav-link active" data-scroll-target="#predict-masks">Predict masks</a>
   <ul class="collapse">
-<li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
+  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
   <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
   <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
   <li><a href="#which-grid-the-answer-is-on" id="toc-which-grid-the-answer-is-on" class="nav-link" data-scroll-target="#which-grid-the-answer-is-on">Which grid the answer is on</a></li>
   <li><a href="#one-at-a-time-when-the-split-will-not-fit" id="toc-one-at-a-time-when-the-split-will-not-fit" class="nav-link" data-scroll-target="#one-at-a-time-when-the-split-will-not-fit">One at a time, when the split will not fit</a></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
+  </ul></li>
   </ul>
-</li>
-  </ul></nav>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../overview.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/predict.platypus_fit.html">Predicting and scoring</a></li><li class="breadcrumb-item"><a href="../man/predict.platypus_fit.html">Predict masks</a></li></ol></nav></header><section id="predict-masks" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="predict-masks">Predict masks</h2>
-<section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../overview.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/predict.platypus_fit.html">Predicting and scoring</a></li><li class="breadcrumb-item"><a href="../man/predict.platypus_fit.html">Predict masks</a></li></ol></nav></header>
+
+
+
+
+<section id="predict-masks" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="predict-masks">Predict masks</h2>
+<section id="description" class="level3">
+<h3 class="anchored" data-anchor-id="description">Description</h3>
 <p>Predict masks</p>
-</section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
+</section>
+<section id="usage" class="level3">
+<h3 class="anchored" data-anchor-id="usage">Usage</h3>
 <pre><code class="language-R">## S3 method for class 'platypus_fit'
 predict(
   object,
@@ -788,14 +816,16 @@ predict(
   ...
 )
 </code></pre>
-</section><section id="arguments" class="level3"><h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
+</section>
+<section id="arguments" class="level3">
+<h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
 <table role="presentation">
 <tbody><tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
 <code id="object">object</code>
 </td>
 <td>
-A <code><a href="../man/platypus_fit.html">platypus_fit()</a></code>.
+A <a href="../man/platypus_fit.html"><code>platypus_fit()</code></a>.
 </td>
 </tr>
 <tr>
@@ -819,9 +849,9 @@ Which data to predict on.
 <code id="type">type</code>
 </td>
 <td>
-<p><code>“class”</code> gives the class index per pixel, which is the mask to look at; <code>“probability”</code> keeps the per-class channel. <code>“channels”</code> is for an <strong>instance</strong> model only and means the model’s own output before any decoding: the class channels are probabilities and a flow field’s components are <strong>raw</strong>, which is why they are not called probabilities here - a softmax across a flow component and a class returns a number that means nothing. Read them with <code><a href="../man/flow_to_colours.html">flow_to_colours()</a></code>.</p>
+<p><code>“class”</code> gives the class index per pixel, which is the mask to look at; <code>“probability”</code> keeps the per-class channel. <code>“channels”</code> is for an <strong>instance</strong> model only and means the model’s own output before any decoding: the class channels are probabilities and a flow field’s components are <strong>raw</strong>, which is why they are not called probabilities here - a softmax across a flow component and a class returns a number that means nothing. Read them with <a href="../man/flow_to_colours.html"><code>flow_to_colours()</code></a>.</p>
 <p>On an instance fit, <code>“class”</code> is a label map of <strong>objects</strong>, numbered from 1, and <code>“probability”</code> is refused by name for the reason above.</p>
-With <code>regions</code> - overlapping classes - <code>“class”</code> is <strong>refused</strong> rather than computed. The channels are independent binary questions and do not compete, so the most likely one is not an answer: a pixel may be in three classes and naming one of them drops the rest with nothing in the result to say so. Ask for <code>“probability”</code> and write it with <code><a href="../man/save_class_masks.html">save_class_masks()</a></code>.
+With <code>regions</code> - overlapping classes - <code>“class”</code> is <strong>refused</strong> rather than computed. The channels are independent binary questions and do not compete, so the most likely one is not an answer: a pixel may be in three classes and naming one of them drops the rest with nothing in the result to say so. Ask for <code>“probability”</code> and write it with <a href="../man/save_class_masks.html"><code>save_class_masks()</code></a>.
 </td>
 </tr>
 <tr>
@@ -837,7 +867,7 @@ With <code>regions</code> - overlapping classes - <code>“class”</code> is <s
 <code id="cases">cases</code>
 </td>
 <td>
-Case names to predict, as <code><a href="../man/evaluate_cases.html">evaluate_cases()</a></code> reports them. With this the result is a <strong>named list</strong> of just those, in the order asked for. A name that is not in the split is an error rather than a missing entry.
+Case names to predict, as <a href="../man/evaluate_cases.html"><code>evaluate_cases()</code></a> reports them. With this the result is a <strong>named list</strong> of just those, in the order asked for. A name that is not in the split is an error rather than a missing entry.
 </td>
 </tr>
 <tr>
@@ -864,40 +894,53 @@ Which decoding turns the predicted channels into objects, by the name used in th
 Unused.
 </td>
 </tr>
-</tbody></table></section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
+</tbody></table>
+</section>
+<section id="value" class="level3">
+<h3 class="anchored" data-anchor-id="value">Value</h3>
 <p>With <code>space = “model”</code>: for <code>“class”</code>, an integer array of <code style="white-space: pre;">image x height x width</code>, classes numbered from 1 to match the colormap; for <code>“probability”</code>, the same with a trailing class axis. Tiled models return images at their original size, reassembled.</p>
 <p>With <code>space = “source”</code>: a list of such arrays, one per scan, each on that scan’s grid.</p>
-<p>On an <strong>instance</strong> fit: a list of integer label maps <strong>named by case</strong>, objects numbered from 1 and 0 for background, one entry per image. A list rather than an array for the reason the detection one is a list, and named rather than ordered because a list paired against case names by position is one dropped batch away from naming the wrong picture. Draw them with <code><a href="../man/overlay_instances.html">overlay_instances()</a></code> and measure them with <code><a href="../man/instance_sizes.html">instance_sizes()</a></code>.</p>
-</section><section id="which-grid-the-answer-is-on" class="level3"><h3 class="anchored" data-anchor-id="which-grid-the-answer-is-on">Which grid the answer is on</h3>
+<p>On an <strong>instance</strong> fit: a list of integer label maps <strong>named by case</strong>, objects numbered from 1 and 0 for background, one entry per image. A list rather than an array for the reason the detection one is a list, and named rather than ordered because a list paired against case names by position is one dropped batch away from naming the wrong picture. Draw them with <a href="../man/overlay_instances.html"><code>overlay_instances()</code></a> and measure them with <a href="../man/instance_sizes.html"><code>instance_sizes()</code></a>.</p>
+</section>
+<section id="which-grid-the-answer-is-on" class="level3">
+<h3 class="anchored" data-anchor-id="which-grid-the-answer-is-on">Which grid the answer is on</h3>
 <p><code>space = “model”</code> returns everything on the grid the model worked at, stacked into one array. That is what training saw, and it is the only form that can be a single array, because a stack needs one shape.</p>
-<p><code>space = “source”</code> maps each prediction back onto the grid of the scan it was computed from - undoing the resampling and the crop - and therefore returns a <strong>list</strong>, one mask per scan. This is what you want for anything that has to meet the original data: laying a mask over the scan in a viewer, writing it beside the scan with <code><a href="../man/save_volumes.html">save_volumes()</a></code>, or measuring it in millilitres of the scan’s own voxels. Scans differ in size, so the list is not a limitation being worked around - resizing them to a common shape is exactly how a mask ends up describing anatomy it was not computed from.</p>
+<p><code>space = “source”</code> maps each prediction back onto the grid of the scan it was computed from - undoing the resampling and the crop - and therefore returns a <strong>list</strong>, one mask per scan. This is what you want for anything that has to meet the original data: laying a mask over the scan in a viewer, writing it beside the scan with <a href="../man/save_volumes.html"><code>save_volumes()</code></a>, or measuring it in millilitres of the scan’s own voxels. Scans differ in size, so the list is not a limitation being worked around - resizing them to a common shape is exactly how a mask ends up describing anatomy it was not computed from.</p>
 <p>Two things are lost mapping back, and neither can be recovered. Interpolation softens a boundary, so the mask returns slightly smoother than the model drew it. And where reading cropped anatomy away, the mask comes back padded with background - which means <em>not examined</em>, not <em>nothing there</em>. Give the model an <code>input_shape</code> that covers the anatomy if that distinction matters.</p>
-</section><section id="one-at-a-time-when-the-split-will-not-fit" class="level3"><h3 class="anchored" data-anchor-id="one-at-a-time-when-the-split-will-not-fit">One at a time, when the split will not fit</h3>
+</section>
+<section id="one-at-a-time-when-the-split-will-not-fit" class="level3">
+<h3 class="anchored" data-anchor-id="one-at-a-time-when-the-split-will-not-fit">One at a time, when the split will not fit</h3>
 <p>The default returns everything together, which for a tiled run is the whole split at full resolution: 200 fundus photographs at 2048 x 2048 is about 6.7 GB before anything is drawn, and the engine’s own <code>predict</code> was killed by exactly that. Two arguments avoid it.</p>
 <p><code>cases</code> names the ones wanted. <code>each</code> hands them over one at a time and keeps only what the function gives back. They compose: <code>cases</code> says which, <code>each</code> says what to do with them.</p>
 <p>The saving is in memory and not in time. The engine’s stream is sequential, so asking for two cases out of two hundred still runs the model over two hundred - it simply never holds more than one answer at once.</p>
-</section><section id="examples" class="level3"><h3 class="anchored" data-anchor-id="examples">Examples</h3>
+</section>
+<section id="examples" class="level3">
+<h3 class="anchored" data-anchor-id="examples">Examples</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/maju116/rplatypus">"rplatypus"</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">masks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"unet"</span><span class="op">)</span>                     <span class="co"># an array, on the model's grid</span></span>
-<span><span class="va">masks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"unet"</span>, space <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span>   <span class="co"># a list, on each scan's own grid</span></span>
-<span></span>
-<span><span class="co"># The two worst cases, without holding the other 198.</span></span>
-<span><span class="va">cases</span> <span class="op">&lt;-</span> <span class="fu"><a href="../man/evaluate_cases.html">evaluate_cases</a></span><span class="op">(</span><span class="va">fit</span>, split <span class="op">=</span> <span class="st">"validation"</span><span class="op">)</span></span>
-<span><span class="va">worst</span> <span class="op">&lt;-</span> <span class="va">cases</span><span class="op">$</span><span class="va">case</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">cases</span><span class="op">$</span><span class="va">dice</span><span class="op">)</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span></span>
-<span><span class="va">two</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, split <span class="op">=</span> <span class="st">"validation"</span>, cases <span class="op">=</span> <span class="va">worst</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Or walk the split, keeping one number per image and none of the masks.</span></span>
-<span><span class="va">coverage</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, split <span class="op">=</span> <span class="st">"validation"</span>, each <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">case</span>, <span class="va">mask</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">mask</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># `space = "source"` returns a list and not an array, which is the API being</span></span>
-<span><span class="co"># honest: scans differ in size, a stacked array needs one shape, and resizing</span></span>
-<span><span class="co"># them to match is how a mask ends up describing anatomy it was not computed from.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"rplatypus"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>masks <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="st">"unet"</span>)                     <span class="co"># an array, on the model's grid</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>masks <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="st">"unet"</span>, <span class="at">space =</span> <span class="st">"source"</span>)   <span class="co"># a list, on each scan's own grid</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># The two worst cases, without holding the other 198.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>cases <span class="ot">&lt;-</span> <span class="fu">evaluate_cases</span>(fit, <span class="at">split =</span> <span class="st">"validation"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>worst <span class="ot">&lt;-</span> cases<span class="sc">$</span>case[<span class="fu">order</span>(cases<span class="sc">$</span>dice)][<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>two <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">split =</span> <span class="st">"validation"</span>, <span class="at">cases =</span> worst)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Or walk the split, keeping one number per image and none of the masks.</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>coverage <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">split =</span> <span class="st">"validation"</span>, <span class="at">each =</span> <span class="cf">function</span>(case, mask) <span class="fu">mean</span>(mask <span class="sc">&gt;</span> <span class="dv">1</span>))</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># `space = "source"` returns a list and not an array, which is the API being</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># honest: scans differ in size, a stacked array needs one shape, and resizing</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># them to match is how a mask ends up describing anatomy it was not computed from.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -1298,6 +1341,7 @@ Unused.
   });
   </script>
 </div> <!-- /content -->
+
 
 
 

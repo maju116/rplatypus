@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.10.19">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
 <title>Telling touching nuclei apart – rplatypus</title>
 <style>
 /* Default styles provided by pandoc.
@@ -60,6 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
+
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
@@ -79,9 +83,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-ee0d825c001f130fb265e92dcb17fa1f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -108,11 +113,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+
+
 </head>
+
 <body class="nav-sidebar docked nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">rplatypus</span>
@@ -124,17 +134,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item compact">
+  <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/maju116/rplatypus"> <i class="bi bi-github" role="img" aria-label="rplatypus GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-</div> <!-- /navcollapse -->
+          </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -142,11 +154,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-<li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
@@ -160,8 +176,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../vignettes/blood-cells.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Finding blood cells with YOLOv3</span></a>
@@ -198,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
@@ -207,8 +223,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../overview.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Overview</span></a>
@@ -222,8 +238,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_status.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Is the engine ready?</span></a>
@@ -242,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
@@ -251,8 +267,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_spec.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Build an experiment specification</span></a>
@@ -301,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
@@ -310,8 +326,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/losses.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Loss functions</span></a>
@@ -384,7 +400,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
@@ -393,8 +409,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/split_dataset.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Split a dataset into training, validation and test sets</span></a>
@@ -437,7 +453,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
@@ -446,8 +462,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_fit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Train the models in a specification</span></a>
@@ -466,7 +482,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false">
@@ -475,8 +491,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/predict.platypus_fit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Predict masks</span></a>
@@ -519,7 +535,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
@@ -528,8 +544,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/export_weights.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Save a trained model’s weights</span></a>
@@ -542,7 +558,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
@@ -551,8 +567,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 "></ul>
-</li>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+      </ul>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false">
@@ -561,8 +578,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/plot_masks.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Look at masks beside the images they came from</span></a>
@@ -617,7 +634,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="false">
@@ -626,8 +643,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/colours_to_classes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Read a colour mask back to class indices</span></a>
@@ -700,7 +717,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false">
@@ -709,10 +726,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 "></ul>
-</li>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
       </ul>
-</li>
+  </li>
+      </ul>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="true">
@@ -721,8 +739,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../NEWS.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Changelog</span></a>
@@ -747,16 +765,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
     </ul>
-</div>
-</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
    
   <ul>
-<li><a href="#before-any-of-that-objects-in-four-lines" id="toc-before-any-of-that-objects-in-four-lines" class="nav-link active" data-scroll-target="#before-any-of-that-objects-in-four-lines">Before any of that: objects in four lines</a></li>
+  <li><a href="#before-any-of-that-objects-in-four-lines" id="toc-before-any-of-that-objects-in-four-lines" class="nav-link active" data-scroll-target="#before-any-of-that-objects-in-four-lines">Before any of that: objects in four lines</a></li>
   <li><a href="#the-semantic-sibling-side-by-side" id="toc-the-semantic-sibling-side-by-side" class="nav-link" data-scroll-target="#the-semantic-sibling-side-by-side">The semantic sibling, side by side</a></li>
   <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data">The data</a></li>
   <li><a href="#the-specification-with-the-borrowed-model-beside-a-new-one" id="toc-the-specification-with-the-borrowed-model-beside-a-new-one" class="nav-link" data-scroll-target="#the-specification-with-the-borrowed-model-beside-a-new-one">The specification, with the borrowed model beside a new one</a></li>
@@ -768,10 +788,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#what-it-was-for-a-count-and-a-size-distribution" id="toc-what-it-was-for-a-count-and-a-size-distribution" class="nav-link" data-scroll-target="#what-it-was-for-a-count-and-a-size-distribution">What it was for: a count and a size distribution</a></li>
   <li><a href="#the-same-thing-from-a-file" id="toc-the-same-thing-from-a-file" class="nav-link" data-scroll-target="#the-same-thing-from-a-file">The same thing from a file</a></li>
   <li><a href="#a-note-on-older-graphics-cards" id="toc-a-note-on-older-graphics-cards" class="nav-link" data-scroll-target="#a-note-on-older-graphics-cards">A note on older graphics cards</a></li>
-  </ul></nav>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/blood-cells.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/instances.html">Telling touching nuclei apart</a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/blood-cells.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/instances.html">Telling touching nuclei apart</a></li></ol></nav>
+<div class="quarto-title">
 <h1 class="title">Telling touching nuclei apart</h1>
 </div>
 
@@ -786,101 +810,113 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p><code>vignette("data-science-bowl")</code> finds the nuclei in these pictures and stops there. Its own closing warning is the reason this document exists: the mask it produces says <em>nucleus</em> or <em>not nucleus</em> for every pixel, so two nuclei touching each other come back as one region, and <strong>a count taken from it would be wrong</strong>.</p>
+</header>
+
+
+<p><code>vignette("data-science-bowl")</code> finds the nuclei in these pictures and stops there. Its own closing warning is the reason this document exists: the mask it produces says <em>nucleus</em> or <em>not nucleus</em> for every pixel, so two nuclei touching each other come back as one region, and <strong>a count taken from it would be wrong</strong>.</p>
 <p>This is the same dataset, read a different way. Nothing new was collected: the 2018 Data Science Bowl ships one mask per nucleus, and the semantic vignette unites them. Here they keep their identity, which turns the question from <em>where are the nuclei</em> into <em>how many are there, and which pixels belong to which one</em>.</p>
 <p>Every number and every picture below was produced by running the code shown.</p>
-<section id="before-any-of-that-objects-in-four-lines" class="level2"><h2 class="anchored" data-anchor-id="before-any-of-that-objects-in-four-lines">Before any of that: objects in four lines</h2>
+<section id="before-any-of-that-objects-in-four-lines" class="level2">
+<h2 class="anchored" data-anchor-id="before-any-of-that-objects-in-four-lines">Before any of that: objects in four lines</h2>
 <p>Weights for this are published, so the difference is visible before anything is trained. The borrowed model predicts three channels - background, the interior of a nucleus and a rim around it - and <code>decode</code> says how those channels become objects:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">borrowed</span> <span class="op">&lt;-</span> <span class="fu">platypus_spec</span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="fu">instance_data</span><span class="op">(</span><span class="va">validation_dir</span>, <span class="va">validation_dir</span><span class="op">)</span>,</span>
-<span>  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu">u_net</span><span class="op">(</span><span class="st">"objects"</span>, input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">256</span>, <span class="fl">256</span><span class="op">)</span>, blocks <span class="op">=</span> <span class="fl">4</span>, filters <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>                      separation <span class="op">=</span> <span class="fu">separation_rim</span><span class="op">(</span>width <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
-<span>                      decode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu">decode_nearest_seed</span><span class="op">(</span><span class="op">)</span>, <span class="fu">decode_connected_components</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                      weights <span class="op">=</span> <span class="st">"dsbowl-instances"</span>, fit <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">loaded</span> <span class="op">&lt;-</span> <span class="fu">platypus_fit</span><span class="op">(</span><span class="va">borrowed</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">objects</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">loaded</span>, split <span class="op">=</span> <span class="st">"validation"</span>, decode <span class="op">=</span> <span class="st">"nearest_seed"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">objects</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 134</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>borrowed <span class="ot">&lt;-</span> <span class="fu">platypus_spec</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">instance_data</span>(validation_dir, validation_dir),</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(<span class="fu">u_net</span>(<span class="st">"objects"</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">256</span>, <span class="dv">256</span>), <span class="at">blocks =</span> <span class="dv">4</span>, <span class="at">filters =</span> <span class="dv">16</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">separation =</span> <span class="fu">separation_rim</span>(<span class="at">width =</span> <span class="dv">2</span>),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">decode =</span> <span class="fu">list</span>(<span class="fu">decode_nearest_seed</span>(), <span class="fu">decode_connected_components</span>()),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">weights =</span> <span class="st">"dsbowl-instances"</span>, <span class="at">fit =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>loaded <span class="ot">&lt;-</span> <span class="fu">platypus_fit</span>(borrowed, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>objects <span class="ot">&lt;-</span> <span class="fu">predict</span>(loaded, <span class="at">split =</span> <span class="st">"validation"</span>, <span class="at">decode =</span> <span class="st">"nearest_seed"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(objects)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 134</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>An instance prediction comes back as a <strong>list of integer label maps named by case</strong>, not as one array: objects numbered from 1, with 0 for background.</p>
 <p>Now the same loaded file, decoded the other way. <code>connected_components</code> ignores the rim channel entirely - it labels connected foreground, which is what a semantic mask gives you:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">merged</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">loaded</span>, split <span class="op">=</span> <span class="st">"validation"</span>, decode <span class="op">=</span> <span class="st">"connected_components"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
-<span>  case <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/substr.html">substr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">objects</span><span class="op">)</span>, <span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span>,</span>
-<span>  separated <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">objects</span>, <span class="va">max</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html">integer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  as_one_region <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">merged</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">objects</span><span class="op">)</span><span class="op">]</span>, <span class="va">max</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html">integer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">counts</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">counts</span><span class="op">$</span><span class="va">as_one_region</span> <span class="op">-</span> <span class="va">counts</span><span class="op">$</span><span class="va">separated</span><span class="op">)</span>, <span class="op">]</span>, <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                                                                      case</span></span>
-<span><span class="co">#&gt; 547ef286ee5f4e5dce533e982e6992ada67b7d727fdd3cfa6576f24c631a7ae6 547ef286</span></span>
-<span><span class="co">#&gt; 6fe2df6de1d962b90146c822bcefc84d0d3d6926fdfbacd3acdc9de830ee5622 6fe2df6d</span></span>
-<span><span class="co">#&gt; 308084bdd358e0bd3dc7f2b409d6f34cc119bce30216f44667fc2be43ff31722 308084bd</span></span>
-<span><span class="co">#&gt; 9bb6e39d5f4415bc7554842ee5d1280403a602f2ba56122b87f453a62d37c06e 9bb6e39d</span></span>
-<span><span class="co">#&gt; 3ebd2ab34ba86e515feb79ffdeb7fc303a074a98ba39949b905dbde3ff4b7ec0 3ebd2ab3</span></span>
-<span><span class="co">#&gt;                                                                  separated</span></span>
-<span><span class="co">#&gt; 547ef286ee5f4e5dce533e982e6992ada67b7d727fdd3cfa6576f24c631a7ae6       245</span></span>
-<span><span class="co">#&gt; 6fe2df6de1d962b90146c822bcefc84d0d3d6926fdfbacd3acdc9de830ee5622       214</span></span>
-<span><span class="co">#&gt; 308084bdd358e0bd3dc7f2b409d6f34cc119bce30216f44667fc2be43ff31722        80</span></span>
-<span><span class="co">#&gt; 9bb6e39d5f4415bc7554842ee5d1280403a602f2ba56122b87f453a62d37c06e       136</span></span>
-<span><span class="co">#&gt; 3ebd2ab34ba86e515feb79ffdeb7fc303a074a98ba39949b905dbde3ff4b7ec0       137</span></span>
-<span><span class="co">#&gt;                                                                  as_one_region</span></span>
-<span><span class="co">#&gt; 547ef286ee5f4e5dce533e982e6992ada67b7d727fdd3cfa6576f24c631a7ae6           180</span></span>
-<span><span class="co">#&gt; 6fe2df6de1d962b90146c822bcefc84d0d3d6926fdfbacd3acdc9de830ee5622           151</span></span>
-<span><span class="co">#&gt; 308084bdd358e0bd3dc7f2b409d6f34cc119bce30216f44667fc2be43ff31722            56</span></span>
-<span><span class="co">#&gt; 9bb6e39d5f4415bc7554842ee5d1280403a602f2ba56122b87f453a62d37c06e           114</span></span>
-<span><span class="co">#&gt; 3ebd2ab34ba86e515feb79ffdeb7fc303a074a98ba39949b905dbde3ff4b7ec0           116</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">worst</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">objects</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">counts</span><span class="op">$</span><span class="va">as_one_region</span> <span class="op">-</span> <span class="va">counts</span><span class="op">$</span><span class="va">separated</span><span class="op">)</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
-<span><span class="va">shot</span> <span class="op">&lt;-</span> <span class="fu">read_images</span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">validation_dir</span>, <span class="va">worst</span>, <span class="st">"images"</span><span class="op">)</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
-<span>  size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">256</span>, <span class="fl">256</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">picture</span> <span class="op">&lt;-</span> <span class="va">shot</span><span class="op">[</span><span class="fl">1</span>, , , <span class="op">]</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span><span class="op">(</span><span class="fu">overlay_instances</span><span class="op">(</span><span class="va">picture</span>, <span class="va">objects</span><span class="op">[[</span><span class="va">worst</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">255</span><span class="op">)</span>, main <span class="op">=</span> <span class="st">"nearest_seed"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span><span class="op">(</span><span class="fu">overlay_instances</span><span class="op">(</span><span class="va">picture</span>, <span class="va">merged</span><span class="op">[[</span><span class="va">worst</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">255</span><span class="op">)</span>,</span>
-<span>     main <span class="op">=</span> <span class="st">"connected_components"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>merged <span class="ot">&lt;-</span> <span class="fu">predict</span>(loaded, <span class="at">split =</span> <span class="st">"validation"</span>, <span class="at">decode =</span> <span class="st">"connected_components"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">case =</span> <span class="fu">substr</span>(<span class="fu">names</span>(objects), <span class="dv">1</span>, <span class="dv">8</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">separated =</span> <span class="fu">vapply</span>(objects, max, <span class="fu">integer</span>(<span class="dv">1</span>)),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">as_one_region =</span> <span class="fu">vapply</span>(merged[<span class="fu">names</span>(objects)], max, <span class="fu">integer</span>(<span class="dv">1</span>))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(counts[<span class="fu">order</span>(counts<span class="sc">$</span>as_one_region <span class="sc">-</span> counts<span class="sc">$</span>separated), ], <span class="dv">5</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                      case</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 547ef286ee5f4e5dce533e982e6992ada67b7d727fdd3cfa6576f24c631a7ae6 547ef286</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6fe2df6de1d962b90146c822bcefc84d0d3d6926fdfbacd3acdc9de830ee5622 6fe2df6d</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 308084bdd358e0bd3dc7f2b409d6f34cc119bce30216f44667fc2be43ff31722 308084bd</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9bb6e39d5f4415bc7554842ee5d1280403a602f2ba56122b87f453a62d37c06e 9bb6e39d</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3ebd2ab34ba86e515feb79ffdeb7fc303a074a98ba39949b905dbde3ff4b7ec0 3ebd2ab3</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                  separated</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 547ef286ee5f4e5dce533e982e6992ada67b7d727fdd3cfa6576f24c631a7ae6       245</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6fe2df6de1d962b90146c822bcefc84d0d3d6926fdfbacd3acdc9de830ee5622       214</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 308084bdd358e0bd3dc7f2b409d6f34cc119bce30216f44667fc2be43ff31722        80</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9bb6e39d5f4415bc7554842ee5d1280403a602f2ba56122b87f453a62d37c06e       136</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3ebd2ab34ba86e515feb79ffdeb7fc303a074a98ba39949b905dbde3ff4b7ec0       137</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                                                  as_one_region</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 547ef286ee5f4e5dce533e982e6992ada67b7d727fdd3cfa6576f24c631a7ae6           180</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6fe2df6de1d962b90146c822bcefc84d0d3d6926fdfbacd3acdc9de830ee5622           151</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 308084bdd358e0bd3dc7f2b409d6f34cc119bce30216f44667fc2be43ff31722            56</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9bb6e39d5f4415bc7554842ee5d1280403a602f2ba56122b87f453a62d37c06e           114</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3ebd2ab34ba86e515feb79ffdeb7fc303a074a98ba39949b905dbde3ff4b7ec0           116</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>worst <span class="ot">&lt;-</span> <span class="fu">names</span>(objects)[<span class="fu">order</span>(counts<span class="sc">$</span>as_one_region <span class="sc">-</span> counts<span class="sc">$</span>separated)][<span class="dv">1</span>]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>shot <span class="ot">&lt;-</span> <span class="fu">read_images</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list.files</span>(<span class="fu">file.path</span>(validation_dir, worst, <span class="st">"images"</span>), <span class="at">full.names =</span> <span class="cn">TRUE</span>)[<span class="dv">1</span>],</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="fu">c</span>(<span class="dv">256</span>, <span class="dv">256</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>picture <span class="ot">&lt;-</span> shot[<span class="dv">1</span>, , , ]</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>))</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.raster</span>(<span class="fu">overlay_instances</span>(picture, objects[[worst]]) <span class="sc">/</span> <span class="dv">255</span>), <span class="at">main =</span> <span class="st">"nearest_seed"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.raster</span>(<span class="fu">overlay_instances</span>(picture, merged[[worst]]) <span class="sc">/</span> <span class="dv">255</span>),</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"connected_components"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/instances-decoded-two-ways-1.png" class="img-fluid figure-img"></p>
-<figcaption>plot of chunk instances-decoded-two-ways</figcaption></figure>
+<figure class="figure">
+<p><img src="figures/instances-decoded-two-ways-1.png" class="img-fluid figure-img"></p>
+<figcaption>plot of chunk instances-decoded-two-ways</figcaption>
+</figure>
 </div>
 <p>One file of weights, one forward pass, two answers to <em>how many nuclei are in this picture</em>. Neither colour map is decoration: adjacent objects are guaranteed different colours, so a colour shared across a boundary is two nuclei the decoding ran together.</p>
 <p><strong>No score is reported here, on purpose.</strong> These weights were trained on <code>stage1_train</code> and this directory is <code>stage1_validation</code>, which is the split they were measured on - the numbers that mean something travel with them:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">listing</span> <span class="op">&lt;-</span> <span class="fu">available_weights</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strwrap.html">strwrap</a></span><span class="op">(</span><span class="va">listing</span><span class="op">$</span><span class="va">description</span><span class="op">[</span><span class="va">listing</span><span class="op">$</span><span class="va">name</span> <span class="op">==</span> <span class="st">"dsbowl-instances"</span><span class="op">]</span>, <span class="fl">88</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; U-Net, 256x256, nuclei in light microscopy, trained to separate touching objects:</span></span>
-<span><span class="co">#&gt; interior, rim and background. BBBC038v1 (the 2018 Data Science Bowl, CC0), the same 134</span></span>
-<span><span class="co">#&gt; held-out images as `dsbowl-unet`. **One file, three scores** - instance average</span></span>
-<span><span class="co">#&gt; precision 0.5445 by nearest_seed, 0.5390 by watershed and 0.4822 by</span></span>
-<span><span class="co">#&gt; connected_components - so a number from these weights means nothing without the</span></span>
-<span><span class="co">#&gt; decoding it came from. Foreground Dice 0.9118. The separation signal is worth +0.0623</span></span>
-<span><span class="co">#&gt; here while a perfect mask is worth +0.2398: the mask is the limit on this data, not the</span></span>
-<span><span class="co">#&gt; signal.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>listing <span class="ot">&lt;-</span> <span class="fu">available_weights</span>()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">strwrap</span>(listing<span class="sc">$</span>description[listing<span class="sc">$</span>name <span class="sc">==</span> <span class="st">"dsbowl-instances"</span>], <span class="dv">88</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; U-Net, 256x256, nuclei in light microscopy, trained to separate touching objects:</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; interior, rim and background. BBBC038v1 (the 2018 Data Science Bowl, CC0), the same 134</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; held-out images as `dsbowl-unet`. **One file, three scores** - instance average</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; precision 0.5445 by nearest_seed, 0.5390 by watershed and 0.4822 by</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; connected_components - so a number from these weights means nothing without the</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; decoding it came from. Foreground Dice 0.9118. The separation signal is worth +0.0623</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; here while a perfect mask is worth +0.2398: the mask is the limit on this data, not the</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; signal.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>That description is the thing to read before quoting anything. <strong>One file, three scores</strong>: the decoding is part of the number, and 0.0623 separates the best from the worst.</p>
-</section><section id="the-semantic-sibling-side-by-side" class="level2"><h2 class="anchored" data-anchor-id="the-semantic-sibling-side-by-side">The semantic sibling, side by side</h2>
+</section>
+<section id="the-semantic-sibling-side-by-side" class="level2">
+<h2 class="anchored" data-anchor-id="the-semantic-sibling-side-by-side">The semantic sibling, side by side</h2>
 <p><code>dsbowl-unet</code> is the published model from the other vignette: same data, same held-out images, one foreground class. It is the comparison this whole document is about, so it is worth seeing rather than describing:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">semantic</span> <span class="op">&lt;-</span> <span class="fu">platypus_spec</span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="fu">segmentation_data</span><span class="op">(</span><span class="va">validation_dir</span>, <span class="va">validation_dir</span>, colormap <span class="op">=</span> <span class="va">binary_colormap</span><span class="op">)</span>,</span>
-<span>  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu">u_net</span><span class="op">(</span><span class="st">"mask"</span>, input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">256</span>, <span class="fl">256</span><span class="op">)</span>, blocks <span class="op">=</span> <span class="fl">4</span>, filters <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>                      weights <span class="op">=</span> <span class="st">"dsbowl-unet"</span>, fit <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">masks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="fu">platypus_fit</span><span class="op">(</span><span class="va">semantic</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>, split <span class="op">=</span> <span class="st">"validation"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">masks</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 134 256 256</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">where</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/match.html">match</a></span><span class="op">(</span><span class="va">worst</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.dirs</a></span><span class="op">(</span><span class="va">validation_dir</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span>, full.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span><span class="op">(</span><span class="fu">overlay_mask</span><span class="op">(</span><span class="va">picture</span>, <span class="va">masks</span><span class="op">[</span><span class="va">where</span>, , <span class="op">]</span>, <span class="va">binary_colormap</span><span class="op">)</span> <span class="op">/</span> <span class="fl">255</span><span class="op">)</span>,</span>
-<span>     main <span class="op">=</span> <span class="st">"dsbowl-unet: where the nuclei are"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span><span class="op">(</span><span class="fu">overlay_instances</span><span class="op">(</span><span class="va">picture</span>, <span class="va">objects</span><span class="op">[[</span><span class="va">worst</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="fl">255</span><span class="op">)</span>,</span>
-<span>     main <span class="op">=</span> <span class="st">"dsbowl-instances: which is which"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>semantic <span class="ot">&lt;-</span> <span class="fu">platypus_spec</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">segmentation_data</span>(validation_dir, validation_dir, <span class="at">colormap =</span> binary_colormap),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(<span class="fu">u_net</span>(<span class="st">"mask"</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">256</span>, <span class="dv">256</span>), <span class="at">blocks =</span> <span class="dv">4</span>, <span class="at">filters =</span> <span class="dv">16</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">weights =</span> <span class="st">"dsbowl-unet"</span>, <span class="at">fit =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>masks <span class="ot">&lt;-</span> <span class="fu">predict</span>(<span class="fu">platypus_fit</span>(semantic, <span class="at">verbose =</span> <span class="cn">FALSE</span>), <span class="at">split =</span> <span class="st">"validation"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(masks)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 134 256 256</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>where <span class="ot">&lt;-</span> <span class="fu">match</span>(worst, <span class="fu">list.dirs</span>(validation_dir, <span class="at">recursive =</span> <span class="cn">FALSE</span>, <span class="at">full.names =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.raster</span>(<span class="fu">overlay_mask</span>(picture, masks[where, , ], binary_colormap) <span class="sc">/</span> <span class="dv">255</span>),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"dsbowl-unet: where the nuclei are"</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.raster</span>(<span class="fu">overlay_instances</span>(picture, objects[[worst]]) <span class="sc">/</span> <span class="dv">255</span>),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"dsbowl-instances: which is which"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/instances-mask-beside-objects-1.png" class="img-fluid figure-img"></p>
-<figcaption>plot of chunk instances-mask-beside-objects</figcaption></figure>
+<figure class="figure">
+<p><img src="figures/instances-mask-beside-objects-1.png" class="img-fluid figure-img"></p>
+<figcaption>plot of chunk instances-mask-beside-objects</figcaption>
+</figure>
 </div>
 <p>The left-hand picture is not worse. It answers a different question, and if the answer you need is <em>what fraction of this slide is nuclei</em> it is the one to use. The right-hand one is what you need to count them, or to measure one of them.</p>
-</section><section id="the-data" class="level2"><h2 class="anchored" data-anchor-id="the-data">The data</h2>
+</section>
+<section id="the-data" class="level2">
+<h2 class="anchored" data-anchor-id="the-data">The data</h2>
 <p>The directory layout is the one the semantic vignette uses, because it is the same directory:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>stage1_train<span class="sc">/</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">00</span>ae65c1c...<span class="sc">/</span></span>
@@ -888,107 +924,117 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    masks<span class="sc">/</span><span class="dv">8</span>a0ac8e3c....png      <span class="co"># one file per nucleus, 70 of them in this case</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    masks<span class="sc">/</span><span class="dv">9</span>a1e2f4b7....png</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">samples</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 536</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">samples</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">"masks"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 27</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code><a href="../man/instance_data.html">instance_data()</a></code> reads those per-object files as identities rather than uniting them, which is the only difference from <code><a href="../man/segmentation_data.html">segmentation_data()</a></code> at this level:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">instance_data</span><span class="op">(</span><span class="va">train_dir</span>, <span class="va">validation_dir</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section><section id="the-specification-with-the-borrowed-model-beside-a-new-one" class="level2"><h2 class="anchored" data-anchor-id="the-specification-with-the-borrowed-model-beside-a-new-one">The specification, with the borrowed model beside a new one</h2>
-<p>Two models in one specification: the published file, loaded and not trained, and the same recipe trained here from scratch. <code><a href="../man/evaluate.html">evaluate()</a></code> returns a row per model <strong>and decoding</strong>, so one table holds the comparison the rest of this document rests on.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">decodings</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu">decode_nearest_seed</span><span class="op">(</span><span class="op">)</span>, <span class="fu">decode_watershed</span><span class="op">(</span><span class="op">)</span>, <span class="fu">decode_connected_components</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu">platypus_spec</span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">data</span>,</span>
-<span>  seed <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>    <span class="fu">u_net</span><span class="op">(</span><span class="st">"published"</span>, input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">256</span>, <span class="fl">256</span><span class="op">)</span>, blocks <span class="op">=</span> <span class="fl">4</span>, filters <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>          separation <span class="op">=</span> <span class="fu">separation_rim</span><span class="op">(</span>width <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, decode <span class="op">=</span> <span class="va">decodings</span>,</span>
-<span>          weights <span class="op">=</span> <span class="st">"dsbowl-instances"</span>, fit <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
-<span>    <span class="fu">u_net</span><span class="op">(</span><span class="st">"mine"</span>, input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">256</span>, <span class="fl">256</span><span class="op">)</span>, blocks <span class="op">=</span> <span class="fl">4</span>, filters <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>          separation <span class="op">=</span> <span class="fu">separation_rim</span><span class="op">(</span>width <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, decode <span class="op">=</span> <span class="va">decodings</span>,</span>
-<span>          loss <span class="op">=</span> <span class="fu">loss_cce_dice</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>          metrics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu">metric_dice</span><span class="op">(</span><span class="op">)</span>, <span class="fu">metric_iou</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>          optimizer <span class="op">=</span> <span class="fu">optimizer_adam</span><span class="op">(</span>learning_rate <span class="op">=</span> <span class="fl">0.001</span><span class="op">)</span>,</span>
-<span>          augmentation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>            <span class="fu">augmentation_step</span><span class="op">(</span><span class="st">"HorizontalFlip"</span>, p <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>            <span class="fu">augmentation_step</span><span class="op">(</span><span class="st">"VerticalFlip"</span>, p <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>            <span class="fu">augmentation_step</span><span class="op">(</span><span class="st">"RandomRotate90"</span>, p <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
-<span>          <span class="op">)</span>,</span>
-<span>          epochs <span class="op">=</span> <span class="fl">40</span>, batch_size <span class="op">=</span> <span class="fl">32</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">spec</span></span>
-<span><span class="co">#&gt; platypus specification</span></span>
-<span><span class="co">#&gt;   data        : /home/maju116/Desktop/PROJECTS/Personal Projects/PLATYPUS FAMILY/pyplatypus/examples/data/data_science_bowl/stage1_train </span></span>
-<span><span class="co">#&gt;   classes     : 0 </span></span>
-<span><span class="co">#&gt;   models      : 2 </span></span>
-<span><span class="co">#&gt;     published      u_net            256x256, cce, 10 epochs</span></span>
-<span><span class="co">#&gt;     mine           u_net            256x256, cce_dice, 40 epochs</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(samples)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 536</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">list.files</span>(<span class="fu">file.path</span>(samples[<span class="dv">1</span>], <span class="st">"masks"</span>)))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 27</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><a href="../man/instance_data.html"><code>instance_data()</code></a> reads those per-object files as identities rather than uniting them, which is the only difference from <a href="../man/segmentation_data.html"><code>segmentation_data()</code></a> at this level:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">instance_data</span>(train_dir, validation_dir)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="the-specification-with-the-borrowed-model-beside-a-new-one" class="level2">
+<h2 class="anchored" data-anchor-id="the-specification-with-the-borrowed-model-beside-a-new-one">The specification, with the borrowed model beside a new one</h2>
+<p>Two models in one specification: the published file, loaded and not trained, and the same recipe trained here from scratch. <a href="../man/evaluate.html"><code>evaluate()</code></a> returns a row per model <strong>and decoding</strong>, so one table holds the comparison the rest of this document rests on.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>decodings <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">decode_nearest_seed</span>(), <span class="fu">decode_watershed</span>(), <span class="fu">decode_connected_components</span>())</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="fu">platypus_spec</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> data,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">0</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">u_net</span>(<span class="st">"published"</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">256</span>, <span class="dv">256</span>), <span class="at">blocks =</span> <span class="dv">4</span>, <span class="at">filters =</span> <span class="dv">16</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>          <span class="at">separation =</span> <span class="fu">separation_rim</span>(<span class="at">width =</span> <span class="dv">2</span>), <span class="at">decode =</span> decodings,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">weights =</span> <span class="st">"dsbowl-instances"</span>, <span class="at">fit =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">u_net</span>(<span class="st">"mine"</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">256</span>, <span class="dv">256</span>), <span class="at">blocks =</span> <span class="dv">4</span>, <span class="at">filters =</span> <span class="dv">16</span>,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">separation =</span> <span class="fu">separation_rim</span>(<span class="at">width =</span> <span class="dv">2</span>), <span class="at">decode =</span> decodings,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">loss =</span> <span class="fu">loss_cce_dice</span>(),</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">metrics =</span> <span class="fu">list</span>(<span class="fu">metric_dice</span>(), <span class="fu">metric_iou</span>()),</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">optimizer =</span> <span class="fu">optimizer_adam</span>(<span class="at">learning_rate =</span> <span class="fl">0.001</span>),</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">augmentation =</span> <span class="fu">list</span>(</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>            <span class="fu">augmentation_step</span>(<span class="st">"HorizontalFlip"</span>, <span class="at">p =</span> <span class="fl">0.5</span>),</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>            <span class="fu">augmentation_step</span>(<span class="st">"VerticalFlip"</span>, <span class="at">p =</span> <span class="fl">0.5</span>),</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>            <span class="fu">augmentation_step</span>(<span class="st">"RandomRotate90"</span>, <span class="at">p =</span> <span class="fl">0.5</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>          ),</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>          <span class="at">epochs =</span> <span class="dv">40</span>, <span class="at">batch_size =</span> <span class="dv">32</span>)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>spec</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; platypus specification</span></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   data        : /home/maju116/Desktop/PROJECTS/Personal Projects/PLATYPUS FAMILY/pyplatypus/examples/data/data_science_bowl/stage1_train </span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   classes     : 0 </span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   models      : 2 </span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     published      u_net            256x256, cce, 10 epochs</span></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     mine           u_net            256x256, cce_dice, 40 epochs</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>separation</code> is one block per model and <code>decode</code> is a list, and the asymmetry is not cosmetic: the separation sets what the network predicts, so changing it means another training run, while a second decoding is another pass over the same predictions. Measured on these 134 images, a second decoding costs <strong>1.41 seconds</strong>.</p>
 <p><strong>Forty epochs rather than the published file’s hundred and twenty</strong>, deliberately: the point of the table below is what a short run gets you against a converged one, and a reader reproducing this does not need two hours to see the difference.</p>
-</section><section id="train" class="level2"><h2 class="anchored" data-anchor-id="train">Train</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">platypus_fit</span><span class="op">(</span><span class="va">spec</span>, num_workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="va">fit</span></span>
-<span><span class="co">#&gt; platypus fit</span></span>
-<span><span class="co">#&gt;   models   : published, mine </span></span>
-<span><span class="co">#&gt;   device   : NVIDIA GeForce GTX 1070 (torch 2.7.1+cu126) </span></span>
-<span><span class="co">#&gt;   epochs   : mine=40 </span></span>
-<span><span class="co">#&gt;   next     : evaluate(fit), predict(fit, "published")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="train" class="level2">
+<h2 class="anchored" data-anchor-id="train">Train</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">platypus_fit</span>(spec, <span class="at">num_workers =</span> <span class="dv">4</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>fit</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; platypus fit</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   models   : published, mine </span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   device   : NVIDIA GeForce GTX 1070 (torch 2.7.1+cu126) </span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   epochs   : mine=40 </span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   next     : evaluate(fit), predict(fit, "published")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>num_workers = 4</code> is worth copying. Measured on this model and this batch size, the same epoch takes <strong>17.5 seconds against 49.6</strong> with the default of none: the GPU spends most of a run waiting for PNGs to be decoded, and nothing about the model changes.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/instances-history-1.png" class="img-fluid figure-img"></p>
-<figcaption>plot of chunk instances-history</figcaption></figure>
+<figure class="figure">
+<p><img src="figures/instances-history-1.png" class="img-fluid figure-img"></p>
+<figcaption>plot of chunk instances-history</figcaption>
+</figure>
 </div>
-</section><section id="compare" class="level2"><h2 class="anchored" data-anchor-id="compare">Compare</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu">evaluate</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
-<span><span class="va">scores</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"model"</span>, <span class="st">"decode"</span>, <span class="st">"foreground_dice"</span>, <span class="st">"average_precision"</span>,</span>
-<span>           <span class="st">"predicted_objects"</span>, <span class="st">"truth_objects"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt;       model               decode foreground_dice average_precision</span></span>
-<span><span class="co">#&gt; 1 published         nearest_seed       0.9117900         0.5444811</span></span>
-<span><span class="co">#&gt; 2 published            watershed       0.9117900         0.5390481</span></span>
-<span><span class="co">#&gt; 3 published connected_components       0.9117900         0.4821945</span></span>
-<span><span class="co">#&gt; 4      mine         nearest_seed       0.9015549         0.5011777</span></span>
-<span><span class="co">#&gt; 5      mine            watershed       0.9015549         0.5003432</span></span>
-<span><span class="co">#&gt; 6      mine connected_components       0.9015549         0.4655490</span></span>
-<span><span class="co">#&gt;   predicted_objects truth_objects</span></span>
-<span><span class="co">#&gt; 1              5378          5999</span></span>
-<span><span class="co">#&gt; 2              5378          5999</span></span>
-<span><span class="co">#&gt; 3              4914          5999</span></span>
-<span><span class="co">#&gt; 4              5127          5999</span></span>
-<span><span class="co">#&gt; 5              5127          5999</span></span>
-<span><span class="co">#&gt; 6              5015          5999</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="compare" class="level2">
+<h2 class="anchored" data-anchor-id="compare">Compare</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>scores <span class="ot">&lt;-</span> <span class="fu">evaluate</span>(fit)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>scores[, <span class="fu">c</span>(<span class="st">"model"</span>, <span class="st">"decode"</span>, <span class="st">"foreground_dice"</span>, <span class="st">"average_precision"</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>           <span class="st">"predicted_objects"</span>, <span class="st">"truth_objects"</span>)]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       model               decode foreground_dice average_precision</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 published         nearest_seed       0.9117900         0.5444811</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 published            watershed       0.9117900         0.5390481</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 published connected_components       0.9117900         0.4821945</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4      mine         nearest_seed       0.9015549         0.5011777</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5      mine            watershed       0.9015549         0.5003432</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6      mine connected_components       0.9015549         0.4655490</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   predicted_objects truth_objects</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1              5378          5999</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2              5378          5999</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3              4914          5999</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4              5127          5999</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5              5127          5999</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6              5015          5999</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Three things in that table, in the order they matter.</p>
 <p><strong>Within either model, the mask is identical across its three rows.</strong> There is one forward pass; the rows differ only in how its channels were turned into objects. So the spread between a model’s own rows is the decoding’s contribution and nothing else.</p>
 <p><strong><code>connected_components</code> is the row the others are read against.</strong> It throws the rim channel away, so it is what the separation signal is worth being compared to - not a weaker model, the same model asked a question that ignores half its output.</p>
 <p><strong>The forty-epoch run is 0.0102 behind on the mask and 0.0433 behind on average precision</strong> - the two numbers written by the run above rather than by hand, so re-knitting this document cannot leave them stale.</p>
 <p>Two runs of one configuration on this data differ by about <strong>0.009</strong> of average precision - measured, and the recorded spread every claim here is read against. The mask gap above is one of those, so on foreground Dice the short run is barely distinguishable from the published one, while the score gap is 4.8 of them. <strong>The extra eighty epochs bought a sharper rim rather than a better mask</strong>, and <code>foreground_dice</code> cannot see a sharper rim: the rim is a third class whose quality only becomes visible once the channels are decoded into objects, which is the same reason the <code>class dice</code> column exists beside it.</p>
 <p>That is a finding about time inside one recipe, and the next section is a finding about recipes. They do not contradict each other, and reading one as the other is the mistake this document is arranged to prevent.</p>
-</section><section id="what-this-does-not-settle-measured-rather-than-guessed" class="level2"><h2 class="anchored" data-anchor-id="what-this-does-not-settle-measured-rather-than-guessed">What this does not settle, measured rather than guessed</h2>
+</section>
+<section id="what-this-does-not-settle-measured-rather-than-guessed" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-does-not-settle-measured-rather-than-guessed">What this does not settle, measured rather than guessed</h2>
 <p>The instance milestone closed on numbers that say the interesting part is somewhere else:</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
 <col style="width: 50%">
 </colgroup>
-<thead><tr class="header">
+<thead>
+<tr class="header">
 <th>route</th>
 <th>instance AP on these 134 images</th>
-</tr></thead>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td>the published semantic weights through connected components</td>
 <td>0.4888</td>
 </tr>
 <tr class="even">
-<td>
-<strong>a perfect semantic mask</strong> through connected components</td>
+<td><strong>a perfect semantic mask</strong> through connected components</td>
 <td><strong>0.7655</strong></td>
 </tr>
 <tr class="odd">
-<td>the published separation weights, <code>nearest_seed</code>
-</td>
+<td>the published separation weights, <code>nearest_seed</code></td>
 <td>0.5445</td>
 </tr>
 <tr class="even">
@@ -999,85 +1045,102 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <p>So connected components caps <em>any</em> model here at 0.7655 - a flawless mask still scores that - and the separation signal is worth about +0.06 on top of the mask it is computed from, where fixing the mask is worth +0.24. Three trained signals were compared and they agree; a bigger network was measured and moved the score by less than the run-to-run spread.</p>
 <p>Read that as a closed direction rather than as a run to tune: on this data the headroom is in the mask, and a document that ended on a score would be claiming the opposite of what was measured.</p>
-</section><section id="which-objects-not-how-many-pixels" class="level2"><h2 class="anchored" data-anchor-id="which-objects-not-how-many-pixels">Which objects, not how many pixels</h2>
-<p>A score cannot tell you whether you found the wrong nuclei or drew the right ones badly. <code><a href="../man/overlay_instance_agreement.html">overlay_instance_agreement()</a></code> matches predicted objects to true ones the way the metric does and colours the three outcomes, so the failure is visible by kind.</p>
+</section>
+<section id="which-objects-not-how-many-pixels" class="level2">
+<h2 class="anchored" data-anchor-id="which-objects-not-how-many-pixels">Which objects, not how many pixels</h2>
+<p>A score cannot tell you whether you found the wrong nuclei or drew the right ones badly. <a href="../man/overlay_instance_agreement.html"><code>overlay_instance_agreement()</code></a> matches predicted objects to true ones the way the metric does and colours the three outcomes, so the failure is visible by kind.</p>
 <p>The truth has to be assembled from the per-object files, which is four lines and worth seeing - <code>read_images(nearest = TRUE)</code> matters, because interpolating a label map invents numbers belonging to no object:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">truth_map</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">case</span>, <span class="va">size</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">256</span>, <span class="fl">256</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">case</span>, <span class="st">"masks"</span><span class="op">)</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span>  <span class="va">stack</span> <span class="op">&lt;-</span> <span class="fu">read_images</span><span class="op">(</span><span class="va">files</span>, size <span class="op">=</span> <span class="va">size</span>, channels <span class="op">=</span> <span class="fl">1</span>, nearest <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span>  <span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html">array</a></span><span class="op">(</span><span class="fl">0L</span>, dim <span class="op">=</span> <span class="va">size</span><span class="op">)</span></span>
-<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">files</span><span class="op">)</span><span class="op">)</span> <span class="va">labels</span><span class="op">[</span><span class="va">stack</span><span class="op">[</span><span class="va">i</span>, , , <span class="fl">1</span><span class="op">]</span> <span class="op">&gt;</span> <span class="fl">0.5</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">i</span></span>
-<span>  <span class="va">labels</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="va">actual</span> <span class="op">&lt;-</span> <span class="fu">truth_map</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">validation_dir</span>, <span class="va">worst</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>objects_in_the_files <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">validation_dir</span>, <span class="va">worst</span>, <span class="st">"masks"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  objects_that_survived_the_resize <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="va">actual</span><span class="op">)</span><span class="op">)</span>, <span class="fl">0L</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;             objects_in_the_files objects_that_survived_the_resize </span></span>
-<span><span class="co">#&gt;                              257                              257</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mine</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"mine"</span>, split <span class="op">=</span> <span class="st">"validation"</span>, decode <span class="op">=</span> <span class="st">"nearest_seed"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span><span class="op">(</span><span class="fu">overlay_instance_agreement</span><span class="op">(</span><span class="va">picture</span>, <span class="va">objects</span><span class="op">[[</span><span class="va">worst</span><span class="op">]</span><span class="op">]</span>, <span class="va">actual</span><span class="op">)</span> <span class="op">/</span> <span class="fl">255</span><span class="op">)</span>,</span>
-<span>     main <span class="op">=</span> <span class="st">"published"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/grDevices/as.raster.html">as.raster</a></span><span class="op">(</span><span class="fu">overlay_instance_agreement</span><span class="op">(</span><span class="va">picture</span>, <span class="va">mine</span><span class="op">[[</span><span class="va">worst</span><span class="op">]</span><span class="op">]</span>, <span class="va">actual</span><span class="op">)</span> <span class="op">/</span> <span class="fl">255</span><span class="op">)</span>,</span>
-<span>     main <span class="op">=</span> <span class="st">"mine, 40 epochs"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>truth_map <span class="ot">&lt;-</span> <span class="cf">function</span>(case, <span class="at">size =</span> <span class="fu">c</span>(<span class="dv">256</span>, <span class="dv">256</span>)) {</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="fu">file.path</span>(case, <span class="st">"masks"</span>), <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  stack <span class="ot">&lt;-</span> <span class="fu">read_images</span>(files, <span class="at">size =</span> size, <span class="at">channels =</span> <span class="dv">1</span>, <span class="at">nearest =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  labels <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="dv">0</span>L, <span class="at">dim =</span> size)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(files)) labels[stack[i, , , <span class="dv">1</span>] <span class="sc">&gt;</span> <span class="fl">0.5</span>] <span class="ot">&lt;-</span> i</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  labels</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>actual <span class="ot">&lt;-</span> <span class="fu">truth_map</span>(<span class="fu">file.path</span>(validation_dir, worst))</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">objects_in_the_files =</span> <span class="fu">length</span>(<span class="fu">list.files</span>(<span class="fu">file.path</span>(validation_dir, worst, <span class="st">"masks"</span>))),</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">objects_that_survived_the_resize =</span> <span class="fu">length</span>(<span class="fu">setdiff</span>(<span class="fu">unique</span>(<span class="fu">as.vector</span>(actual)), <span class="dv">0</span>L)))</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             objects_in_the_files objects_that_survived_the_resize </span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                              257                              257</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>mine <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="st">"mine"</span>, <span class="at">split =</span> <span class="st">"validation"</span>, <span class="at">decode =</span> <span class="st">"nearest_seed"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>))</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.raster</span>(<span class="fu">overlay_instance_agreement</span>(picture, objects[[worst]], actual) <span class="sc">/</span> <span class="dv">255</span>),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"published"</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.raster</span>(<span class="fu">overlay_instance_agreement</span>(picture, mine[[worst]], actual) <span class="sc">/</span> <span class="dv">255</span>),</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"mine, 40 epochs"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/instances-agreement-1.png" class="img-fluid figure-img"></p>
-<figcaption>plot of chunk instances-agreement</figcaption></figure>
+<figure class="figure">
+<p><img src="figures/instances-agreement-1.png" class="img-fluid figure-img"></p>
+<figcaption>plot of chunk instances-agreement</figcaption>
+</figure>
 </div>
 <p>Green is a true object matched by a prediction, red one that nothing matched, yellow a prediction matching nothing. The threshold is an IoU of 0.5 and it cannot be lowered below that: under 0.5 one prediction can satisfy two true objects at once, the match stops being one to one, and the average precision refuses the same thing for the same reason.</p>
-</section><section id="a-decoding-changed-without-retraining" class="level2"><h2 class="anchored" data-anchor-id="a-decoding-changed-without-retraining">A decoding changed without retraining</h2>
+</section>
+<section id="a-decoding-changed-without-retraining" class="level2">
+<h2 class="anchored" data-anchor-id="a-decoding-changed-without-retraining">A decoding changed without retraining</h2>
 <p>This is what <code>decode</code> being a list is for. No model is loaded again and nothing is trained:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">again</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"nearest_seed"</span>, <span class="st">"watershed"</span>, <span class="st">"connected_components"</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">how</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">maps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">fit</span>, <span class="st">"mine"</span>, split <span class="op">=</span> <span class="st">"validation"</span>, decode <span class="op">=</span> <span class="va">how</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>decode <span class="op">=</span> <span class="va">how</span>, objects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">maps</span>, <span class="va">max</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html">integer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">again</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                 decode objects</span></span>
-<span><span class="co">#&gt; 1         nearest_seed    5127</span></span>
-<span><span class="co">#&gt; 2            watershed    5127</span></span>
-<span><span class="co">#&gt; 3 connected_components    5015</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>again <span class="ot">&lt;-</span> <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">"nearest_seed"</span>, <span class="st">"watershed"</span>, <span class="st">"connected_components"</span>), <span class="cf">function</span>(how) {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  maps <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="st">"mine"</span>, <span class="at">split =</span> <span class="st">"validation"</span>, <span class="at">decode =</span> how)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">decode =</span> how, <span class="at">objects =</span> <span class="fu">sum</span>(<span class="fu">vapply</span>(maps, max, <span class="fu">integer</span>(<span class="dv">1</span>))))</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">do.call</span>(rbind, again)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                 decode objects</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         nearest_seed    5127</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2            watershed    5127</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 connected_components    5015</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Against 5,999 objects in the truth. The counts, not the scores, are where the decoding shows itself most plainly: the gap between the first row and the last is nuclei that were found and then run together with a neighbour.</p>
-</section><section id="what-it-was-for-a-count-and-a-size-distribution" class="level2"><h2 class="anchored" data-anchor-id="what-it-was-for-a-count-and-a-size-distribution">What it was for: a count and a size distribution</h2>
-<p><code><a href="../man/instance_sizes.html">instance_sizes()</a></code> is the end of this road. One label map in, one row per object out:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sizes</span> <span class="op">&lt;-</span> <span class="fu">instance_sizes</span><span class="op">(</span><span class="va">mine</span><span class="op">[[</span><span class="va">worst</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sizes</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   object voxels</span></span>
-<span><span class="co">#&gt; 1      1     20</span></span>
-<span><span class="co">#&gt; 2      2     18</span></span>
-<span><span class="co">#&gt; 3      3     46</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">sizes</span><span class="op">$</span><span class="va">voxels</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
-<span><span class="co">#&gt;    5.00   56.50   74.00   73.16   87.75  207.00</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">sizes</span><span class="op">$</span><span class="va">voxels</span>, breaks <span class="op">=</span> <span class="fl">20</span>, col <span class="op">=</span> <span class="st">"grey80"</span>, border <span class="op">=</span> <span class="st">"white"</span>,</span>
-<span>     main <span class="op">=</span> <span class="st">""</span>, xlab <span class="op">=</span> <span class="st">"object size in pixels"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="what-it-was-for-a-count-and-a-size-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="what-it-was-for-a-count-and-a-size-distribution">What it was for: a count and a size distribution</h2>
+<p><a href="../man/instance_sizes.html"><code>instance_sizes()</code></a> is the end of this road. One label map in, one row per object out:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>sizes <span class="ot">&lt;-</span> <span class="fu">instance_sizes</span>(mine[[worst]])</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sizes, <span class="dv">3</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   object voxels</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1      1     20</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2      2     18</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3      3     46</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sizes<span class="sc">$</span>voxels)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    5.00   56.50   74.00   73.16   87.75  207.00</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(sizes<span class="sc">$</span>voxels, <span class="at">breaks =</span> <span class="dv">20</span>, <span class="at">col =</span> <span class="st">"grey80"</span>, <span class="at">border =</span> <span class="st">"white"</span>,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">""</span>, <span class="at">xlab =</span> <span class="st">"object size in pixels"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/instances-sizes-1.png" class="img-fluid figure-img"></p>
-<figcaption>plot of chunk instances-sizes</figcaption></figure>
+<figure class="figure">
+<p><img src="figures/instances-sizes-1.png" class="img-fluid figure-img"></p>
+<figcaption>plot of chunk instances-sizes</figcaption>
+</figure>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">per_case</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span><span class="op">(</span><span class="va">mine</span>, <span class="va">max</span>, <span class="fu"><a href="https://rdrr.io/r/base/integer.html">integer</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>images <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">per_case</span><span class="op">)</span>, objects <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">per_case</span><span class="op">)</span>,</span>
-<span>  median_per_image <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">per_case</span><span class="op">)</span>, most_in_one_image <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">per_case</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;            images           objects  median_per_image most_in_one_image </span></span>
-<span><span class="co">#&gt;               134              5127                26               234</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>In pixels, because this dataset has no physical scale.</strong> <code><a href="../man/instance_sizes.html">instance_sizes()</a></code> takes a <code>spacing</code> in millimetres and returns an area or a volume when you give it one - that is what a CT scan carries in its header, and <code>vignette("volumes")</code> ends in millilitres for exactly that reason. These are microscopy images with no calibration recorded, so a number in micrometres here would be invented. A count is still a count.</p>
-</section><section id="the-same-thing-from-a-file" class="level2"><h2 class="anchored" data-anchor-id="the-same-thing-from-a-file">The same thing from a file</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu">platypus_spec</span><span class="op">(</span><span class="st">"experiment.yaml"</span><span class="op">)</span></span>
-<span><span class="va">fit</span>  <span class="op">&lt;-</span> <span class="fu">platypus_fit</span><span class="op">(</span><span class="va">spec</span>, num_workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>per_case <span class="ot">&lt;-</span> <span class="fu">vapply</span>(mine, max, <span class="fu">integer</span>(<span class="dv">1</span>))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">images =</span> <span class="fu">length</span>(per_case), <span class="at">objects =</span> <span class="fu">sum</span>(per_case),</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">median_per_image =</span> <span class="fu">median</span>(per_case), <span class="at">most_in_one_image =</span> <span class="fu">max</span>(per_case))</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            images           objects  median_per_image most_in_one_image </span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;               134              5127                26               234</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>In pixels, because this dataset has no physical scale.</strong> <code>instance_sizes()</code> takes a <code>spacing</code> in millimetres and returns an area or a volume when you give it one - that is what a CT scan carries in its header, and <code>vignette("volumes")</code> ends in millilitres for exactly that reason. These are microscopy images with no calibration recorded, so a number in micrometres here would be invented. A count is still a count.</p>
+</section>
+<section id="the-same-thing-from-a-file" class="level2">
+<h2 class="anchored" data-anchor-id="the-same-thing-from-a-file">The same thing from a file</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="fu">platypus_spec</span>(<span class="st">"experiment.yaml"</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>fit  <span class="ot">&lt;-</span> <span class="fu">platypus_fit</span>(spec, <span class="at">num_workers =</span> <span class="dv">4</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The configuration guide’s <em>Instances instead of one mask</em> section has the YAML for this, field by field.</p>
-</section><section id="a-note-on-older-graphics-cards" class="level2"><h2 class="anchored" data-anchor-id="a-note-on-older-graphics-cards">A note on older graphics cards</h2>
+</section>
+<section id="a-note-on-older-graphics-cards" class="level2">
+<h2 class="anchored" data-anchor-id="a-note-on-older-graphics-cards">A note on older graphics cards</h2>
 <p>PyTorch 2.8 and later ship CUDA 13 builds, and CUDA 13 dropped the Maxwell, Pascal and Volta generations - a GTX 10-series card cannot run them, and no driver update changes that. Without saying anything, everything above would run on the processor instead, perhaps ten times slower.</p>
-<p>If <code><a href="../man/platypus_device.html">platypus_device()</a></code> reports <code>cpu</code> on a machine that has a GPU, restart R and ask for the older build before anything else:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/maju116/rplatypus">rplatypus</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="../man/platypus_use_torch.html">platypus_use_torch</a></span><span class="op">(</span><span class="st">"pascal"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="../man/platypus_device.html">platypus_device</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; torch      : 2.7.1+cu126 </span></span>
-<span><span class="co">#&gt; cuda build : 12.6 </span></span>
-<span><span class="co">#&gt; device     : NVIDIA GeForce GTX 1070</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If <a href="../man/platypus_device.html"><code>platypus_device()</code></a> reports <code>cpu</code> on a machine that has a GPU, restart R and ask for the older build before anything else:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rplatypus)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">platypus_use_torch</span>(<span class="st">"pascal"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">platypus_device</span>()</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; torch      : 2.7.1+cu126 </span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; cuda build : 12.6 </span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; device     : NVIDIA GeForce GTX 1070</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -1478,6 +1541,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   });
   </script>
 </div> <!-- /content -->
+
 
 
 

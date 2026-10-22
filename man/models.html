@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.10.19">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
 <title>models – rplatypus</title>
 <style>
 /* Default styles provided by pandoc.
@@ -60,6 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
+
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
@@ -79,9 +83,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-ee0d825c001f130fb265e92dcb17fa1f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -108,11 +113,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+
+
 </head>
+
 <body class="nav-sidebar docked nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">rplatypus</span>
@@ -124,17 +134,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item compact">
+  <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/maju116/rplatypus"> <i class="bi bi-github" role="img" aria-label="rplatypus GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-</div> <!-- /navcollapse -->
+          </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -142,11 +154,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-<li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
@@ -160,8 +176,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../vignettes/blood-cells.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Finding blood cells with YOLOv3</span></a>
@@ -198,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
@@ -207,8 +223,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../overview.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Overview</span></a>
@@ -222,8 +238,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_status.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Is the engine ready?</span></a>
@@ -242,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
@@ -251,8 +267,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_spec.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Build an experiment specification</span></a>
@@ -301,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
@@ -310,8 +326,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/losses.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Loss functions</span></a>
@@ -384,7 +400,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
@@ -393,8 +409,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/split_dataset.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Split a dataset into training, validation and test sets</span></a>
@@ -437,7 +453,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
@@ -446,8 +462,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_fit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Train the models in a specification</span></a>
@@ -466,7 +482,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false">
@@ -475,8 +491,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/predict.platypus_fit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Predict masks</span></a>
@@ -519,7 +535,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
@@ -528,8 +544,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/export_weights.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Save a trained model’s weights</span></a>
@@ -542,7 +558,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
@@ -551,8 +567,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 "></ul>
-</li>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+      </ul>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false">
@@ -561,8 +578,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/plot_masks.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Look at masks beside the images they came from</span></a>
@@ -617,7 +634,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="false">
@@ -626,8 +643,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/colours_to_classes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Read a colour mask back to class indices</span></a>
@@ -700,7 +717,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false">
@@ -709,10 +726,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 "></ul>
-</li>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
       </ul>
-</li>
+  </li>
+      </ul>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="true">
@@ -721,8 +739,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../NEWS.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Changelog</span></a>
@@ -747,34 +765,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
     </ul>
-</div>
-</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
    
   <ul>
-<li>
-<a href="#segmentation-models" id="toc-segmentation-models" class="nav-link active" data-scroll-target="#segmentation-models">Segmentation models</a>
+  <li><a href="#segmentation-models" id="toc-segmentation-models" class="nav-link active" data-scroll-target="#segmentation-models">Segmentation models</a>
   <ul class="collapse">
-<li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
+  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
   <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
   <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
   <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
   <li><a href="#where-the-defaults-live" id="toc-where-the-defaults-live" class="nav-link" data-scroll-target="#where-the-defaults-live">Where the defaults live</a></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
+  </ul></li>
   </ul>
-</li>
-  </ul></nav>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../overview.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/platypus_spec.html">A specification</a></li><li class="breadcrumb-item"><a href="../man/models.html">Segmentation models</a></li></ol></nav></header><section id="segmentation-models" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="segmentation-models">Segmentation models</h2>
-<section id="description" class="level3"><h3 class="anchored" data-anchor-id="description">Description</h3>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../overview.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/platypus_spec.html">A specification</a></li><li class="breadcrumb-item"><a href="../man/models.html">Segmentation models</a></li></ol></nav></header>
+
+
+
+
+<section id="segmentation-models" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="segmentation-models">Segmentation models</h2>
+<section id="description" class="level3">
+<h3 class="anchored" data-anchor-id="description">Description</h3>
 <p>Four members of the U-shaped family. They take the same arguments and differ only in what happens between the contracting and expanding paths: <code>u_net</code> concatenates its skip connections, <code>linknet</code> adds them, <code>res_u_net</code> makes each block residual, and <code>u_net_plus_plus</code> fills in the nested skip pathways.</p>
-</section><section id="usage" class="level3"><h3 class="anchored" data-anchor-id="usage">Usage</h3>
+</section>
+<section id="usage" class="level3">
+<h3 class="anchored" data-anchor-id="usage">Usage</h3>
 <pre><code class="language-R">u_net(
   name,
   input_shape,
@@ -911,7 +939,9 @@ linknet(
   decode = NULL
 )
 </code></pre>
-</section><section id="arguments" class="level3"><h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
+</section>
+<section id="arguments" class="level3">
+<h3 class="anchored" data-anchor-id="arguments">Arguments</h3>
 <table role="presentation">
 <tbody><tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
@@ -934,7 +964,7 @@ Tile size: <code>c(height, width)</code>, or <code>c(depth, height, width)</code
 <code id="channels">channels</code>
 </td>
 <td>
-Input channels. 3 for colour, 1 for greyscale. Derived from <code>channels_from</code> when <code><a href="../man/segmentation_data.html">segmentation_data()</a></code> names one file per channel.
+Input channels. 3 for colour, 1 for greyscale. Derived from <code>channels_from</code> when <a href="../man/segmentation_data.html"><code>segmentation_data()</code></a> names one file per channel.
 </td>
 </tr>
 <tr>
@@ -942,7 +972,7 @@ Input channels. 3 for colour, 1 for greyscale. Derived from <code>channels_from<
 <code id="n_class">n_class</code>
 </td>
 <td>
-<strong>Removed.</strong> The number of classes comes from the data - <code>colormap</code> or <code>labels</code> in <code><a href="../man/segmentation_data.html">segmentation_data()</a></code> - and a model that also declared it could only ever disagree with its own data. Passing it is an error that says so.
+<strong>Removed.</strong> The number of classes comes from the data - <code>colormap</code> or <code>labels</code> in <code>segmentation_data()</code> - and a model that also declared it could only ever disagree with its own data. Passing it is an error that says so.
 </td>
 </tr>
 <tr>
@@ -966,7 +996,7 @@ Filters in the first block; doubled at each level. Taken from the weights file w
 <code id="block_width">block_width</code>
 </td>
 <td>
-Convolutions per block. Two is the usual U-Net block; one trains faster and holds less, three rarely pays for itself. It composes with every architecture, including the residual blocks of <code><a href="../man/models.html">res_u_net()</a></code>, where it is the number of convolutions inside the residual rather than beside it.
+Convolutions per block. Two is the usual U-Net block; one trains faster and holds less, three rarely pays for itself. It composes with every architecture, including the residual blocks of <code>res_u_net()</code>, where it is the number of convolutions inside the residual rather than beside it.
 </td>
 </tr>
 <tr>
@@ -1038,7 +1068,7 @@ One of <code>“he_normal”</code>, <code>“he_uniform”</code>, <code>“glo
 <code id="loss">loss</code>
 </td>
 <td>
-The objective trained against, see losses and <code><a href="../man/available_components.html">available_losses()</a></code>. It is what a score table’s <code>loss</code> column is comparable within and not across: a Focal-Tversky of 0.05 is not better than a cross-entropy of 0.14, it is a different question, which is why the table carries the loss’s name beside the number. Unset uses the engine’s default.
+The objective trained against, see losses and <a href="../man/available_components.html"><code>available_losses()</code></a>. It is what a score table’s <code>loss</code> column is comparable within and not across: a Focal-Tversky of 0.05 is not better than a cross-entropy of 0.14, it is a different question, which is why the table carries the loss’s name beside the number. Unset uses the engine’s default.
 </td>
 </tr>
 <tr>
@@ -1070,7 +1100,7 @@ A list of callbacks, see callbacks.
 <code id="augmentation">augmentation</code>
 </td>
 <td>
-A list of <code><a href="../man/augmentation_step.html">augmentation_step()</a></code> steps, applied to training data only.
+A list of <a href="../man/augmentation_step.html"><code>augmentation_step()</code></a> steps, applied to training data only.
 </td>
 </tr>
 <tr>
@@ -1110,7 +1140,7 @@ Set <code>FALSE</code> to load <code>weights</code> and skip training.
 <code id="encoder">encoder</code>
 </td>
 <td>
-A pretrained-architecture backbone to use as the contracting path instead of the built-in encoder, named as timm names it: <code>“resnet34”</code>, <code>“efficientnet_b0”</code>, <code>“mobilenetv3_large_100”</code>, <code>“densenet121”</code>, <code>“vgg16”</code> and the other convolutional families. Naming one builds that architecture; it does not load anything. <strong>2D only</strong> - ImageNet is images, so a backbone with a 3D <code>input_shape</code> is refused while the specification is read. The patch-based families (<code style="white-space: pre;">convnext_<em></em></code>, <code style="white-space: pre;">swin_</code>) are refused too: their features start at a quarter of the input, and the half-resolution level a U-shaped decoder recovers fine detail from does not exist. <code>blocks</code> then says how many of the backbone’s stages to use.
+A pretrained-architecture backbone to use as the contracting path instead of the built-in encoder, named as timm names it: <code>“resnet34”</code>, <code>“efficientnet_b0”</code>, <code>“mobilenetv3_large_100”</code>, <code>“densenet121”</code>, <code>“vgg16”</code> and the other convolutional families. Naming one builds that architecture; it does not load anything. <strong>2D only</strong> - ImageNet is images, so a backbone with a 3D <code>input_shape</code> is refused while the specification is read. The patch-based families (<code style="white-space: pre;">convnext_<em></em></code><em>, <code style="white-space: pre;">swin_</code></em>) are refused too: their features start at a quarter of the input, and the half-resolution level a U-shaped decoder recovers fine detail from does not exist. <code>blocks</code> then says how many of the backbone’s stages to use.
 </td>
 </tr>
 <tr>
@@ -1142,9 +1172,9 @@ A separate, smaller rate for the layers that arrived pretrained. The full-resolu
 <code id="separation">separation</code>
 </td>
 <td>
-<p>What the network predicts so that touching objects can be told apart - <code><a href="../man/separations.html">separation_rim()</a></code> or <code><a href="../man/separations.html">separation_flows()</a></code>. Giving it is what makes this an <strong>instance</strong> model: it has no counterpart on a semantic one, so a model carrying it can only mean instances, which is how a specification knows its task without anybody typing it. The data has to be <code><a href="../man/instance_data.html">instance_data()</a></code> to match. The head’s width follows from the signal and the number of classes and is derived rather than stated.</p>
-<p><strong>It may be left out when <code>weights</code> names a file that records it</strong>, since pyplatypus <code style="white-space: pre;">0.8.0a28</code>: a published sidecar says what the channels were trained to predict, and <code>“dsbowl-instances”</code> is a rim of width 2 - a training decision rather than a shape, and nothing a reader can guess from a model card. So <code>u_net(“objects”, input_shape = c(256, 256), weights = “dsbowl-instances”)</code> beside <code><a href="../man/instance_data.html">instance_data()</a></code> is an instance model, and the engine prints what it adopted.</p>
-Left out with <strong>no</strong> <code>weights</code> it is still semantic, and still refused beside <code><a href="../man/instance_data.html">instance_data()</a></code> as two tasks in one specification - which is the pair that would otherwise be silent: the same layout and the same architecture, differing only in whether a signal is predicted at all. <code>maju116/rplatypus#181</code>.
+<p>What the network predicts so that touching objects can be told apart - <a href="../man/separations.html"><code>separation_rim()</code></a> or <a href="../man/separations.html"><code>separation_flows()</code></a>. Giving it is what makes this an <strong>instance</strong> model: it has no counterpart on a semantic one, so a model carrying it can only mean instances, which is how a specification knows its task without anybody typing it. The data has to be <a href="../man/instance_data.html"><code>instance_data()</code></a> to match. The head’s width follows from the signal and the number of classes and is derived rather than stated.</p>
+<p><strong>It may be left out when <code>weights</code> names a file that records it</strong>, since pyplatypus <code style="white-space: pre;">0.8.0a28</code>: a published sidecar says what the channels were trained to predict, and <code>“dsbowl-instances”</code> is a rim of width 2 - a training decision rather than a shape, and nothing a reader can guess from a model card. So <code>u_net(“objects”, input_shape = c(256, 256), weights = “dsbowl-instances”)</code> beside <code>instance_data()</code> is an instance model, and the engine prints what it adopted.</p>
+Left out with <strong>no</strong> <code>weights</code> it is still semantic, and still refused beside <code>instance_data()</code> as two tasks in one specification - which is the pair that would otherwise be silent: the same layout and the same architecture, differing only in whether a signal is predicted at all. <code>maju116/rplatypus#181</code>.
 </td>
 </tr>
 <tr>
@@ -1152,14 +1182,21 @@ Left out with <strong>no</strong> <code>weights</code> it is still semantic, and
 <code id="decode">decode</code>
 </td>
 <td>
-A <strong>list</strong> of decodings turning those channels into objects, e.g. <code>list(decode_nearest_seed(), decode_connected_components())</code>. A list rather than one, because several decodings share a single forward pass: a second costs seconds where a second training run costs an hour, so <code><a href="../man/evaluate.html">evaluate()</a></code> returns a row per model <em>and</em> decoding. Unset, the engine uses the signal’s own decoding plus <code><a href="../man/decodings.html">decode_connected_components()</a></code>, which ignores the signal and is therefore the row the others have to be read against. Only meaningful with <code>separation</code>.
+A <strong>list</strong> of decodings turning those channels into objects, e.g. <code>list(decode_nearest_seed(), decode_connected_components())</code>. A list rather than one, because several decodings share a single forward pass: a second costs seconds where a second training run costs an hour, so <a href="../man/evaluate.html"><code>evaluate()</code></a> returns a row per model <em>and</em> decoding. Unset, the engine uses the signal’s own decoding plus <a href="../man/decodings.html"><code>decode_connected_components()</code></a>, which ignores the signal and is therefore the row the others have to be read against. Only meaningful with <code>separation</code>.
 </td>
 </tr>
-</tbody></table></section><section id="details" class="level3"><h3 class="anchored" data-anchor-id="details">Details</h3>
+</tbody></table>
+</section>
+<section id="details" class="level3">
+<h3 class="anchored" data-anchor-id="details">Details</h3>
 <p><code>input_shape</code> is the tile the model sees: two numbers for images, three for volumes. Its length is what makes a model 2D or 3D - there is no separate switch. Every spatial dimension must divide by <code>2^blocks</code>, or the decoder cannot line up with the encoder, and that is checked when the specification is built rather than part-way through training.</p>
-</section><section id="value" class="level3"><h3 class="anchored" data-anchor-id="value">Value</h3>
-<p>A model specification, to be passed to <code><a href="../man/platypus_spec.html">platypus_spec()</a></code>.</p>
-</section><section id="where-the-defaults-live" class="level3"><h3 class="anchored" data-anchor-id="where-the-defaults-live">Where the defaults live</h3>
+</section>
+<section id="value" class="level3">
+<h3 class="anchored" data-anchor-id="value">Value</h3>
+<p>A model specification, to be passed to <a href="../man/platypus_spec.html"><code>platypus_spec()</code></a>.</p>
+</section>
+<section id="where-the-defaults-live" class="level3">
+<h3 class="anchored" data-anchor-id="where-the-defaults-live">Where the defaults live</h3>
 <p>Every argument below except <code>name</code> and <code>input_shape</code> is <code>NULL</code> unless you set it, and a <code>NULL</code> is left out of the request entirely - so the engine’s own default applies. The defaults are therefore written down once, in <code>pyplatypus</code>, rather than here as well:</p>
 <pre>channels 3        blocks 4          filters 16      block_width 2
 dropout 0         batch_normalization TRUE          separable_conv FALSE
@@ -1169,11 +1206,13 @@ loss cce          metrics iou       optimizer adam  callbacks none
 epochs 10         batch_size 8      fit TRUE
 </pre>
 <p>The second reason matters more than tidiness. A value sent is indistinguishable from a value chosen, so defaults travelling from here would silence the engine’s own knowledge: <code>weights</code> naming a published file records its architecture, <code>blocks</code> and <code>filters</code>, and those are adopted <strong>only</strong> where the specification stayed silent. Sending <code>blocks = 4</code> because that is what R happened to say would override a file that knows better.</p>
-</section><section id="examples" class="level3"><h3 class="anchored" data-anchor-id="examples">Examples</h3>
+</section>
+<section id="examples" class="level3">
+<h3 class="anchored" data-anchor-id="examples">Examples</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/maju116/rplatypus">"rplatypus"</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="../man/models.html">u_net</a></span><span class="op">(</span><span class="st">"unet"</span>, input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">256</span>, <span class="fl">256</span><span class="op">)</span>, blocks <span class="op">=</span> <span class="fl">4</span>, filters <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"rplatypus"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">u_net</span>(<span class="st">"unet"</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">256</span>, <span class="dv">256</span>), <span class="at">blocks =</span> <span class="dv">4</span>, <span class="at">filters =</span> <span class="dv">16</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$name
 [1] "unet"
@@ -1190,8 +1229,8 @@ $blocks
 $filters
 [1] 16</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># A large image, tiled rather than shrunk</span></span>
-<span><span class="fu"><a href="../man/models.html">u_net</a></span><span class="op">(</span><span class="st">"hd"</span>, input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">256</span>, <span class="fl">256</span><span class="op">)</span>, splits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A large image, tiled rather than shrunk</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">u_net</span>(<span class="st">"hd"</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">256</span>, <span class="dv">256</span>), <span class="at">splits =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">6</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$name
 [1] "hd"
@@ -1208,7 +1247,11 @@ $splits
 </div>
 
 
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -1609,6 +1652,7 @@ $splits
   });
   </script>
 </div> <!-- /content -->
+
 
 
 

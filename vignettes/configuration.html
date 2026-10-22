@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.10.19">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
 <title>Writing a configuration – rplatypus</title>
 <style>
 /* Default styles provided by pandoc.
@@ -60,6 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
+
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
@@ -79,9 +83,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-ee0d825c001f130fb265e92dcb17fa1f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-05fe9a9605db37b54e1fecdc175ac0f3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../site_libs/bootstrap/bootstrap-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-4dac77a7f7b1f395e04bf707d851f86b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -108,11 +113,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+
+
 </head>
+
 <body class="nav-sidebar docked nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">rplatypus</span>
@@ -124,17 +134,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-<li class="nav-item compact">
+  <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/maju116/rplatypus"> <i class="bi bi-github" role="img" aria-label="rplatypus GitHub">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
 </ul>
-</div> <!-- /navcollapse -->
+          </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
-    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -142,11 +154,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
-  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="sidebar-menu-container"> 
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-<li class="sidebar-item">
+        <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
@@ -160,8 +176,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../vignettes/blood-cells.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Finding blood cells with YOLOv3</span></a>
@@ -198,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
@@ -207,8 +223,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../overview.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Overview</span></a>
@@ -222,8 +238,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_status.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Is the engine ready?</span></a>
@@ -242,7 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
@@ -251,8 +267,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_spec.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Build an experiment specification</span></a>
@@ -301,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
@@ -310,8 +326,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/losses.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Loss functions</span></a>
@@ -384,7 +400,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
@@ -393,8 +409,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/split_dataset.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Split a dataset into training, validation and test sets</span></a>
@@ -437,7 +453,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
@@ -446,8 +462,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/platypus_fit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Train the models in a specification</span></a>
@@ -466,7 +482,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false">
@@ -475,8 +491,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/predict.platypus_fit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Predict masks</span></a>
@@ -519,7 +535,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
@@ -528,8 +544,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/export_weights.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Save a trained model’s weights</span></a>
@@ -542,7 +558,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
@@ -551,8 +567,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 "></ul>
-</li>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+      </ul>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false">
@@ -561,8 +578,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/plot_masks.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Look at masks beside the images they came from</span></a>
@@ -617,7 +634,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="false">
@@ -626,8 +643,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/colours_to_classes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Read a colour mask back to class indices</span></a>
@@ -700,7 +717,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false">
@@ -709,10 +726,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 "></ul>
-</li>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
       </ul>
-</li>
+  </li>
+      </ul>
+  </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="true">
@@ -721,8 +739,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">
-<li class="sidebar-item">
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../NEWS.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Changelog</span></a>
@@ -747,34 +765,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
       </ul>
-</li>
+  </li>
     </ul>
-</div>
-</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
    
   <ul>
-<li><a href="#one-file-one-run" id="toc-one-file-one-run" class="nav-link active" data-scroll-target="#one-file-one-run">One file, one run</a></li>
+  <li><a href="#one-file-one-run" id="toc-one-file-one-run" class="nav-link active" data-scroll-target="#one-file-one-run">One file, one run</a></li>
   <li><a href="#several-models-at-once" id="toc-several-models-at-once" class="nav-link" data-scroll-target="#several-models-at-once">Several models at once</a></li>
   <li><a href="#dividing-one-folder" id="toc-dividing-one-folder" class="nav-link" data-scroll-target="#dividing-one-folder">Dividing one folder</a></li>
   <li><a href="#augmentation-callbacks-and-the-rest-of-a-model" id="toc-augmentation-callbacks-and-the-rest-of-a-model" class="nav-link" data-scroll-target="#augmentation-callbacks-and-the-rest-of-a-model">Augmentation, callbacks, and the rest of a model</a></li>
-  <li>
-<a href="#overlapping-classes-instead-of-one-per-voxel" id="toc-overlapping-classes-instead-of-one-per-voxel" class="nav-link" data-scroll-target="#overlapping-classes-instead-of-one-per-voxel">Overlapping classes instead of one per voxel</a>
+  <li><a href="#overlapping-classes-instead-of-one-per-voxel" id="toc-overlapping-classes-instead-of-one-per-voxel" class="nav-link" data-scroll-target="#overlapping-classes-instead-of-one-per-voxel">Overlapping classes instead of one per voxel</a>
   <ul class="collapse">
-<li><a href="#when-the-overlap-was-drawn-separately-classes_from" id="toc-when-the-overlap-was-drawn-separately-classes_from" class="nav-link" data-scroll-target="#when-the-overlap-was-drawn-separately-classes_from">When the overlap was drawn separately: <code>classes_from</code></a></li>
-  </ul>
-</li>
+  <li><a href="#when-the-overlap-was-drawn-separately-classes_from" id="toc-when-the-overlap-was-drawn-separately-classes_from" class="nav-link" data-scroll-target="#when-the-overlap-was-drawn-separately-classes_from">When the overlap was drawn separately: <code>classes_from</code></a></li>
+  </ul></li>
   <li><a href="#instances-instead-of-one-mask" id="toc-instances-instead-of-one-mask" class="nav-link" data-scroll-target="#instances-instead-of-one-mask">Instances instead of one mask</a></li>
   <li><a href="#detection-instead-of-segmentation" id="toc-detection-instead-of-segmentation" class="nav-link" data-scroll-target="#detection-instead-of-segmentation">Detection instead of segmentation</a></li>
   <li><a href="#not-training-at-all" id="toc-not-training-at-all" class="nav-link" data-scroll-target="#not-training-at-all">Not training at all</a></li>
   <li><a href="#what-is-checked-and-when" id="toc-what-is-checked-and-when" class="nav-link" data-scroll-target="#what-is-checked-and-when">What is checked, and when</a></li>
   <li><a href="#the-same-run-from-code" id="toc-the-same-run-from-code" class="nav-link" data-scroll-target="#the-same-run-from-code">The same run from code</a></li>
-  </ul></nav>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/blood-cells.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/configuration.html">Writing a configuration</a></li></ol></nav><div class="quarto-title">
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/blood-cells.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/configuration.html">Writing a configuration</a></li></ol></nav>
+<div class="quarto-title">
 <h1 class="title">Writing a configuration</h1>
 </div>
 
@@ -789,10 +811,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
 
 
-</header><p>One YAML file describes a whole run, and <a href="../man/platypus_spec.html"><code>platypus_spec()</code></a> reads it. This is the walk through that file; the exhaustive list of fields lives on the engine’s site, because the file is the engine’s format and keeping a second copy here would mean two of them going out of step: <a href="https://maju116.github.io/pyplatypus/config.html">every configuration field</a>.</p>
+</header>
+
+
+<p>One YAML file describes a whole run, and <a href="../man/platypus_spec.html"><code>platypus_spec()</code></a> reads it. This is the walk through that file; the exhaustive list of fields lives on the engine’s site, because the file is the engine’s format and keeping a second copy here would mean two of them going out of step: <a href="https://maju116.github.io/pyplatypus/config.html">every configuration field</a>.</p>
 <p><strong>The same file works in both packages.</strong> R reads it with <code>platypus_spec()</code>, Python with <code>from_yaml()</code>, and both hand it to the same validator. Nothing below is R-specific except the lines that run it.</p>
 <p>Arguments and YAML produce the same object and nothing downstream can tell which was used, so a configuration file and an R script describe the same experiment - and either can be handed to a colleague.</p>
-<section id="one-file-one-run" class="level2"><h2 class="anchored" data-anchor-id="one-file-one-run">One file, one run</h2>
+<section id="one-file-one-run" class="level2">
+<h2 class="anchored" data-anchor-id="one-file-one-run">One file, one run</h2>
 <p>The shortest thing that trains:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">task</span><span class="kw">:</span><span class="at"> semantic_segmentation</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span><span class="kw">:</span></span>
@@ -803,13 +829,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> first_try</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">input_shape</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="dv">256</span><span class="kw">,</span><span class="at"> </span><span class="dv">256</span><span class="kw">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu">platypus_spec</span><span class="op">(</span><span class="st">"run.yaml"</span><span class="op">)</span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">platypus_fit</span><span class="op">(</span><span class="va">spec</span><span class="op">)</span></span>
-<span><span class="fu">evaluate</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="fu">platypus_spec</span>(<span class="st">"run.yaml"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">platypus_fit</span>(spec)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Four things are required and the rest have defaults: <code>task</code>, <code>data.train_path</code>, and a <code>name</code> and <code>input_shape</code> for each model. Everything else - the architecture, the loss, the optimiser, how many epochs - has a default that lives in the engine, so <strong>a short configuration is a complete one</strong> rather than an incomplete one. <code>?u_net</code> has a <em>Where the defaults live</em> section saying why they are not written into the R signatures.</p>
 <p><code>colormap</code> says which colour in a mask means which class, darkest first. Masks stored as label maps rather than pictures use <code>labels: [0, 1]</code> instead, and giving both is an error: exactly one says how a mask is encoded.</p>
-</section><section id="several-models-at-once" class="level2"><h2 class="anchored" data-anchor-id="several-models-at-once">Several models at once</h2>
+</section>
+<section id="several-models-at-once" class="level2">
+<h2 class="anchored" data-anchor-id="several-models-at-once">Several models at once</h2>
 <p><code>models:</code> is a list, and that is the reason this file format exists rather than only the code path. Each entry trains on the same data and lands in the same table, so comparing variants is one run rather than a loop somebody has to write.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">task</span><span class="kw">:</span><span class="at"> semantic_segmentation</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span><span class="kw">:</span></span>
@@ -827,13 +855,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">filters</span><span class="kw">:</span><span class="at"> </span><span class="dv">32</span></span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">architecture</span><span class="kw">:</span><span class="at"> u_net_plus_plus</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">platypus_fit</span><span class="op">(</span><span class="fu">platypus_spec</span><span class="op">(</span><span class="st">"run.yaml"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">evaluate</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>            <span class="co"># one row per model</span></span>
-<span><span class="fu">training_history</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>    <span class="co"># one row per model per epoch</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">platypus_fit</span>(<span class="fu">platypus_spec</span>(<span class="st">"run.yaml"</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate</span>(fit)            <span class="co"># one row per model</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">training_history</span>(fit)    <span class="co"># one row per model per epoch</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>name</code> has to be unique, because it is how a model is identified in every score table, in every record and in <code>predict(fit, model = ...)</code>. Two models called the same thing is refused rather than resolved, by name: <code>model names must be unique; repeated: shallow</code>.</p>
 <p>Two entries differing only in <code>blocks</code> is a legitimate configuration and a common one: this is for comparing variants, not only architectures.</p>
-</section><section id="dividing-one-folder" class="level2"><h2 class="anchored" data-anchor-id="dividing-one-folder">Dividing one folder</h2>
+</section>
+<section id="dividing-one-folder" class="level2">
+<h2 class="anchored" data-anchor-id="dividing-one-folder">Dividing one folder</h2>
 <p>With no <code>validation_path</code>, say how to divide <code>train_path</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">task</span><span class="kw">:</span><span class="at"> semantic_segmentation</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span><span class="kw">:</span></span>
@@ -850,11 +880,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Exactly one of <code>split</code> and <code>validation_path</code>. If a run genuinely has no validation set - a final fit on everything - say <code>validation: false</code>, which is the third answer rather than an absence, because “I have no validation set” and “I forgot” look identical otherwise.</p>
 <p>The same from R, where the argument answers the same question three ways:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">segmentation_data</span><span class="op">(</span><span class="st">"data/all"</span>, split <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>fractions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">0.2</span><span class="op">)</span>, group_by <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">segmentation_data</span><span class="op">(</span><span class="st">"data/train"</span>, validation <span class="op">=</span> <span class="st">"data/validation"</span><span class="op">)</span></span>
-<span><span class="fu">segmentation_data</span><span class="op">(</span><span class="st">"data/all"</span>, validation <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">segmentation_data</span>(<span class="st">"data/all"</span>, <span class="at">split =</span> <span class="fu">list</span>(<span class="at">fractions =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.2</span>), <span class="at">group_by =</span> <span class="cn">NULL</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">segmentation_data</span>(<span class="st">"data/train"</span>, <span class="at">validation =</span> <span class="st">"data/validation"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">segmentation_data</span>(<span class="st">"data/all"</span>, <span class="at">validation =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="augmentation-callbacks-and-the-rest-of-a-model" class="level2"><h2 class="anchored" data-anchor-id="augmentation-callbacks-and-the-rest-of-a-model">Augmentation, callbacks, and the rest of a model</h2>
+</section>
+<section id="augmentation-callbacks-and-the-rest-of-a-model" class="level2">
+<h2 class="anchored" data-anchor-id="augmentation-callbacks-and-the-rest-of-a-model">Augmentation, callbacks, and the rest of a model</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">task</span><span class="kw">:</span><span class="at"> semantic_segmentation</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span><span class="kw">:</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">train_path</span><span class="kw">:</span><span class="at"> data/train</span></span>
@@ -875,26 +907,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="kw">{</span><span class="fu">name</span><span class="kw">:</span><span class="at"> RandomBrightnessContrast</span><span class="kw">,</span><span class="at"> </span><span class="fu">params</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="fu">p</span><span class="kw">:</span><span class="at"> </span><span class="fl">0.3</span><span class="kw">}}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Every one of those blocks has an R constructor that builds the same thing, and the help pages for them are where the measurements are: <code>?losses</code>, <code>?metrics</code>, <code>?optimizers</code>, <code>?callbacks</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">u_net</span><span class="op">(</span></span>
-<span>  <span class="st">"augmented"</span>,</span>
-<span>  input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">256</span>, <span class="fl">256</span><span class="op">)</span>,</span>
-<span>  epochs <span class="op">=</span> <span class="fl">40</span>,</span>
-<span>  loss <span class="op">=</span> <span class="fu">loss_dice</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  metrics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu">metric_iou</span><span class="op">(</span><span class="op">)</span>, <span class="fu">metric_dice</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  optimizer <span class="op">=</span> <span class="fu">optimizer_adam</span><span class="op">(</span>learning_rate <span class="op">=</span> <span class="fl">0.001</span><span class="op">)</span>,</span>
-<span>  callbacks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>    <span class="fu">callback_early_stopping</span><span class="op">(</span>monitor <span class="op">=</span> <span class="st">"val_loss"</span>, patience <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
-<span>    <span class="fu">callback_model_checkpoint</span><span class="op">(</span>monitor <span class="op">=</span> <span class="st">"val_iou"</span>, path <span class="op">=</span> <span class="st">"runs/best.safetensors"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  augmentation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>    <span class="fu">augmentation_step</span><span class="op">(</span><span class="st">"HorizontalFlip"</span>, p <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>    <span class="fu">augmentation_step</span><span class="op">(</span><span class="st">"RandomBrightnessContrast"</span>, p <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">u_net</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"augmented"</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">256</span>, <span class="dv">256</span>),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">epochs =</span> <span class="dv">40</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">loss =</span> <span class="fu">loss_dice</span>(),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrics =</span> <span class="fu">list</span>(<span class="fu">metric_iou</span>(), <span class="fu">metric_dice</span>()),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">optimizer =</span> <span class="fu">optimizer_adam</span>(<span class="at">learning_rate =</span> <span class="fl">0.001</span>),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">callbacks =</span> <span class="fu">list</span>(</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">callback_early_stopping</span>(<span class="at">monitor =</span> <span class="st">"val_loss"</span>, <span class="at">patience =</span> <span class="dv">10</span>),</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">callback_model_checkpoint</span>(<span class="at">monitor =</span> <span class="st">"val_iou"</span>, <span class="at">path =</span> <span class="st">"runs/best.safetensors"</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">augmentation =</span> <span class="fu">list</span>(</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">augmentation_step</span>(<span class="st">"HorizontalFlip"</span>, <span class="at">p =</span> <span class="fl">0.5</span>),</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">augmentation_step</span>(<span class="st">"RandomBrightnessContrast"</span>, <span class="at">p =</span> <span class="fl">0.3</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>There is no <code>mode</code> on a callback that watches a number.</strong> The direction is taken from the name: anything ending in <code>loss</code> is better lower, anything else better higher. So <code>monitor = "val_iou"</code> maximises and <code>monitor = "val_loss"</code> minimises, and there is nothing to set inconsistently.</p>
 <p><strong>Augmentation applies to the training data only</strong> - never to validation, where the point is to measure the same thing every epoch. The names are albumentations’ own, and <a href="../man/available_transforms.html"><code>available_transforms()</code></a> lists what the installed version offers; at <code>rank = 3</code> the list is shorter, because support for volumes is uneven. Each step is probed at the model’s own input size while the pipeline is built, so a transform that cannot do the job says so before the first epoch rather than during it.</p>
-</section><section id="overlapping-classes-instead-of-one-per-voxel" class="level2"><h2 class="anchored" data-anchor-id="overlapping-classes-instead-of-one-per-voxel">Overlapping classes instead of one per voxel</h2>
+</section>
+<section id="overlapping-classes-instead-of-one-per-voxel" class="level2">
+<h2 class="anchored" data-anchor-id="overlapping-classes-instead-of-one-per-voxel">Overlapping classes instead of one per voxel</h2>
 <p><code>colormap</code> and <code>labels</code> both say the same thing about a voxel: it is in exactly one class. <code>regions</code> is the third way of naming classes and the only one that drops that assumption - classes named as unions of a label map’s values, which is how BraTS and the lesion-inside-an-organ family actually store their ground truth.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">task</span><span class="kw">:</span><span class="at"> semantic_segmentation</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span><span class="kw">:</span></span>
@@ -910,46 +944,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">loss</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="fu">name</span><span class="kw">:</span><span class="at"> focal</span><span class="kw">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The same from R. A region is a <code>list(name = , of = )</code>, and <code>of</code> takes the label-map values that belong to it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu">platypus_spec</span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="fu">segmentation_data</span><span class="op">(</span></span>
-<span>    <span class="st">"data/train"</span>, <span class="st">"data/validation"</span>,</span>
-<span>    regions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"whole tumour"</span>, of <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"tumour core"</span>, of <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"enhancing"</span>, of <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu">u_net</span><span class="op">(</span><span class="st">"brats"</span>, input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">240</span>, <span class="fl">240</span><span class="op">)</span>, loss <span class="op">=</span> <span class="fu">loss_focal</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="fu">platypus_spec</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">segmentation_data</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/train"</span>, <span class="st">"data/validation"</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">regions =</span> <span class="fu">list</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(<span class="at">name =</span> <span class="st">"whole tumour"</span>, <span class="at">of =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>)),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(<span class="at">name =</span> <span class="st">"tumour core"</span>, <span class="at">of =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>)),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(<span class="at">name =</span> <span class="st">"enhancing"</span>, <span class="at">of =</span> <span class="dv">4</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(<span class="fu">u_net</span>(<span class="st">"brats"</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">240</span>, <span class="dv">240</span>), <span class="at">loss =</span> <span class="fu">loss_focal</span>()))</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The last region shows that a single value is <strong>ordinary</strong> rather than an edge case: BraTS’s enhancing tumour is one label.</p>
 <p>The task is still <code>semantic_segmentation</code>. What changes is what a channel means.</p>
 <p><strong>There is no background entry, so the class count is not the one you would write as <code>labels</code>.</strong> Those same masks as <code>labels = c(0, 1, 2, 4)</code> are <strong>four</strong> classes; as the three regions above they are <strong>three</strong> channels. And a voxel whose value is <code>4</code> is in all three of them at once, which is the point rather than a tolerated side effect.</p>
 <p><strong>Each channel is an independent binary question</strong> - a sigmoid per channel rather than one softmax across them - so the channels do not compete and do not sum to one. That is what makes the overlap expressible, and it is also why a prediction cannot be written back as a single picture with <a href="../man/save_masks.html"><code>save_masks()</code></a>: one voxel gets one colour, and a voxel here may belong to three classes.</p>
-<p>So <code>save_masks()</code> refuses such a prediction rather than taking the strongest channel, and <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> refuses <code>type = "class"</code> for the same reason - there is no one class per voxel to return. Ask for <code>type = "probability"</code> and write it with <a href="../man/save_class_masks.html"><code>save_class_masks()</code></a>, which gives one binary file per region, named after the region. The channel order is the order the regions were written in, which is also the order <a href="../man/inspect_masks.html"><code>inspect_masks()</code></a> names them in and the order every per-class score is reported in.</p>
+<p>So <code>save_masks()</code> refuses such a prediction rather than taking the strongest channel, and <code>predict()</code> refuses <code>type = "class"</code> for the same reason - there is no one class per voxel to return. Ask for <code>type = "probability"</code> and write it with <a href="../man/save_class_masks.html"><code>save_class_masks()</code></a>, which gives one binary file per region, named after the region. The channel order is the order the regions were written in, which is also the order <a href="../man/inspect_masks.html"><code>inspect_masks()</code></a> names them in and the order every per-class score is reported in.</p>
 <p><strong>Two regions are the minimum</strong>, because one region is ordinary binary segmentation and <code>labels = c(0, 1)</code> already says that - with a background channel, which <code>regions</code> has none of. Disjoint regions are allowed and are not a mistake: they group several values into one class and drop the background channel, which is a useful thing to ask for and is refused nowhere.</p>
 <p><strong>The failure this invites is quiet, so it is refused loudly.</strong> A region whose <code>of</code> matches nothing in the data - <code>of = 3</code> against a label map holding <code>1</code>, <code>2</code> and <code>4</code> - is a channel of zeros. It trains to predict nothing and scores a Dice of 0 for that region while every other number in the run looks ordinary, which is the kind of result that gets read as “that class is hard”. <a href="../man/platypus_fit.html"><code>platypus_fit()</code></a> refuses it before training, and <code>inspect_masks()</code> asks the same question over as much of the data as you want - <strong>naming the region rather than giving its position</strong>, because <code>missing_classes: 1</code> would leave you counting entries in the file above:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">inspect_masks</span><span class="op">(</span><span class="va">spec</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   split unmatched samples_checked total_samples present_classes      missing_classes</span></span>
-<span><span class="co">#&gt; 1 train    0.0000             500          1251 whole tumour, ...    enhancing</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">inspect_masks</span>(spec)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   split unmatched samples_checked total_samples present_classes      missing_classes</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 train    0.0000             500          1251 whole tumour, ...    enhancing</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="when-the-overlap-was-drawn-separately-classes_from" class="level3"><h3 class="anchored" data-anchor-id="when-the-overlap-was-drawn-separately-classes_from">When the overlap was drawn separately: <code>classes_from</code>
-</h3>
+<section id="when-the-overlap-was-drawn-separately-classes_from" class="level3">
+<h3 class="anchored" data-anchor-id="when-the-overlap-was-drawn-separately-classes_from">When the overlap was drawn separately: <code>classes_from</code></h3>
 <p><code>regions</code> needs the overlap to be a union of one label map’s values, which is how BraTS stores it: one integer per voxel, and the scored classes are conventions over those integers. Some overlaps are not like that. A vessel crossing an organ, or two annotators’ masks of the same structure, were drawn independently, and no single integer can hold both. Those arrive as <strong>one binary file per class</strong>, and <code>classes_from</code> names them - one pattern per class, in class order, matched against a sample’s mask files.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu">platypus_spec</span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="fu">segmentation_data</span><span class="op">(</span></span>
-<span>    <span class="st">"data/train"</span>, <span class="st">"data/validation"</span>,</span>
-<span>    classes_from <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"_vessel\\.png$"</span>, <span class="st">"_organ\\.png$"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu">u_net</span><span class="op">(</span><span class="st">"crossing"</span>, input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">256</span>, <span class="fl">256</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="fu">platypus_spec</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">segmentation_data</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/train"</span>, <span class="st">"data/validation"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">classes_from =</span> <span class="fu">c</span>(<span class="st">"_vessel</span><span class="sc">\\</span><span class="st">.png$"</span>, <span class="st">"_organ</span><span class="sc">\\</span><span class="st">.png$"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(<span class="fu">u_net</span>(<span class="st">"crossing"</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">256</span>, <span class="dv">256</span>)))</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Everything above still holds: independent binary questions, no background entry, a prediction <code>save_masks()</code> refuses and <code>save_class_masks()</code> writes. The difference between the two namings is the file on disk and nothing else.</p>
 <p><strong>Every pattern must match exactly one of a sample’s mask files, and every mask file must match a pattern.</strong> Both halves are refused, because each is invisible from the other side: a pattern matching nothing is a class the model is never shown, and a file matching no pattern is a class the data has and nobody asked for. Patterns are Python regular expressions, like <code>channels_from</code> and <code>group_by</code>, so R’s own backslashes double.</p>
 <p>The order is written rather than inferred, and here it matters more than for channels: a model trained with the vessel in the first channel and used where the first channel is the organ answers plausibly, in range, and nothing further down can notice.</p>
-</section></section><section id="instances-instead-of-one-mask" class="level2"><h2 class="anchored" data-anchor-id="instances-instead-of-one-mask">Instances instead of one mask</h2>
+</section>
+</section>
+<section id="instances-instead-of-one-mask" class="level2">
+<h2 class="anchored" data-anchor-id="instances-instead-of-one-mask">Instances instead of one mask</h2>
 <p><code>task: instance_segmentation</code> keeps the objects apart rather than uniting them. The data block gets <strong>shorter</strong> rather than longer: no <code>colormap</code> and no <code>labels</code>, because there are always exactly two classes - background and object - and what names the objects is the directory of per-object mask files itself.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">task</span><span class="kw">:</span><span class="at"> instance_segmentation</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span><span class="kw">:</span></span>
@@ -969,33 +1006,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">loss</span><span class="kw">:</span><span class="at"> </span><span class="kw">{</span><span class="fu">name</span><span class="kw">:</span><span class="at"> mse</span><span class="kw">,</span><span class="at"> </span><span class="fu">where</span><span class="kw">:</span><span class="at"> foreground</span><span class="kw">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The same two models from R. <a href="../man/instance_data.html"><code>instance_data()</code></a> is what says which task this is - an instance data block declares nothing a segmentation one lacks, so the constructor is the word:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu">platypus_spec</span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="fu">instance_data</span><span class="op">(</span><span class="st">"data/train"</span>, <span class="st">"data/validation"</span><span class="op">)</span>,</span>
-<span>  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
-<span>    <span class="fu">u_net</span><span class="op">(</span></span>
-<span>      <span class="st">"rim"</span>,</span>
-<span>      input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">256</span>, <span class="fl">256</span><span class="op">)</span>,</span>
-<span>      separation <span class="op">=</span> <span class="fu">separation_rim</span><span class="op">(</span>width <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
-<span>      loss <span class="op">=</span> <span class="fu">loss_cce_dice</span><span class="op">(</span><span class="op">)</span>,</span>
-<span>      decode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu">decode_nearest_seed</span><span class="op">(</span><span class="op">)</span>, <span class="fu">decode_connected_components</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="op">)</span>,</span>
-<span>    <span class="fu">u_net</span><span class="op">(</span></span>
-<span>      <span class="st">"flows"</span>,</span>
-<span>      input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">256</span>, <span class="fl">256</span><span class="op">)</span>,</span>
-<span>      separation <span class="op">=</span> <span class="fu">separation_flows</span><span class="op">(</span>loss <span class="op">=</span> <span class="fu">loss_mse</span><span class="op">(</span>where <span class="op">=</span> <span class="st">"foreground"</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">platypus_fit</span><span class="op">(</span><span class="va">spec</span><span class="op">)</span></span>
-<span><span class="fu">evaluate</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="fu">platypus_spec</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">instance_data</span>(<span class="st">"data/train"</span>, <span class="st">"data/validation"</span>),</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">u_net</span>(</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">"rim"</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">256</span>, <span class="dv">256</span>),</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">separation =</span> <span class="fu">separation_rim</span>(<span class="at">width =</span> <span class="dv">2</span>),</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">loss =</span> <span class="fu">loss_cce_dice</span>(),</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">decode =</span> <span class="fu">list</span>(<span class="fu">decode_nearest_seed</span>(), <span class="fu">decode_connected_components</span>())</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">u_net</span>(</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>      <span class="st">"flows"</span>,</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">256</span>, <span class="dv">256</span>),</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">separation =</span> <span class="fu">separation_flows</span>(<span class="at">loss =</span> <span class="fu">loss_mse</span>(<span class="at">where =</span> <span class="st">"foreground"</span>))</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">platypus_fit</span>(spec)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Two axes, and they are deliberately different shapes. <strong><code>separation</code> is one block per model and has no default</strong>: it is what the network is trained to predict, so it sets the width of the head - three channels for <code>rim</code>, four for <code>flows</code> at two classes - and that width is derived rather than written anywhere. <strong><code>decode</code> is a list</strong>, because several decodings share one forward pass: a second decoding of 134 images costs 1.41 s against an hour and a half for a second training run. <a href="../man/evaluate.html"><code>evaluate()</code></a> then returns a row per <em>model and decoding</em>.</p>
 <p><strong>Which mask column to read is a decision the table makes for you and it used to make it wrongly.</strong> Every row carries <code>foreground_dice</code> - the binary overlap of anything the model called an object against anything that is one, the same arithmetic whatever the separation is - and that is the one to read <em>across</em> models. The <code>dice</code> beside it is the training metric, a mean over the class channels the head has, so three for <a href="../man/separations.html"><code>separation_rim()</code></a> against two for <a href="../man/separations.html"><code>separation_flows()</code></a>: read down one model’s rows, never across two. On the Data Science Bowl’s validation cases the class column showed two masks 0.09 apart that are 0.0062 apart, and in the other direction.</p>
 <p><strong>No value appears in both lists</strong>, which is what settles which field a new idea belongs in: <code>separation</code> is a noun and <code>decode</code> is a verb. <code>separation_rim()</code> can be decoded by <a href="../man/decodings.html"><code>decode_nearest_seed()</code></a> or <a href="../man/decodings.html"><code>decode_watershed()</code></a>, <code>separation_flows()</code> by <a href="../man/decodings.html"><code>decode_follow_flows()</code></a>, and <a href="../man/decodings.html"><code>decode_connected_components()</code></a> reads no signal at all and works with every target. Leave <code>decode</code> out and it derives to the signal’s own decoding plus <code>connected_components</code>; give a list and you get the list you gave.</p>
 <p>A model’s own <code>loss</code> and <code>metrics</code> score the mask at either separation, so they are an overlap or a cross-entropy loss here as everywhere else. <code>separation_flows()</code> carries its own <code>loss</code> for the two vector channels, which is where <a href="../man/losses.html"><code>loss_mse()</code></a>, <a href="../man/losses.html"><code>loss_l1()</code></a> and <a href="../man/losses.html"><code>loss_smooth_l1()</code></a> belong: <code>where = "foreground"</code> averages the error over the voxels the target is defined on, and on these images that is 13.97% of them.</p>
 <p><strong>What this task is worth is measured, and it is not flattering.</strong> On the Data Science Bowl the separation signal is worth +0.068 of instance average precision at best while a perfect mask is worth +0.2398, so the mask is the limit by a factor of 3.6 - and a <em>perfect</em> semantic mask decoded by <code>connected_components</code> still scores only 0.7655. That is what the yardstick row is for: a run that improved the mask and did nothing for the separation improves every row at once, and without the row that ignores the signal there is nothing to notice it against.</p>
-<p><strong>One thing is missing from R rather than from the engine, and it is missing on purpose rather than by oversight</strong>: <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> on an instance fit refuses. The run and its scores work - <code>evaluate()</code> gives the row per model and decoding above - but there is no call yet that brings the objects themselves back into R as a label map, so <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> says so instead of returning a mask that is not what you asked for. <code>platypus#103</code>.</p>
-</section><section id="detection-instead-of-segmentation" class="level2"><h2 class="anchored" data-anchor-id="detection-instead-of-segmentation">Detection instead of segmentation</h2>
+<p><strong>One thing is missing from R rather than from the engine, and it is missing on purpose rather than by oversight</strong>: <code>predict()</code> on an instance fit refuses. The run and its scores work - <code>evaluate()</code> gives the row per model and decoding above - but there is no call yet that brings the objects themselves back into R as a label map, so <code>predict()</code> says so instead of returning a mask that is not what you asked for. <code>platypus#103</code>.</p>
+</section>
+<section id="detection-instead-of-segmentation" class="level2">
+<h2 class="anchored" data-anchor-id="detection-instead-of-segmentation">Detection instead of segmentation</h2>
 <p><code>task: object_detection</code> changes which fields the file accepts. Boxes rather than masks, so <code>classes</code> and an annotation format rather than a colormap:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">task</span><span class="kw">:</span><span class="at"> object_detection</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span><span class="kw">:</span></span>
@@ -1007,7 +1046,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> cells</span></span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">input_shape</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="dv">416</span><span class="kw">,</span><span class="at"> </span><span class="dv">416</span><span class="kw">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Leave <code>anchors</code> out and they are fitted to your own boxes</strong> by k-means on an IoU distance, <code>anchors_per_grid</code> of them per grid. That is worth about 0.23 of mean overlap against COCO’s nine on blood cells - measured, 0.65 against 0.88 - so the default is the useful one and naming anchors by hand is for reproducing a published model. <a href="../man/detection_anchors.html"><code>detection_anchors()</code></a> reports them and <a href="../man/plot_anchors.html"><code>plot_anchors()</code></a> draws them against the boxes they were fitted to.</p>
-</section><section id="not-training-at-all" class="level2"><h2 class="anchored" data-anchor-id="not-training-at-all">Not training at all</h2>
+</section>
+<section id="not-training-at-all" class="level2">
+<h2 class="anchored" data-anchor-id="not-training-at-all">Not training at all</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">task</span><span class="kw">:</span><span class="at"> semantic_segmentation</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span><span class="kw">:</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">train_path</span><span class="kw">:</span><span class="at"> data/images</span></span>
@@ -1020,40 +1061,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">fit</span><span class="kw">:</span><span class="at"> </span><span class="ch">false</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>weights</code> takes a registry name, a local path, or <code>hf://owner/repo/file@commit</code> - and the <code>hf://</code> form requires the commit, because weights that change under a stable name are the worst kind of irreproducibility. A registry name carries one already; <a href="../man/available_weights.html"><code>available_weights()</code></a> lists them.</p>
 <p>With <code>fit: false</code> nothing trains and <code>predict(fit)</code> works immediately. The weights are checked against the model they are being loaded into <em>before</em> torch is touched: a shape, a channel count or a class count that does not match is a refusal naming the field, not a tensor-size error from inside a loss.</p>
-</section><section id="what-is-checked-and-when" class="level2"><h2 class="anchored" data-anchor-id="what-is-checked-and-when">What is checked, and when</h2>
+</section>
+<section id="what-is-checked-and-when" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-checked-and-when">What is checked, and when</h2>
 <p>Validation happens in this order, and the first two cost no epochs:</p>
 <ol type="1">
-<li>
-<strong>The file, against the schema.</strong> Unknown fields, missing required ones, a <code>name:</code> that no block has, a callback watching a number nothing will produce. Before any path is read - and before Python starts, for the checks R can make itself.</li>
-<li>
-<strong>The data on disk</strong>, when the run begins: that the folders exist, that images and masks correspond, and that every class in <code>colormap</code> or <code>labels</code> actually appears in the masks, because a declared class appearing in none has a target channel of zeros, so the model is never shown what it is being asked to find. <code>inspect_masks()</code> runs that check on its own, and <code>platypus_fit(check_masks = FALSE)</code> skips it.</li>
-<li>
-<strong>Everything else</strong>, during the run.</li>
+<li><strong>The file, against the schema.</strong> Unknown fields, missing required ones, a <code>name:</code> that no block has, a callback watching a number nothing will produce. Before any path is read - and before Python starts, for the checks R can make itself.</li>
+<li><strong>The data on disk</strong>, when the run begins: that the folders exist, that images and masks correspond, and that every class in <code>colormap</code> or <code>labels</code> actually appears in the masks, because a declared class appearing in none has a target channel of zeros, so the model is never shown what it is being asked to find. <code>inspect_masks()</code> runs that check on its own, and <code>platypus_fit(check_masks = FALSE)</code> skips it.</li>
+<li><strong>Everything else</strong>, during the run.</li>
 </ol>
 <p>A refusal names the field and says what to do. The engine’s own messages are translated into R conditions rather than passed through as Python tracebacks, so <code>tryCatch(platypus_spec("run.yaml"), error = function(e) conditionMessage(e))</code> gives a sentence rather than a stack.</p>
-</section><section id="the-same-run-from-code" class="level2"><h2 class="anchored" data-anchor-id="the-same-run-from-code">The same run from code</h2>
+</section>
+<section id="the-same-run-from-code" class="level2">
+<h2 class="anchored" data-anchor-id="the-same-run-from-code">The same run from code</h2>
 <p>The file is not a second implementation. These describe the same experiment:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu">platypus_spec</span><span class="op">(</span><span class="st">"run.yaml"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">spec</span> <span class="op">&lt;-</span> <span class="fu">platypus_spec</span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="fu">segmentation_data</span><span class="op">(</span></span>
-<span>    <span class="st">"data/train"</span>,</span>
-<span>    validation <span class="op">=</span> <span class="st">"data/validation"</span>,</span>
-<span>    colormap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">255</span>, <span class="fl">255</span>, <span class="fl">255</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu">u_net</span><span class="op">(</span><span class="st">"first_try"</span>, input_shape <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">256</span>, <span class="fl">256</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="fu">platypus_spec</span>(<span class="st">"run.yaml"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="fu">platypus_spec</span>(</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">segmentation_data</span>(</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"data/train"</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">validation =</span> <span class="st">"data/validation"</span>,</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">colormap =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="fu">c</span>(<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>))</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(<span class="fu">u_net</span>(<span class="st">"first_try"</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">256</span>, <span class="dv">256</span>)))</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>And <code>as.list(spec)</code> is the file, so a run built from arguments can be written out and kept:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">yaml</span><span class="fu">::</span><span class="fu"><a href="https://yaml.r-lib.org/reference/write_yaml.html">write_yaml</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">as.list</a></span><span class="op">(</span><span class="va">spec</span><span class="op">)</span>, <span class="st">"run.yaml"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>yaml<span class="sc">::</span><span class="fu">write_yaml</span>(<span class="fu">as.list</span>(spec), <span class="st">"run.yaml"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Which to use is a question about how many models and how often, not about what is possible. A file is better when there are several models, when the run is going to be repeated, or when somebody else has to see what was done; the arguments are better inside a loop over something the file cannot express, like a vector of datasets.</p>
-<p>Note that <code><a href="https://rdrr.io/r/base/list.html">as.list()</a></code> is also how the fields are reached: the object returned by <code>platypus_spec()</code> carries the specification on the Python side, so <code>spec$task</code> is <code>NULL</code> while <code>as.list(spec)$task</code> is what you want.</p>
+<p>Note that <code>as.list()</code> is also how the fields are reached: the object returned by <code>platypus_spec()</code> carries the specification on the Python side, so <code>spec$task</code> is <code>NULL</code> while <code>as.list(spec)$task</code> is what you want.</p>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -1454,6 +1499,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   });
   </script>
 </div> <!-- /content -->
+
 
 
 
