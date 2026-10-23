@@ -369,9 +369,9 @@ one exception, and it is the next table's subject.
 opposite here, and it does so by a dose. `alpha` weights the **region** term, so the surface
 term's share is `1 - alpha`:
 
-| surface share | seeds | flagged dice vs baseline | x | clDice - dice | own seed floor |
+| surface share | seeds | flagged dice vs baseline | x | clDice - dice | its own pair, flagged |
 |---|---|---|---|---|---|
-| none, the baseline | 2 | - | - | +0.0052 | 0.0022 |
+| none, the baseline | 2 | - | - | +0.0052 | 0.0012 |
 | 0.1, `alpha = 0.9` | 1 | -0.0329 | 15.0 | +0.0045 | unmeasured |
 | 0.3, `alpha = 0.7` | 2 | -0.0581 | 26.5 | -0.0051 | 0.0120 |
 
@@ -380,9 +380,11 @@ changes sign: at surface 0.3 clDice falls below Dice, which no baseline run does
 argument for this loss was backwards - connectedness is what it costs first, and on the
 flagged photographs it costs 15 to 27 times the noise.
 
-Two things keep that honest. **The dose has its own floor and it is ten times the baseline's:**
-the two arms at surface 0.3 sit 0.0120 apart on the flagged cases where the baseline's pair
-sits 0.0012 apart. That is this loss's documented behaviour - it grows noisier the more of the
+Two things keep that honest. **The dose has its own noise and it is ten times the
+baseline's**, which is the last column: the two arms at surface 0.3 sit 0.0120 apart on the
+flagged cases where the baseline's two sit 0.0012 apart. (That column is each pair's own mean
+difference; the `x` column's denominator is still the baseline's 0.0022 from above, so the two
+are not the same quantity and the table would mislead if they were read as one.) That is this loss's documented behaviour - it grows noisier the more of the
 objective the surface term owns - reproduced on real data, and it is also the denominator the
 dose claim has to clear. Judged against it the two doses are 2.1x apart, not the twentyfold the
 baseline's floor would suggest. And **both arms at the higher dose stopped on the epoch cap
