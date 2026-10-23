@@ -120,8 +120,20 @@ first.
 
 Each of these patients has two studies. Split the twenty-four scans at random and both
 studies of some patient land on opposite sides of the split: the model meets that patient in
-training and is then tested on the same anatomy. Dice comes out several points too high
-and nothing in the result says so.
+training and is then tested on the same anatomy.
+
+**How much that costs is a separate question, and it has now been measured rather than
+asserted.** This paragraph used to end *"Dice comes out several points too high"*, which
+nothing had ever checked. On MSD Spleen - 41 patients, 1043 slices - a slice-level split put
+**29 of 29** development patients on both sides, and the model it produced overstated its own
+score by **+0.035** against patients it had never seen. A patient-level split on the same
+data overstated itself by **+0.039**. So the inflation is real and it is *not* the leak: any
+validation set differs from any test set by a few points because patients differ, and on this
+data the leak added nothing on top of that.
+
+That is one dataset, one architecture and twelve epochs, which is not evidence that the
+mistake is harmless where a model has room to memorise. The reason to keep patients whole is
+that the mechanism is certain and invisible in the result, not that the size is known.
 
 `split_dataset()` takes a pattern that says which part of a name is the patient, and
 keeps every patient whole:
