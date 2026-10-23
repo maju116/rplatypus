@@ -10,7 +10,9 @@ vignette: >
 <!--
 THIS PROSE HAS A COUNTERPART, AND THIS FILE IS THE SOURCE.
 
-The engine mirrors it as pyplatypus's `volumes.qmd`. It is not written yet - maju116/pyplatypus#175 is the issue that will write it.
+The engine mirrors it as pyplatypus's `volumes.qmd`. It exists, merged as
+maju116/pyplatypus#253, so this pair is compared on both sides - and it was the last
+one, so `awaiting` in tests/testthat/test-article-pairs.R is now empty.
 
 By maju116/rplatypus#117 the vignette is the source and the article is the copy, so an edit
 here is an edit there, and an edit there alone is a mistake nothing will catch. What is held

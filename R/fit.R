@@ -116,8 +116,17 @@ print.platypus_fit <- function(x, ...) {
 #'
 #' The `loss` column is only comparable between models trained on the same loss, which is
 #' why `loss_function` is there beside it. A Focal-Tversky of 0.05 is not better than a
-#' CCE-Dice of 0.14; it is not even the same question. Metrics stay comparable, because
-#' they measure the mask rather than the objective.
+#' CCE-Dice of 0.14; it is not even the same question.
+#'
+#' The metrics have a condition of their own and `load_shape` is it. Each model is scored on
+#' the grid it reads at, so a model at `input_shape = c(512, 512)` is measured against a
+#' truth reduced to 512 while one that tiles 2048 is measured against the truth as stored.
+#' Both numbers are a real Dice of a real prediction against a real mask, and they are not
+#' answers to the same question: measured on retinal vessels, that difference reported a
+#' resized model as **+0.0187 better** where the honest figure was **+0.0033**, and the bias
+#' runs the other way on clDice because upsampling smooths a prediction. When the rows
+#' disagree about the grid this warns, once; the column is there either way, because a table
+#' outlives the session that printed it.
 #'
 #' @section A note on the name:
 #' `evaluate` is also exported by the **evaluate** package, which knitr depends on, so the
