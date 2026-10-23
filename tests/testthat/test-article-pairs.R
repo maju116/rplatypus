@@ -38,8 +38,7 @@ article_for <- function(stem) {
 # article appears fails the second. So it is a record of the remaining work rather than a set
 # of exemptions somebody has to remember to prune.
 awaiting <- c(
-  "volumes"           = "maju116/pyplatypus#175",
-  "retinal-vessels"   = "maju116/pyplatypus#243"
+  "volumes"           = "maju116/pyplatypus#175"
 )
 
 fetch_lines <- function(address) {
