@@ -430,8 +430,44 @@ past the gap.
 
 ## What this leaves out
 
-Resampling is offered, not imposed. Several volumes per sample - one per modality, as BraTS
-ships - works through `channels_from`, where the order is stated rather than inferred.
+Resampling is offered, not imposed.
+
+**What it costs to impose it, and the trap in doing so, were measured on MSD Spleen** - 41
+abdominal CTs whose slice thickness runs 1.5 mm to 8 mm and whose voxels differ in volume by
+5.9 times, which is the variation `target_spacing` exists for. Three arms, one `input_shape`
+of 64 cubed, every one scored against the truth as stored:
+
+| what the model reads | dice | worst case | volume error |
+|---|---|---|---|
+| the whole scan, squashed into the shape | 0.709 | 0.014 | 87 ml |
+| `target_spacing = c(1.5, 1.5, 1.5)` | 0.000 | 0.000 | 231 ml |
+| `target_spacing = c(7.5, 7.5, 7.5)` | 0.822 | 0.770 | 29 ml |
+
+of a spleen averaging 234 ml.
+
+**The middle row is the trap and it is total.** Resampling does not only change the scale: it
+changes what `input_shape` *means*. Without it, the shape is the whole scan squashed to fit.
+With it, the shape is a box of so many millimetres taken from the middle - 64 voxels at
+1.5 mm is a 96 mm cube - and a spleen sits up to 165 mm off the centre of the scan and is up
+to 143 mm across. The organ is outside the box in every case, so the model finds nothing at
+all, three runs out of three.
+
+**Choose the field of view in millimetres first**, then the spacing and the shape that cover
+it. Here that is a 480 mm box, and it is worth +0.11 of Dice over resizing and a third of the
+volume error - 14% of the organ against 30%.
+
+The difference in reliability is larger than the difference in the mean: across three runs the
+resampled arm's worst case stayed between 0.72 and 0.77, while the resized arm's was 0.00,
+0.58 and 0.01. It does not score a little lower; it loses a whole scan, a different one each
+time. Which scan is **not** explained by its geometry - the two volumes covering the most
+patient came through fine - and that is an open question rather than a tidy ending.
+
+A coarse 7.5 mm is a poor way to see a boundary, so the arm this did not run is a finer
+spacing with `splits`, which is how a large field of view is covered without a large input.
+`maju116/pyplatypus#201`.
+
+Several volumes per sample - one per modality, as BraTS ships - works through
+`channels_from`, where the order is stated rather than inferred.
 
 Object detection, ensembling and pretrained encoders are not here at all.
 
