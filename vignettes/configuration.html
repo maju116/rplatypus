@@ -825,6 +825,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<!--
+THIS PROSE HAS A COUNTERPART, AND THIS FILE IS THE SOURCE.
+
+The engine mirrors it as pyplatypus's `guide.qmd`. It exists as `guide.qmd`.
+
+By maju116/rplatypus#117 the vignette is the source and the article is the copy, so an edit
+here is an edit there, and an edit there alone is a mistake nothing will catch. What is held
+by a test is the walk: the `##` headings and their order, asserted from both sides -
+`tests/testthat/test-article-pairs.R` here and `tests/test_articles.py` in the engine. The
+route is deliberately not held, because the engine reaches each destination through a
+configuration file where this package reaches it through constructors.
+
+So: renaming or reordering a `##` heading in this file breaks both suites until the article
+follows. Changing the body of a section breaks neither, and that is the part no test can
+check - a heading test does not stop prose drifting.
+-->
 <p>One YAML file describes a whole run, and <a href="../man/platypus_spec.html"><code>platypus_spec()</code></a> reads it. This is the walk through that file; the exhaustive list of fields lives on the engine’s site, because the file is the engine’s format and keeping a second copy here would mean two of them going out of step: <a href="https://maju116.github.io/pyplatypus/config.html">every configuration field</a>.</p>
 <p><strong>The same file works in both packages.</strong> R reads it with <code>platypus_spec()</code>, Python with <code>from_yaml()</code>, and both hand it to the same validator. Nothing below is R-specific except the lines that run it.</p>
 <p>Arguments and YAML produce the same object and nothing downstream can tell which was used, so a configuration file and an R script describe the same experiment - and either can be handed to a colleague.</p>
