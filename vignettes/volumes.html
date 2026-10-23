@@ -1085,7 +1085,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="what-this-leaves-out" class="level2">
 <h2 class="anchored" data-anchor-id="what-this-leaves-out">What this leaves out</h2>
-<p>Resampling is offered, not imposed. Several volumes per sample - one per modality, as BraTS ships - works through <code>channels_from</code>, where the order is stated rather than inferred.</p>
+<p>Resampling is offered, not imposed.</p>
+<p><strong>What it costs to impose it, and the trap in doing so, were measured on MSD Spleen</strong> - 41 abdominal CTs whose slice thickness runs 1.5 mm to 8 mm and whose voxels differ in volume by 5.9 times, which is the variation <code>target_spacing</code> exists for. Three arms, one <code>input_shape</code> of 64 cubed, every one scored against the truth as stored:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>what the model reads</th>
+<th>dice</th>
+<th>worst case</th>
+<th>volume error</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>the whole scan, squashed into the shape</td>
+<td>0.709</td>
+<td>0.014</td>
+<td>87 ml</td>
+</tr>
+<tr class="even">
+<td><code>target_spacing = c(1.5, 1.5, 1.5)</code></td>
+<td>0.000</td>
+<td>0.000</td>
+<td>231 ml</td>
+</tr>
+<tr class="odd">
+<td><code>target_spacing = c(7.5, 7.5, 7.5)</code></td>
+<td>0.822</td>
+<td>0.770</td>
+<td>29 ml</td>
+</tr>
+</tbody>
+</table>
+<p>of a spleen averaging 234 ml.</p>
+<p><strong>The middle row is the trap and it is total.</strong> Resampling does not only change the scale: it changes what <code>input_shape</code> <em>means</em>. Without it, the shape is the whole scan squashed to fit. With it, the shape is a box of so many millimetres taken from the middle - 64 voxels at 1.5 mm is a 96 mm cube - and a spleen sits up to 165 mm off the centre of the scan and is up to 143 mm across. The organ is outside the box in every case, so the model finds nothing at all, three runs out of three.</p>
+<p><strong>Choose the field of view in millimetres first</strong>, then the spacing and the shape that cover it. Here that is a 480 mm box, and it is worth +0.11 of Dice over resizing and a third of the volume error - 14% of the organ against 30%.</p>
+<p>The difference in reliability is larger than the difference in the mean: across three runs the resampled arm’s worst case stayed between 0.72 and 0.77, while the resized arm’s was 0.00, 0.58 and 0.01. It does not score a little lower; it loses a whole scan, a different one each time. Which scan is <strong>not</strong> explained by its geometry - the two volumes covering the most patient came through fine - and that is an open question rather than a tidy ending.</p>
+<p>A coarse 7.5 mm is a poor way to see a boundary, so the arm this did not run is a finer spacing with <code>splits</code>, which is how a large field of view is covered without a large input. <code>maju116/pyplatypus#201</code>.</p>
+<p>Several volumes per sample - one per modality, as BraTS ships - works through <code>channels_from</code>, where the order is stated rather than inferred.</p>
 <p>Object detection, ensembling and pretrained encoders are not here at all.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">platypus_device</span>()</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; torch      : 2.7.1+cu126 </span></span>
