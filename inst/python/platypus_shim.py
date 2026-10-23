@@ -770,6 +770,51 @@ def class_masks(
     return {"ok": True, "paths": [str(path) for path in paths]}
 
 
+def write_class_volumes(
+    prediction,
+    directory: str,
+    reference: list,
+    classes: list,
+    cases: list | None = None,
+    threshold: float = 0.5,
+    suffix: str = "",
+) -> dict:
+    """One volume per class, through the engine's own writer.
+
+    Forwarding rather than reimplementing, exactly as `write_class_masks` does one
+    dimension down. Until `0.8.0a29` there was nowhere to forward to: this package carried
+    `write_volumes` with its own logic, and R computed the per-class filenames itself, so
+    the rule for turning `whole tumour` into a filename existed twice and a test had to
+    hold the two together. The engine owns both now.
+
+    Added for `0.8.0a29`; against an older engine the call fails by name here rather than
+    producing half of it.
+    """
+    import numpy as np
+    import pyplatypus
+
+    if not hasattr(pyplatypus, "save_class_volumes"):
+        return _failure_message(
+            "this engine has no `save_class_volumes`; one volume per class arrived in "
+            f"pyplatypus 0.8.0a29 and the engine in use is {pyplatypus.__version__}"
+        )
+    try:
+        paths = pyplatypus.save_class_volumes(
+            [np.asarray(one, dtype=np.float32) for one in prediction],
+            directory,
+            reference=[str(path) for path in reference],
+            classes=[str(name) for name in classes],
+            cases=None if cases is None else [str(case) for case in cases],
+            threshold=float(threshold),
+            suffix=str(suffix),
+        )
+    except pyplatypus.PlatypusError as error:
+        return _failure(error)
+    except Exception as error:  # noqa: BLE001
+        return _engine_failure(error)
+    return {"ok": True, "paths": [str(path) for path in paths]}
+
+
 def window_presets() -> dict:
     """The named CT windows, so R does not keep its own copy to drift out of step."""
     from pyplatypus.spec.common import WINDOWS

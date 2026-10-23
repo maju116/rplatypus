@@ -725,19 +725,24 @@ test_that("save_class_volumes states the ranks it takes rather than guessing", {
   )
 })
 
-test_that("R's filename rule and the engine's are the same rule", {
-  # Two copies of one rule, which is what §3F exists to catch: `save_class_masks()` forwards
-  # to the engine's `class_filename` and `save_class_volumes()` cannot, so this holds them to
-  # each other over the names that are actually awkward rather than over a comment.
-  skip_if_no_engine()
-  awkward <- c("whole tumour", "Core / rim", "oedema (T2)", "a.b-c_d", "  padded  ",
-               "two  spaces")
-  mine <- rplatypus:::class_file_names(awkward)
-  theirs <- vapply(awkward, function(name) {
-    reticulate::py_run_string(sprintf(
-      "from pyplatypus.data.masks import class_filename\nout = class_filename(%s)",
-      shQuote(name, type = "cmd")
-    ))$out
-  }, character(1))
-  expect_identical(mine, unname(theirs))
+test_that("the engine names a class file, and this package no longer has an opinion", {
+  # This replaces a §3F pair rather than dropping one. The test that stood here compared
+  # `rplatypus:::class_file_names()` against the engine's `class_filename` over awkward
+  # names, because `save_class_volumes()` could not forward and had to carry the rule
+  # itself. `pyplatypus 0.8.0a29` moved the volume writer into the engine, so the second
+  # copy is gone - and what is worth checking is no longer that two rules agree but that
+  # the one rule is what reaches disk from here, on names that are awkward for a path.
+  skip_if_no_volumes()
+  root <- tiny_volume_dataset(cases = 2)
+  scans <- sort(list.files(root, pattern = "ct[.]nii[.]gz$", recursive = TRUE,
+                           full.names = TRUE))
+  written <- save_class_volumes(
+    overlapping_volumes(), withr::local_tempdir(), reference = scans,
+    classes = c("whole tumour", "Core / rim"), names = c("case_01", "case_02")
+  )
+  expect_identical(
+    basename(written),
+    c("case_01_whole_tumour.nii.gz", "case_01_Core_rim.nii.gz",
+      "case_02_whole_tumour.nii.gz", "case_02_Core_rim.nii.gz")
+  )
 })

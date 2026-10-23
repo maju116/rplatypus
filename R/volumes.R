@@ -368,33 +368,22 @@ save_class_volumes <- function(masks, dir, reference, classes, names = NULL, suf
          "the same filename in each. Pass `names`.", call. = FALSE)
   }
 
-  classes <- as.character(classes)
-  widths <- unique(vapply(channels, function(one) dim(one)[4], integer(1)))
-  if (length(widths) != 1L || widths != length(classes)) {
-    stop("the predictions have ", paste(widths, collapse = "/"), " channels and ",
-         length(classes), " class names were given. One name per channel, in the order ",
-         "the regions were written.", call. = FALSE)
-  }
-  files <- class_file_names(classes)
-
-  # Written class by class through the ordinary volume writer, so the affine, the integer
-  # labels and the grid check are the same ones `save_volumes()` gets rather than a second
-  # copy of them. One `write_volumes` call per class: it takes a list of volumes and a list
-  # of references, which is exactly a class across all the scans.
-  written <- character()
-  for (index in seq_along(files)) {
-    volumes <- lapply(channels, function(one) {
-      binary <- one[, , , index, drop = TRUE] >= threshold
-      array(as.integer(binary), dim = dim(binary))
-    })
-    paths <- file.path(dir, paste0(names, suffix, "_", files[[index]], ".nii.gz"))
-    result <- shim()$write_volumes(volumes, as.list(paths), as.list(reference))
-    if (!isTRUE(result$ok)) abort_engine(result)
-    written <- c(written, unlist(result$paths))
-  }
-  # Volume by volume rather than class by class, matching `save_class_masks()`: the order
-  # the paths come back in is what a caller zips against its case names.
-  invisible(as.vector(t(matrix(written, nrow = count))))
+  # One call, and everything after this point is the engine's: the per-class filenames, the
+  # threshold, the channel count against the names, the affine and the integer labels.
+  #
+  # It used to be a loop over classes with `write_volumes()` called once each, and the
+  # filenames were computed here by `class_file_names()` - a second copy of a rule the
+  # engine already had for pictures, kept honest by a test comparing the two over names
+  # that are awkward on a filesystem. `pyplatypus 0.8.0a29` put the writer in the engine,
+  # so the copy is gone and so is the test: the drift it guarded cannot happen now.
+  result <- shim()$write_class_volumes(
+    channels, dir, as.list(reference), as.list(as.character(classes)),
+    cases = as.list(names), threshold = threshold, suffix = suffix
+  )
+  if (!isTRUE(result$ok)) abort_engine(result)
+  # Volume by volume rather than class by class, matching `save_class_masks()`. The engine
+  # returns them in that order already, which is why nothing reshapes them here.
+  invisible(unlist(result$paths))
 }
 
 #' Channel probabilities per volume, whatever form they arrived in
