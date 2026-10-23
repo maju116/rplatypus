@@ -934,70 +934,54 @@ def volume_info(paths: list) -> dict:
 
 
 def write_volumes(masks, paths: list, reference: list) -> dict:
-    """Write label-map volumes as NIfTI, carrying each reference scan's affine.
+    """Label-map volumes as NIfTI, through the engine's own writer.
 
-    The affine is the point. A mask array on its own cannot be laid over the scan it came
-    from: every viewer, every registration tool and every volume calculation reads position
-    and spacing out of the affine, and a file without the right one is either silently
-    misplaced or rejected. So the mask is written with the geometry of the scan it was
-    predicted from, which also means it opens on top of it in any viewer with no further
-    work.
+    Forwarding rather than reimplementing, which it could not do until `0.8.0a29` put a
+    volume writer in the engine and `0.8.0a30` taught it to take a label map. Until then
+    this function carried its own nibabel loop, and the affine decision - that a mask is
+    written against the reference read the way the reader reads it, canonical rather than
+    stored - existed in two places. It is the engine's now.
 
-    Written as integer labels rather than as colours, because that is what a volume format
-    holds and what a segmentation tool expects to read back.
+    **Label maps rather than channels, and that is deliberate.** This package collapses a
+    prediction with `which.max`, so its class indices are counted from 1 and every file it
+    has ever written carries 1 and 2 where the engine's `argmax` would write 0 and 1.
+    Handing the engine the channel form instead would silently change the values in every
+    mask this package produces, so the collapse stays here and the engine writes what it is
+    given.
+
+    `paths` rather than a directory and names: this package has always chosen the whole
+    path, including its refusal when two would collide, and the engine's `cases` argument
+    is a different spelling of the same decision - so the paths are split back into a
+    directory and stems here rather than letting the two disagree about either.
     """
     import pathlib
 
     import numpy as np
+    import pyplatypus
 
+    if not hasattr(pyplatypus, "save_volumes"):
+        return _failure_message(
+            "this engine has no `save_volumes`; writing a volume arrived in pyplatypus "
+            f"0.8.0a29 and the engine in use is {pyplatypus.__version__}"
+        )
+    targets = [pathlib.Path(path) for path in paths]
+    directories = {path.parent for path in targets}
+    if len(directories) != 1:
+        return _failure_message(
+            "the masks would be written to several directories, and one call writes to one"
+        )
     try:
-        import nibabel as nib
-
-        arrays = np.asarray(masks)
-        if arrays.ndim == 3:
-            arrays = arrays[None]
-        if len(arrays) != len(paths):
-            return {
-                "ok": False,
-                "kind": "volume_error",
-                "problems": [],
-                "message": f"{len(arrays)} masks but {len(paths)} paths",
-            }
-        if len(reference) != len(paths):
-            return {
-                "ok": False,
-                "kind": "volume_error",
-                "problems": [],
-                "message": (
-                    f"{len(reference)} reference volumes but {len(paths)} "
-                    "masks; each mask needs the scan it was predicted from"
-                ),
-            }
-
-        written = []
-        for array, path, source in zip(arrays, paths, reference):
-            source_image = nib.as_closest_canonical(nib.load(str(source)))
-            target = pathlib.Path(path)
-            target.parent.mkdir(parents=True, exist_ok=True)
-
-            labels = np.asarray(array)
-            if labels.shape != source_image.shape[:3]:
-                return {
-                    "ok": False,
-                    "kind": "volume_error",
-                    "problems": [],
-                    "message": (
-                        f"mask {labels.shape} does not match '{source}' "
-                        f"{tuple(source_image.shape[:3])}. A mask written with the wrong "
-                        "geometry lands in the wrong place, which is worse than failing."
-                    ),
-                }
-            image = nib.Nifti1Image(labels.astype(np.int16), source_image.affine, dtype=np.int16)
-            nib.save(image, str(target))
-            written.append(str(target))
+        written = pyplatypus.save_volumes(
+            [np.asarray(one) for one in masks],
+            directories.pop(),
+            reference=[str(path) for path in reference],
+            cases=[path.name.removesuffix(".nii.gz") for path in targets],
+        )
+    except pyplatypus.PlatypusError as error:
+        return _failure(error)
     except Exception as error:  # noqa: BLE001
         return _engine_failure(error)
-    return {"ok": True, "paths": written}
+    return {"ok": True, "paths": [str(path) for path in written]}
 
 
 def series_report(paths: list) -> dict:

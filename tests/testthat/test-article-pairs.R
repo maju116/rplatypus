@@ -37,9 +37,11 @@ article_for <- function(stem) {
 # out of it with no article fails the first test below, and a vignette left *in* it after the
 # article appears fails the second. So it is a record of the remaining work rather than a set
 # of exemptions somebody has to remember to prune.
-awaiting <- c(
-  "volumes"           = "maju116/pyplatypus#175"
-)
+# Empty, and it reached empty rather than being deleted: `volumes` was the last entry and
+# `maju116/pyplatypus#175` merged. All five pairs are compared now. The vector stays - a
+# named character(0) keeps both tests below meaningful, and the next vignette written
+# before its article belongs in it rather than in a comment.
+awaiting <- c(character(0))
 
 fetch_lines <- function(address) {
   tryCatch(

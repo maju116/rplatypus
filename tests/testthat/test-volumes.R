@@ -139,8 +139,12 @@ test_that("a mask that does not match its scan is refused rather than written", 
   scan <- list.files(root, pattern = "ct[.]nii[.]gz$", recursive = TRUE,
                      full.names = TRUE)
   wrong_size <- array(1L, dim = c(1, 4, 4, 2))
+  # The wording is the engine's since the pin moved to `0.8.0a30`: this package forwards the
+  # write now rather than carrying its own nibabel loop, so the refusal arrives from there.
+  # Matched on the clause that is the finding rather than on the shapes, which differ per
+  # fixture.
   expect_error(save_volumes(wrong_size, withr::local_tempdir(), reference = scan),
-               "does not match")
+               "lands in the wrong place")
 })
 
 test_that("masks and reference volumes have to line up", {
@@ -559,7 +563,7 @@ test_that("a prediction on the model's grid is still refused, with the reason", 
   expect_error(
     save_volumes(predict(fit, split = "validation"), withr::local_tempdir(),
                  reference = scan),
-    "does not match"
+    "lands in the wrong place"
   )
 })
 
