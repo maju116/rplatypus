@@ -27,13 +27,17 @@ article_for <- function(stem) {
   if (identical(stem, "configuration")) "guide.qmd" else paste0(stem, ".qmd")
 }
 
-# Vignettes whose article is not written yet, each with the issue that will write it. **This
+# Vignettes whose article is not written yet, each with the issue that will write it.
+#
+# `data-science-bowl` was here until `maju116/pyplatypus#246` merged, and the second test
+# below failed within minutes of that merge - which is the list working rather than a
+# nuisance. An entry whose article now exists is a pair that stopped being compared, and
+# this is the only mechanism that says so. **This
 # list must shrink to nothing**, and it cannot go stale in either direction: a vignette left
 # out of it with no article fails the first test below, and a vignette left *in* it after the
 # article appears fails the second. So it is a record of the remaining work rather than a set
 # of exemptions somebody has to remember to prune.
 awaiting <- c(
-  "data-science-bowl" = "maju116/pyplatypus#173",
   "blood-cells"       = "maju116/pyplatypus#174",
   "volumes"           = "maju116/pyplatypus#175",
   "retinal-vessels"   = "maju116/pyplatypus#243"
@@ -75,7 +79,20 @@ test_that("every vignette either has an engine article or an issue that will wri
   stems <- sub("[.]Rmd$", "", list.files(directory, pattern = "[.]Rmd$"))
   expect_gt(length(stems), 4)
 
-  unaccounted <- setdiff(stems, c(names(awaiting), "configuration", "instances"))
+  # Derived rather than listed, and the first version of this was not. It subtracted
+  # `c(names(awaiting), "configuration", "instances")` - a second list of the pairs that do
+  # exist, which somebody would have had to maintain beside the first. It failed the moment
+  # `pyplatypus#246` merged and `data-science-bowl` belonged to neither list. So the question
+  # asked here is the one that needs no bookkeeping: is this vignette either waiting for an
+  # article, or does its article answer?
+  unaccounted <- character(0)
+  for (stem in setdiff(stems, names(awaiting))) {
+    if (length(fetch_lines(paste0(engine_raw, "/", article_for(stem)))) > 0) next
+    if (length(fetch_lines(engine_control_url)) == 0) {
+      skip("no network: cannot tell a missing article from an unreachable one")
+    }
+    unaccounted <- c(unaccounted, stem)
+  }
   expect_identical(
     unaccounted, character(0),
     info = paste0(
@@ -110,7 +127,7 @@ test_that("a vignette with an article walks the same sections", {
     sub("[.]Rmd$", "", list.files(directory, pattern = "[.]Rmd$")),
     names(awaiting)
   )
-  expect_gt(length(paired), 1)
+  expect_gt(length(paired), 2)
 
   for (stem in paired) {
     address <- paste0(engine_raw, "/", article_for(stem))
