@@ -393,35 +393,6 @@ save_masks <- function(masks, dir, colormap, names = NULL, suffix = "") {
   invisible(unlist(result$paths))
 }
 
-#' Class names as filename fragments, refusing a pair the filesystem cannot keep apart
-#'
-#' Used by [save_class_volumes()] alone, because [save_class_masks()] forwards to the
-#' engine's `class_filename` and gets the rule from there. This is therefore a **second copy
-#' of one rule**, which is the shape §3F exists to catch - so a test holds the two to each
-#' other over a list of awkward names rather than a comment claiming they agree.
-#'
-#' The refusal is the part worth having on both sides: two names that become one filename
-#' would mean one file holding the second class, the first silently gone, and the number of
-#' written paths still right.
-#' @keywords internal
-#' @noRd
-class_file_names <- function(classes) {
-  cleaned <- gsub("^_+|_+$", "", gsub("[^A-Za-z0-9._-]+", "_", as.character(classes)))
-  empty <- !nzchar(cleaned)
-  if (any(empty)) {
-    stop("the class name \"", as.character(classes)[which(empty)[1]], "\" has no character ",
-         "a filename can hold, so there is nothing to call its file. Name it in letters, ",
-         "digits, dot, dash or underscore.", call. = FALSE)
-  }
-  if (anyDuplicated(cleaned)) {
-    clash <- unique(cleaned[duplicated(cleaned)])
-    stop("two class names become the same filename: ", paste(clash, collapse = ", "),
-         ". They differ as prose and not as paths, so one class would overwrite the other.",
-         call. = FALSE)
-  }
-  cleaned
-}
-
 #' Write overlapping classes, one file per class
 #'
 #' `regions` gives a channel per named class and a sigmoid per channel, so a pixel may be in
