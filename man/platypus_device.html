@@ -791,6 +791,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
+  <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
   <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
   <li><a href="#why-this-page-shows-no-output" id="toc-why-this-page-shows-no-output" class="nav-link" data-scroll-target="#why-this-page-shows-no-output">Why this page shows no output</a></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
@@ -814,6 +815,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="usage">Usage</h3>
 <pre><code class="language-R">platypus_device()
 </code></pre>
+</section>
+<section id="details" class="level3">
+<h3 class="anchored" data-anchor-id="details">Details</h3>
+<p>The answer comes from the engine’s own <code>device_report()</code> since <code style="white-space: pre;">0.8.0a38</code> - this package used to compute it, in a file of Python it ships, where no user of the engine could reach it. What stays here is the advice: the line telling you to call <a href="../man/platypus_use_torch.html"><code>platypus_use_torch()</code></a> is about R’s session model and would mean nothing to somebody who installed the engine with pip.</p>
+<p><strong>An accelerator that is not CUDA is named</strong>, because the published weights were all trained on CUDA cards and a score from another backend is not directly comparable with the registry’s. Until <code style="white-space: pre;">0.8.0a38</code> the engine asked about CUDA alone, so an Apple Silicon Mac reported <code>cpu</code> while a working <code>mps</code> backend sat in the same installation.</p>
 </section>
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>
