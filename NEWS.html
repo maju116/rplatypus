@@ -791,6 +791,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#unreleased" id="toc-unreleased" class="nav-link" data-scroll-target="#unreleased">[0.3.0] - unreleased</a>
   <ul class="collapse">
+  <li><a href="#the-worst-case-becomes-something-a-callback-can-watch-engine-0.8.0a36" id="toc-the-worst-case-becomes-something-a-callback-can-watch-engine-0.8.0a36" class="nav-link" data-scroll-target="#the-worst-case-becomes-something-a-callback-can-watch-engine-0.8.0a36">2026-10-24 - the worst case becomes something a callback can watch (engine <code>0.8.0a36</code>)</a></li>
   <li><a href="#the-quiet-failure-of-segmentation-becomes-a-number-engine-0.8.0a35" id="toc-the-quiet-failure-of-segmentation-becomes-a-number-engine-0.8.0a35" class="nav-link" data-scroll-target="#the-quiet-failure-of-segmentation-becomes-a-number-engine-0.8.0a35">2026-10-24 - the quiet failure of segmentation becomes a number (engine <code>0.8.0a35</code>)</a></li>
   <li><a href="#when-a-callback-may-act-and-on-what-evidence-engine-0.8.0a34" id="toc-when-a-callback-may-act-and-on-what-evidence-engine-0.8.0a34" class="nav-link" data-scroll-target="#when-a-callback-may-act-and-on-what-evidence-engine-0.8.0a34">2026-10-24 - when a callback may act, and on what evidence (engine <code>0.8.0a34</code>)</a></li>
   <li><a href="#two-more-learning-rate-schedules-and-one-pairing-that-never-worked-engine-0.8.0a33" id="toc-two-more-learning-rate-schedules-and-one-pairing-that-never-worked-engine-0.8.0a33" class="nav-link" data-scroll-target="#two-more-learning-rate-schedules-and-one-pairing-that-never-worked-engine-0.8.0a33">2026-10-24 - two more learning-rate schedules, and one pairing that never worked (engine <code>0.8.0a33</code>)</a></li>
@@ -843,6 +844,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Every entry names the engine it needs.</strong> The computation lives in <a href="https://github.com/maju116/pyplatypus">pyplatypus</a> and this package pins one exact version of it. A feature lands in the engine, the engine is published to PyPI, and only then can this package reach it - so the pin moving is part of a change here, not housekeeping alongside it. The pin is what stops a release of this package breaking because the engine drifted underneath it.</p>
 <section id="unreleased" class="level2">
 <h2 class="anchored" data-anchor-id="unreleased">[0.3.0] - unreleased</h2>
+<section id="the-worst-case-becomes-something-a-callback-can-watch-engine-0.8.0a36" class="level3">
+<h3 class="anchored" data-anchor-id="the-worst-case-becomes-something-a-callback-can-watch-engine-0.8.0a36">2026-10-24 - the worst case becomes something a callback can watch (engine <code>0.8.0a36</code>)</h3>
+<p><a href="man/training_history.html"><code>training_history()</code></a> carries <strong><code>val_&lt;metric&gt;_worst</code></strong>: the lowest any single case scored, for the metrics whose counts pool into one score. <code>monitor = "val_dice_worst"</code> works, and so does a <code>when</code> condition on it.</p>
+<p>This package has told every reader to look at that number since it had a <code>summary()</code> method - <em>a model averaging 0.86 that scores 0.11 on some patient has a failure mode, and the mean is where it hides</em> - and then every callback it offered watched a mean. Stopping, checkpointing and cutting the learning rate can all act on the distribution now.</p>
+<p><strong>Validation only.</strong> The training data is shuffled between epochs, so a case has no identity in that pass; <code>"train_dice_worst"</code> is refused rather than quietly reported as something else.</p>
+<p>It costs <strong>5.6% of an epoch</strong>, measured on the engine’s side: the counts are computed in the validation pass that already happened rather than in a second one.</p>
+<p><code>maju116/rplatypus[#205](https://github.com/maju116/rplatypus/issues/205)</code>, engine half <code>maju116/pyplatypus[#263](https://github.com/maju116/rplatypus/issues/263)</code>.</p>
+</section>
 <section id="the-quiet-failure-of-segmentation-becomes-a-number-engine-0.8.0a35" class="level3">
 <h3 class="anchored" data-anchor-id="the-quiet-failure-of-segmentation-becomes-a-number-engine-0.8.0a35">2026-10-24 - the quiet failure of segmentation becomes a number (engine <code>0.8.0a35</code>)</h3>
 <p>Every epoch now reports <strong><code>foreground</code></strong> for both passes - the share of the prediction that is not background. Nothing is compared against the truth, so it is not a measure of quality: it answers whether the model is still producing a segmentation at all.</p>
@@ -1490,7 +1499,7 @@ mentions of `value` or `colormaps`        0 in all four logs</code></pre>
 <ul>
 <li><strong>The bridge.</strong> <code>py_require()</code> plus uv, resolving an isolated ephemeral environment at <code>library(rplatypus)</code> - deliberately not the shared-Python arrangement that broke this package’s Keras stack in 2020. <code>platypus_status()</code> says what it found rather than leaving a failed import to be guessed at, and <code>PLATYPUS_ENGINE_PATH</code> points the bridge at a source tree during development.</li>
 <li><strong><code>platypus_spec()</code></strong>, built either from arguments or from a YAML file and producing the same thing. One pipeline, two constructors.</li>
-<li><strong><code>platypus_fit()</code></strong>, <code>evaluate()</code>, <code>predict()</code>, <a href="man/training_history.html"><code>training_history()</code></a>, and the engine’s complaints translated into R conditions rather than passed through as Python tracebacks.</li>
+<li><strong><code>platypus_fit()</code></strong>, <code>evaluate()</code>, <code>predict()</code>, <code>training_history()</code>, and the engine’s complaints translated into R conditions rather than passed through as Python tracebacks.</li>
 </ul>
 </section>
 </section>

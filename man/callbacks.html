@@ -866,7 +866,9 @@ callback_terminate_on_nan()
 <code id="monitor">monitor</code>
 </td>
 <td>
-What to watch: <code>“val_loss”</code>, <code>“train_loss”</code>, <code>“val_”</code> followed by a metric name such as <code>“val_dice”</code>, or <code>“val_foreground”</code> and <code>“train_foreground”</code> - the share of the prediction that is not background, which every epoch reports whether or not it was asked for.
+<p>What to watch: <code>“val_loss”</code>, <code>“train_loss”</code>, <code>“val_”</code> followed by a metric name such as <code>“val_dice”</code>, <code>“val_foreground”</code> and <code>“train_foreground”</code> - the share of the prediction that is not background - or <strong><code>“val_dice_worst”</code> and its kind, the lowest any single case scored.</strong></p>
+<p>That last one is the number <code>summary()</code> on <a href="../man/evaluate_cases.html"><code>evaluate_cases()</code></a> tells you to read, and until the engine’s <code style="white-space: pre;">0.8.0a36</code> nothing could act on it: a model averaging 0.86 that scores 0.11 on some patient has a failure mode, and the mean is where it hides. Stopping, checkpointing and cutting the learning rate can all watch it now.</p>
+Validation only. The training data is shuffled between epochs, so a case has no identity in that pass and there is nothing honest to pool by - <code>“train_dice_worst”</code> is refused rather than quietly reported as something else.
 </td>
 </tr>
 <tr>

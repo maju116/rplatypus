@@ -792,6 +792,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
   <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
+  <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
   <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul></li>
@@ -808,7 +809,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="unnumbered anchored" data-anchor-id="the-epoch-by-epoch-record">The epoch-by-epoch record</h2>
 <section id="description" class="level3">
 <h3 class="anchored" data-anchor-id="description">Description</h3>
-<p>The epoch-by-epoch record</p>
+<p>One row per model per epoch, with the loss, whatever metrics were asked for, how long the epoch took and the learning rate it ran at. Two columns arrive whether or not anybody asked:</p>
 </section>
 <section id="usage" class="level3">
 <h3 class="anchored" data-anchor-id="usage">Usage</h3>
@@ -827,6 +828,17 @@ A <a href="../man/platypus_fit.html"><code>platypus_fit()</code></a>.
 </td>
 </tr>
 </tbody></table>
+</section>
+<section id="details" class="level3">
+<h3 class="anchored" data-anchor-id="details">Details</h3>
+<ul>
+<li>
+<p><strong><code>foreground</code></strong> - the share of the prediction that is not background. Not a measure of quality, because nothing is compared against the truth: it answers whether the model is still producing a segmentation at all. A model collapsing to background reports a plausible loss and, with <code>include_background = TRUE</code>, a Dice around 0.5.</p>
+</li>
+<li>
+<p><strong><code style="white-space: pre;">val_&lt;metric&gt;_worst</code></strong> - the lowest any single case scored. The distribution is the finding and the mean is where a failure hides, so the number worth reading is in the table rather than only in <code>summary()</code> after the run.</p>
+</li>
+</ul>
 </section>
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>
