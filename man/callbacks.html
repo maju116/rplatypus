@@ -819,10 +819,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   monitor = "val_loss",
   patience = 10,
   min_delta = 0,
-  restore_best = TRUE
+  restore_best = TRUE,
+  start = NULL,
+  start_epoch = NULL
 )
 
-callback_model_checkpoint(path, monitor = "val_loss", save_best_only = TRUE)
+callback_model_checkpoint(
+  path,
+  monitor = "val_loss",
+  save_best_only = TRUE,
+  when = NULL
+)
 
 callback_reduce_lr_on_plateau(
   monitor = "val_loss",
@@ -838,6 +845,8 @@ callback_linear_annealing(min_lr = 0, epochs = NULL)
 callback_step_decay(factor = 0.1, every = NULL, milestones = NULL, min_lr = 0)
 
 callback_csv_logger(path)
+
+callback_stop_after(hours)
 
 callback_terminate_on_nan()
 </code></pre>
@@ -879,6 +888,16 @@ Put the best weights back when training stops, rather than keeping the last - wh
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="start">start</code>, <code id="start_epoch">start_epoch</code>
+</td>
+<td>
+<p>When the callback may begin to act - <strong>one of the two and never both</strong>. <code>start</code> is a fraction of the run (<code>0.1</code> leaves the first tenth alone) and <code>start_epoch</code> is an epoch number. Two arguments rather than one taking either, because a fraction survives a change to <code>epochs</code> and an epoch count does not, and in a YAML specification <code>1</code> and <code>1.0</code> are the same value once parsed - so one field would make "epoch one" and "the whole run" indistinguishable.</p>
+<p>For <code>callback_early_stopping()</code> this is a <strong>warm-up</strong>: a model that needs fifteen epochs before its validation curve means anything would otherwise need <code>patience &gt; 15</code> for the whole run, paying that slack at the end as well. It delays <strong>the stopping and nothing else</strong> - an epoch inside the warm-up can still be the best one and <code>restore_best</code> still returns to it, because those are the best weights the run has if it ends for another reason.</p>
+For <code>callback_swa()</code> it is the point averaging begins, which is the same concept and therefore the same two words.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
 <code id="path">path</code>
 </td>
 <td>
@@ -892,6 +911,15 @@ Put the best weights back when training stops, rather than keeping the last - wh
 </td>
 <td>
 Only write when the watched quantity improves, which is the default. <code>FALSE</code> writes every epoch, which is what to use when a run may be interrupted rather than when the best epoch is what you want to keep.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="when">when</code>
+</td>
+<td>
+<p>For <code>callback_model_checkpoint()</code>, a named list of thresholds that must <strong>all</strong> hold before anything is written: <code>list(val_dice = 0.9, val_loss = 0.2)</code>. <strong>The direction is derived, not configured</strong> - anything ending in <code>loss</code> has to be below its threshold and everything else above it, the same rule <code>monitor</code> uses - so there is no argument to get backwards. The names are checked against what the model reports when the specification is built, not at the first epoch.</p>
+It is an <strong>extra gate beside <code>save_best_only</code></strong>, not a replacement: with both, a file is written when the watched number improves <em>and</em> every threshold holds. A threshold is a number about your data and does not transfer between datasets, and a run whose conditions never hold writes nothing and says so when it ends.
 </td>
 </tr>
 <tr>
@@ -918,12 +946,20 @@ For <code>callback_cosine_annealing()</code> and <code>callback_linear_annealing
 For <code>callback_step_decay()</code>, <strong>one of the two and never both</strong>. <code>every = 30</code> drops every thirty epochs; <code>milestones = c(30, 60)</code> drops at those epochs, 1-based and strictly increasing, which is how a published recipe states it. Two arguments rather than one that takes either, because <code>30</code> and <code>c(30)</code> are different schedules and a single argument holding either would be read as whichever was typed. A period survives a change to <code>epochs</code>; a list of milestones does not.
 </td>
 </tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="hours">hours</code>
+</td>
+<td>
+For <code>callback_stop_after()</code>, a wall-clock budget. An epoch cap cannot express it, because how long an epoch takes is a property of the data and the shape. Checked at the end of an epoch, so the real limit is this plus one epoch; the run’s stop reason names the clock, so a run that ran out of time does not read as one that converged.
+</td>
+</tr>
 </tbody></table>
 </section>
 <section id="details" class="level3">
 <h3 class="anchored" data-anchor-id="details">Details</h3>
 <p>Whether the watched quantity should rise or fall is worked out from its name: anything ending in <code>loss</code> is minimised, everything else maximised.</p>
-<p>There is a ninth, documented separately because it needs a page of its own: <code>callback_swa()</code> averages the weights over the last part of the run. It watches nothing and changes how reproducible a run is rather than how well it scores.</p>
+<p>There is a tenth, documented separately because it needs a page of its own: <code>callback_swa()</code> averages the weights over the last part of the run. It watches nothing and changes how reproducible a run is rather than how well it scores.</p>
 </section>
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>

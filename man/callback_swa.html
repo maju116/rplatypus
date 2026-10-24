@@ -814,7 +814,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="usage" class="level3">
 <h3 class="anchored" data-anchor-id="usage">Usage</h3>
-<pre><code class="language-R">callback_swa(start = NULL, learning_rate = NULL)
+<pre><code class="language-R">callback_swa(start = NULL, learning_rate = NULL, start_epoch = NULL)
 </code></pre>
 </section>
 <section id="arguments" class="level3">
@@ -822,10 +822,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <table role="presentation">
 <tbody><tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
-<code id="start">start</code>
+<code id="start">start</code>, <code id="start_epoch">start_epoch</code>
 </td>
 <td>
-The fraction of the run after which averaging begins - 0.75 folds the last quarter. Unset uses the engine’s default of 0.75. A fraction rather than an epoch so it survives a change to <code>epochs</code>, and the final epoch is always folded, so 1 averages one set of weights rather than none.
+When averaging begins - <strong>one of the two and never both</strong>. <code>start</code> is the fraction of the run after which it begins, 0.75 folding the last quarter, and unset uses the engine’s default of 0.75; <code>start_epoch</code> says the same thing as an epoch number. A fraction survives a change to <code>epochs</code> and an epoch count does not, which is why the fraction is the default; an epoch is the one to use when the point is a property of the optimisation rather than of the run’s length. The final epoch is always folded, so <code>start = 1</code> averages one set of weights rather than none. <a href="../man/callbacks.html"><code>callback_early_stopping()</code></a> names the same pair with the same two words.
 </td>
 </tr>
 <tr>
