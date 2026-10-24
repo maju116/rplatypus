@@ -72,6 +72,10 @@ test_that("the counts are what the engine's own unions hold", {
   # them beside `reduce_lr_on_plateau` - a count that grew by two here corresponds to a
   # configuration surface that got *narrower*, which is the thing one number cannot say.
   #
+  # 12 since 0.8.0a37 added `ema` - and that release's larger change is invisible here
+  # as well: the callback protocol gained a fourth moment, `on_batch_end`, which is what
+  # makes a per-step average expressible at all.
+  #
   # 11 since 0.8.0a35 added `terminate_on_collapse`, which acts on a number that is not a
   # metric: the share of the prediction that is not background, reported every epoch
   # whether or not anybody asked for it.
@@ -80,7 +84,7 @@ test_that("the counts are what the engine's own unions hold", {
   # were already here - a warm-up on `early_stopping` and `swa`, conditions on
   # `model_checkpoint` - and this count cannot see any of it, which is why the arguments
   # are pinned below rather than only the listing's length.
-  expect_identical(nrow(available_callbacks()), 11L)
+  expect_identical(nrow(available_callbacks()), 12L)
   # Split rather than searched: `arguments` is one comma-joined string, and a `grepl()`
   # for "start" would also match "start_epoch" - a check that passes for the wrong reason.
   stopping <- available_callbacks()[available_callbacks()$name == "early_stopping", ]

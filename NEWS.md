@@ -17,6 +17,27 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-24 - a weight average fed per step (engine `0.8.0a37`)
+
+`callback_ema()` keeps an exponential moving average of the weights, updated after **every
+optimiser step**. That is what makes its `decay` mean what the literature means: 0.999 is
+0.999 per step, so over 60 epochs of 200 batches it is 12,000 updates and a half-life of
+about 700 steps. A per-epoch version would have been the same name with values that do not
+transfer, which is why the engine gained a fourth callback hook rather than an
+approximation.
+
+It is [callback_swa()]'s sibling and a run takes **one of them**: both replace the model
+when training ends, so the engine refuses the pair rather than applying them in whichever
+order the list happened to have. `swa` folds the tail uniformly from a declared start;
+`ema` weights recent steps more and needs no start at all.
+
+Unlike `swa` it needs no pass over the training data afterwards. A uniform average of
+weights carries batch-normalisation statistics belonging to no epoch and has to have them
+recomputed; an exponential average of the buffers alongside the weights carries its own.
+
+`maju116/rplatypus#203`, engine half `maju116/pyplatypus#264`.
+
+
 ### 2026-10-24 - the worst case becomes something a callback can watch (engine `0.8.0a36`)
 
 `training_history()` carries **`val_<metric>_worst`**: the lowest any single case scored,
