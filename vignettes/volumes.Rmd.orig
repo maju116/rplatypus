@@ -432,7 +432,35 @@ spacing with `splits`, which is how a large field of view is covered without a l
 `maju116/pyplatypus#201`.
 
 Several volumes per sample - one per modality, as BraTS ships - works through
-`channels_from`, where the order is stated rather than inferred.
+`channels_from`, where the order is stated rather than inferred. **That is a design
+claim, so it was measured.** One model was trained on MSD BrainTumour (`CC BY-SA 4.0`)
+with the four sequences named in the order `dataset.json` states, then read back through a
+specification naming the same four patterns with FLAIR and T1 swapped - the same weights,
+the same scans, one difference:
+
+| what channel one holds | dice |
+|---|---|
+| FLAIR, as trained | 0.467 |
+| T1, after one swap in the list | 0.110 |
+
+![The same weights reading one scan through two orders of four files](figures/volumes-channel-order.png)
+
+The case drawn is the **median** of the validation split rather than the best or the worst,
+and it scores 0.540 and 0.160 the two ways round. **Nothing failed.** No error and no empty
+mask: the model returns a region of plausible size and plausible shape in the wrong place,
+which is what a reader would accept from a tool they trust.
+
+The number is the weaker half of this, in two ways. A Dice of 0.467 is not a good tumour
+model - 60 epochs on 120 cases, still improving at the cap - and this measurement does not
+need it to be, because both rows are that same model. And it is a number about one
+permutation of twenty-four and one training budget: the same comparison at a third of the
+training reported 0.023 against 0.233, which is 10% of the right arm where these two are 23%.
+**The ratio moves with how good the model is; what does not move is that the wrong answer
+looks like an answer.**
+
+So take the order from the dataset's own record and check it once, because nothing downstream
+will. Sorting the filenames gives `flair, t1, t1gd, t2` - reproducible, and anatomically
+meaningless. `maju116/pyplatypus#202`.
 
 Object detection, ensembling and pretrained encoders are not here at all.
 
