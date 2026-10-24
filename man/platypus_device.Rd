@@ -13,6 +13,18 @@ A list, printed readably.
 Reports the PyTorch build in use and the device it can see. Starts the engine if it is
 not running.
 }
+\details{
+The answer comes from the engine's own \code{device_report()} since \verb{0.8.0a38} - this
+package used to compute it, in a file of Python it ships, where no user of the engine
+could reach it. What stays here is the advice: the line telling you to call
+\code{\link[=platypus_use_torch]{platypus_use_torch()}} is about R's session model and would mean nothing to somebody
+who installed the engine with pip.
+
+\strong{An accelerator that is not CUDA is named}, because the published weights were all
+trained on CUDA cards and a score from another backend is not directly comparable with
+the registry's. Until \verb{0.8.0a38} the engine asked about CUDA alone, so an Apple Silicon
+Mac reported \code{cpu} while a working \code{mps} backend sat in the same installation.
+}
 \section{Why this page shows no output}{
 
 What this prints is a property of the machine it runs on, so an example output here

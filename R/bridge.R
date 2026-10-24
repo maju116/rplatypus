@@ -15,7 +15,7 @@
 #' and an R package should not break because a Python dependency drifted underneath it.
 #' @keywords internal
 #' @noRd
-pyplatypus_version <- "0.8.0a37"
+pyplatypus_version <- "0.8.0a38"
 
 #' What this session will ask for. Set by [platypus_use_torch()] before the engine starts.
 #' @keywords internal
@@ -290,6 +290,17 @@ platypus_use_torch <- function(build = c("pascal", "default")) {
 #' Reports the PyTorch build in use and the device it can see. Starts the engine if it is
 #' not running.
 #'
+#' The answer comes from the engine's own `device_report()` since `0.8.0a38` - this
+#' package used to compute it, in a file of Python it ships, where no user of the engine
+#' could reach it. What stays here is the advice: the line telling you to call
+#' [platypus_use_torch()] is about R's session model and would mean nothing to somebody
+#' who installed the engine with pip.
+#'
+#' **An accelerator that is not CUDA is named**, because the published weights were all
+#' trained on CUDA cards and a score from another backend is not directly comparable with
+#' the registry's. Until `0.8.0a38` the engine asked about CUDA alone, so an Apple Silicon
+#' Mac reported `cpu` while a working `mps` backend sat in the same installation.
+#'
 #' @return A list, printed readably.
 #'
 #' @section Why this page shows no output:
@@ -311,6 +322,14 @@ print.platypus_device <- function(x, ...) {
   cat("torch      :", x$torch, "\n")
   cat("cuda build :", x$cuda_build, "\n")
   cat("device     :", x$device, "\n")
+  # Only when it is not CUDA. Every published set of weights was trained on a CUDA card,
+  # so that is the unremarkable case and naming it would be noise in the line above; an
+  # `mps` or `xpu` run is the one worth saying out loud, because a number from it is not
+  # obviously comparable with the registry's.
+  if (!is.null(x$backend) && !identical(x$backend, "cuda")) {
+    cat("backend    :", x$backend, "- not CUDA, so scores are not directly\n")
+    cat("             comparable with the published weights, which were trained on it\n")
+  }
   if (isTRUE(x$gpu_present_but_unusable)) {
     cat("\n  This machine has a GPU that this PyTorch build cannot use, so the work will\n")
     cat("  run on the processor instead - often about ten times slower.\n")
