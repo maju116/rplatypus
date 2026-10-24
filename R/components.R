@@ -565,9 +565,18 @@ optimizer_nadam <- function(learning_rate = 1e-3, beta_1 = 0.9, beta_2 = 0.999,
 #' ends where the run ends.
 #'
 #' @param monitor What to watch: `"val_loss"`, `"train_loss"`, `"val_"` followed by a
-#'   metric name such as `"val_dice"`, or `"val_foreground"` and `"train_foreground"` -
-#'   the share of the prediction that is not background, which every epoch reports whether
-#'   or not it was asked for.
+#'   metric name such as `"val_dice"`, `"val_foreground"` and `"train_foreground"` - the
+#'   share of the prediction that is not background - or **`"val_dice_worst"` and its kind,
+#'   the lowest any single case scored.**
+#'
+#'   That last one is the number [summary()] on [evaluate_cases()] tells you to read, and
+#'   until the engine's `0.8.0a36` nothing could act on it: a model averaging 0.86 that
+#'   scores 0.11 on some patient has a failure mode, and the mean is where it hides.
+#'   Stopping, checkpointing and cutting the learning rate can all watch it now.
+#'
+#'   Validation only. The training data is shuffled between epochs, so a case has no
+#'   identity in that pass and there is nothing honest to pool by - `"train_dice_worst"`
+#'   is refused rather than quietly reported as something else.
 #' @param patience Epochs to wait before acting. For
 #'   `callback_terminate_on_collapse()` that is epochs in a row below the floor, and it is
 #'   not 1 because an early epoch legitimately predicts almost nothing.
