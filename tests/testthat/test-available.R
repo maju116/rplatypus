@@ -71,7 +71,16 @@ test_that("the counts are what the engine's own unions hold", {
   # Both are schedules, so the engine now refuses two of them at once and refuses any of
   # them beside `reduce_lr_on_plateau` - a count that grew by two here corresponds to a
   # configuration surface that got *narrower*, which is the thing one number cannot say.
-  expect_identical(nrow(available_callbacks()), 9L)
+  #
+  # 10 since 0.8.0a34 added `stop_after`. That release also widened three callbacks that
+  # were already here - a warm-up on `early_stopping` and `swa`, conditions on
+  # `model_checkpoint` - and this count cannot see any of it, which is why the arguments
+  # are pinned below rather than only the listing's length.
+  expect_identical(nrow(available_callbacks()), 10L)
+  # Split rather than searched: `arguments` is one comma-joined string, and a `grepl()`
+  # for "start" would also match "start_epoch" - a check that passes for the wrong reason.
+  stopping <- available_callbacks()[available_callbacks()$name == "early_stopping", ]
+  expect_true(all(c("start", "start_epoch") %in% strsplit(stopping$arguments, ", ")[[1]]))
   expect_identical(nrow(available_models()), 4L)
   expect_identical(nrow(available_models("object_detection")), 1L)
   expect_identical(nrow(available_tasks()), 3L)

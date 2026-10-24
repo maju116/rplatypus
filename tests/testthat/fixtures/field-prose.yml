@@ -6,7 +6,7 @@
 #
 # A digest that no longer matches is not the engine's failure. It is a question - does R's
 # prose still say the right thing? - asked at the only moment anybody would ask it.
-engine: 0.8.0a33
+engine: 0.8.0a34
 fields:
   - field: activation
     engine_digest: 4822b126e39826a504979a6b123cc241
@@ -137,6 +137,9 @@ fields:
   - field: group_by
     engine_digest: 1d73b2ed9f89cd1de0934ae841e5bcd8
     documented_in: [evaluate_cases, split_dataset]
+  - field: hours
+    engine_digest: 7f58338ecfae39d7917b218cfb31c9ce
+    documented_in: [callbacks]
   - field: ignore_threshold
     engine_digest: a727c361adeca59916f8655232ca97c0
     documented_in: [yolo3]
@@ -276,8 +279,11 @@ fields:
     engine_digest: b19ea7b749dd121b54cd3ca5a17cd337
     documented_in: [models]
   - field: start
-    engine_digest: fdd38c62253581c1efb3cca96f184c2f
-    documented_in: [callback_swa]
+    engine_digest: 88a45e290ef842f9b5aee7dd7d0ca812
+    documented_in: [callback_swa, callbacks]
+  - field: start_epoch
+    engine_digest: 9b11991e991cbed81adff9ccb77362d4
+    documented_in: [callbacks]
   - field: step_size
     engine_digest: 42fdccfd45c8050aaceaf8a586800152
     documented_in: [decodings]
@@ -323,6 +329,9 @@ fields:
   - field: weights
     engine_digest: b240a5fd93755705debf2a983a8fe689
     documented_in: [models, yolo3]
+  - field: when
+    engine_digest: bf97b41103e5b51a8ea2ec466d11dde1
+    documented_in: [callbacks]
   - field: where
     engine_digest: ec2dcaee58cec6fc1ba71933f944812a
     documented_in: [losses]

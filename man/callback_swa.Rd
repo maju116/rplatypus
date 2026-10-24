@@ -4,13 +4,17 @@
 \alias{callback_swa}
 \title{Average the weights over the last part of the run}
 \usage{
-callback_swa(start = NULL, learning_rate = NULL)
+callback_swa(start = NULL, learning_rate = NULL, start_epoch = NULL)
 }
 \arguments{
-\item{start}{The fraction of the run after which averaging begins - 0.75 folds the last
-quarter. Unset uses the engine's default of 0.75. A fraction rather than an epoch so it
-survives a change to \code{epochs}, and the final epoch is always folded, so 1 averages one
-set of weights rather than none.}
+\item{start, start_epoch}{When averaging begins - \strong{one of the two and never both}.
+\code{start} is the fraction of the run after which it begins, 0.75 folding the last
+quarter, and unset uses the engine's default of 0.75; \code{start_epoch} says the same
+thing as an epoch number. A fraction survives a change to \code{epochs} and an epoch count
+does not, which is why the fraction is the default; an epoch is the one to use when
+the point is a property of the optimisation rather than of the run's length. The
+final epoch is always folded, so \code{start = 1} averages one set of weights rather than
+none. \code{callback_early_stopping()} names the same pair with the same two words.}
 
 \item{learning_rate}{Hold the rate at this value once averaging begins. Unset leaves
 whatever the run was doing.

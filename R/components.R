@@ -512,7 +512,7 @@ optimizer_nadam <- function(learning_rate = 1e-3, beta_1 = 0.9, beta_2 = 0.999,
 #' Whether the watched quantity should rise or fall is worked out from its name: anything
 #' ending in `loss` is minimised, everything else maximised.
 #'
-#' There is a ninth, documented separately because it needs a page of its own:
+#' There is a tenth, documented separately because it needs a page of its own:
 #' [callback_swa()] averages the weights over the last part of the run. It watches
 #' nothing and changes how reproducible a run is rather than how well it scores.
 #'
@@ -581,6 +581,38 @@ optimizer_nadam <- function(learning_rate = 1e-3, beta_1 = 0.9, beta_2 = 0.999,
 #' @param epochs For `callback_cosine_annealing()` and `callback_linear_annealing()`, how
 #'   many epochs to spread the decay over. Unset means the model's `epochs`, which is what
 #'   you want: a curve that ends where the run ends.
+#' @param start,start_epoch When the callback may begin to act - **one of the two and
+#'   never both**. `start` is a fraction of the run (`0.1` leaves the first tenth alone)
+#'   and `start_epoch` is an epoch number. Two arguments rather than one taking either,
+#'   because a fraction survives a change to `epochs` and an epoch count does not, and in
+#'   a YAML specification `1` and `1.0` are the same value once parsed - so one field
+#'   would make "epoch one" and "the whole run" indistinguishable.
+#'
+#'   For `callback_early_stopping()` this is a **warm-up**: a model that needs fifteen
+#'   epochs before its validation curve means anything would otherwise need
+#'   `patience > 15` for the whole run, paying that slack at the end as well. It delays
+#'   **the stopping and nothing else** - an epoch inside the warm-up can still be the best
+#'   one and `restore_best` still returns to it, because those are the best weights the run
+#'   has if it ends for another reason.
+#'
+#'   For `callback_swa()` it is the point averaging begins, which is the same concept and
+#'   therefore the same two words.
+#' @param when For `callback_model_checkpoint()`, a named list of thresholds that must
+#'   **all** hold before anything is written: `list(val_dice = 0.9, val_loss = 0.2)`.
+#'   **The direction is derived, not configured** - anything ending in `loss` has to be
+#'   below its threshold and everything else above it, the same rule `monitor` uses - so
+#'   there is no argument to get backwards. The names are checked against what the model
+#'   reports when the specification is built, not at the first epoch.
+#'
+#'   It is an **extra gate beside `save_best_only`**, not a replacement: with both, a file
+#'   is written when the watched number improves *and* every threshold holds. A threshold
+#'   is a number about your data and does not transfer between datasets, and a run whose
+#'   conditions never hold writes nothing and says so when it ends.
+#' @param hours For `callback_stop_after()`, a wall-clock budget. An epoch cap cannot
+#'   express it, because how long an epoch takes is a property of the data and the shape.
+#'   Checked at the end of an epoch, so the real limit is this plus one epoch; the run's
+#'   stop reason names the clock, so a run that ran out of time does not read as one that
+#'   converged.
 #' @param every,milestones For `callback_step_decay()`, **one of the two and never both**.
 #'   `every = 30` drops every thirty epochs; `milestones = c(30, 60)` drops at those
 #'   epochs, 1-based and strictly increasing, which is how a published recipe states it.
@@ -596,17 +628,30 @@ NULL
 #' @rdname callbacks
 #' @export
 callback_early_stopping <- function(monitor = "val_loss", patience = 10,
-                                    min_delta = 0, restore_best = TRUE) {
-  list(name = "early_stopping", monitor = monitor, patience = int1(patience),
-       min_delta = min_delta, restore_best = restore_best)
+                                    min_delta = 0, restore_best = TRUE,
+                                    start = NULL, start_epoch = NULL) {
+  if (!is.null(start) && !is.null(start_epoch)) {
+    stop("callback_early_stopping() takes `start` or `start_epoch`, not both: `start` ",
+         "is a fraction of the run and `start_epoch` is an epoch number.", call. = FALSE)
+  }
+  compact(list(name = "early_stopping", monitor = monitor, patience = int1(patience),
+               min_delta = min_delta, restore_best = restore_best, start = start,
+               start_epoch = if (is.null(start_epoch)) NULL else int1(start_epoch)))
 }
 
 #' @rdname callbacks
 #' @export
 callback_model_checkpoint <- function(path, monitor = "val_loss",
-                                      save_best_only = TRUE) {
-  list(name = "model_checkpoint", path = path, monitor = monitor,
-       save_best_only = save_best_only)
+                                      save_best_only = TRUE, when = NULL) {
+  named <- !is.null(when) && is.list(when) && !is.null(names(when)) &&
+    !anyNA(names(when)) && all(nzchar(names(when)))
+  if (!is.null(when) && !named) {
+    stop("`when` is a named list of thresholds, as in ",
+         "`when = list(val_dice = 0.9, val_loss = 0.2)`: the names say which quantity ",
+         "and the values say how good it has to be.", call. = FALSE)
+  }
+  compact(list(name = "model_checkpoint", path = path, monitor = monitor,
+               save_best_only = save_best_only, when = when))
 }
 
 #' @rdname callbacks
@@ -648,10 +693,14 @@ callback_reduce_lr_on_plateau <- function(monitor = "val_loss", factor = 0.1,
 #' under the wrong normalisation and scores far worse than it should with nothing to say why.
 #' Models here have batch normalisation on by default, so this is nearly every run.
 #'
-#' @param start The fraction of the run after which averaging begins - 0.75 folds the last
-#'   quarter. Unset uses the engine's default of 0.75. A fraction rather than an epoch so it
-#'   survives a change to `epochs`, and the final epoch is always folded, so 1 averages one
-#'   set of weights rather than none.
+#' @param start,start_epoch When averaging begins - **one of the two and never both**.
+#'   `start` is the fraction of the run after which it begins, 0.75 folding the last
+#'   quarter, and unset uses the engine's default of 0.75; `start_epoch` says the same
+#'   thing as an epoch number. A fraction survives a change to `epochs` and an epoch count
+#'   does not, which is why the fraction is the default; an epoch is the one to use when
+#'   the point is a property of the optimisation rather than of the run's length. The
+#'   final epoch is always folded, so `start = 1` averages one set of weights rather than
+#'   none. `callback_early_stopping()` names the same pair with the same two words.
 #' @param learning_rate Hold the rate at this value once averaging begins. Unset leaves
 #'   whatever the run was doing.
 #'
@@ -666,7 +715,11 @@ callback_reduce_lr_on_plateau <- function(monitor = "val_loss", factor = 0.1,
 #' @examples
 #' callback_swa()
 #' callback_swa(start = 0.5, learning_rate = 1e-3)
-callback_swa <- function(start = NULL, learning_rate = NULL) {
+callback_swa <- function(start = NULL, learning_rate = NULL, start_epoch = NULL) {
+  if (!is.null(start) && !is.null(start_epoch)) {
+    stop("callback_swa() takes `start` or `start_epoch`, not both: `start` is a fraction ",
+         "of the run and `start_epoch` is an epoch number.", call. = FALSE)
+  }
   if (!is.null(start) && (!is.numeric(start) || length(start) != 1L || is.na(start) ||
                             start <= 0 || start > 1)) {
     stop("`start` is one number above 0 and at most 1 - the fraction of the run after ",
@@ -678,7 +731,8 @@ callback_swa <- function(start = NULL, learning_rate = NULL) {
     stop("`learning_rate` is one positive number, the rate held while averaging.",
          call. = FALSE)
   }
-  compact(list(name = "swa", start = start, learning_rate = learning_rate))
+  compact(list(name = "swa", start = start, learning_rate = learning_rate,
+               start_epoch = if (is.null(start_epoch)) NULL else int1(start_epoch)))
 }
 
 #' @rdname callbacks
@@ -716,6 +770,15 @@ callback_step_decay <- function(factor = 0.1, every = NULL, milestones = NULL,
 #' @rdname callbacks
 #' @export
 callback_csv_logger <- function(path) list(name = "csv_logger", path = path)
+
+#' @rdname callbacks
+#' @export
+callback_stop_after <- function(hours) {
+  if (!is.numeric(hours) || length(hours) != 1L || is.na(hours) || hours <= 0) {
+    stop("`hours` is one positive number of hours.", call. = FALSE)
+  }
+  list(name = "stop_after", hours = hours)
+}
 
 #' @rdname callbacks
 #' @export

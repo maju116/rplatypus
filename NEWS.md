@@ -17,6 +17,37 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-24 - when a callback may act, and on what evidence (engine `0.8.0a34`)
+
+Three things that answer one question, which is why they arrive together rather than as
+three unrelated arguments.
+
+`callback_early_stopping()` takes a **warm-up**: `start` as a fraction of the run or
+`start_epoch` as an epoch, one of the two and never both. `patience` could not express it,
+because it is in force for the whole run - a model needing fifteen epochs before its
+validation curve means anything forced `patience > 15` permanently, paying that slack at
+the end where the point was to cut quickly. It delays **the stopping and nothing else**: an
+epoch inside the warm-up can still be the best one, and `restore_best` still returns to it.
+
+`callback_swa()` takes `start_epoch` as the exclusive alternative to its fraction - the
+same concept, so the same two words.
+
+`callback_model_checkpoint()` takes **`when`**, a named list of thresholds that must all
+hold before anything is written: `list(val_dice = 0.9, val_loss = 0.2)`. **The direction is
+derived, not configured** - anything ending in `loss` has to be below its threshold and
+everything else above it, the rule `monitor` already uses - so there is no argument to get
+backwards. The names are checked against what the model reports when the specification is
+built. It is an extra gate beside `save_best_only`, not a replacement, and a run whose
+conditions never hold writes nothing and says so when it ends.
+
+`callback_stop_after(hours = )` is a **wall-clock budget**. An epoch cap cannot express it:
+how long an epoch takes is a property of the data and the shape. It is checked at the end
+of an epoch, so the real limit is the budget plus one epoch, and the run's stop reason
+names the clock - a run that ran out of time does not read as one that converged.
+
+`maju116/rplatypus#199`, `#201` and `#207`; engine half `maju116/pyplatypus#261`.
+
+
 ### 2026-10-24 - two more learning-rate schedules, and one pairing that never worked (engine `0.8.0a33`)
 
 `callback_linear_annealing()` is `callback_cosine_annealing()` with a straight line.
