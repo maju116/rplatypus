@@ -611,3 +611,38 @@ test_that("the share of foreground is a quantity a callback may watch", {
   )
   expect_length(as.list(spec)$models[[1]]$callbacks, 2L)
 })
+
+# --- one averager per run ---------------------------------------------------------------
+
+test_that("a decay outside (0, 1) is refused", {
+  for (bad in list(0, 1, 1.5, -0.1, "slow", c(0.9, 0.99))) {
+    expect_error(callback_ema(decay = bad), "strictly between 0 and 1")
+  }
+  expect_identical(callback_ema()$decay, 0.999)
+})
+
+test_that("the engine refuses two weight averagers", {
+  # Both replace the model when training ends, so the second averages what the first
+  # already wrote - and which is which would be decided by the order of a list.
+  skip_if_no_engine()
+  both <- function() {
+    platypus_spec(
+      data = segmentation_data(tempdir(), tempdir(), colormap = binary_colormap),
+      models = list(u_net("unet", input_shape = c(32, 32), blocks = 2, filters = 4,
+                          callbacks = list(callback_ema(), callback_swa())))
+    )
+  }
+  expect_error(both(), "two weight averagers")
+})
+
+test_that("either averager alone reaches the engine", {
+  skip_if_no_engine()
+  for (cb in list(callback_ema(decay = 0.99), callback_swa(start = 0.8))) {
+    spec <- platypus_spec(
+      data = segmentation_data(tempdir(), tempdir(), colormap = binary_colormap),
+      models = list(u_net("unet", input_shape = c(32, 32), blocks = 2, filters = 4,
+                          callbacks = list(cb)))
+    )
+    expect_length(as.list(spec)$models[[1]]$callbacks, 1L)
+  }
+})

@@ -9,6 +9,7 @@
 \alias{callback_linear_annealing}
 \alias{callback_step_decay}
 \alias{callback_csv_logger}
+\alias{callback_ema}
 \alias{callback_stop_after}
 \alias{callback_terminate_on_collapse}
 \alias{callback_terminate_on_nan}
@@ -44,6 +45,8 @@ callback_linear_annealing(min_lr = 0, epochs = NULL)
 callback_step_decay(factor = 0.1, every = NULL, milestones = NULL, min_lr = 0)
 
 callback_csv_logger(path)
+
+callback_ema(decay = 0.999)
 
 callback_stop_after(hours)
 
@@ -147,6 +150,13 @@ Two arguments rather than one that takes either, because \code{30} and \code{c(3
 different schedules and a single argument holding either would be read as whichever
 was typed. A period survives a change to \code{epochs}; a list of milestones does not.}
 
+\item{decay}{For \code{callback_ema()}, how much of the average survives each optimiser
+\strong{step} - not each epoch. 0.999 is the usual value and gives a half-life of about
+700 steps; it is the published number because the average is fed per step, which is
+what the engine's fourth callback hook was added for. Unlike \code{\link[=callback_swa]{callback_swa()}} this
+needs no pass over the training data at the end: the batch-normalisation statistics
+are averaged alongside the weights rather than recomputed.}
+
 \item{hours}{For \code{callback_stop_after()}, a wall-clock budget. An epoch cap cannot
 express it, because how long an epoch takes is a property of the data and the shape.
 Checked at the end of an epoch, so the real limit is this plus one epoch; the run's
@@ -190,9 +200,26 @@ notice.
 \code{callback_terminate_on_collapse()} acts on it, \code{evaluate()} carries it as a column, and
 \code{callback_model_checkpoint()}'s \code{when} can take a condition on it.
 
-There is an eleventh, documented separately because it needs a page of its own:
+There is a twelfth, documented separately because it needs a page of its own:
 \code{\link[=callback_swa]{callback_swa()}} averages the weights over the last part of the run. It watches
 nothing and changes how reproducible a run is rather than how well it scores.
+}
+
+\section{One averager per run}{
+
+
+\code{\link[=callback_swa]{callback_swa()}} and \code{callback_ema()} both replace the model's weights when training
+ends, so a run takes \strong{one of them}; the engine refuses both. They answer the same
+observation - the last epoch's corner is not the middle of the basin - with different
+weightings. \code{swa} folds the tail uniformly from a declared start; \code{ema} weights recent
+steps more and needs no start, because an average with a decay forgets the beginning by
+itself.
+
+\code{ema} is updated \strong{after every optimiser step}, which is what makes its decay mean what
+the literature means by it: 0.999 is 0.999 per step, so over 60 epochs of 200 batches
+that is 12,000 updates and a half-life of roughly 700 steps. A run with few steps wants
+a smaller number, because an average that forgets more slowly than the run is long never
+leaves where it started.
 }
 
 \section{One hand on the learning rate}{

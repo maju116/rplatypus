@@ -529,9 +529,24 @@ optimizer_nadam <- function(learning_rate = 1e-3, beta_1 = 0.9, beta_2 = 0.999,
 #' `callback_terminate_on_collapse()` acts on it, `evaluate()` carries it as a column, and
 #' `callback_model_checkpoint()`'s `when` can take a condition on it.
 #'
-#' There is an eleventh, documented separately because it needs a page of its own:
+#' There is a twelfth, documented separately because it needs a page of its own:
 #' [callback_swa()] averages the weights over the last part of the run. It watches
 #' nothing and changes how reproducible a run is rather than how well it scores.
+#'
+#' @section One averager per run:
+#'
+#' [callback_swa()] and `callback_ema()` both replace the model's weights when training
+#' ends, so a run takes **one of them**; the engine refuses both. They answer the same
+#' observation - the last epoch's corner is not the middle of the basin - with different
+#' weightings. `swa` folds the tail uniformly from a declared start; `ema` weights recent
+#' steps more and needs no start, because an average with a decay forgets the beginning by
+#' itself.
+#'
+#' `ema` is updated **after every optimiser step**, which is what makes its decay mean what
+#' the literature means by it: 0.999 is 0.999 per step, so over 60 epochs of 200 batches
+#' that is 12,000 updates and a half-life of roughly 700 steps. A run with few steps wants
+#' a smaller number, because an average that forgets more slowly than the run is long never
+#' leaves where it started.
 #'
 #' @section One hand on the learning rate:
 #'
@@ -638,6 +653,12 @@ optimizer_nadam <- function(learning_rate = 1e-3, beta_1 = 0.9, beta_2 = 0.999,
 #'   is written when the watched number improves *and* every threshold holds. A threshold
 #'   is a number about your data and does not transfer between datasets, and a run whose
 #'   conditions never hold writes nothing and says so when it ends.
+#' @param decay For `callback_ema()`, how much of the average survives each optimiser
+#'   **step** - not each epoch. 0.999 is the usual value and gives a half-life of about
+#'   700 steps; it is the published number because the average is fed per step, which is
+#'   what the engine's fourth callback hook was added for. Unlike [callback_swa()] this
+#'   needs no pass over the training data at the end: the batch-normalisation statistics
+#'   are averaged alongside the weights rather than recomputed.
 #' @param floor For `callback_terminate_on_collapse()`, the share of foreground below
 #'   which a prediction counts as collapsed. A floor rather than a test for zero, because
 #'   0.01% foreground against a target that is 14% foreground has collapsed in every sense
@@ -806,6 +827,17 @@ callback_step_decay <- function(factor = 0.1, every = NULL, milestones = NULL,
 #' @rdname callbacks
 #' @export
 callback_csv_logger <- function(path) list(name = "csv_logger", path = path)
+
+#' @rdname callbacks
+#' @export
+callback_ema <- function(decay = 0.999) {
+  if (!is.numeric(decay) || length(decay) != 1L || is.na(decay) ||
+        decay <= 0 || decay >= 1) {
+    stop("`decay` is one number strictly between 0 and 1 - how much of the average ",
+         "survives each optimiser step.", call. = FALSE)
+  }
+  list(name = "ema", decay = decay)
+}
 
 #' @rdname callbacks
 #' @export
