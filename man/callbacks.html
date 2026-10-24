@@ -795,6 +795,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
   <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
   <li><a href="#the-one-number-that-is-not-about-quality" id="toc-the-one-number-that-is-not-about-quality" class="nav-link" data-scroll-target="#the-one-number-that-is-not-about-quality">The one number that is not about quality</a></li>
+  <li><a href="#one-averager-per-run" id="toc-one-averager-per-run" class="nav-link" data-scroll-target="#one-averager-per-run">One averager per run</a></li>
   <li><a href="#one-hand-on-the-learning-rate" id="toc-one-hand-on-the-learning-rate" class="nav-link" data-scroll-target="#one-hand-on-the-learning-rate">One hand on the learning rate</a></li>
   <li><a href="#cosine-annealing" id="toc-cosine-annealing" class="nav-link" data-scroll-target="#cosine-annealing">Cosine annealing</a></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
@@ -846,6 +847,8 @@ callback_linear_annealing(min_lr = 0, epochs = NULL)
 callback_step_decay(factor = 0.1, every = NULL, milestones = NULL, min_lr = 0)
 
 callback_csv_logger(path)
+
+callback_ema(decay = 0.999)
 
 callback_stop_after(hours)
 
@@ -957,6 +960,14 @@ For <code>callback_step_decay()</code>, <strong>one of the two and never both</s
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="decay">decay</code>
+</td>
+<td>
+For <code>callback_ema()</code>, how much of the average survives each optimiser <strong>step</strong> - not each epoch. 0.999 is the usual value and gives a half-life of about 700 steps; it is the published number because the average is fed per step, which is what the engine’s fourth callback hook was added for. Unlike <code>callback_swa()</code> this needs no pass over the training data at the end: the batch-normalisation statistics are averaged alongside the weights rather than recomputed.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
 <code id="hours">hours</code>
 </td>
 <td>
@@ -986,7 +997,12 @@ For <code>callback_terminate_on_collapse()</code>, the share of foreground below
 <p>Every epoch reports <code>foreground</code> as well - for both passes, <code>train_foreground</code> and <code>val_foreground</code> - which is the share of the prediction that is <strong>not background</strong>. Nothing is compared against the truth, so it is not a measure of how good the model is; it answers whether the model is still producing a segmentation at all.</p>
 <p>It is reported whether or not you ask for it, and that is the point. A model that collapses to predicting background everywhere is invisible in the numbers it already produced: with <code>include_background = TRUE</code> the Dice is a mean over class channels and the background channel is nearly perfect, so a collapsed model reports around 0.5 while its loss falls contentedly. A collapse you have to opt into noticing is one you will not notice.</p>
 <p><code>callback_terminate_on_collapse()</code> acts on it, <a href="../man/evaluate.html"><code>evaluate()</code></a> carries it as a column, and <code>callback_model_checkpoint()</code>’s <code>when</code> can take a condition on it.</p>
-<p>There is an eleventh, documented separately because it needs a page of its own: <code>callback_swa()</code> averages the weights over the last part of the run. It watches nothing and changes how reproducible a run is rather than how well it scores.</p>
+<p>There is a twelfth, documented separately because it needs a page of its own: <code>callback_swa()</code> averages the weights over the last part of the run. It watches nothing and changes how reproducible a run is rather than how well it scores.</p>
+</section>
+<section id="one-averager-per-run" class="level3">
+<h3 class="anchored" data-anchor-id="one-averager-per-run">One averager per run</h3>
+<p><code>callback_swa()</code> and <code>callback_ema()</code> both replace the model’s weights when training ends, so a run takes <strong>one of them</strong>; the engine refuses both. They answer the same observation - the last epoch’s corner is not the middle of the basin - with different weightings. <code>swa</code> folds the tail uniformly from a declared start; <code>ema</code> weights recent steps more and needs no start, because an average with a decay forgets the beginning by itself.</p>
+<p><code>ema</code> is updated <strong>after every optimiser step</strong>, which is what makes its decay mean what the literature means by it: 0.999 is 0.999 per step, so over 60 epochs of 200 batches that is 12,000 updates and a half-life of roughly 700 steps. A run with few steps wants a smaller number, because an average that forgets more slowly than the run is long never leaves where it started.</p>
 </section>
 <section id="one-hand-on-the-learning-rate" class="level3">
 <h3 class="anchored" data-anchor-id="one-hand-on-the-learning-rate">One hand on the learning rate</h3>
