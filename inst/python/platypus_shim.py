@@ -176,11 +176,17 @@ def run_fit(engine: Any, verbose: bool = False) -> dict:
     }
 
 
-def evaluation_table(engine: Any, split: str = "validation") -> dict:
+def evaluation_table(engine: Any, split: str = "validation", at: str | None = None) -> dict:
+    """The comparison table. `at` picks the grid and is omitted when R did not ask.
+
+    Omitted rather than defaulted here: the engine owns what unset means, and sending
+    `at="model"` from R would make this file a second place the default lives.
+    """
     import pyplatypus
 
     try:
-        return {"ok": True, "table": engine.evaluate(split)}
+        extra = {} if at is None else {"at": str(at)}
+        return {"ok": True, "table": engine.evaluate(split, **extra)}
     except pyplatypus.PlatypusError as error:
         return _failure(error)
     except Exception as error:  # noqa: BLE001
@@ -864,13 +870,18 @@ def split_data(
 
 
 def case_table(
-    engine: Any, model_name: str, split: str = "validation", group_by: str | None = None
+    engine: Any,
+    model_name: str,
+    split: str = "validation",
+    group_by: str | None = None,
+    at: str | None = None,
 ) -> dict:
     """One row per case - or per group, with `group_by` - instead of one per model."""
     import pyplatypus
 
     try:
-        rows = engine.evaluate_cases(model_name, split=split, group_by=group_by)
+        extra = {} if at is None else {"at": str(at)}
+        rows = engine.evaluate_cases(model_name, split=split, group_by=group_by, **extra)
     except pyplatypus.PlatypusError as error:
         return _failure(error)
     except Exception as error:  # noqa: BLE001

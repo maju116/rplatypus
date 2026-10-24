@@ -13,6 +13,7 @@ evaluate_cases(object, ...)
   model = NULL,
   split = "validation",
   group_by = NULL,
+  at = NULL,
   ...
 )
 
@@ -30,6 +31,11 @@ evaluate_cases(object, ...)
 \item{group_by}{A pattern picking a group out of each case's name, as in
 \code{\link[=split_dataset]{split_dataset()}}. With it, the rows are patients rather than slices: a patient's
 slices are pooled into one score, the way a volume would be.}
+
+\item{at}{Which grid to score on, as in \code{\link[=evaluate]{evaluate()}}. Unset is the model's own
+\code{load_shape}; \code{"source"} reads each truth as stored and scores the prediction there,
+which is the only form in which rows from two models - or from two runs with different
+\code{target_spacing} - mean the same thing.}
 }
 \value{
 A data frame with one row per case, of class \code{platypus_cases}.
@@ -56,6 +62,9 @@ summary(cases)
 head(cases[order(cases$dice), ])          # the ones worth looking at
 
 evaluate_cases(fit, group_by = "^(patient\\\\\\\\d+)_")
+
+# On the grid the files are on, which is what makes two models comparable.
+evaluate_cases(fit, at = "source")
 }
 }
 \seealso{

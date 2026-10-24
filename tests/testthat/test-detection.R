@@ -736,3 +736,17 @@ test_that("size brings every crop to one shape, which is what a classifier needs
                          logical(1))))
   expect_equal(length(unique(lapply(cut, dim))), 1L)   # one shape, so one batch
 })
+
+test_that("`at` is refused for a detection fit rather than ignored", {
+  # Boxes are in the source image's coordinates already, so there is no grid to choose.
+  # An argument silently accepted and dropped is the shape this package keeps refusing.
+  #
+  # No engine: the refusal is R's own and happens before the bridge, so this runs on a
+  # machine with no Python - which is also the only way to be sure it is R's refusal and
+  # not the engine's.
+  fit <- structure(
+    list(task = "object_detection", models = "detector", engine = NULL),
+    class = "platypus_fit"
+  )
+  expect_error(evaluate(fit, at = "source"), "`at` is for segmentation")
+})

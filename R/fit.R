@@ -128,6 +128,19 @@ print.platypus_fit <- function(x, ...) {
 #' disagree about the grid this warns, once; the column is there either way, because a table
 #' outlives the session that printed it.
 #'
+#' `at = "source"` is the answer to that warning rather than a workaround for it: every
+#' prediction goes back onto the grid of the file it came from and is scored against the
+#' truth as stored, so the rows answer one question and `load_shape` reads `source`. The
+#' grid is the files' own and you cannot name another, which is deliberate - a grid you
+#' name resamples the **truth**, so the thing both models are judged against would itself
+#' become an interpolation somebody chose. Here only predictions move, and what that costs
+#' is in `predict()`: interpolation softens a boundary, and where reading cropped anatomy
+#' away the mask comes back padded with background, which means *not examined*. For a
+#' comparison that is correct rather than unfair - a model whose field of view missed the
+#' organ did not segment it - but a 0 arriving that way is a result and not a fault. The
+#' loss is not reported there: a loss belongs to the objective a model trained with, on the
+#' grid it trained on.
+#'
 #' @section A note on the name:
 #' `evaluate` is also exported by the **evaluate** package, which knitr depends on, so the
 #' two mask each other depending on which was attached last. It is a generic here, so
@@ -138,6 +151,11 @@ print.platypus_fit <- function(x, ...) {
 #'
 #' @param object A [platypus_fit()].
 #' @param split Which data to score on: `"validation"`, `"train"` or `"test"`.
+#' @param at Which grid to score on. `"model"` is each model's own `load_shape`, and
+#'   leaving this unset is that. `"source"` puts every prediction back on the grid of the
+#'   file it came from and scores it against the truth as stored, which is the form in
+#'   which rows from models of different shapes answer one question. Segmentation only: a
+#'   detection table has no grid to choose and says so rather than ignoring the argument.
 #' @param ... Unused.
 #' @return A data frame, one row per model.
 #' @export
@@ -146,6 +164,9 @@ print.platypus_fit <- function(x, ...) {
 #' evaluate(fit)                      # one row per model, on the validation split
 #' evaluate(fit, split = "test")
 #'
+#' # Two models of different shapes compared on one grid - the files' own.
+#' evaluate(fit, at = "source")
+#'
 #' # A split with no masks is refused by name rather than scored against nothing;
 #' # `predict()` still works on it.
 #' }
@@ -153,11 +174,16 @@ evaluate <- function(object, ...) UseMethod("evaluate")
 
 #' @rdname evaluate
 #' @export
-evaluate.platypus_fit <- function(object, split = "validation", ...) {
+evaluate.platypus_fit <- function(object, split = "validation", at = NULL, ...) {
   result <- if (identical(object$task, "object_detection")) {
+    if (!is.null(at)) {
+      stop("`at` is for segmentation: a detection table reports average precision over ",
+           "boxes, which are in the source image's coordinates already and have no grid ",
+           "to choose.", call. = FALSE)
+    }
     shim()$detection_table(object$engine, split = split)
   } else {
-    shim()$evaluation_table(object$engine, split = split)
+    shim()$evaluation_table(object$engine, split = split, at = at)
   }
   if (!isTRUE(result$ok)) abort_engine(result)
   rows_to_frame(result$table)
@@ -766,6 +792,10 @@ rows_to_frame <- function(rows) {
 #' @param group_by A pattern picking a group out of each case's name, as in
 #'   [split_dataset()]. With it, the rows are patients rather than slices: a patient's
 #'   slices are pooled into one score, the way a volume would be.
+#' @param at Which grid to score on, as in [evaluate()]. Unset is the model's own
+#'   `load_shape`; `"source"` reads each truth as stored and scores the prediction there,
+#'   which is the only form in which rows from two models - or from two runs with different
+#'   `target_spacing` - mean the same thing.
 #' @param ... Unused.
 #' @return A data frame with one row per case, of class `platypus_cases`.
 #' @seealso [split_dataset()] for keeping a patient out of two sets in the first place.
@@ -776,6 +806,9 @@ rows_to_frame <- function(rows) {
 #' head(cases[order(cases$dice), ])          # the ones worth looking at
 #'
 #' evaluate_cases(fit, group_by = "^(patient\\\\d+)_")
+#'
+#' # On the grid the files are on, which is what makes two models comparable.
+#' evaluate_cases(fit, at = "source")
 #' }
 #' @export
 evaluate_cases <- function(object, ...) UseMethod("evaluate_cases")
@@ -783,13 +816,15 @@ evaluate_cases <- function(object, ...) UseMethod("evaluate_cases")
 #' @rdname evaluate_cases
 #' @export
 evaluate_cases.platypus_fit <- function(object, model = NULL, split = "validation",
-                                        group_by = NULL, ...) {
+                                        group_by = NULL, at = NULL, ...) {
   model <- model %||% object$models[[1]]
   if (!model %in% object$models) {
     stop("no model called '", model, "'; this fit has: ",
          paste(object$models, collapse = ", "), call. = FALSE)
   }
-  result <- shim()$case_table(object$engine, model, split = split, group_by = group_by)
+  result <- shim()$case_table(
+    object$engine, model, split = split, group_by = group_by, at = at
+  )
   if (!isTRUE(result$ok)) abort_engine(result)
 
   frame <- rows_to_frame(result$table)
