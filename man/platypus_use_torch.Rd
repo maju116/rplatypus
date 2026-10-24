@@ -27,6 +27,27 @@ nothing obviously wrong.
 On anything from Turing - the RTX 20-series onwards - the default is correct and this
 is unnecessary.
 }
+\section{Saying it once instead of every session}{
+
+
+\code{py_require()} is session state, so this does not survive a restart - and forgetting it
+costs about ten times the training time without costing an error, which is the kind of
+bill that goes unnoticed. Set it where a session starts instead:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{options(rplatypus.torch = "pascal")   # ~/.Rprofile
+}\if{html}{\out{</div>}}
+
+or \code{PLATYPUS_TORCH=pascal} in \verb{~/.Renviron}, which also reaches runs that never load an
+\code{.Rprofile} - \code{Rscript}, a scheduler, CI. The option wins over the variable, so a
+session can override what a machine was configured with. \code{"default"} asks for the
+ordinary build, which is how to turn the setting off for one session without editing
+the file it came from.
+
+Both are read when the package is loaded, which is the last moment anything can change
+what the environment will be. A value neither of them recognises is reported at load
+and ignored: a bad line in a startup file should not make the package unloadable.
+}
+
 \section{Why this page shows no output}{
 
 What this prints is a property of the machine it runs on, so an example output here

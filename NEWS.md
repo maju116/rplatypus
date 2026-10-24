@@ -17,6 +17,38 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-25 - two things a session can settle once, instead of every time
+
+**The PyTorch build can be chosen once.** `options(rplatypus.torch = "pascal")` in
+`~/.Rprofile`, or `PLATYPUS_TORCH=pascal` in `~/.Renviron` for runs that never load one -
+`Rscript`, a scheduler, CI. Both are read when the package loads, which is the last moment
+anything can change what the environment will be.
+
+Until now the only way was to call [platypus_use_torch()] at the start of every session,
+because `py_require()` is session state. On a card older than Turing, forgetting it costs
+about ten times the training time **without costing an error** - the run completes, the
+numbers are right, and the card sits idle. That is the kind of bill that goes unnoticed.
+
+The option wins over the variable, so a session can override what a machine was configured
+with; `"default"` turns the setting off for one session without editing the file it came
+from; and a value neither recognises is reported at load and ignored, because a bad line
+in a startup file should not make the package unloadable.
+
+**An engine that is not the pinned one now says so.** The pin is what keeps an R release
+from breaking when the engine moves underneath it, and on one route it was never in force:
+a `RETICULATE_PYTHON` pointing at somebody's own environment brings whatever `pyplatypus`
+is in it, and nothing compared the two. The failure arrived as a validator refusing a
+configuration field by name, which tells a reader nothing about their interpreter.
+
+A warning rather than a refusal, naming both versions: the only way to reach this state is
+to have gone out of one's way, and refusing would also break somebody deliberately testing
+an engine they built. `PLATYPUS_ENGINE_PATH` is exempt - that route asks for a source tree
+with no version at all.
+
+`maju116/rplatypus#211`, `#214`. No engine release: both are about what an R session
+settles before Python starts.
+
+
 ### 2026-10-24 - the device report becomes the engine's, and names a backend that is not CUDA (engine `0.8.0a38`)
 
 `platypus_device()` behaves as it did, and the answer now comes from the engine rather

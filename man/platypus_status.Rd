@@ -14,6 +14,32 @@ environment lives, or \code{NULL} fields when Python has not been started yet.
 Reports whether the Python side has been started, and what it is. Calling this does
 not start it - use it to check before a long run, or when something is wrong.
 }
+\section{Updating this package}{
+
+
+\strong{Nothing to do.} Each release of this package pins one exact engine version, that
+pin is what gets declared when the package loads, and the environment is resolved from
+it on first use. Install a newer \code{rplatypus} and the next session uses the engine it
+asks for; the first call after the upgrade fetches the new engine - a few hundred
+kilobytes, with PyTorch already cached - and the environment the old version used is
+left alone, so going back to it costs nothing either.
+
+That is the opposite of the arrangement most R packages wrapping Python have, where a
+persistent environment is installed once by hand and updating the R package does not
+touch it. Here there is no environment anybody maintains: there is a pin, and the
+environment always matches it. The cost is that the two cannot be moved separately -
+which is the point, since a release that could drift from its engine is the failure
+the pin exists to prevent.
+
+One case is worth knowing: updating \strong{on the day the engine is published}, uv may
+still be serving a cached index listing and report that the pinned version does not
+exist. It is a stale read rather than a missing release, it mends itself, and the
+failure message says so.
+
+If \code{RETICULATE_PYTHON} is set, none of this applies - that Python is used whatever the
+pin says, and a mismatch is reported as a warning naming both versions.
+}
+
 \section{Why this page shows no output}{
 
 What this prints is a property of the machine it runs on, so an example output here

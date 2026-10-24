@@ -278,3 +278,61 @@ test_that("the always-on extras are asked for whatever else is", {
     expect_match(pascal, paste0("==", rplatypus:::pyplatypus_version), fixed = TRUE)
   })
 })
+
+# --- the two things a session has to settle before anything starts Python --------------
+
+test_that("the torch build can be chosen once, by option or by variable", {
+  # `py_require()` is session state, so `platypus_use_torch()` does not survive a restart -
+  # and on a card older than Turing, forgetting it costs about ten times the training time
+  # without costing an error. None of this touches Python.
+  withr::with_options(list(rplatypus.torch = "pascal"), {
+    expect_identical(rplatypus:::torch_build_requested(), "pascal")
+  })
+  withr::with_envvar(c(PLATYPUS_TORCH = "pascal"), {
+    expect_identical(rplatypus:::torch_build_requested(), "pascal")
+  })
+})
+
+test_that("the option wins over the variable, and \"default\" means ask for nothing", {
+  withr::with_envvar(c(PLATYPUS_TORCH = "pascal"), {
+    withr::with_options(list(rplatypus.torch = "default"), {
+      # A session may override what a machine was configured with, not the other way round.
+      expect_null(rplatypus:::torch_build_requested())
+    })
+  })
+})
+
+test_that("a build nobody has heard of is reported and ignored", {
+  # A bad line in ~/.Rprofile must not make the package unloadable.
+  withr::with_options(list(rplatypus.torch = "turing"), {
+    expect_message(result <- rplatypus:::torch_build_requested(), "ignoring a torch build")
+    expect_null(result)
+  })
+})
+
+test_that("an engine that is not the pinned one says so, naming both versions", {
+  # The pin is the mechanism, and on the RETICULATE_PYTHON route it is not in force. The
+  # failure without this is a validator refusing a configuration field by name, which
+  # tells a reader nothing about their interpreter.
+  env <- rplatypus:::.platypus
+  old <- env$engine
+  withr::defer(env$engine <- old)
+
+  env$engine <- list(`__version__` = "0.8.0a20")
+  expect_warning(rplatypus:::check_engine_version(), rplatypus:::pyplatypus_version)
+  expect_warning(rplatypus:::check_engine_version(), "0.8.0a20")
+
+  env$engine <- list(`__version__` = rplatypus:::pyplatypus_version)
+  expect_silent(rplatypus:::check_engine_version())
+})
+
+test_that("the development route is exempt, because it asks for a tree with no version", {
+  env <- rplatypus:::.platypus
+  old <- env$engine
+  withr::defer(env$engine <- old)
+  env$engine <- list(`__version__` = "0.8.0a20")
+
+  withr::with_envvar(c(PLATYPUS_ENGINE_PATH = "/tmp"), {
+    expect_silent(rplatypus:::check_engine_version())
+  })
+})
