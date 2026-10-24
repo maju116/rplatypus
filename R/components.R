@@ -512,9 +512,26 @@ optimizer_nadam <- function(learning_rate = 1e-3, beta_1 = 0.9, beta_2 = 0.999,
 #' Whether the watched quantity should rise or fall is worked out from its name: anything
 #' ending in `loss` is minimised, everything else maximised.
 #'
-#' There is a seventh, documented separately because it needs a page of its own:
+#' There is a ninth, documented separately because it needs a page of its own:
 #' [callback_swa()] averages the weights over the last part of the run. It watches
 #' nothing and changes how reproducible a run is rather than how well it scores.
+#'
+#' @section One hand on the learning rate:
+#'
+#' Three of these compute the rate from the epoch rather than from how the run is going -
+#' `callback_cosine_annealing()`, `callback_linear_annealing()` and
+#' `callback_step_decay()` - and **at most one of them may be used**, because each
+#' recomputes the rate every epoch and two of them would simply overwrite each other.
+#'
+#' For the same reason a schedule and `callback_reduce_lr_on_plateau()` **cannot be
+#' combined**, and the engine refuses the pair. That refusal replaced a sentence claiming
+#' the opposite: a schedule recomputes the rate from the optimiser's initial value at the
+#' end of every epoch, so it erases whatever the plateau callback cut. Measured on six
+#' epochs of a loss that never improves, the rate with both configured follows the cosine
+#' exactly - 0.0976, 0.0905, 0.0794 from 0.1 - where the plateau alone reaches 1e-6.
+#'
+#' A schedule beside [callback_swa()] is fine and the order is no longer luck: `swa` pins
+#' its constant rate after averaging begins, whatever position the callbacks sit in.
 #'
 #' @section Cosine annealing:
 #'
@@ -556,10 +573,20 @@ optimizer_nadam <- function(learning_rate = 1e-3, beta_1 = 0.9, beta_2 = 0.999,
 #' @param save_best_only Only write when the watched quantity improves, which is the
 #'   default. `FALSE` writes every epoch, which is what to use when a run may be
 #'   interrupted rather than when the best epoch is what you want to keep.
-#' @param factor,min_lr For the learning rate schedule. `min_lr` is the floor for both
-#'   `callback_reduce_lr_on_plateau()` and `callback_cosine_annealing()`.
-#' @param epochs For `callback_cosine_annealing()`, how many epochs to spread the decay
-#'   over. Unset means the model's `epochs`.
+#' @param factor,min_lr What the rate is multiplied by, and the floor it stops at.
+#'   `factor` is the cut on a plateau for `callback_reduce_lr_on_plateau()` and the drop
+#'   at each step for `callback_step_decay()`, where it must be below 1 - a step schedule
+#'   that raises the rate is a different idea and accepting it here would hide a typo.
+#'   `min_lr` is the floor for all four.
+#' @param epochs For `callback_cosine_annealing()` and `callback_linear_annealing()`, how
+#'   many epochs to spread the decay over. Unset means the model's `epochs`, which is what
+#'   you want: a curve that ends where the run ends.
+#' @param every,milestones For `callback_step_decay()`, **one of the two and never both**.
+#'   `every = 30` drops every thirty epochs; `milestones = c(30, 60)` drops at those
+#'   epochs, 1-based and strictly increasing, which is how a published recipe states it.
+#'   Two arguments rather than one that takes either, because `30` and `c(30)` are
+#'   different schedules and a single argument holding either would be read as whichever
+#'   was typed. A period survives a change to `epochs`; a list of milestones does not.
 #' @return A callback specification.
 #' @name callbacks
 #' @examples
@@ -659,6 +686,31 @@ callback_swa <- function(start = NULL, learning_rate = NULL) {
 callback_cosine_annealing <- function(min_lr = 0, epochs = NULL) {
   compact(list(name = "cosine_annealing", min_lr = min_lr,
                epochs = if (is.null(epochs)) NULL else int1(epochs)))
+}
+
+#' @rdname callbacks
+#' @export
+callback_linear_annealing <- function(min_lr = 0, epochs = NULL) {
+  compact(list(name = "linear_annealing", min_lr = min_lr,
+               epochs = if (is.null(epochs)) NULL else int1(epochs)))
+}
+
+#' @rdname callbacks
+#' @export
+callback_step_decay <- function(factor = 0.1, every = NULL, milestones = NULL,
+                                min_lr = 0) {
+  # Refused here as well as in the engine, because this one is cheap to get wrong and the
+  # message is better from the side the call was written on. The engine refuses it too -
+  # a YAML specification reaches the validator without passing through this function.
+  if (is.null(every) == is.null(milestones)) {
+    stop("callback_step_decay() takes one of `every` and `milestones`, never both and ",
+         "never neither: `every = 30` drops every thirty epochs, ",
+         "`milestones = c(30, 60)` drops at those two.", call. = FALSE)
+  }
+  compact(list(name = "step_decay", factor = factor,
+               every = if (is.null(every)) NULL else int1(every),
+               milestones = if (is.null(milestones)) NULL else as.integer(milestones),
+               min_lr = min_lr))
 }
 
 #' @rdname callbacks
