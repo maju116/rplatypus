@@ -17,6 +17,39 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-24 - a comparison across shapes stops being rigged (engine `0.8.0a32`)
+
+`evaluate()` and `evaluate_cases()` take `at`. Unset is what they have always done - each
+model scored on the grid it reads at. `at = "source"` puts every prediction back onto the
+grid of the file it came from and scores it against the truth **as stored**, so rows from
+models of different shapes answer one question and `load_shape` reads `source`.
+
+This is the answer to a warning this package has printed since the engine's `0.8.0a30` and
+to a paragraph in `vignette("retinal-vessels")` that said there was no option for it. There
+was not: the measurement behind that section rescored its arms with a script that lived
+outside both packages. Measured there, scoring each model on its own grid reported a
+resized model at **+0.0187 where the honest figure was +0.0033** - 5.7 times - and the bias
+runs the other way on clDice, because upsampling smooths a prediction.
+
+**The grid is the files' own and you cannot name another.** A grid you name resamples the
+*truth*, so the thing both models are judged against would itself be an interpolation
+somebody chose. Only predictions move.
+
+What it costs is what `predict(space = "source")` already documents: interpolation softens
+a boundary, and where reading cropped anatomy away the mask comes back padded with
+background - *not examined* rather than *nothing there*. For a comparison that is correct
+rather than unfair, but a 0 arriving that way is a result and not a fault. The loss is not
+reported on that grid, because a loss belongs to the objective a model trained with on the
+grid it trained on.
+
+A detection fit refuses `at` by name rather than ignoring it: boxes are in the source
+image's coordinates already, so there is no grid to choose. The refusal is R's own and
+needs no engine, which is how its test runs on a machine with no Python.
+
+`maju116/rplatypus#187`, engine half `maju116/pyplatypus#259`. The pooling question that
+came out of building it is `maju116/rplatypus#196`.
+
+
 ### 2026-10-22 - what CRAN's review of `0.2.0` asked for, forward-ported
 
 `0.2.1` answered the review on its own branch, from the commit the submitted tarball was

@@ -1,4 +1,4 @@
-fit_on_patients <- function(..., envir = parent.frame()) {
+fit_on_patients <- function(..., input_shape = c(32, 32), envir = parent.frame()) {
   # The dataset has to outlive this helper: evaluate_cases() reads the images again after
   # training, so tying the directory to this frame would delete it in between.
   # Defined in helper-engine.R, which testthat sources at run time and lintr cannot see.
@@ -7,7 +7,7 @@ fit_on_patients <- function(..., envir = parent.frame()) {
   )
   spec <- platypus_spec(
     data = segmentation_data(root, root, colormap = binary_colormap),
-    models = list(u_net("tiny", input_shape = c(32, 32), blocks = 2, filters = 4,
+    models = list(u_net("tiny", input_shape = input_shape, blocks = 2, filters = 4,
                         metrics = list(metric_dice(include_background = FALSE)),
                         epochs = 1, batch_size = 2, ...))
   )
@@ -189,4 +189,36 @@ test_that("a streamed prediction composes with plot_masks the way the vignette d
     labels = cases
   )
   expect_s3_class(figure, "ggplot")
+})
+
+test_that("`at = \"source\"` scores on the grid the files are on", {
+  # The point of the argument rather than its mechanics: a model reading at 16 is scored
+  # against a truth reduced to 16, and that is not the truth on disk. The engine's own
+  # suite proves the arithmetic; what this proves is that R can ask for it at all and gets
+  # a table back rather than an unused argument.
+  skip_if_no_splits()
+  fit <- fit_on_patients(input_shape = c(16, 16))
+
+  cases <- evaluate_cases(fit, at = "source")
+  expect_s3_class(cases, "platypus_cases")
+  expect_equal(nrow(cases), 12)
+  expect_true(all(cases$dice >= 0 & cases$dice <= 1))
+
+  on_model <- evaluate_cases(fit)
+  expect_false(isTRUE(all.equal(cases$dice, on_model$dice)))
+})
+
+test_that("the comparison table says which grid produced it", {
+  skip_if_no_splits()
+  fit <- fit_on_patients(input_shape = c(16, 16))
+
+  expect_equal(evaluate(fit, at = "source")$load_shape, "source")
+  expect_equal(evaluate(fit)$load_shape, "16 x 16")
+  # A loss on a resampled prediction would be a number with no training meaning.
+  expect_false("loss" %in% names(evaluate(fit, at = "source")))
+})
+
+test_that("a grid that is not offered is refused by name", {
+  skip_if_no_splits()
+  expect_error(evaluate(fit_on_patients(), at = "native"), "'model' or 'source'")
 })

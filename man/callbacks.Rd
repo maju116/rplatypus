@@ -50,7 +50,16 @@ numbers \code{\link[=training_history]{training_history()}} returns, so a run th
 history behind. Re-read against the engine's own text when it changed in \verb{0.8.0a23},
 which is what the field-prose ledger is for: the engine's sentence had named this
 package's \code{training_history()} to a Python reader, and the fix there left R's \verb{@param}
-saying three words about two different files.}
+saying three words about two different files.
+
+\strong{The checkpoint's extension decides its format}, since the engine's \verb{0.8.0a31}:
+\code{.safetensors} is written as safetensors and anything else as a torch archive, which
+is what \code{.pt} has always meant. Before that the file was a torch archive whatever it
+was called, so a checkpoint named after the files this package publishes was written
+in one format and read as another - and reading now goes by the file's contents rather
+than by its name, so a checkpoint written by an older engine still loads. A checkpoint
+is the run's safety net; \code{\link[=export_weights]{export_weights()}} is what writes a file for somebody else to
+load, with the sidecar that says what it is for.}
 
 \item{save_best_only}{Only write when the watched quantity improves, which is the
 default. \code{FALSE} writes every epoch, which is what to use when a run may be

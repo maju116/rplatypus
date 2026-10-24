@@ -7,7 +7,7 @@
 \usage{
 evaluate(object, ...)
 
-\method{evaluate}{platypus_fit}(object, split = "validation", ...)
+\method{evaluate}{platypus_fit}(object, split = "validation", at = NULL, ...)
 }
 \arguments{
 \item{object}{A \code{\link[=platypus_fit]{platypus_fit()}}.}
@@ -15,6 +15,12 @@ evaluate(object, ...)
 \item{...}{Unused.}
 
 \item{split}{Which data to score on: \code{"validation"}, \code{"train"} or \code{"test"}.}
+
+\item{at}{Which grid to score on. \code{"model"} is each model's own \code{load_shape}, and
+leaving this unset is that. \code{"source"} puts every prediction back on the grid of the
+file it came from and scores it against the truth as stored, which is the form in
+which rows from models of different shapes answer one question. Segmentation only: a
+detection table has no grid to choose and says so rather than ignoring the argument.}
 }
 \value{
 A data frame, one row per model.
@@ -36,6 +42,19 @@ resized model as \strong{+0.0187 better} where the honest figure was \strong{+0.
 runs the other way on clDice because upsampling smooths a prediction. When the rows
 disagree about the grid this warns, once; the column is there either way, because a table
 outlives the session that printed it.
+
+\code{at = "source"} is the answer to that warning rather than a workaround for it: every
+prediction goes back onto the grid of the file it came from and is scored against the
+truth as stored, so the rows answer one question and \code{load_shape} reads \code{source}. The
+grid is the files' own and you cannot name another, which is deliberate - a grid you
+name resamples the \strong{truth}, so the thing both models are judged against would itself
+become an interpolation somebody chose. Here only predictions move, and what that costs
+is in \code{predict()}: interpolation softens a boundary, and where reading cropped anatomy
+away the mask comes back padded with background, which means \emph{not examined}. For a
+comparison that is correct rather than unfair - a model whose field of view missed the
+organ did not segment it - but a 0 arriving that way is a result and not a fault. The
+loss is not reported there: a loss belongs to the objective a model trained with, on the
+grid it trained on.
 }
 \section{A note on the name}{
 
@@ -51,6 +70,9 @@ tidymodels packages and a plain \code{fit} would have been theirs to own.
 \dontrun{
 evaluate(fit)                      # one row per model, on the validation split
 evaluate(fit, split = "test")
+
+# Two models of different shapes compared on one grid - the files' own.
+evaluate(fit, at = "source")
 
 # A split with no masks is refused by name rather than scored against nothing;
 # `predict()` still works on it.

@@ -537,13 +537,22 @@ optimizer_nadam <- function(learning_rate = 1e-3, beta_1 = 0.9, beta_2 = 0.999,
 #' @param restore_best Put the best weights back when training stops, rather than keeping
 #'   the last - which are by definition the ones that were not improving. On by default.
 #'   Note that `callback_swa()` replaces nothing if a run stops before averaging began.
-#' @param path Where to write. For `callback_checkpoint()` that is the weights file; for
+#' @param path Where to write. For `callback_model_checkpoint()` that is the weights file; for
 #'   `callback_csv_logger()` it is one row per epoch appended as the epoch ends - the same
 #'   numbers [training_history()] returns, so a run that is interrupted still leaves its
 #'   history behind. Re-read against the engine's own text when it changed in `0.8.0a23`,
 #'   which is what the field-prose ledger is for: the engine's sentence had named this
 #'   package's `training_history()` to a Python reader, and the fix there left R's `@param`
 #'   saying three words about two different files.
+#'
+#'   **The checkpoint's extension decides its format**, since the engine's `0.8.0a31`:
+#'   `.safetensors` is written as safetensors and anything else as a torch archive, which
+#'   is what `.pt` has always meant. Before that the file was a torch archive whatever it
+#'   was called, so a checkpoint named after the files this package publishes was written
+#'   in one format and read as another - and reading now goes by the file's contents rather
+#'   than by its name, so a checkpoint written by an older engine still loads. A checkpoint
+#'   is the run's safety net; [export_weights()] is what writes a file for somebody else to
+#'   load, with the sidecar that says what it is for.
 #' @param save_best_only Only write when the watched quantity improves, which is the
 #'   default. `FALSE` writes every epoch, which is what to use when a run may be
 #'   interrupted rather than when the best epoch is what you want to keep.

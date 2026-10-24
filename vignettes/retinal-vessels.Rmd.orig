@@ -461,12 +461,21 @@ agrees better with a skeleton and worse with a boundary. So the rigged compariso
 resizing on Dice and penalises it on clDice, and a comparison reporting only one of the two is
 wrong in a direction set by which one it picked.
 
-**There is no option for this in either package today.** The arms above were rescored onto one
-grid by a function written for that measurement, which lives in the workbench and not in the
-package, so the honest comparison is currently available only to somebody who has already
-noticed the problem. `maju116/rplatypus#187` is the issue for it. Until it is answered the rule
-is the one this section is: **compare two models only where their predictions and the truth
-are on the same grid**, and say which grid that is.
+**There is an option for this since `0.8.0a32`, and there was none when this was measured.**
+The arms above were rescored onto one grid by a function written for that measurement, which
+lived in the workbench and not in the package - so the honest comparison was available only to
+somebody who had already noticed the problem, which is what `maju116/rplatypus#187` was filed
+about. `evaluate(at="source")` is that function now: every prediction goes back onto the grid
+of the file it came from and is scored against the truth as stored, and the `load_shape` column
+reads `source` so a table says which grid produced it.
+
+The grid is the files' own rather than one you name, and that is the point rather than a
+limitation: a named grid resamples the **truth**, so the thing both models are judged against
+would itself be an interpolation somebody chose. Here only predictions move.
+
+The rule the numbers above teach is unchanged and is now enforceable rather than advisory:
+**compare two models only where their predictions and the truth are on the same grid**, and say
+which grid that is.
 
 ### What none of this says
 
