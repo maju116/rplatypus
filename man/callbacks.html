@@ -794,6 +794,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
   <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
   <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
+  <li><a href="#one-hand-on-the-learning-rate" id="toc-one-hand-on-the-learning-rate" class="nav-link" data-scroll-target="#one-hand-on-the-learning-rate">One hand on the learning rate</a></li>
   <li><a href="#cosine-annealing" id="toc-cosine-annealing" class="nav-link" data-scroll-target="#cosine-annealing">Cosine annealing</a></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul></li>
@@ -831,6 +832,10 @@ callback_reduce_lr_on_plateau(
 )
 
 callback_cosine_annealing(min_lr = 0, epochs = NULL)
+
+callback_linear_annealing(min_lr = 0, epochs = NULL)
+
+callback_step_decay(factor = 0.1, every = NULL, milestones = NULL, min_lr = 0)
 
 callback_csv_logger(path)
 
@@ -877,7 +882,7 @@ Put the best weights back when training stops, rather than keeping the last - wh
 <code id="path">path</code>
 </td>
 <td>
-<p>Where to write. For <code>callback_checkpoint()</code> that is the weights file; for <code>callback_csv_logger()</code> it is one row per epoch appended as the epoch ends - the same numbers <a href="../man/training_history.html"><code>training_history()</code></a> returns, so a run that is interrupted still leaves its history behind. Re-read against the engine’s own text when it changed in <code style="white-space: pre;">0.8.0a23</code>, which is what the field-prose ledger is for: the engine’s sentence had named this package’s <code>training_history()</code> to a Python reader, and the fix there left R’s <code style="white-space: pre;"><span class="citation" data-cites="param">@param</span></code> saying three words about two different files.</p>
+<p>Where to write. For <code>callback_model_checkpoint()</code> that is the weights file; for <code>callback_csv_logger()</code> it is one row per epoch appended as the epoch ends - the same numbers <a href="../man/training_history.html"><code>training_history()</code></a> returns, so a run that is interrupted still leaves its history behind. Re-read against the engine’s own text when it changed in <code style="white-space: pre;">0.8.0a23</code>, which is what the field-prose ledger is for: the engine’s sentence had named this package’s <code>training_history()</code> to a Python reader, and the fix there left R’s <code style="white-space: pre;"><span class="citation" data-cites="param">@param</span></code> saying three words about two different files.</p>
 <strong>The checkpoint’s extension decides its format</strong>, since the engine’s <code style="white-space: pre;">0.8.0a31</code>: <code>.safetensors</code> is written as safetensors and anything else as a torch archive, which is what <code>.pt</code> has always meant. Before that the file was a torch archive whatever it was called, so a checkpoint named after the files this package publishes was written in one format and read as another - and reading now goes by the file’s contents rather than by its name, so a checkpoint written by an older engine still loads. A checkpoint is the run’s safety net; <a href="../man/export_weights.html"><code>export_weights()</code></a> is what writes a file for somebody else to load, with the sidecar that says what it is for.
 </td>
 </tr>
@@ -894,7 +899,7 @@ Only write when the watched quantity improves, which is the default. <code>FALSE
 <code id="factor">factor</code>, <code id="min_lr">min_lr</code>
 </td>
 <td>
-For the learning rate schedule. <code>min_lr</code> is the floor for both <code>callback_reduce_lr_on_plateau()</code> and <code>callback_cosine_annealing()</code>.
+What the rate is multiplied by, and the floor it stops at. <code>factor</code> is the cut on a plateau for <code>callback_reduce_lr_on_plateau()</code> and the drop at each step for <code>callback_step_decay()</code>, where it must be below 1 - a step schedule that raises the rate is a different idea and accepting it here would hide a typo. <code>min_lr</code> is the floor for all four.
 </td>
 </tr>
 <tr>
@@ -902,7 +907,15 @@ For the learning rate schedule. <code>min_lr</code> is the floor for both <code>
 <code id="epochs">epochs</code>
 </td>
 <td>
-For <code>callback_cosine_annealing()</code>, how many epochs to spread the decay over. Unset means the model’s <code>epochs</code>.
+For <code>callback_cosine_annealing()</code> and <code>callback_linear_annealing()</code>, how many epochs to spread the decay over. Unset means the model’s <code>epochs</code>, which is what you want: a curve that ends where the run ends.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="every">every</code>, <code id="milestones">milestones</code>
+</td>
+<td>
+For <code>callback_step_decay()</code>, <strong>one of the two and never both</strong>. <code>every = 30</code> drops every thirty epochs; <code>milestones = c(30, 60)</code> drops at those epochs, 1-based and strictly increasing, which is how a published recipe states it. Two arguments rather than one that takes either, because <code>30</code> and <code>c(30)</code> are different schedules and a single argument holding either would be read as whichever was typed. A period survives a change to <code>epochs</code>; a list of milestones does not.
 </td>
 </tr>
 </tbody></table>
@@ -910,11 +923,17 @@ For <code>callback_cosine_annealing()</code>, how many epochs to spread the deca
 <section id="details" class="level3">
 <h3 class="anchored" data-anchor-id="details">Details</h3>
 <p>Whether the watched quantity should rise or fall is worked out from its name: anything ending in <code>loss</code> is minimised, everything else maximised.</p>
-<p>There is a seventh, documented separately because it needs a page of its own: <code>callback_swa()</code> averages the weights over the last part of the run. It watches nothing and changes how reproducible a run is rather than how well it scores.</p>
+<p>There is a ninth, documented separately because it needs a page of its own: <code>callback_swa()</code> averages the weights over the last part of the run. It watches nothing and changes how reproducible a run is rather than how well it scores.</p>
 </section>
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>
 <p>A callback specification.</p>
+</section>
+<section id="one-hand-on-the-learning-rate" class="level3">
+<h3 class="anchored" data-anchor-id="one-hand-on-the-learning-rate">One hand on the learning rate</h3>
+<p>Three of these compute the rate from the epoch rather than from how the run is going - <code>callback_cosine_annealing()</code>, <code>callback_linear_annealing()</code> and <code>callback_step_decay()</code> - and <strong>at most one of them may be used</strong>, because each recomputes the rate every epoch and two of them would simply overwrite each other.</p>
+<p>For the same reason a schedule and <code>callback_reduce_lr_on_plateau()</code> <strong>cannot be combined</strong>, and the engine refuses the pair. That refusal replaced a sentence claiming the opposite: a schedule recomputes the rate from the optimiser’s initial value at the end of every epoch, so it erases whatever the plateau callback cut. Measured on six epochs of a loss that never improves, the rate with both configured follows the cosine exactly - 0.0976, 0.0905, 0.0794 from 0.1 - where the plateau alone reaches 1e-6.</p>
+<p>A schedule beside <code>callback_swa()</code> is fine and the order is no longer luck: <code>swa</code> pins its constant rate after averaging begins, whatever position the callbacks sit in.</p>
 </section>
 <section id="cosine-annealing" class="level3">
 <h3 class="anchored" data-anchor-id="cosine-annealing">Cosine annealing</h3>
