@@ -794,6 +794,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
   <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
   <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
+  <li><a href="#saying-it-once-instead-of-every-session" id="toc-saying-it-once-instead-of-every-session" class="nav-link" data-scroll-target="#saying-it-once-instead-of-every-session">Saying it once instead of every session</a></li>
   <li><a href="#why-this-page-shows-no-output" id="toc-why-this-page-shows-no-output" class="nav-link" data-scroll-target="#why-this-page-shows-no-output">Why this page shows no output</a></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul></li>
@@ -838,6 +839,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>
 <p>The requirement string now in force, invisibly.</p>
+</section>
+<section id="saying-it-once-instead-of-every-session" class="level3">
+<h3 class="anchored" data-anchor-id="saying-it-once-instead-of-every-session">Saying it once instead of every session</h3>
+<p><code>py_require()</code> is session state, so this does not survive a restart - and forgetting it costs about ten times the training time without costing an error, which is the kind of bill that goes unnoticed. Set it where a session starts instead:</p>
+<div class="sourceCode r">
+<pre>options(rplatypus.torch = "pascal")   # ~/.Rprofile
+</pre>
+</div>
+<p>or <code>PLATYPUS_TORCH=pascal</code> in <code style="white-space: pre;">~/.Renviron</code>, which also reaches runs that never load an <code>.Rprofile</code> - <code>Rscript</code>, a scheduler, CI. The option wins over the variable, so a session can override what a machine was configured with. <code>“default”</code> asks for the ordinary build, which is how to turn the setting off for one session without editing the file it came from.</p>
+<p>Both are read when the package is loaded, which is the last moment anything can change what the environment will be. A value neither of them recognises is reported at load and ignored: a bad line in a startup file should not make the package unloadable.</p>
 </section>
 <section id="why-this-page-shows-no-output" class="level3">
 <h3 class="anchored" data-anchor-id="why-this-page-shows-no-output">Why this page shows no output</h3>

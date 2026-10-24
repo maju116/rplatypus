@@ -792,6 +792,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
   <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
+  <li><a href="#updating-this-package" id="toc-updating-this-package" class="nav-link" data-scroll-target="#updating-this-package">Updating this package</a></li>
   <li><a href="#why-this-page-shows-no-output" id="toc-why-this-page-shows-no-output" class="nav-link" data-scroll-target="#why-this-page-shows-no-output">Why this page shows no output</a></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul></li>
@@ -818,6 +819,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>
 <p>A list with the engine version, the interpreter in use and where its environment lives, or <code>NULL</code> fields when Python has not been started yet.</p>
+</section>
+<section id="updating-this-package" class="level3">
+<h3 class="anchored" data-anchor-id="updating-this-package">Updating this package</h3>
+<p><strong>Nothing to do.</strong> Each release of this package pins one exact engine version, that pin is what gets declared when the package loads, and the environment is resolved from it on first use. Install a newer <code>rplatypus</code> and the next session uses the engine it asks for; the first call after the upgrade fetches the new engine - a few hundred kilobytes, with PyTorch already cached - and the environment the old version used is left alone, so going back to it costs nothing either.</p>
+<p>That is the opposite of the arrangement most R packages wrapping Python have, where a persistent environment is installed once by hand and updating the R package does not touch it. Here there is no environment anybody maintains: there is a pin, and the environment always matches it. The cost is that the two cannot be moved separately - which is the point, since a release that could drift from its engine is the failure the pin exists to prevent.</p>
+<p>One case is worth knowing: updating <strong>on the day the engine is published</strong>, uv may still be serving a cached index listing and report that the pinned version does not exist. It is a stale read rather than a missing release, it mends itself, and the failure message says so.</p>
+<p>If <code>RETICULATE_PYTHON</code> is set, none of this applies - that Python is used whatever the pin says, and a mismatch is reported as a warning naming both versions.</p>
 </section>
 <section id="why-this-page-shows-no-output" class="level3">
 <h3 class="anchored" data-anchor-id="why-this-page-shows-no-output">Why this page shows no output</h3>
