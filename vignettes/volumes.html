@@ -1122,7 +1122,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Choose the field of view in millimetres first</strong>, then the spacing and the shape that cover it. Here that is a 480 mm box, and it is worth +0.11 of Dice over resizing and a third of the volume error - 14% of the organ against 30%.</p>
 <p>The difference in reliability is larger than the difference in the mean: across three runs the resampled arm’s worst case stayed between 0.72 and 0.77, while the resized arm’s was 0.00, 0.58 and 0.01. It does not score a little lower; it loses a whole scan, a different one each time. Which scan is <strong>not</strong> explained by its geometry - the two volumes covering the most patient came through fine - and that is an open question rather than a tidy ending.</p>
 <p>A coarse 7.5 mm is a poor way to see a boundary, so the arm this did not run is a finer spacing with <code>splits</code>, which is how a large field of view is covered without a large input. <code>maju116/pyplatypus#201</code>.</p>
-<p>Several volumes per sample - one per modality, as BraTS ships - works through <code>channels_from</code>, where the order is stated rather than inferred.</p>
+<p>Several volumes per sample - one per modality, as BraTS ships - works through <code>channels_from</code>, where the order is stated rather than inferred. <strong>That is a design claim, so it was measured.</strong> One model was trained on MSD BrainTumour (<code>CC BY-SA 4.0</code>) with the four sequences named in the order <code>dataset.json</code> states, then read back through a specification naming the same four patterns with FLAIR and T1 swapped - the same weights, the same scans, one difference:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>what channel one holds</th>
+<th>dice</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>FLAIR, as trained</td>
+<td>0.467</td>
+</tr>
+<tr class="even">
+<td>T1, after one swap in the list</td>
+<td>0.110</td>
+</tr>
+</tbody>
+</table>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/volumes-channel-order.png" class="img-fluid figure-img"></p>
+<figcaption>The same weights reading one scan through two orders of four files</figcaption>
+</figure>
+</div>
+<p>The case drawn is the <strong>median</strong> of the validation split rather than the best or the worst, and it scores 0.540 and 0.160 the two ways round. <strong>Nothing failed.</strong> No error and no empty mask: the model returns a region of plausible size and plausible shape in the wrong place, which is what a reader would accept from a tool they trust.</p>
+<p>The number is the weaker half of this, in two ways. A Dice of 0.467 is not a good tumour model - 60 epochs on 120 cases, still improving at the cap - and this measurement does not need it to be, because both rows are that same model. And it is a number about one permutation of twenty-four and one training budget: the same comparison at a third of the training reported 0.023 against 0.233, which is 10% of the right arm where these two are 23%. <strong>The ratio moves with how good the model is; what does not move is that the wrong answer looks like an answer.</strong></p>
+<p>So take the order from the dataset’s own record and check it once, because nothing downstream will. Sorting the filenames gives <code>flair, t1, t1gd, t2</code> - reproducible, and anatomically meaningless. <code>maju116/pyplatypus#202</code>.</p>
 <p>Object detection, ensembling and pretrained encoders are not here at all.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">platypus_device</span>()</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; torch      : 2.7.1+cu126 </span></span>
