@@ -6,7 +6,7 @@
 #
 # A digest that no longer matches is not the engine's failure. It is a question - does R's
 # prose still say the right thing? - asked at the only moment anybody would ask it.
-engine: 0.8.0a34
+engine: 0.8.0a35
 fields:
   - field: activation
     engine_digest: 4822b126e39826a504979a6b123cc241
@@ -125,6 +125,9 @@ fields:
   - field: fit
     engine_digest: 4381b0e84dc8f9f640c7e536ccebfb5b
     documented_in: [detection_crops, models, yolo3]
+  - field: floor
+    engine_digest: cf62c2c0121cb80a9c2b92831e17f177
+    documented_in: [callbacks]
   - field: fractions
     engine_digest: 2d7283a27124cb01c7a80b3c2aaba235
     documented_in: [split_dataset]
@@ -198,7 +201,7 @@ fields:
     engine_digest: dcabc1a692103443b3ef16503d73ac97
     documented_in: [optimizers]
   - field: monitor
-    engine_digest: 154478e867f4f3bce7e1c7299d588e43
+    engine_digest: 82813f7532493861b6680180c4739c2a
     documented_in: [callbacks]
   - field: name
     engine_digest: 6166b7ed932e417f98d13eb3c83e87ff
@@ -228,7 +231,7 @@ fields:
     engine_digest: b0bbb6279862dcc10874bb1d52459a29
     documented_in: [callbacks, export_weights, read_record, save_spec]
   - field: patience
-    engine_digest: 4a7007e48113bbfc10e8649df4c5b0bd
+    engine_digest: 010cba660e100cc8f78466b82897acc8
     documented_in: [callbacks]
   - field: per_image
     engine_digest: 225067c87c3fdf6905b54b4308084caf
@@ -283,7 +286,7 @@ fields:
     documented_in: [callback_swa, callbacks]
   - field: start_epoch
     engine_digest: 9b11991e991cbed81adff9ccb77362d4
-    documented_in: [callbacks]
+    documented_in: [callback_swa, callbacks]
   - field: step_size
     engine_digest: 42fdccfd45c8050aaceaf8a586800152
     documented_in: [decodings]

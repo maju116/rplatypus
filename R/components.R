@@ -512,7 +512,24 @@ optimizer_nadam <- function(learning_rate = 1e-3, beta_1 = 0.9, beta_2 = 0.999,
 #' Whether the watched quantity should rise or fall is worked out from its name: anything
 #' ending in `loss` is minimised, everything else maximised.
 #'
-#' There is a tenth, documented separately because it needs a page of its own:
+#' @section The one number that is not about quality:
+#'
+#' Every epoch reports `foreground` as well - for both passes, `train_foreground` and
+#' `val_foreground` - which is the share of the prediction that is **not background**.
+#' Nothing is compared against the truth, so it is not a measure of how good the model is;
+#' it answers whether the model is still producing a segmentation at all.
+#'
+#' It is reported whether or not you ask for it, and that is the point. A model that
+#' collapses to predicting background everywhere is invisible in the numbers it already
+#' produced: with `include_background = TRUE` the Dice is a mean over class channels and
+#' the background channel is nearly perfect, so a collapsed model reports around 0.5 while
+#' its loss falls contentedly. A collapse you have to opt into noticing is one you will not
+#' notice.
+#'
+#' `callback_terminate_on_collapse()` acts on it, `evaluate()` carries it as a column, and
+#' `callback_model_checkpoint()`'s `when` can take a condition on it.
+#'
+#' There is an eleventh, documented separately because it needs a page of its own:
 #' [callback_swa()] averages the weights over the last part of the run. It watches
 #' nothing and changes how reproducible a run is rather than how well it scores.
 #'
@@ -547,9 +564,13 @@ optimizer_nadam <- function(learning_rate = 1e-3, beta_1 = 0.9, beta_2 = 0.999,
 #' `epochs` unset means the model's own `epochs`, which is what you want - a cosine that
 #' ends where the run ends.
 #'
-#' @param monitor What to watch: `"val_loss"`, `"train_loss"`, or `"val_"` followed by a
-#'   metric name, such as `"val_dice"`.
-#' @param patience Epochs to wait before acting.
+#' @param monitor What to watch: `"val_loss"`, `"train_loss"`, `"val_"` followed by a
+#'   metric name such as `"val_dice"`, or `"val_foreground"` and `"train_foreground"` -
+#'   the share of the prediction that is not background, which every epoch reports whether
+#'   or not it was asked for.
+#' @param patience Epochs to wait before acting. For
+#'   `callback_terminate_on_collapse()` that is epochs in a row below the floor, and it is
+#'   not 1 because an early epoch legitimately predicts almost nothing.
 #' @param min_delta Improvement smaller than this does not count.
 #' @param restore_best Put the best weights back when training stops, rather than keeping
 #'   the last - which are by definition the ones that were not improving. On by default.
@@ -608,6 +629,12 @@ optimizer_nadam <- function(learning_rate = 1e-3, beta_1 = 0.9, beta_2 = 0.999,
 #'   is written when the watched number improves *and* every threshold holds. A threshold
 #'   is a number about your data and does not transfer between datasets, and a run whose
 #'   conditions never hold writes nothing and says so when it ends.
+#' @param floor For `callback_terminate_on_collapse()`, the share of foreground below
+#'   which a prediction counts as collapsed. A floor rather than a test for zero, because
+#'   0.01% foreground against a target that is 14% foreground has collapsed in every sense
+#'   that matters. The default sits far below any real target on purpose: this guards
+#'   against a failure, not against a model being merely bad, and a floor near a real
+#'   foreground share would end runs that were only disappointing.
 #' @param hours For `callback_stop_after()`, a wall-clock budget. An epoch cap cannot
 #'   express it, because how long an epoch takes is a property of the data and the shape.
 #'   Checked at the end of an epoch, so the real limit is this plus one epoch; the run's
@@ -778,6 +805,18 @@ callback_stop_after <- function(hours) {
     stop("`hours` is one positive number of hours.", call. = FALSE)
   }
   list(name = "stop_after", hours = hours)
+}
+
+#' @rdname callbacks
+#' @export
+callback_terminate_on_collapse <- function(floor = 1e-4, patience = 3,
+                                           monitor = "val_foreground") {
+  if (!is.numeric(floor) || length(floor) != 1L || is.na(floor) || floor < 0 || floor >= 1) {
+    stop("`floor` is one number in [0, 1): the share of foreground below which the ",
+         "prediction counts as collapsed.", call. = FALSE)
+  }
+  list(name = "terminate_on_collapse", floor = floor, patience = int1(patience),
+       monitor = monitor)
 }
 
 #' @rdname callbacks
