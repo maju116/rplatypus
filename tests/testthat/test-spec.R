@@ -522,3 +522,63 @@ test_that("the engine refuses two schedules, and a schedule beside the plateau c
   }
   expect_error(with_plateau(), "erases what the plateau callback cut")
 })
+
+# --- when a callback may act, and on what evidence ------------------------------------
+
+test_that("a warm-up cannot be said two ways, from either constructor", {
+  expect_error(callback_early_stopping(start = 0.1, start_epoch = 5), "not both")
+  expect_error(callback_swa(start = 0.5, start_epoch = 5), "not both")
+})
+
+test_that("each constructor sends only what it was given", {
+  # `[[` and not `$`: R's `$` matches partially, so `cb$start` would return `start_epoch`
+  # when `start` is absent - a check that reads as "it was sent" whatever happened.
+  cb <- callback_early_stopping(start_epoch = 5)
+  expect_identical(cb[["start_epoch"]], 5L)
+  expect_null(cb[["start"]])
+
+  expect_identical(callback_swa(start_epoch = 8)[["start_epoch"]], 8L)
+  expect_null(callback_swa(start_epoch = 8)[["start"]])
+  expect_null(callback_model_checkpoint("out.pt")[["when"]])
+})
+
+test_that("`when` has to be a named list, because the names are the quantities", {
+  expect_error(callback_model_checkpoint("out.pt", when = c(0.9, 0.2)), "named list")
+  expect_error(callback_model_checkpoint("out.pt", when = list(0.9)), "named list")
+})
+
+test_that("a budget is one positive number of hours", {
+  for (bad in list(0, -1, "six", c(1, 2))) {
+    expect_error(callback_stop_after(bad), "one positive number")
+  }
+  expect_identical(callback_stop_after(6)$name, "stop_after")
+})
+
+test_that("a condition on a quantity the model never reports is refused by the engine", {
+  # R forwards it; the rule lives in the engine, and this is the test that it is reachable.
+  skip_if_no_engine()
+  impossible <- function() {
+    platypus_spec(
+      data = segmentation_data(tempdir(), tempdir(), colormap = binary_colormap),
+      models = list(u_net("unet", input_shape = c(32, 32), blocks = 2, filters = 4,
+                          callbacks = list(callback_model_checkpoint(
+                            "out.pt", when = list(val_dice = 0.9)
+                          ))))
+    )
+  }
+  expect_error(impossible(), "condition on 'val_dice'")
+})
+
+test_that("a condition on a metric the model does report reaches the engine intact", {
+  skip_if_no_engine()
+  spec <- platypus_spec(
+    data = segmentation_data(tempdir(), tempdir(), colormap = binary_colormap),
+    models = list(u_net("unet", input_shape = c(32, 32), blocks = 2, filters = 4,
+                        metrics = list(metric_dice()),
+                        callbacks = list(callback_model_checkpoint(
+                          "out.pt", when = list(val_dice = 0.9)
+                        ))))
+  )
+  built <- as.list(spec)$models[[1]]$callbacks[[1]]
+  expect_equal(built$when$val_dice, 0.9)
+})

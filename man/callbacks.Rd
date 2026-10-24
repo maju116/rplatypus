@@ -9,6 +9,7 @@
 \alias{callback_linear_annealing}
 \alias{callback_step_decay}
 \alias{callback_csv_logger}
+\alias{callback_stop_after}
 \alias{callback_terminate_on_nan}
 \title{Callbacks}
 \usage{
@@ -16,10 +17,17 @@ callback_early_stopping(
   monitor = "val_loss",
   patience = 10,
   min_delta = 0,
-  restore_best = TRUE
+  restore_best = TRUE,
+  start = NULL,
+  start_epoch = NULL
 )
 
-callback_model_checkpoint(path, monitor = "val_loss", save_best_only = TRUE)
+callback_model_checkpoint(
+  path,
+  monitor = "val_loss",
+  save_best_only = TRUE,
+  when = NULL
+)
 
 callback_reduce_lr_on_plateau(
   monitor = "val_loss",
@@ -36,6 +44,8 @@ callback_step_decay(factor = 0.1, every = NULL, milestones = NULL, min_lr = 0)
 
 callback_csv_logger(path)
 
+callback_stop_after(hours)
+
 callback_terminate_on_nan()
 }
 \arguments{
@@ -49,6 +59,23 @@ metric name, such as \code{"val_dice"}.}
 \item{restore_best}{Put the best weights back when training stops, rather than keeping
 the last - which are by definition the ones that were not improving. On by default.
 Note that \code{callback_swa()} replaces nothing if a run stops before averaging began.}
+
+\item{start, start_epoch}{When the callback may begin to act - \strong{one of the two and
+never both}. \code{start} is a fraction of the run (\code{0.1} leaves the first tenth alone)
+and \code{start_epoch} is an epoch number. Two arguments rather than one taking either,
+because a fraction survives a change to \code{epochs} and an epoch count does not, and in
+a YAML specification \code{1} and \code{1.0} are the same value once parsed - so one field
+would make "epoch one" and "the whole run" indistinguishable.
+
+For \code{callback_early_stopping()} this is a \strong{warm-up}: a model that needs fifteen
+epochs before its validation curve means anything would otherwise need
+\code{patience > 15} for the whole run, paying that slack at the end as well. It delays
+\strong{the stopping and nothing else} - an epoch inside the warm-up can still be the best
+one and \code{restore_best} still returns to it, because those are the best weights the run
+has if it ends for another reason.
+
+For \code{callback_swa()} it is the point averaging begins, which is the same concept and
+therefore the same two words.}
 
 \item{path}{Where to write. For \code{callback_model_checkpoint()} that is the weights file; for
 \code{callback_csv_logger()} it is one row per epoch appended as the epoch ends - the same
@@ -71,6 +98,18 @@ load, with the sidecar that says what it is for.}
 default. \code{FALSE} writes every epoch, which is what to use when a run may be
 interrupted rather than when the best epoch is what you want to keep.}
 
+\item{when}{For \code{callback_model_checkpoint()}, a named list of thresholds that must
+\strong{all} hold before anything is written: \code{list(val_dice = 0.9, val_loss = 0.2)}.
+\strong{The direction is derived, not configured} - anything ending in \code{loss} has to be
+below its threshold and everything else above it, the same rule \code{monitor} uses - so
+there is no argument to get backwards. The names are checked against what the model
+reports when the specification is built, not at the first epoch.
+
+It is an \strong{extra gate beside \code{save_best_only}}, not a replacement: with both, a file
+is written when the watched number improves \emph{and} every threshold holds. A threshold
+is a number about your data and does not transfer between datasets, and a run whose
+conditions never hold writes nothing and says so when it ends.}
+
 \item{factor, min_lr}{What the rate is multiplied by, and the floor it stops at.
 \code{factor} is the cut on a plateau for \code{callback_reduce_lr_on_plateau()} and the drop
 at each step for \code{callback_step_decay()}, where it must be below 1 - a step schedule
@@ -87,6 +126,12 @@ epochs, 1-based and strictly increasing, which is how a published recipe states 
 Two arguments rather than one that takes either, because \code{30} and \code{c(30)} are
 different schedules and a single argument holding either would be read as whichever
 was typed. A period survives a change to \code{epochs}; a list of milestones does not.}
+
+\item{hours}{For \code{callback_stop_after()}, a wall-clock budget. An epoch cap cannot
+express it, because how long an epoch takes is a property of the data and the shape.
+Checked at the end of an epoch, so the real limit is this plus one epoch; the run's
+stop reason names the clock, so a run that ran out of time does not read as one that
+converged.}
 }
 \value{
 A callback specification.
@@ -100,7 +145,7 @@ when the specification is built rather than waited on forever.
 Whether the watched quantity should rise or fall is worked out from its name: anything
 ending in \code{loss} is minimised, everything else maximised.
 
-There is a ninth, documented separately because it needs a page of its own:
+There is a tenth, documented separately because it needs a page of its own:
 \code{\link[=callback_swa]{callback_swa()}} averages the weights over the last part of the run. It watches
 nothing and changes how reproducible a run is rather than how well it scores.
 }
