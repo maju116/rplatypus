@@ -10,6 +10,7 @@
 \alias{callback_step_decay}
 \alias{callback_csv_logger}
 \alias{callback_stop_after}
+\alias{callback_terminate_on_collapse}
 \alias{callback_terminate_on_nan}
 \title{Callbacks}
 \usage{
@@ -46,13 +47,23 @@ callback_csv_logger(path)
 
 callback_stop_after(hours)
 
+callback_terminate_on_collapse(
+  floor = 1e-04,
+  patience = 3,
+  monitor = "val_foreground"
+)
+
 callback_terminate_on_nan()
 }
 \arguments{
-\item{monitor}{What to watch: \code{"val_loss"}, \code{"train_loss"}, or \code{"val_"} followed by a
-metric name, such as \code{"val_dice"}.}
+\item{monitor}{What to watch: \code{"val_loss"}, \code{"train_loss"}, \code{"val_"} followed by a
+metric name such as \code{"val_dice"}, or \code{"val_foreground"} and \code{"train_foreground"} -
+the share of the prediction that is not background, which every epoch reports whether
+or not it was asked for.}
 
-\item{patience}{Epochs to wait before acting.}
+\item{patience}{Epochs to wait before acting. For
+\code{callback_terminate_on_collapse()} that is epochs in a row below the floor, and it is
+not 1 because an early epoch legitimately predicts almost nothing.}
 
 \item{min_delta}{Improvement smaller than this does not count.}
 
@@ -132,6 +143,13 @@ express it, because how long an epoch takes is a property of the data and the sh
 Checked at the end of an epoch, so the real limit is this plus one epoch; the run's
 stop reason names the clock, so a run that ran out of time does not read as one that
 converged.}
+
+\item{floor}{For \code{callback_terminate_on_collapse()}, the share of foreground below
+which a prediction counts as collapsed. A floor rather than a test for zero, because
+0.01\% foreground against a target that is 14\% foreground has collapsed in every sense
+that matters. The default sits far below any real target on purpose: this guards
+against a failure, not against a model being merely bad, and a floor near a real
+foreground share would end runs that were only disappointing.}
 }
 \value{
 A callback specification.
@@ -144,11 +162,30 @@ when the specification is built rather than waited on forever.
 \details{
 Whether the watched quantity should rise or fall is worked out from its name: anything
 ending in \code{loss} is minimised, everything else maximised.
+}
+\section{The one number that is not about quality}{
 
-There is a tenth, documented separately because it needs a page of its own:
+
+Every epoch reports \code{foreground} as well - for both passes, \code{train_foreground} and
+\code{val_foreground} - which is the share of the prediction that is \strong{not background}.
+Nothing is compared against the truth, so it is not a measure of how good the model is;
+it answers whether the model is still producing a segmentation at all.
+
+It is reported whether or not you ask for it, and that is the point. A model that
+collapses to predicting background everywhere is invisible in the numbers it already
+produced: with \code{include_background = TRUE} the Dice is a mean over class channels and
+the background channel is nearly perfect, so a collapsed model reports around 0.5 while
+its loss falls contentedly. A collapse you have to opt into noticing is one you will not
+notice.
+
+\code{callback_terminate_on_collapse()} acts on it, \code{evaluate()} carries it as a column, and
+\code{callback_model_checkpoint()}'s \code{when} can take a condition on it.
+
+There is an eleventh, documented separately because it needs a page of its own:
 \code{\link[=callback_swa]{callback_swa()}} averages the weights over the last part of the run. It watches
 nothing and changes how reproducible a run is rather than how well it scores.
 }
+
 \section{One hand on the learning rate}{
 
 

@@ -582,3 +582,32 @@ test_that("a condition on a metric the model does report reaches the engine inta
   built <- as.list(spec)$models[[1]]$callbacks[[1]]
   expect_equal(built$when$val_dice, 0.9)
 })
+
+# --- the collapse guard ---------------------------------------------------------------
+
+test_that("a floor outside [0, 1) is refused", {
+  for (bad in list(-0.1, 1, 1.5, "none", c(0.1, 0.2))) {
+    expect_error(callback_terminate_on_collapse(floor = bad), "one number in")
+  }
+})
+
+test_that("the collapse guard sends its three settings", {
+  cb <- callback_terminate_on_collapse(floor = 0.001, patience = 5)
+  expect_identical(cb$name, "terminate_on_collapse")
+  expect_identical(cb[["floor"]], 0.001)
+  expect_identical(cb[["patience"]], 5L)
+  expect_identical(cb[["monitor"]], "val_foreground")
+})
+
+test_that("the share of foreground is a quantity a callback may watch", {
+  # It is not a metric and nothing in `metrics` produces it, so the engine has to know it
+  # exists - otherwise watching it would be refused as a number this model never reports.
+  skip_if_no_engine()
+  spec <- platypus_spec(
+    data = segmentation_data(tempdir(), tempdir(), colormap = binary_colormap),
+    models = list(u_net("unet", input_shape = c(32, 32), blocks = 2, filters = 4,
+                        callbacks = list(callback_terminate_on_collapse(),
+                                         callback_early_stopping(monitor = "val_foreground"))))
+  )
+  expect_length(as.list(spec)$models[[1]]$callbacks, 2L)
+})

@@ -17,6 +17,30 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-24 - the quiet failure of segmentation becomes a number (engine `0.8.0a35`)
+
+Every epoch now reports **`foreground`** for both passes - the share of the prediction that
+is not background. Nothing is compared against the truth, so it is not a measure of
+quality: it answers whether the model is still producing a segmentation at all.
+
+It arrives whether or not you ask for it, and that is the point. A model that collapses to
+predicting background everywhere is invisible in the numbers it already produced - with
+`include_background = TRUE` the Dice is a mean over class channels and the background
+channel is nearly perfect, so a collapsed model reports around 0.5 while its loss falls.
+A collapse you have to opt into noticing is one you will not notice.
+
+`callback_terminate_on_collapse()` ends the run once that share has stayed at or below
+`floor` for `patience` epochs. A floor rather than a test for zero, because 0.01%
+foreground against a target that is 14% foreground has collapsed in every sense that
+matters; and a patience, because an early epoch legitimately predicts almost nothing. It
+can watch `train_foreground` instead, which answers a different question.
+
+`evaluate()` carries the column, `callback_model_checkpoint()`'s `when` can take a
+condition on it, and any callback's `monitor` can watch it.
+
+`maju116/rplatypus#206`, engine half `maju116/pyplatypus#262`.
+
+
 ### 2026-10-24 - when a callback may act, and on what evidence (engine `0.8.0a34`)
 
 Three things that answer one question, which is why they arrive together rather than as
