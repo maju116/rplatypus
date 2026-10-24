@@ -548,51 +548,21 @@ def model_names(engine: Any) -> list:
 
 
 def device_report() -> dict:
-    """Where the work will actually happen, and whether that is what was intended."""
-    import torch
+    """What the engine says about where the work will happen.
 
-    cuda = torch.cuda.is_available()
-    report = {
-        "torch": torch.__version__,
-        "cuda_build": torch.version.cuda or "cpu-only build",
-        "cuda_available": cuda,
-        "device": torch.cuda.get_device_name(0) if cuda else "cpu",
-        "arch_list": list(torch.cuda.get_arch_list()) if cuda else [],
-    }
-    if not cuda:
-        # A card that torch cannot use is worth saying out loud: the run falls back to the
-        # processor and takes perhaps ten times as long, which otherwise looks like
-        # nothing at all going wrong.
-        #
-        # device_count() is the signal, not is_available(). With a CUDA 13 build on a
-        # Pascal card it returns 1 - torch can enumerate the card, it just cannot
-        # initialise it - which is precisely the case worth reporting. Testing for zero
-        # here, as this first did, detects nothing.
-        try:
-            count = torch.cuda.device_count()
-        except Exception:  # noqa: BLE001
-            count = 0
-        report["gpu_present_but_unusable"] = count > 0 or _nvidia_smi_sees_a_gpu()
-    return report
+    A forward since `0.8.0a38`. This function used to own the answer - it asked torch
+    about the version, the build, the card and whether one was present but unusable - and
+    that was the wrong side of the bridge: a Python user could not reach any of it, so
+    the half of this family with more users was the half that could not be told.
 
+    What stays in R is the *advice*: `print.platypus_device()` says to call
+    `platypus_use_torch("pascal")`, which is a sentence about R's session model and means
+    nothing to somebody who installed the engine with pip. Their version of it is "install
+    the pascal extra", and it belongs with the engine.
+    """
+    import pyplatypus
 
-def _nvidia_smi_sees_a_gpu() -> bool:
-    import shutil
-    import subprocess
-
-    if shutil.which("nvidia-smi") is None:
-        return False
-    try:
-        out = subprocess.run(
-            ["nvidia-smi", "--query-gpu=name", "--format=csv,noheader"],
-            capture_output=True,
-            text=True,
-            timeout=10,
-            check=False,
-        )
-    except Exception:  # noqa: BLE001
-        return False
-    return out.returncode == 0 and bool(out.stdout.strip())
+    return pyplatypus.device_report()
 
 
 def read_images(

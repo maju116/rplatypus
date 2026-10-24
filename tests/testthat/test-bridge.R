@@ -183,6 +183,41 @@ test_that("the device report says where the work will happen", {
   expect_s3_class(device, "platypus_device")
   expect_true(nzchar(device$torch))
   expect_type(device$cuda_available, "logical")
+  # Since the engine's 0.8.0a38 the report also names which accelerator answered, or NULL
+  # for the processor. R prints it only when it is not CUDA, but it has to arrive either
+  # way or the printing has nothing to decide on.
+  expect_true(is.null(device$backend) || is.character(device$backend))
+})
+
+test_that("the report is the engine's, not this package's", {
+  # It used to be computed in `inst/python/platypus_shim.py`, which meant a Python user
+  # could not reach any of it. The shim forwards now, so the two cannot drift - and the
+  # cheapest way to see that is that the engine answers the same thing directly.
+  skip_if_no_engine()
+  theirs <- rplatypus:::engine()$device_report()
+  ours <- platypus_device()
+
+  expect_identical(ours$torch, theirs$torch)
+  expect_identical(ours$device, theirs$device)
+})
+
+test_that("a backend that is not CUDA is named, and CUDA is not", {
+  # The printing rule, tested without a machine of either kind: every published set of
+  # weights was trained on CUDA, so that is the unremarkable case, and an `mps` run is the
+  # one worth saying out loud because its numbers are not directly comparable.
+  mps <- structure(
+    list(torch = "2.7.1", cuda_build = "cpu-only build", device = "mps", backend = "mps"),
+    class = "platypus_device"
+  )
+  cuda <- structure(
+    list(torch = "2.7.1", cuda_build = "12.6", device = "A card", backend = "cuda"),
+    class = "platypus_device"
+  )
+
+  expect_output(print(mps), "backend    : mps")
+  expect_output(print(mps), "not directly")
+  expect_silent(expect_output(print(cuda), "device     : A card"))
+  expect_false(any(grepl("backend", capture.output(print(cuda)))))
 })
 
 test_that("a stale uv index cache is explained, because it sounds permanent", {

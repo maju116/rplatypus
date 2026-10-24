@@ -17,6 +17,27 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-24 - the device report becomes the engine's, and names a backend that is not CUDA (engine `0.8.0a38`)
+
+`platypus_device()` behaves as it did, and the answer now comes from the engine rather
+than from this package. The report used to be computed in `inst/python/platypus_shim.py` -
+a file of Python shipped by **this** package - so a Python user could not reach any of it,
+which is backwards: the engine owns the decisions and this package reads them.
+
+What stays here is the advice. The line telling you to call `platypus_use_torch("pascal")`
+is about R's session model and would mean nothing to somebody who installed the engine
+with pip; their version of that sentence belongs with the engine.
+
+**An accelerator that is not CUDA is now named.** Until the engine's `0.8.0a38` it asked
+about CUDA alone, so an Apple Silicon Mac - every Mac sold since 2020 - reported `cpu`
+while a working `mps` backend sat in the same installation. `platypus_device()` prints the
+backend only when it is not CUDA, because every published set of weights was trained on a
+CUDA card and a score from another backend is not directly comparable with the registry's:
+the unremarkable case is not worth a line, and that one is.
+
+`maju116/pyplatypus#265` and `#266`.
+
+
 ### 2026-10-24 - a weight average fed per step (engine `0.8.0a37`)
 
 `callback_ema()` keeps an exponential moving average of the weights, updated after **every
