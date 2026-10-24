@@ -17,6 +17,27 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-24 - the worst case becomes something a callback can watch (engine `0.8.0a36`)
+
+`training_history()` carries **`val_<metric>_worst`**: the lowest any single case scored,
+for the metrics whose counts pool into one score. `monitor = "val_dice_worst"` works, and
+so does a `when` condition on it.
+
+This package has told every reader to look at that number since it had a `summary()`
+method - *a model averaging 0.86 that scores 0.11 on some patient has a failure mode, and
+the mean is where it hides* - and then every callback it offered watched a mean. Stopping,
+checkpointing and cutting the learning rate can all act on the distribution now.
+
+**Validation only.** The training data is shuffled between epochs, so a case has no
+identity in that pass; `"train_dice_worst"` is refused rather than quietly reported as
+something else.
+
+It costs **5.6% of an epoch**, measured on the engine's side: the counts are computed in
+the validation pass that already happened rather than in a second one.
+
+`maju116/rplatypus#205`, engine half `maju116/pyplatypus#263`.
+
+
 ### 2026-10-24 - the quiet failure of segmentation becomes a number (engine `0.8.0a35`)
 
 Every epoch now reports **`foreground`** for both passes - the share of the prediction that

@@ -13,7 +13,20 @@ training_history(object)
 A data frame with one row per model per epoch.
 }
 \description{
-The epoch-by-epoch record
+One row per model per epoch, with the loss, whatever metrics were asked for, how long
+the epoch took and the learning rate it ran at. Two columns arrive whether or not
+anybody asked:
+}
+\details{
+\itemize{
+\item \strong{\code{foreground}} - the share of the prediction that is not background. Not a measure
+of quality, because nothing is compared against the truth: it answers whether the
+model is still producing a segmentation at all. A model collapsing to background
+reports a plausible loss and, with \code{include_background = TRUE}, a Dice around 0.5.
+\item \strong{\verb{val_<metric>_worst}} - the lowest any single case scored. The distribution is the
+finding and the mean is where a failure hides, so the number worth reading is in the
+table rather than only in \code{\link[=summary]{summary()}} after the run.
+}
 }
 \examples{
 \dontrun{

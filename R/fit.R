@@ -710,6 +710,18 @@ detection_crops <- function(object, model = NULL, split = "test", score_threshol
 
 #' The epoch-by-epoch record
 #'
+#' One row per model per epoch, with the loss, whatever metrics were asked for, how long
+#' the epoch took and the learning rate it ran at. Two columns arrive whether or not
+#' anybody asked:
+#'
+#' * **`foreground`** - the share of the prediction that is not background. Not a measure
+#'   of quality, because nothing is compared against the truth: it answers whether the
+#'   model is still producing a segmentation at all. A model collapsing to background
+#'   reports a plausible loss and, with `include_background = TRUE`, a Dice around 0.5.
+#' * **`val_<metric>_worst`** - the lowest any single case scored. The distribution is the
+#'   finding and the mean is where a failure hides, so the number worth reading is in the
+#'   table rather than only in [summary()] after the run.
+#'
 #' @param object A [platypus_fit()].
 #' @return A data frame with one row per model per epoch.
 #' @export

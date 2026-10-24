@@ -57,9 +57,18 @@ callback_terminate_on_nan()
 }
 \arguments{
 \item{monitor}{What to watch: \code{"val_loss"}, \code{"train_loss"}, \code{"val_"} followed by a
-metric name such as \code{"val_dice"}, or \code{"val_foreground"} and \code{"train_foreground"} -
-the share of the prediction that is not background, which every epoch reports whether
-or not it was asked for.}
+metric name such as \code{"val_dice"}, \code{"val_foreground"} and \code{"train_foreground"} - the
+share of the prediction that is not background - or \strong{\code{"val_dice_worst"} and its kind,
+the lowest any single case scored.}
+
+That last one is the number \code{\link[=summary]{summary()}} on \code{\link[=evaluate_cases]{evaluate_cases()}} tells you to read, and
+until the engine's \verb{0.8.0a36} nothing could act on it: a model averaging 0.86 that
+scores 0.11 on some patient has a failure mode, and the mean is where it hides.
+Stopping, checkpointing and cutting the learning rate can all watch it now.
+
+Validation only. The training data is shuffled between epochs, so a case has no
+identity in that pass and there is nothing honest to pool by - \code{"train_dice_worst"}
+is refused rather than quietly reported as something else.}
 
 \item{patience}{Epochs to wait before acting. For
 \code{callback_terminate_on_collapse()} that is epochs in a row below the floor, and it is

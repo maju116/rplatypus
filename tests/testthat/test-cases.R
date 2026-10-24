@@ -222,3 +222,39 @@ test_that("a grid that is not offered is refused by name", {
   skip_if_no_splits()
   expect_error(evaluate(fit_on_patients(), at = "native"), "'model' or 'source'")
 })
+
+test_that("the worst case is in the history and a callback may watch it", {
+  # The number `summary()` on a `platypus_cases` tells everybody to read, in the table
+  # that is written while the run is still going.
+  skip_if_no_splits()
+  fit <- fit_on_patients(
+    callbacks = list(callback_early_stopping(monitor = "val_dice_worst", patience = 5))
+  )
+
+  history <- training_history(fit)
+  expect_true("val_dice_worst" %in% names(history))
+  expect_true(all(history$val_dice_worst <= history$val_dice + 1e-9))
+})
+
+test_that("the worst case in the history agrees with the per-case table", {
+  skip_if_no_splits()
+  fit <- fit_on_patients()
+
+  history <- training_history(fit)
+  cases <- evaluate_cases(fit)
+
+  expect_equal(
+    history$val_dice_worst[nrow(history)], min(cases$dice),
+    tolerance = 1e-6
+  )
+})
+
+test_that("the training pass has no worst case, because it is shuffled", {
+  skip_if_no_splits()
+  expect_error(
+    fit_on_patients(
+      callbacks = list(callback_early_stopping(monitor = "train_dice_worst"))
+    ),
+    "train_dice_worst"
+  )
+})
