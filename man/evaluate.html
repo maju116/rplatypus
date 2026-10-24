@@ -817,7 +817,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code class="language-R">evaluate(object, ...)
 
 ## S3 method for class 'platypus_fit'
-evaluate(object, split = "validation", ...)
+evaluate(object, split = "validation", at = NULL, ...)
 </code></pre>
 </section>
 <section id="arguments" class="level3">
@@ -847,12 +847,21 @@ Unused.
 Which data to score on: <code>“validation”</code>, <code>“train”</code> or <code>“test”</code>.
 </td>
 </tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="at">at</code>
+</td>
+<td>
+Which grid to score on. <code>“model”</code> is each model’s own <code>load_shape</code>, and leaving this unset is that. <code>“source”</code> puts every prediction back on the grid of the file it came from and scores it against the truth as stored, which is the form in which rows from models of different shapes answer one question. Segmentation only: a detection table has no grid to choose and says so rather than ignoring the argument.
+</td>
+</tr>
 </tbody></table>
 </section>
 <section id="details" class="level3">
 <h3 class="anchored" data-anchor-id="details">Details</h3>
 <p>The <code>loss</code> column is only comparable between models trained on the same loss, which is why <code>loss_function</code> is there beside it. A Focal-Tversky of 0.05 is not better than a CCE-Dice of 0.14; it is not even the same question.</p>
 <p>The metrics have a condition of their own and <code>load_shape</code> is it. Each model is scored on the grid it reads at, so a model at <code>input_shape = c(512, 512)</code> is measured against a truth reduced to 512 while one that tiles 2048 is measured against the truth as stored. Both numbers are a real Dice of a real prediction against a real mask, and they are not answers to the same question: measured on retinal vessels, that difference reported a resized model as <strong>+0.0187 better</strong> where the honest figure was <strong>+0.0033</strong>, and the bias runs the other way on clDice because upsampling smooths a prediction. When the rows disagree about the grid this warns, once; the column is there either way, because a table outlives the session that printed it.</p>
+<p><code>at = “source”</code> is the answer to that warning rather than a workaround for it: every prediction goes back onto the grid of the file it came from and is scored against the truth as stored, so the rows answer one question and <code>load_shape</code> reads <code>source</code>. The grid is the files’ own and you cannot name another, which is deliberate - a grid you name resamples the <strong>truth</strong>, so the thing both models are judged against would itself become an interpolation somebody chose. Here only predictions move, and what that costs is in <code>predict()</code>: interpolation softens a boundary, and where reading cropped anatomy away the mask comes back padded with background, which means <em>not examined</em>. For a comparison that is correct rather than unfair - a model whose field of view missed the organ did not segment it - but a 0 arriving that way is a result and not a fault. The loss is not reported there: a loss belongs to the objective a model trained with, on the grid it trained on.</p>
 </section>
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>
@@ -870,8 +879,11 @@ Which data to score on: <code>“validation”</code>, <code>“train”</code> 
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate</span>(fit)                      <span class="co"># one row per model, on the validation split</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate</span>(fit, <span class="at">split =</span> <span class="st">"test"</span>)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># A split with no masks is refused by name rather than scored against nothing;</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># `predict()` still works on it.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Two models of different shapes compared on one grid - the files' own.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate</span>(fit, <span class="at">at =</span> <span class="st">"source"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># A split with no masks is refused by name rather than scored against nothing;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># `predict()` still works on it.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 

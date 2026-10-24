@@ -822,6 +822,7 @@ evaluate_cases(
   model = NULL,
   split = "validation",
   group_by = NULL,
+  at = NULL,
   ...
 )
 
@@ -872,6 +873,14 @@ Which data to score on.
 A pattern picking a group out of each case’s name, as in <a href="../man/split_dataset.html"><code>split_dataset()</code></a>. With it, the rows are patients rather than slices: a patient’s slices are pooled into one score, the way a volume would be.
 </td>
 </tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="at">at</code>
+</td>
+<td>
+Which grid to score on, as in <code>evaluate()</code>. Unset is the model’s own <code>load_shape</code>; <code>“source”</code> reads each truth as stored and scores the prediction there, which is the only form in which rows from two models - or from two runs with different <code>target_spacing</code> - mean the same thing.
+</td>
+</tr>
 </tbody></table>
 </section>
 <section id="details" class="level3">
@@ -896,7 +905,10 @@ A pattern picking a group out of each case’s name, as in <a href="../man/split
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cases)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cases[<span class="fu">order</span>(cases<span class="sc">$</span>dice), ])          <span class="co"># the ones worth looking at</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate_cases</span>(fit, <span class="at">group_by =</span> <span class="st">"^(patient</span><span class="sc">\\\\</span><span class="st">d+)_"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate_cases</span>(fit, <span class="at">group_by =</span> <span class="st">"^(patient</span><span class="sc">\\\\</span><span class="st">d+)_"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># On the grid the files are on, which is what makes two models comparable.</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate_cases</span>(fit, <span class="at">at =</span> <span class="st">"source"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 
