@@ -6,7 +6,7 @@
 #
 # A digest that no longer matches is not the engine's failure. It is a question - does R's
 # prose still say the right thing? - asked at the only moment anybody would ask it.
-engine: 0.8.0a32
+engine: 0.8.0a33
 fields:
   - field: activation
     engine_digest: 4822b126e39826a504979a6b123cc241
@@ -108,13 +108,16 @@ fields:
     engine_digest: 00c307662ab0d6c6298137ca55a88f05
     documented_in: [models]
   - field: epochs
-    engine_digest: 90cfedf8a44d2f9ea4343a43e195f1aa
+    engine_digest: 6c3fe9ec6d394e2cfd704ebfebfaa67b
     documented_in: [callbacks, models, yolo3]
   - field: eps
     engine_digest: 9bafbd4e49b32f6e2cdcd2dfde88b388
     documented_in: [optimizers]
+  - field: every
+    engine_digest: 4c9f97473bece30ca7398eb3e1e3feff
+    documented_in: [callbacks]
   - field: factor
-    engine_digest: e6b75a1862f96a9ea9fd7826425219ce
+    engine_digest: 93bb6edb3397d25556b99695da12c04b
     documented_in: [callbacks]
   - field: filters
     engine_digest: aa1bf18c68480299674538b8a8c89f18
@@ -167,11 +170,14 @@ fields:
   - field: metrics
     engine_digest: fc7c792eb5aa42f37e5169cdcd98545a
     documented_in: [models, plot.platypus_fit]
+  - field: milestones
+    engine_digest: 3c223fb23fa6bc71df4606519de5cbdb
+    documented_in: [callbacks]
   - field: min_delta
     engine_digest: 41bbcc876708809790624c7f853443a3
     documented_in: [callbacks]
   - field: min_lr
-    engine_digest: b03da905569ba6caaaff35019e941a75
+    engine_digest: a25d1c25288898492d751aef358cde32
     documented_in: [callbacks]
   - field: min_visibility
     engine_digest: aea901f218dc94aef9e67d068c33b2ab

@@ -462,3 +462,63 @@ test_that("the engine refuses two namings at once, so R's refusal is not the onl
   expect_false(isTRUE(refused$ok))
   expect_match(paste(unlist(refused), collapse = " "), "exactly one of")
 })
+
+# --- the learning rate schedules -----------------------------------------------------
+
+test_that("callback_step_decay refuses both ways of saying when, and neither", {
+  # R's own refusal, before the bridge: this one is cheap to get wrong and the message is
+  # better from the side the call was written on. The engine refuses it too, because a
+  # YAML specification never passes through this function.
+  expect_error(callback_step_decay(), "one of `every` and `milestones`")
+  expect_error(callback_step_decay(every = 30, milestones = c(30, 60)),
+               "never both")
+})
+
+test_that("the two new schedules send what they were given and nothing else", {
+  linear <- callback_linear_annealing()
+  expect_identical(linear$name, "linear_annealing")
+  expect_identical(linear$min_lr, 0)
+  expect_null(linear$epochs)
+
+  step <- callback_step_decay(milestones = c(30, 60))
+  expect_identical(step$name, "step_decay")
+  expect_identical(step$milestones, c(30L, 60L))
+  expect_null(step$every)
+})
+
+test_that("a published recipe's staircase reaches the engine intact", {
+  skip_if_no_engine()
+  spec <- platypus_spec(
+    data = segmentation_data(tempdir(), tempdir(), colormap = binary_colormap),
+    models = list(u_net("unet", input_shape = c(32, 32), blocks = 2, filters = 4,
+                        callbacks = list(callback_step_decay(milestones = c(30, 60)))))
+  )
+  built <- as.list(spec)$models[[1]]$callbacks[[1]]
+  expect_identical(built$name, "step_decay")
+  expect_equal(unlist(built$milestones), c(30L, 60L))
+})
+
+test_that("the engine refuses two schedules, and a schedule beside the plateau callback", {
+  # Not R's refusal: R forwards both and the engine is where the rule lives, so this is
+  # the test that the rule is reachable from here at all.
+  skip_if_no_engine()
+  two_schedules <- function() {
+    platypus_spec(
+      data = segmentation_data(tempdir(), tempdir(), colormap = binary_colormap),
+      models = list(u_net("unet", input_shape = c(32, 32), blocks = 2, filters = 4,
+                          callbacks = list(callback_cosine_annealing(),
+                                           callback_linear_annealing())))
+    )
+  }
+  expect_error(two_schedules(), "two learning rate schedules")
+
+  with_plateau <- function() {
+    platypus_spec(
+      data = segmentation_data(tempdir(), tempdir(), colormap = binary_colormap),
+      models = list(u_net("unet", input_shape = c(32, 32), blocks = 2, filters = 4,
+                          callbacks = list(callback_linear_annealing(),
+                                           callback_reduce_lr_on_plateau())))
+    )
+  }
+  expect_error(with_plateau(), "erases what the plateau callback cut")
+})

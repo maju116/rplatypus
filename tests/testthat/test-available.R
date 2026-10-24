@@ -67,7 +67,11 @@ test_that("the counts are what the engine's own unions hold", {
   # 5 since 0.8.0a26 added `surface_dice`.
   expect_identical(nrow(available_metrics()), 5L)
   expect_identical(nrow(available_optimizers()), 8L)
-  expect_identical(nrow(available_callbacks()), 7L)
+  # 9 since the pin moved to 0.8.0a33, which added `linear_annealing` and `step_decay`.
+  # Both are schedules, so the engine now refuses two of them at once and refuses any of
+  # them beside `reduce_lr_on_plateau` - a count that grew by two here corresponds to a
+  # configuration surface that got *narrower*, which is the thing one number cannot say.
+  expect_identical(nrow(available_callbacks()), 9L)
   expect_identical(nrow(available_models()), 4L)
   expect_identical(nrow(available_models("object_detection")), 1L)
   expect_identical(nrow(available_tasks()), 3L)

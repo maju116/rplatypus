@@ -17,6 +17,31 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-24 - two more learning-rate schedules, and one pairing that never worked (engine `0.8.0a33`)
+
+`callback_linear_annealing()` is `callback_cosine_annealing()` with a straight line.
+`callback_step_decay()` multiplies the rate by `factor` at fixed points, which is how
+published recipes are written - *divide by ten at epochs 30 and 60*.
+
+`callback_step_decay()` takes `every` **or** `milestones`, never both and never neither,
+and says so from R before the call reaches the engine. Two arguments rather than one that
+accepts either, because `30` and `c(30)` are different schedules and one argument holding
+either would be read as whichever was typed.
+
+**And a pairing this package has implied for as long as it has had a cosine does not
+work.** A schedule recomputes the rate from the optimiser's initial value at the end of
+every epoch, so it erases whatever `callback_reduce_lr_on_plateau()` cut. Measured on six
+epochs of a loss that never improves, the rate with both configured follows the cosine
+exactly - 0.0976, 0.0905, 0.0794 from 0.1 - where the plateau alone reaches 1e-6. The
+engine refuses the pair now, by name, and so two schedules at once are refused as well.
+
+A schedule beside `callback_swa()` is still fine, and no longer a matter of luck: the
+engine fixes the order so `swa`'s constant tail rate wins whatever position the callbacks
+were written in.
+
+`maju116/rplatypus#200`, engine half `maju116/pyplatypus#260`.
+
+
 ### 2026-10-24 - a comparison across shapes stops being rigged (engine `0.8.0a32`)
 
 `evaluate()` and `evaluate_cases()` take `at`. Unset is what they have always done - each
