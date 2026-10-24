@@ -794,6 +794,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
   <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
   <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
+  <li><a href="#the-one-number-that-is-not-about-quality" id="toc-the-one-number-that-is-not-about-quality" class="nav-link" data-scroll-target="#the-one-number-that-is-not-about-quality">The one number that is not about quality</a></li>
   <li><a href="#one-hand-on-the-learning-rate" id="toc-one-hand-on-the-learning-rate" class="nav-link" data-scroll-target="#one-hand-on-the-learning-rate">One hand on the learning rate</a></li>
   <li><a href="#cosine-annealing" id="toc-cosine-annealing" class="nav-link" data-scroll-target="#cosine-annealing">Cosine annealing</a></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
@@ -848,6 +849,12 @@ callback_csv_logger(path)
 
 callback_stop_after(hours)
 
+callback_terminate_on_collapse(
+  floor = 1e-04,
+  patience = 3,
+  monitor = "val_foreground"
+)
+
 callback_terminate_on_nan()
 </code></pre>
 </section>
@@ -859,7 +866,7 @@ callback_terminate_on_nan()
 <code id="monitor">monitor</code>
 </td>
 <td>
-What to watch: <code>“val_loss”</code>, <code>“train_loss”</code>, or <code>“val_”</code> followed by a metric name, such as <code>“val_dice”</code>.
+What to watch: <code>“val_loss”</code>, <code>“train_loss”</code>, <code>“val_”</code> followed by a metric name such as <code>“val_dice”</code>, or <code>“val_foreground”</code> and <code>“train_foreground”</code> - the share of the prediction that is not background, which every epoch reports whether or not it was asked for.
 </td>
 </tr>
 <tr>
@@ -867,7 +874,7 @@ What to watch: <code>“val_loss”</code>, <code>“train_loss”</code>, or <c
 <code id="patience">patience</code>
 </td>
 <td>
-Epochs to wait before acting.
+Epochs to wait before acting. For <code>callback_terminate_on_collapse()</code> that is epochs in a row below the floor, and it is not 1 because an early epoch legitimately predicts almost nothing.
 </td>
 </tr>
 <tr>
@@ -954,16 +961,30 @@ For <code>callback_step_decay()</code>, <strong>one of the two and never both</s
 For <code>callback_stop_after()</code>, a wall-clock budget. An epoch cap cannot express it, because how long an epoch takes is a property of the data and the shape. Checked at the end of an epoch, so the real limit is this plus one epoch; the run’s stop reason names the clock, so a run that ran out of time does not read as one that converged.
 </td>
 </tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="floor">floor</code>
+</td>
+<td>
+For <code>callback_terminate_on_collapse()</code>, the share of foreground below which a prediction counts as collapsed. A floor rather than a test for zero, because 0.01% foreground against a target that is 14% foreground has collapsed in every sense that matters. The default sits far below any real target on purpose: this guards against a failure, not against a model being merely bad, and a floor near a real foreground share would end runs that were only disappointing.
+</td>
+</tr>
 </tbody></table>
 </section>
 <section id="details" class="level3">
 <h3 class="anchored" data-anchor-id="details">Details</h3>
 <p>Whether the watched quantity should rise or fall is worked out from its name: anything ending in <code>loss</code> is minimised, everything else maximised.</p>
-<p>There is a tenth, documented separately because it needs a page of its own: <code>callback_swa()</code> averages the weights over the last part of the run. It watches nothing and changes how reproducible a run is rather than how well it scores.</p>
 </section>
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>
 <p>A callback specification.</p>
+</section>
+<section id="the-one-number-that-is-not-about-quality" class="level3">
+<h3 class="anchored" data-anchor-id="the-one-number-that-is-not-about-quality">The one number that is not about quality</h3>
+<p>Every epoch reports <code>foreground</code> as well - for both passes, <code>train_foreground</code> and <code>val_foreground</code> - which is the share of the prediction that is <strong>not background</strong>. Nothing is compared against the truth, so it is not a measure of how good the model is; it answers whether the model is still producing a segmentation at all.</p>
+<p>It is reported whether or not you ask for it, and that is the point. A model that collapses to predicting background everywhere is invisible in the numbers it already produced: with <code>include_background = TRUE</code> the Dice is a mean over class channels and the background channel is nearly perfect, so a collapsed model reports around 0.5 while its loss falls contentedly. A collapse you have to opt into noticing is one you will not notice.</p>
+<p><code>callback_terminate_on_collapse()</code> acts on it, <a href="../man/evaluate.html"><code>evaluate()</code></a> carries it as a column, and <code>callback_model_checkpoint()</code>’s <code>when</code> can take a condition on it.</p>
+<p>There is an eleventh, documented separately because it needs a page of its own: <code>callback_swa()</code> averages the weights over the last part of the run. It watches nothing and changes how reproducible a run is rather than how well it scores.</p>
 </section>
 <section id="one-hand-on-the-learning-rate" class="level3">
 <h3 class="anchored" data-anchor-id="one-hand-on-the-learning-rate">One hand on the learning rate</h3>
