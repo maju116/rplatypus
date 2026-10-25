@@ -234,9 +234,7 @@ def predictions(
         cases: list[str] = []
         masks = []
         try:
-            for case, probabilities in engine.predict_stream(
-                model_name, split=split, space=space
-            ):
+            for case, probabilities in engine.predict_stream(model_name, split=split, space=space):
                 cases.append(case)
                 masks.append(to_class(probabilities) if as_class else probabilities)
         except pyplatypus.PlatypusError as error:
