@@ -17,6 +17,48 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-25 - a circumference in millimetres, and where the line between the halves falls (engine `0.8.0a39`)
+
+**[ellipse_measure()] is new**: the ellipse a segmented structure implies, as `major`, `minor`
+and `circumference`. It is what a sonographer writes down, and no overlap score stands in for
+it - two masks with the same Dice can be eight times apart in millimetres depending on whether
+they are wrong in a ring all the way round or wrong in a ragged edge.
+
+`class` is an argument rather than an assumption, and it is the whole reason this is not a
+straight forward: the engine reads a foreground as anything above zero, which is right for its
+own `argmax` masks and silently wrong for this package's, where `which.max` writes 1 for
+background. Read that way the measured ellipse becomes the whole frame - 459.8 mm against
+158.8 on the example in `?ellipse_measure` - so `mask == class` happens here, before anything
+crosses.
+
+**And a decision worth more than the function: [mask_volume()] and [instance_sizes()] stay in
+R.** The engine's `0.8.0a39` gained both, so forwarding them was the obvious move; it was
+written, measured and reverted.
+
+It is faster - 0.035 s against 0.341 s on a 512 x 512 x 300 label map, because
+`sum(mask == class)` builds a logical vector of 78 million elements first - and what settled
+it was not speed. The engine's first call downloads about 5 GB, so a user holding a mask and a
+spacing would pay a torch install for a count times a product. `R CMD check` also runs
+examples and CRAN has no Python, so forwarding would have put `mask_volume()`'s page into
+`\dontrun{}`, on arithmetic a reader can verify by eye.
+
+So the rule drawn, and both halves of this entry are on opposite sides of it: **a measurement
+that is arithmetic stays here; a measurement that needs a library crosses.** The ellipse wants
+connected components, hole filling and an eigendecomposition - reimplementing those would be a
+second implementation rather than a second copy of two lines.
+
+`tests/testthat/test-measure-pair.R` holds both: R's answers against the engine's own on the
+same arrays, with a positive control, and a check that the functions with runnable examples do
+not reach the bridge - asked of their bodies, because calling them on a machine that has the
+engine proves nothing, which is exactly how the reverted version passed its gates.
+
+One new condition kind travels with the pin: `platypus_measure_error`, for a spacing that does
+not fit the array it was given. `?platypus_conditions` lists it, and nothing here noticed it
+was needed - `test-conditions.R` failed the moment the engine defined the kind, and named it.
+
+`maju116/pyplatypus#270`.
+
+
 ### 2026-10-25 - two things a session can settle once, instead of every time
 
 **The PyTorch build can be chosen once.** `options(rplatypus.torch = "pascal")` in

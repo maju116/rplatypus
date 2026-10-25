@@ -66,6 +66,21 @@ mask_volume <- function(mask, spacing, class = 2L) {
          if (is.null(dim(mask))) "a vector" else paste(dim(mask), collapse = " x "),
          ". For a stack, apply this to one volume at a time.", call. = FALSE)
   }
+  # **Deliberately NOT forwarded to the engine**, although `pyplatypus.measure.mask_volume`
+  # exists since `0.8.0a39` and this looks like the duplication §3F is a list of.
+  #
+  # Forwarding was written, measured and reverted. It is faster - 0.035 s against 0.341 s on
+  # a 512 x 512 x 300 label map, because `sum(mask == class)` builds a logical vector of 78
+  # million elements first - and it costs something no speed makes up for: the engine's first
+  # call downloads about 5 GB, so a user holding a mask and a spacing would pay a torch
+  # install for a count times a product. It would also make this function's example need
+  # Python, and `R CMD check` runs examples, so the page would have to go into `\dontrun{}`
+  # the way `volume_info()`'s does - on arithmetic a reader can verify by eye.
+  #
+  # So the rule drawn, and it is the one `ellipse_measure()` is on the other side of: a
+  # measurement that is **arithmetic** stays here, a measurement that needs a **library**
+  # crosses. `test-measure-pair.R` holds this against the engine's answer so the two cannot
+  # drift, which is what makes it a pair rather than a copy.
   voxels <- sum(mask == as.integer(class))
   voxels * prod(as.numeric(spacing)) / 1000
 }

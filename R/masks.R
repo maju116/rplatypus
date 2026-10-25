@@ -241,6 +241,84 @@ unite_masks <- function(masks) {
   Reduce(function(a, b) pmax(a, b), masks)
 }
 
+#' The ellipse a segmented structure implies, in millimetres
+#'
+#' What a sonographer writes down. A fetal head circumference is the perimeter of the
+#' ellipse fitted to the skull, and no overlap score stands in for it: two masks with the
+#' same Dice can be eight times apart in millimetres, depending on whether they are wrong in
+#' a ring all the way round or wrong in a ragged edge.
+#'
+#' The fit is not iterative. For a uniform filled ellipse the covariance of the member pixels
+#' has eigenvalues `a^2 / 4` and `b^2 / 4`, so the axes come out of a 2 x 2
+#' eigendecomposition, and the circumference is Ramanujan's second approximation - right to
+#' about `1e-7` relative at the eccentricities a fetal skull has, where `pi * (a + b)`, which
+#' is what one reaches for instead, is wrong by 1.5% at an axis ratio of 0.7.
+#'
+#' The largest connected piece is taken and its holes filled before anything is measured. A
+#' prediction is not an ellipse: it can arrive in two pieces or with a hole in the middle,
+#' and the second moments of either belong to neither - a hole pushes the variance outwards
+#' and a stray island drags the centre.
+#'
+#' @param mask A mask of class indices, as [predict()] returns - one image, not a stack.
+#' @param spacing Pixel size in millimetres, length 2, in the array's own order: rows first,
+#'   then columns. Unset measures in pixels. **Measure on the grid the spacing belongs to**:
+#'   a prediction resized to the model's input shape has pixels of a size nobody recorded,
+#'   so this wants `predict(space = "source")`.
+#' @param class Which class is the structure, numbered from 1 as the colormap and `labels`
+#'   are. Defaults to 2, the foreground of a binary segmentation. It is an argument rather
+#'   than an assumption because this package writes 1 for background where the engine's own
+#'   masks write 0, so treating anything above zero as foreground would measure the whole
+#'   image.
+#' @return A one-row data frame with `major`, `minor` and `circumference` - the two
+#'   semi-axes and the perimeter, in millimetres when `spacing` was given and in pixels
+#'   otherwise. All three are 0 for fewer than three pixels of that class, because a region
+#'   that small has no second moment; that is an ordinary outcome for a model that found
+#'   nothing, not an error.
+#' @seealso [mask_volume()] for the same argument in three dimensions, and
+#'   [instance_sizes()] for it per object.
+#' @export
+#' @examples
+#' # A filled ellipse of 60 x 40 pixels, on half-millimetre pixels: semi-axes of 30 mm and
+#' # 20 mm, whose perimeter is 158.8 mm.
+#' rows <- matrix(rep(seq_len(201), 301), nrow = 201)
+#' columns <- matrix(rep(seq_len(301), each = 201), nrow = 201)
+#' mask <- ifelse(((columns - 150) / 60)^2 + ((rows - 100) / 40)^2 <= 1, 2L, 1L)
+#' \dontrun{
+#' # Wrapped because this one does cross to the engine - unlike [mask_volume()], which is a
+#' # count times a product and stays in R so that a reader needs no Python to run its page.
+#' ellipse_measure(mask, spacing = c(0.5, 0.5))
+#' }
+ellipse_measure <- function(mask, spacing = NULL, class = 2L) {
+  mask <- as.array(mask)
+  if (length(dim(mask)) != 2L) {
+    stop("`mask` must be one image with two dimensions; got ",
+         if (is.null(dim(mask))) "a vector" else paste(dim(mask), collapse = " x "),
+         ". For a stack, measure one image at a time - which is also how `predict()` ",
+         "returns them.", call. = FALSE)
+  }
+  bad_spacing <- !is.null(spacing) &&
+    (length(spacing) != 2L || anyNA(spacing) || any(spacing <= 0))
+  if (bad_spacing) {
+    stop("`spacing` must be two positive numbers, in millimetres - the pixel size, rows ",
+         "first. Got ", length(spacing), ".", call. = FALSE)
+  }
+  # `== class` rather than `> 0`, and this is the whole reason `class` exists: the engine
+  # reads a foreground as anything above zero, which is right for its own `argmax` maps and
+  # would be every pixel of this package's, where `which.max` writes 1 for background.
+  foreground <- mask == as.integer(class)
+  result <- shim()$ellipse_measurement(
+    foreground,
+    if (is.null(spacing)) NULL else as.numeric(spacing)
+  )
+  if (!isTRUE(result$ok)) abort_engine(result)
+  data.frame(
+    major = result$major,
+    minor = result$minor,
+    circumference = result$around,
+    stringsAsFactors = FALSE
+  )
+}
+
 #' How much of each class a mask covers
 #'
 #' A quick sanity check before training: a foreground of half a percent is a problem the

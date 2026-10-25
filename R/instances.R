@@ -633,16 +633,21 @@ instance_sizes <- function(labels, spacing = NULL) {
          ". For a stack, apply this to one map at a time - which is also how `predict()` ",
          "returns them.", call. = FALSE)
   }
+  bad_spacing <- !is.null(spacing) &&
+    (length(spacing) != rank || anyNA(spacing) || any(spacing <= 0))
+  if (bad_spacing) {
+    stop("`spacing` must be ", rank, " positive numbers, in millimetres, because `labels` ",
+         "has ", rank, " dimensions. Giving ", length(spacing), " would measure a different ",
+         "shape of thing than the one passed.", call. = FALSE)
+  }
+  # Not forwarded, for the reason written out at length in `mask_volume()`: this is a count
+  # times a product, and making it cross the bridge would buy speed with a 5 GB first call.
+  # `test-measure-pair.R` holds it against `pyplatypus.measure.instance_sizes`.
   values <- sort(unique(as.integer(labels[labels > 0L])))
   counts <- vapply(values, function(value) sum(labels == value), integer(1))
   out <- data.frame(object = values, voxels = counts, stringsAsFactors = FALSE)
   if (is.null(spacing)) return(out)
 
-  if (length(spacing) != rank || anyNA(spacing) || any(spacing <= 0)) {
-    stop("`spacing` must be ", rank, " positive numbers, in millimetres, because `labels` ",
-         "has ", rank, " dimensions. Giving ", length(spacing), " would measure a different ",
-         "shape of thing than the one passed.", call. = FALSE)
-  }
   per_voxel <- prod(as.numeric(spacing))
   if (rank == 2L) {
     out$area_mm2 <- counts * per_voxel

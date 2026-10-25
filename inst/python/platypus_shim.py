@@ -914,6 +914,33 @@ def volume_info(paths: list) -> dict:
     return {"ok": True, "volumes": rows}
 
 
+def ellipse_measurement(mask, spacing) -> dict:
+    """The ellipse a region implies: its semi-axes and its circumference, in one crossing.
+
+    Both numbers rather than two functions, because they come from the same second moments
+    and a reader wanting a biometry row wants all three figures together. The engine's
+    `ellipse_axes` and `ellipse_circumference` are separate there for the same reason this
+    is one here: there, a caller composing them pays nothing; here, each call is a crossing.
+
+    **The mask arriving is already boolean**, converted on the R side. The engine reads a
+    foreground as `> 0`, which is right for its own `argmax` maps and silently wrong for
+    this package's: `which.max` writes 1 for background, so `> 0` would be every pixel of
+    every image. R does `mask == class` before sending, and that is why these take no class
+    argument.
+    """
+    from pyplatypus.measure import MeasureError, ellipse_axes, ellipse_circumference
+
+    sides = None if spacing is None else [float(side) for side in spacing]
+    try:
+        major, minor = ellipse_axes(mask, sides)
+        around = ellipse_circumference(mask, sides)
+    except MeasureError as error:
+        return _failure(error)
+    except Exception as error:  # noqa: BLE001
+        return _engine_failure(error)
+    return {"ok": True, "major": float(major), "minor": float(minor), "around": float(around)}
+
+
 def write_volumes(masks, paths: list, reference: list) -> dict:
     """Label-map volumes as NIfTI, through the engine's own writer.
 
