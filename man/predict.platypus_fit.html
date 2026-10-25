@@ -922,7 +922,7 @@ Unused.
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>
 <p>With <code>space = “model”</code>: for <code>“class”</code>, an integer array of <code style="white-space: pre;">image x height x width</code>, classes numbered from 1 to match the colormap; for <code>“probability”</code>, the same with a trailing class axis. Tiled models return images at their original size, reassembled.</p>
-<p>With <code>space = “source”</code>: a list of such arrays, one per scan, each on that scan’s grid.</p>
+<p>With <code>space = “source”</code>: a list of such arrays, one per scan, each on that scan’s grid, <strong>named by case</strong>. The name and the mask come out of one step of the engine’s own stream, so they cannot be misaligned - which matters because the usual next move is to join them to something else per case, and a list paired by position is one dropped batch away from naming the wrong picture.</p>
 <p>On an <strong>instance</strong> fit: a list of integer label maps <strong>named by case</strong>, objects numbered from 1 and 0 for background, one entry per image. A list rather than an array for the reason the detection one is a list, and named rather than ordered because a list paired against case names by position is one dropped batch away from naming the wrong picture. Draw them with <a href="../man/overlay_instances.html"><code>overlay_instances()</code></a> and measure them with <a href="../man/instance_sizes.html"><code>instance_sizes()</code></a>.</p>
 </section>
 <section id="which-grid-the-answer-is-on" class="level3">
