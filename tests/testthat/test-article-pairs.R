@@ -37,13 +37,18 @@ article_for <- function(stem) {
 # out of it with no article fails the first test below, and a vignette left *in* it after the
 # article appears fails the second. So it is a record of the remaining work rather than a set
 # of exemptions somebody has to remember to prune.
-# It reached empty once - `volumes` was the last entry and `maju116/pyplatypus#175` merged -
-# and the comment here said the next vignette written before its article belonged in it
-# rather than in a comment. `fetal-head` is that vignette: by `maju116/rplatypus#117` the
-# vignette is the source and the article is the copy, so the source lands first and this
-# entry is what says the copy is owed. The second test below fails the moment the article
-# appears, which is how the entry gets removed rather than forgotten.
-awaiting <- c("fetal-head" = "maju116/rplatypus#192")
+# Empty again, and for the second time it emptied rather than being deleted. `volumes` was
+# the last entry before `maju116/pyplatypus#175`; `fetal-head` was the next, added when its
+# vignette landed ahead of its article - by `maju116/rplatypus#117` the vignette is the
+# source and the article is the copy, so the source lands first and this is what says the
+# copy is owed.
+#
+# It came out because the second test below failed the moment `fetal-head.qmd` appeared on
+# the engine's default branch, naming the entry and what to do about it. That is the whole
+# point of the list being read in both directions: an entry nobody removes is a pair that
+# quietly stopped being compared, and this is the only mechanism that says so. All six pairs
+# are compared now.
+awaiting <- c(character(0))
 
 fetch_lines <- function(address) {
   tryCatch(
