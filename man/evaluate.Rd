@@ -56,6 +56,23 @@ organ did not segment it - but a 0 arriving that way is a result and not a fault
 loss is not reported there: a loss belongs to the objective a model trained with, on the
 grid it trained on.
 }
+\section{What the one row pools}{
+
+
+The \strong{mean over cases}, since the engine's \verb{0.8.0a40}. A case's own score is a ratio of
+sums - where a case arrived in tiles their overlap counts are added and the formula applied
+once, which is reassembly rather than a choice of average - and the split's figure is the
+mean of those. So this row is exactly \code{mean(evaluate_cases(fit)$dice)}, which is what
+anybody comparing the two expected and did not previously get: the engine divided an
+epoch's totals by the number of batches, so a short last batch weighed more than the
+others and the figure moved with \code{batch_size}. On a tiled run the difference was larger
+still, because tiles were averaged rather than reassembled - worth +0.033 to +0.049 of Dice
+on the retinal-vessel runs.
+
+\code{\link[=evaluate_cases]{evaluate_cases()}} pools a \strong{group} differently again, by adding the counts of the images
+in it, which is the better statistic for a patient rather than a slice. \code{maju116/rplatypus#196}.
+}
+
 \section{A note on the name}{
 
 \code{evaluate} is also exported by the \strong{evaluate} package, which knitr depends on, so the
