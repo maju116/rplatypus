@@ -28,10 +28,16 @@
 # each cut into sixteen tiles, for 15 epochs. Both want the CUDA 12 line of PyTorch on that
 # card, which is why every document here calls platypus_use_torch("pascal") - and why that
 # function had to start working before this one could be built at all.
+#
+# The fetal-head one fills 999 drawn annotations into masks before it can start - about 70
+# seconds, in R, with no dependency beyond `png` - and then trains at 544x800 for up to 40
+# epochs, which is roughly half an hour on the same card. It is the only document here whose
+# answer is a length rather than a score, so it is also the only one where the number that
+# matters is computed after the engine has finished.
 
 which <- commandArgs(trailingOnly = TRUE)
 if (!length(which)) which <- c("data-science-bowl", "instances", "volumes", "blood-cells",
-                               "retinal-vessels")
+                               "retinal-vessels", "fetal-head")
 
 if ("data-science-bowl" %in% which) {
   stopifnot(nzchar(Sys.getenv("PLATYPUS_DSBOWL")))
@@ -46,6 +52,9 @@ if ("blood-cells" %in% which) {
 }
 if ("retinal-vessels" %in% which) {
   stopifnot(nzchar(Sys.getenv("PLATYPUS_FIVES")))
+}
+if ("fetal-head" %in% which) {
+  stopifnot(nzchar(Sys.getenv("PLATYPUS_HC18")))
 }
 
 # Against the sources, not whatever is installed. The first run of the volume vignette knitted
