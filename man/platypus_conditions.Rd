@@ -58,6 +58,7 @@ platypus_image_error             an image could not be read, or is not the shape
 platypus_mask_error              a mask does not match its colormap
 platypus_channel_error           one channel per file, and the files do not agree
 platypus_volume_error            a volume, its orientation or its spacing
+platypus_measure_error          a measurement whose spacing does not fit the array
 platypus_dicom_error             a DICOM file or series
 platypus_augmentation_error      a transform that cannot do what was asked of it
 platypus_detection_error         detection metrics

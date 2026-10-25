@@ -633,24 +633,31 @@ instance_sizes <- function(labels, spacing = NULL) {
          ". For a stack, apply this to one map at a time - which is also how `predict()` ",
          "returns them.", call. = FALSE)
   }
-  values <- sort(unique(as.integer(labels[labels > 0L])))
-  counts <- vapply(values, function(value) sum(labels == value), integer(1))
-  out <- data.frame(object = values, voxels = counts, stringsAsFactors = FALSE)
-  if (is.null(spacing)) return(out)
-
-  if (length(spacing) != rank || anyNA(spacing) || any(spacing <= 0)) {
+  bad_spacing <- !is.null(spacing) &&
+    (length(spacing) != rank || anyNA(spacing) || any(spacing <= 0))
+  if (bad_spacing) {
     stop("`spacing` must be ", rank, " positive numbers, in millimetres, because `labels` ",
          "has ", rank, " dimensions. Giving ", length(spacing), " would measure a different ",
          "shape of thing than the one passed.", call. = FALSE)
   }
-  per_voxel <- prod(as.numeric(spacing))
-  if (rank == 2L) {
-    out$area_mm2 <- counts * per_voxel
-  } else {
-    # Millilitres rather than cubic millimetres, as `mask_volume()` reports: a millilitre is
-    # a cubic centimetre, which is the unit a radiology report is written in.
-    out$volume_ml <- counts * per_voxel / 1000
-  }
+  # The counting and the conversion are the engine's as of `0.8.0a39`, the same move as
+  # `mask_volume()` one level along - this is that argument per object rather than per class,
+  # and the two used to carry a copy of it each.
+  result <- shim()$instance_sizes(labels, if (is.null(spacing)) NULL else as.numeric(spacing))
+  if (!isTRUE(result$ok)) abort_engine(result)
+
+  rows <- result$rows
+  # Assembled here rather than sent as a frame, because a data frame is R's shape and the
+  # engine has no business knowing it. An empty map is zero rows with the columns present,
+  # which is what `nrow()` being 0 has to mean for the caller's loop to work.
+  out <- data.frame(
+    object = vapply(rows, function(row) as.integer(row$object), integer(1)),
+    voxels = vapply(rows, function(row) as.integer(row$voxels), integer(1)),
+    stringsAsFactors = FALSE
+  )
+  if (is.null(spacing)) return(out)
+  unit <- if (rank == 2L) "area_mm2" else "volume_ml"
+  out[[unit]] <- vapply(rows, function(row) as.numeric(row[[unit]]), numeric(1))
   out
 }
 

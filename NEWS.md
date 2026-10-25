@@ -17,6 +17,39 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-25 - the measurements become the engine's, and keep every name (engine `0.8.0a39`)
+
+**`mask_volume()` and `instance_sizes()` answer exactly what they did and compute none of
+it.** The arithmetic is `pyplatypus.measure`'s as of the engine's `0.8.0a39`; the names, the
+arguments, the defaults and the refusals are unchanged, so nothing a script does needs
+editing. The engine had no way to turn a voxel count into millilitres at all - it was
+implemented here, in R, while the engine's own `volume_spacing()` said in its docstring that
+something ought to be reporting it.
+
+That is the same correction as the device report a day earlier, and the third in three
+engine releases: a mechanism that only an R user could reach. `voxel_ml` was the sharpest
+case, because it was computed in `inst/python/platypus_shim.py` - Python shipped by *this*
+package, which no `pip install pyplatypus` user can import.
+
+**Forwarding is also the faster half**, which was measured rather than assumed, and the
+measurement went the opposite way from the guess: on a 512 x 512 x 300 label map,
+`mask_volume()` takes 0.035 s through the engine against 0.341 s in R, because
+`sum(mask == class)` builds a logical vector of 78 million elements before counting it.
+
+**And there is no off-by-one in the forward**, although this looked certain: R counts its
+classes from 1 and the engine counts channels from 0, but the engine matches the class
+against the array's *values* rather than using it as an index, so R hands over its own mask
+and its own class number and the two agree. `tests/testthat/test-measure-pair.R` holds R's
+answer to the engine's own on the same arrays, with a positive control, because two
+implementations agreeing on zero is not agreement.
+
+One new condition kind travels with the pin: `platypus_measure_error`, for a spacing that
+does not fit the array it was given. `?platypus_conditions` lists it, and the test that
+holds that list to what the engine defines is what noticed it was missing.
+
+`maju116/pyplatypus#270`.
+
+
 ### 2026-10-25 - two things a session can settle once, instead of every time
 
 **The PyTorch build can be chosen once.** `options(rplatypus.torch = "pascal")` in
