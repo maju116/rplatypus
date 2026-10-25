@@ -11,12 +11,27 @@
 # So change it here and the R suite goes red until R follows. That is the intended direction.
 #
 # THE PALETTE COMES FROM THE HEXSTICKER, which is the one thing the author asked to keep
-# when both repositories were reset (CLAUDE.md §4c). Measured off
-# assets/hexsticker_platypus.png rather than chosen: cream is 54.8% of its opaque pixels,
-# the dark brown 12.1%, tan 9.1%, terracotta 4.1%. The 2022 mkdocs site set
-# `palette: primary: brown`, so this is a return to the author's own choice rather than an
-# invention - and it replaces the `#1c5d99` blue that was typed into _pkgdown.yml in
+# when both repositories were reset (CLAUDE.md §4c). Measured off the sticker of the day -
+# the workbench's assets/hexsticker_platypus_v1.png - rather than chosen: cream is 54.8% of
+# its opaque pixels, the dark brown 12.1%, tan 9.1%, terracotta 4.1%. The 2022 mkdocs site
+# set `palette: primary: brown`, so this is a return to the author's own choice rather than
+# an invention - and it replaces the `#1c5d99` blue that was typed into _pkgdown.yml in
 # September and matched nothing.
+#
+# THE STICKER WAS REPLACED ON 2026-10-25 AND THESE COLOURS DID NOT MOVE, which is a
+# measurement and not an assumption. The percentages above are kept as they were written,
+# against the file now named v1, because re-deriving them with a different tolerance would
+# silently restate a number nobody re-measured. What was measured is the comparison, both
+# stickers the same way - the share of opaque pixels within a distance of 40 of each brand
+# colour:
+#
+#     old sticker   brown 20.3%   terracotta  6.5%   tan 12.4%   cream 57.2%
+#     new sticker   brown 22.1%   terracotta 15.3%   tan 11.6%   cream 44.6%
+#
+# Cream falls twelve points and terracotta rises nine, because the platypus is bigger and
+# the field behind it smaller. The ROLES are what this file encodes and they are unchanged:
+# cream is still the most common colour and so still the background, and brown is still the
+# only one of the four that clears 4.5 against white, so it still carries every link.
 #
 # CONTRAST IS A CONSTRAINT HERE, NOT A PREFERENCE. Measured against white, for the 4.5
 # WCAG AA needs for body text:
