@@ -1,25 +1,24 @@
-# The receipt for `maju116/pyplatypus#270`, which moved three measurements into the engine.
+# The pair for `maju116/pyplatypus#270`, which put every physical-unit measurement in the
+# engine - and the receipt for the one R function that forwards to it.
 #
-# `mask_volume()` and `instance_sizes()` kept their names, their arguments and their
-# refusals, and lost their arithmetic: it is `pyplatypus.measure`'s now. Every other test in
-# this suite asserts what those functions answer, which is what makes the deletion *appear*
-# behaviour-preserving. This file is what makes it provable - R's answer against the engine's
-# own, through reticulate, on the same arrays.
+# **Two implementations on purpose, and the rule is where the line falls.** A measurement that
+# is *arithmetic* stays in R: `mask_volume()` and `instance_sizes()` are a count times a
+# product, and making them cross would buy speed - 0.035 s against 0.341 s on a
+# 512 x 512 x 300 label map - with the engine's 5 GB first call, on functions a reader can
+# verify by eye. A measurement that needs a *library* crosses: `ellipse_measure()` wants
+# connected components, hole filling and an eigendecomposition, and reimplementing those here
+# would be a second implementation rather than a second copy of two lines.
 #
-# This is a receipt rather than a pair, in the sense of CLAUDE.md §3F: the drift it guards is
-# one-directional, because there is now exactly one implementation and R forwards to it. What
-# it would catch is the forward itself going wrong - a class number translated by somebody who
-# read the two conventions and decided they disagree, a unit named after the wrong rank, a size
-# column appearing with no spacing. Measured: of seven mutations of the two forwards, five are
-# caught here and by nothing else, the control that removes the measurement among them.
+# Forwarding the first two was written, measured and reverted. What settled it was not the
+# speed but `R CMD check`: it runs examples, CRAN has no Python, and forwarding would have put
+# `mask_volume()`'s page into `\dontrun{}` - which is how `volume_info()`'s page already
+# reads, and the right shape for `ellipse_measure()`, and the wrong shape for arithmetic.
 #
-# **The two that are not caught are not defects, and that is worth writing down rather than
-# fixing.** Reversing `spacing` before sending it changes nothing, because a volume and an area
-# are the product of all the sides and a product does not care about their order. The only
-# measurement where the order matters is the ellipse, which is the engine's - and that batch
-# found a gap in the engine's own suite rather than in this one: a *circle* cannot tell
-# `(row, column)` from `(column, row)` either, so the claim is pinned there on an elongated
-# mask now.
+# So this file is two things. For the two that stayed, it is a **pair** in CLAUDE.md §3F's
+# sense: R's answer against the engine's own, through reticulate, on the same arrays, with a
+# positive control - because two implementations agreeing on zero is not agreement. For
+# `ellipse_measure()` it is a **receipt**: there is one implementation and what can go wrong
+# is the forward.
 
 engine_measure <- function() {
   reticulate::import("pyplatypus")
@@ -113,4 +112,105 @@ test_that("volume_info's voxel_ml is the same millilitre as mask_volume's", {
   # The control: a voxel here is not one cubic millimetre, so the two would not agree by
   # accident on a spacing of all ones.
   expect_false(isTRUE(all.equal(info$voxel_ml, 0.001)))
+})
+
+test_that("ellipse_measure reads its foreground by class and not by anything above zero", {
+  skip_if_no_engine()
+  py <- engine_measure()
+
+  # A `which.max` map: background is 1, not 0. Reading the foreground as `> 0` - which is
+  # right for the engine's own `argmax` masks - makes every pixel of this one foreground,
+  # and the measured ellipse becomes the whole image. That is the trap `class` exists for,
+  # and it is asserted rather than described: measured, 459.8 mm against 158.8, which is 2.9
+  # times. The whole frame is 201 x 301 pixels of 0.5 mm, and the second moments of a filled
+  # rectangle of side L give a semi-axis of L / sqrt(3), so that number is arithmetic rather
+  # than an observation - 86.9 by 58.0 mm, whose perimeter is 459.8.
+  rows <- matrix(rep(seq_len(201), 301), nrow = 201)
+  columns <- matrix(rep(seq_len(301), each = 201), nrow = 201)
+  mask <- ifelse(((columns - 150) / 60)^2 + ((rows - 100) / 40)^2 <= 1, 2L, 1L)
+  expect_identical(sum(mask == 1L) > 0L, TRUE)
+
+  got <- ellipse_measure(mask, spacing = c(0.5, 0.5))
+  expect_equal(got$circumference, py$ellipse_circumference(mask == 2L, spacing = c(0.5, 0.5)),
+               tolerance = 1e-12)
+  expect_equal(c(got$major, got$minor),
+               as.numeric(py$ellipse_axes(mask == 2L, spacing = c(0.5, 0.5))),
+               tolerance = 1e-12)
+
+  # The arithmetic by hand as well, because agreeing with the engine says the forward works
+  # and not that the number is a circumference: semi-axes of 60 and 40 pixels on half
+  # millimetre pixels are 30 mm and 20 mm, and Ramanujan puts their perimeter at 158.8 mm.
+  expect_equal(got$major, 30, tolerance = 0.02)
+  expect_equal(got$minor, 20, tolerance = 0.02)
+  expect_equal(got$circumference, 158.8, tolerance = 0.5)
+
+  # And the control for the trap: measuring everything above zero gives a different number,
+  # so the `class` argument is doing work rather than being decoration.
+  everything <- py$ellipse_circumference(mask > 0L, spacing = c(0.5, 0.5))
+  expect_equal(everything, 459.8, tolerance = 0.5)
+  expect_gt(everything, 2.5 * got$circumference)
+})
+
+test_that("ellipse_measure in pixels is the same shape measured without a spacing", {
+  skip_if_no_engine()
+  rows <- matrix(rep(seq_len(201), 301), nrow = 201)
+  columns <- matrix(rep(seq_len(301), each = 201), nrow = 201)
+  mask <- ifelse(((columns - 150) / 60)^2 + ((rows - 100) / 40)^2 <= 1, 2L, 1L)
+
+  pixels <- ellipse_measure(mask)
+  millimetres <- ellipse_measure(mask, spacing = c(0.5, 0.5))
+  # Square pixels, so this one scaling is exact - which is the only case where it is. The
+  # engine scales the coordinates rather than the answer, because an ellipse perimeter is
+  # not separable in its axes; equal sides is where the two agree to the last digit.
+  expect_equal(millimetres$circumference, pixels$circumference * 0.5, tolerance = 1e-12)
+
+  # Anisotropic pixels, where no single factor works: 0.5 x 0.25 makes the 60 x 40 pixel
+  # ellipse 30 mm by 10 mm, and neither scaling of the pixel answer lands there.
+  thin <- ellipse_measure(mask, spacing = c(0.25, 0.5))
+  expect_equal(thin$major, 30, tolerance = 0.05)
+  expect_equal(thin$minor, 10, tolerance = 0.05)
+  expect_gt(abs(thin$circumference - pixels$circumference * 0.5), 10)
+  expect_gt(abs(thin$circumference - pixels$circumference * 0.25), 10)
+})
+
+test_that("ellipse_measure refuses a stack and a spacing of the wrong length", {
+  skip_if_no_engine()
+  expect_error(ellipse_measure(array(1L, dim = c(2, 8, 8))), "two dimensions")
+  expect_error(ellipse_measure(matrix(1L, 8, 8), spacing = c(1, 1, 1)), "two positive")
+  expect_error(ellipse_measure(matrix(1L, 8, 8), spacing = c(0, 1)), "two positive")
+})
+
+test_that("a class nothing matches measures nothing rather than failing", {
+  skip_if_no_engine()
+  # A model that found no head has measured no head. Raising here would make a loop over a
+  # split fail on its worst case instead of reporting it.
+  empty <- ellipse_measure(matrix(1L, 40, 40), spacing = c(0.5, 0.5))
+  expect_identical(c(empty$major, empty$minor, empty$circumference), c(0, 0, 0))
+})
+
+test_that("the measurements that stay in R do not reach the engine", {
+  # The constraint the header is about, as a check rather than a paragraph. `R CMD check`
+  # runs every example not wrapped in `\dontrun{}`, CRAN has no Python, and CRAN is where
+  # this package is going - so a function documented with a runnable example must not touch
+  # the bridge. Reading the body is the right instrument: *calling* these proves nothing,
+  # because this machine has the engine, which is exactly how the forwarding version passed
+  # `R CMD check` here before it was reverted.
+  #
+  # Asked of the installed namespace rather than of the Rd files, because `tools::Rd_db()`
+  # reads installed help and answers "corrupt" whenever the sources have moved since the
+  # last install - which is a question about this working copy and not about the package.
+  reaches_engine <- function(name) {
+    body <- paste(deparse(get(name, envir = asNamespace("rplatypus"))), collapse = " ")
+    grepl("shim()", body, fixed = TRUE) || grepl("engine()", body, fixed = TRUE)
+  }
+
+  for (name in c("mask_volume", "instance_sizes", "mask_coverage")) {
+    expect_false(reaches_engine(name), info = paste(name, "now reaches the engine, so its ",
+                                                    "example needs Python and its page has ",
+                                                    "to go into \\dontrun{}"))
+  }
+
+  # The control, without which the predicate above could be broken and silent: the one
+  # measurement that does cross says so, and its page is guarded for that reason.
+  expect_true(reaches_engine("ellipse_measure"))
 })

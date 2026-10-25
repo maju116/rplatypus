@@ -17,35 +17,44 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
-### 2026-10-25 - the measurements become the engine's, and keep every name (engine `0.8.0a39`)
+### 2026-10-25 - a circumference in millimetres, and where the line between the halves falls (engine `0.8.0a39`)
 
-**`mask_volume()` and `instance_sizes()` answer exactly what they did and compute none of
-it.** The arithmetic is `pyplatypus.measure`'s as of the engine's `0.8.0a39`; the names, the
-arguments, the defaults and the refusals are unchanged, so nothing a script does needs
-editing. The engine had no way to turn a voxel count into millilitres at all - it was
-implemented here, in R, while the engine's own `volume_spacing()` said in its docstring that
-something ought to be reporting it.
+**[ellipse_measure()] is new**: the ellipse a segmented structure implies, as `major`, `minor`
+and `circumference`. It is what a sonographer writes down, and no overlap score stands in for
+it - two masks with the same Dice can be eight times apart in millimetres depending on whether
+they are wrong in a ring all the way round or wrong in a ragged edge.
 
-That is the same correction as the device report a day earlier, and the third in three
-engine releases: a mechanism that only an R user could reach. `voxel_ml` was the sharpest
-case, because it was computed in `inst/python/platypus_shim.py` - Python shipped by *this*
-package, which no `pip install pyplatypus` user can import.
+`class` is an argument rather than an assumption, and it is the whole reason this is not a
+straight forward: the engine reads a foreground as anything above zero, which is right for its
+own `argmax` masks and silently wrong for this package's, where `which.max` writes 1 for
+background. Read that way the measured ellipse becomes the whole frame - 459.8 mm against
+158.8 on the example in `?ellipse_measure` - so `mask == class` happens here, before anything
+crosses.
 
-**Forwarding is also the faster half**, which was measured rather than assumed, and the
-measurement went the opposite way from the guess: on a 512 x 512 x 300 label map,
-`mask_volume()` takes 0.035 s through the engine against 0.341 s in R, because
-`sum(mask == class)` builds a logical vector of 78 million elements before counting it.
+**And a decision worth more than the function: [mask_volume()] and [instance_sizes()] stay in
+R.** The engine's `0.8.0a39` gained both, so forwarding them was the obvious move; it was
+written, measured and reverted.
 
-**And there is no off-by-one in the forward**, although this looked certain: R counts its
-classes from 1 and the engine counts channels from 0, but the engine matches the class
-against the array's *values* rather than using it as an index, so R hands over its own mask
-and its own class number and the two agree. `tests/testthat/test-measure-pair.R` holds R's
-answer to the engine's own on the same arrays, with a positive control, because two
-implementations agreeing on zero is not agreement.
+It is faster - 0.035 s against 0.341 s on a 512 x 512 x 300 label map, because
+`sum(mask == class)` builds a logical vector of 78 million elements first - and what settled
+it was not speed. The engine's first call downloads about 5 GB, so a user holding a mask and a
+spacing would pay a torch install for a count times a product. `R CMD check` also runs
+examples and CRAN has no Python, so forwarding would have put `mask_volume()`'s page into
+`\dontrun{}`, on arithmetic a reader can verify by eye.
 
-One new condition kind travels with the pin: `platypus_measure_error`, for a spacing that
-does not fit the array it was given. `?platypus_conditions` lists it, and the test that
-holds that list to what the engine defines is what noticed it was missing.
+So the rule drawn, and both halves of this entry are on opposite sides of it: **a measurement
+that is arithmetic stays here; a measurement that needs a library crosses.** The ellipse wants
+connected components, hole filling and an eigendecomposition - reimplementing those would be a
+second implementation rather than a second copy of two lines.
+
+`tests/testthat/test-measure-pair.R` holds both: R's answers against the engine's own on the
+same arrays, with a positive control, and a check that the functions with runnable examples do
+not reach the bridge - asked of their bodies, because calling them on a machine that has the
+engine proves nothing, which is exactly how the reverted version passed its gates.
+
+One new condition kind travels with the pin: `platypus_measure_error`, for a spacing that does
+not fit the array it was given. `?platypus_conditions` lists it, and nothing here noticed it
+was needed - `test-conditions.R` failed the moment the engine defined the kind, and named it.
 
 `maju116/pyplatypus#270`.
 

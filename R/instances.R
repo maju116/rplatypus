@@ -640,24 +640,22 @@ instance_sizes <- function(labels, spacing = NULL) {
          "has ", rank, " dimensions. Giving ", length(spacing), " would measure a different ",
          "shape of thing than the one passed.", call. = FALSE)
   }
-  # The counting and the conversion are the engine's as of `0.8.0a39`, the same move as
-  # `mask_volume()` one level along - this is that argument per object rather than per class,
-  # and the two used to carry a copy of it each.
-  result <- shim()$instance_sizes(labels, if (is.null(spacing)) NULL else as.numeric(spacing))
-  if (!isTRUE(result$ok)) abort_engine(result)
-
-  rows <- result$rows
-  # Assembled here rather than sent as a frame, because a data frame is R's shape and the
-  # engine has no business knowing it. An empty map is zero rows with the columns present,
-  # which is what `nrow()` being 0 has to mean for the caller's loop to work.
-  out <- data.frame(
-    object = vapply(rows, function(row) as.integer(row$object), integer(1)),
-    voxels = vapply(rows, function(row) as.integer(row$voxels), integer(1)),
-    stringsAsFactors = FALSE
-  )
+  # Not forwarded, for the reason written out at length in `mask_volume()`: this is a count
+  # times a product, and making it cross the bridge would buy speed with a 5 GB first call.
+  # `test-measure-pair.R` holds it against `pyplatypus.measure.instance_sizes`.
+  values <- sort(unique(as.integer(labels[labels > 0L])))
+  counts <- vapply(values, function(value) sum(labels == value), integer(1))
+  out <- data.frame(object = values, voxels = counts, stringsAsFactors = FALSE)
   if (is.null(spacing)) return(out)
-  unit <- if (rank == 2L) "area_mm2" else "volume_ml"
-  out[[unit]] <- vapply(rows, function(row) as.numeric(row[[unit]]), numeric(1))
+
+  per_voxel <- prod(as.numeric(spacing))
+  if (rank == 2L) {
+    out$area_mm2 <- counts * per_voxel
+  } else {
+    # Millilitres rather than cubic millimetres, as `mask_volume()` reports: a millilitre is
+    # a cubic centimetre, which is the unit a radiology report is written in.
+    out$volume_ml <- counts * per_voxel / 1000
+  }
   out
 }
 

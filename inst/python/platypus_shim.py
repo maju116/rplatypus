@@ -914,56 +914,31 @@ def volume_info(paths: list) -> dict:
     return {"ok": True, "volumes": rows}
 
 
-def mask_volume(mask, spacing: list, class_index: int) -> dict:
-    """One class's volume in millilitres, through the engine's own measurement.
+def ellipse_measurement(mask, spacing) -> dict:
+    """The ellipse a region implies: its semi-axes and its circumference, in one crossing.
 
-    Forwarding rather than reimplementing, which it could not do until `0.8.0a39` put
-    `pyplatypus.measure` in the engine. Until then the arithmetic was in `R/volumes.R` and
-    the millilitre convention - that the divisor is 1000 because a millilitre is a cubic
-    centimetre - was stated in three places in this package and nowhere in the engine, whose
-    own `volume_spacing()` docstring has always said it is needed by *"anything reporting a
-    volume in millilitres"*. It is the engine's now.
+    Both numbers rather than two functions, because they come from the same second moments
+    and a reader wanting a biometry row wants all three figures together. The engine's
+    `ellipse_axes` and `ellipse_circumference` are separate there for the same reason this
+    is one here: there, a caller composing them pays nothing; here, each call is a crossing.
 
-    **No translation of the class number happens here, and that is measured rather than
-    assumed.** The engine matches `class_index` against the array's values rather than using
-    it as an index, so this package's `which.max` numbering - 1 and 2 where the engine's
-    `argmax` writes 0 and 1 - passes straight through. R sends what R has.
-
-    The R side keeps its own refusals, because they are a released interface and their
-    wording is pinned by `test-volumes.R`; the engine refuses the same things again, which
-    is the half that cannot be bypassed by a caller reaching the engine another way.
+    **The mask arriving is already boolean**, converted on the R side. The engine reads a
+    foreground as `> 0`, which is right for its own `argmax` maps and silently wrong for
+    this package's: `which.max` writes 1 for background, so `> 0` would be every pixel of
+    every image. R does `mask == class` before sending, and that is why these take no class
+    argument.
     """
-    from pyplatypus.measure import MeasureError
-    from pyplatypus.measure import mask_volume as measure
-
-    try:
-        millilitres = measure(mask, [float(side) for side in spacing], int(class_index))
-    except MeasureError as error:
-        return _failure(error)
-    except Exception as error:  # noqa: BLE001
-        return _engine_failure(error)
-    return {"ok": True, "millilitres": float(millilitres)}
-
-
-def instance_sizes(labels, spacing) -> dict:
-    """Each object's size, through the engine's own measurement.
-
-    The same move as `mask_volume` above, one level along: this is that argument applied per
-    object rather than per class, and the two shared a copy of the conversion. `spacing` of
-    `None` means the rows count voxels and name no unit, which is the engine's own default
-    and the reason this forwards it rather than deciding it here - §3D.4.
-    """
-    from pyplatypus.measure import MeasureError
-    from pyplatypus.measure import instance_sizes as measure
+    from pyplatypus.measure import MeasureError, ellipse_axes, ellipse_circumference
 
     sides = None if spacing is None else [float(side) for side in spacing]
     try:
-        rows = measure(labels, sides)
+        major, minor = ellipse_axes(mask, sides)
+        around = ellipse_circumference(mask, sides)
     except MeasureError as error:
         return _failure(error)
     except Exception as error:  # noqa: BLE001
         return _engine_failure(error)
-    return {"ok": True, "rows": rows}
+    return {"ok": True, "major": float(major), "minor": float(minor), "around": float(around)}
 
 
 def write_volumes(masks, paths: list, reference: list) -> dict:
