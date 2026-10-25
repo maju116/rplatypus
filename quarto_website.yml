@@ -117,6 +117,7 @@ website:
               - man/classes_to_colours.qmd
               - man/mask_coverage.qmd
               - man/mask_volume.qmd
+              - man/ellipse_measure.qmd
               - man/unite_masks.qmd
               - man/colormaps.qmd
               - man/ct_windows.qmd
