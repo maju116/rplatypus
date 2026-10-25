@@ -37,11 +37,13 @@ article_for <- function(stem) {
 # out of it with no article fails the first test below, and a vignette left *in* it after the
 # article appears fails the second. So it is a record of the remaining work rather than a set
 # of exemptions somebody has to remember to prune.
-# Empty, and it reached empty rather than being deleted: `volumes` was the last entry and
-# `maju116/pyplatypus#175` merged. All five pairs are compared now. The vector stays - a
-# named character(0) keeps both tests below meaningful, and the next vignette written
-# before its article belongs in it rather than in a comment.
-awaiting <- c(character(0))
+# It reached empty once - `volumes` was the last entry and `maju116/pyplatypus#175` merged -
+# and the comment here said the next vignette written before its article belonged in it
+# rather than in a comment. `fetal-head` is that vignette: by `maju116/rplatypus#117` the
+# vignette is the source and the article is the copy, so the source lands first and this
+# entry is what says the copy is owed. The second test below fails the moment the article
+# appears, which is how the entry gets removed rather than forgotten.
+awaiting <- c("fetal-head" = "maju116/rplatypus#192")
 
 fetch_lines <- function(address) {
   tryCatch(

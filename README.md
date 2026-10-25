@@ -355,6 +355,20 @@ slice to look at, and the size of a finding in millilitres. It ends on something
 a model at Dice 0.88 whose volumes were 12% to 23% too large, which is not a contradiction and
 is the reason to report both.
 
+`vignette("fetal-head")` is the only one that does not end on a score. HC18 is 2D obstetric
+ultrasound with a sonographer's ellipse drawn round each fetal skull, and the answer it is
+built to give is a **head circumference in millimetres**, because that is what gets written
+down and charted. Nobody charts a Dice — and the page measures why that matters: tens of the
+test images scoring 0.95 or better are still wrong by more than 2 mm, and the two orderings
+rank the same images differently every time it is run. No figure from that comparison is
+quoted here, because it is the one number on that page that moves between runs; the page
+carries four of them side by side and says so.
+
+What does not move is what the dataset costs before any model does. HC18's annotation is a
+drawn curve 2.52 pixels wide and the mask is that curve filled, so every mask is half a line
+width too large: `pi * w * pixel` predicts +1.11 mm against the +1.12 mm measured, with 0.01
+mm left unexplained. The split is seeded, so that control reads the same on every run.
+
 `vignette("retinal-vessels")` is the one that cannot resize its images: FIVES fundus
 photographs at 2048 x 2048, where the vessel to find is about nine pixels wide and a resize to
 256 leaves it at one — the width at which a displacement of a single pixel overlaps the truth
