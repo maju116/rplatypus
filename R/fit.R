@@ -141,6 +141,21 @@ print.platypus_fit <- function(x, ...) {
 #' loss is not reported there: a loss belongs to the objective a model trained with, on the
 #' grid it trained on.
 #'
+#' @section What the one row pools:
+#'
+#' The **mean over cases**, since the engine's `0.8.0a40`. A case's own score is a ratio of
+#' sums - where a case arrived in tiles their overlap counts are added and the formula applied
+#' once, which is reassembly rather than a choice of average - and the split's figure is the
+#' mean of those. So this row is exactly `mean(evaluate_cases(fit)$dice)`, which is what
+#' anybody comparing the two expected and did not previously get: the engine divided an
+#' epoch's totals by the number of batches, so a short last batch weighed more than the
+#' others and the figure moved with `batch_size`. On a tiled run the difference was larger
+#' still, because tiles were averaged rather than reassembled - worth +0.033 to +0.049 of Dice
+#' on the retinal-vessel runs.
+#'
+#' [evaluate_cases()] pools a **group** differently again, by adding the counts of the images
+#' in it, which is the better statistic for a patient rather than a slice. `maju116/rplatypus#196`.
+#'
 #' @section A note on the name:
 #' `evaluate` is also exported by the **evaluate** package, which knitr depends on, so the
 #' two mask each other depending on which was attached last. It is a generic here, so

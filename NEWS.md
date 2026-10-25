@@ -17,6 +17,43 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-25 - batch_size leaves the reported score (engine `0.8.0a40`)
+
+**`evaluate()`'s figure no longer depends on `batch_size`.** The engine divided an
+epoch's totals by the number of batches, so the examples of a short last batch counted more
+than the others and a split's reported score moved with a training setting. Measured on 199
+validation cases: 2.3e-04 at `batch_size` 4 and 3.5e-03 at 32, and the size of the gap is not
+even predictable from the setting, because it depends on which cases land in the short batch.
+
+It is a repair rather than a change of definition, which is why the numbers move at the
+fourth decimal rather than being restated: the per-batch value was already the mean over the
+examples in that batch, so a mean of means was reaching for the mean over examples and
+mis-weighting one batch of it.
+
+**The larger half is for tiled runs.** `evaluate()` now pools a case's tiles by adding their
+overlap counts before scoring, the way `summarise_cases()` already did - so the table's figure
+is the mean over images rather than the mean over tiles. On the retinal-vessel runs that is
+worth **+0.033 to +0.049** of Dice, and it is why the table in `vignette("retinal-vessels")`
+needed no editing: every number in it was computed from the per-case route already, and this
+brings the one-row table into agreement with it.
+
+**The figure is now exactly the mean of `evaluate_cases()`'s own rows**, which is
+what anybody comparing the two expected and did not get.
+
+Nothing here needs editing in a script. One consequence worth knowing: `best_model()` ranks
+on this table, so where two models sat within the shift of each other the winner can change -
+on the eleven-loss comparison the winner is unchanged and its margin grows from +0.0006 to
++0.0033.
+
+**And a defect this did not fix, filed rather than folded in:** the detection trainer divides
+by batches too, but every component of the YOLO loss is normalised by the number of *objects*
+in the batch, so averaging over batches weights a frame of thirty cells like a frame of two
+platelets. That is a different repair and it has its own issue, `#218`. No published detection
+number comes through it - the AP table is scored per image.
+
+`#196`.
+
+
 ### 2026-10-25 - a circumference in millimetres, and where the line between the halves falls (engine `0.8.0a39`)
 
 **[ellipse_measure()] is new**: the ellipse a segmented structure implies, as `major`, `minor`
