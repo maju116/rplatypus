@@ -17,6 +17,35 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-26 - a detection epoch stops weighting batches alike (engine `0.8.0a42`)
+
+**The numbers `plot(fit)` draws for a detection run change, and nothing you wrote changes
+with them.** The engine averaged each epoch over batches, and for a detector that is not an
+average over examples: every component of the YOLO loss is divided inside the loss - three
+of them by a grid's object count and the fourth by the cells it supervises. A frame holding
+thirty blood cells therefore counted the same as a frame holding two.
+
+An epoch is now pooled by what the loss divided by. `maju116/rplatypus#218`.
+
+What this means for a run you already have:
+
+- **`fit$history`'s loss columns are on a new definition** for detection. On BCCD the
+  reported `val_loss` moves by up to 0.33 over 150 epochs, and not as a constant offset - it
+  changes sign over the course of a run. Comparing a recorded detection loss against a new
+  run compares two definitions.
+- **No score changes.** `evaluate()` and `evaluate_cases()` on a detector report average
+  precision through their own path, which this does not touch, and the published
+  `bccd-yolo3` weights are unchanged with them.
+- **Semantic and instance runs are untouched.** Their epoch was repaired in `0.8.0a40` and
+  the arithmetic there was a different one.
+
+**It was measured before it was changed**, on 150 instrumented epochs of the engine's own
+BCCD example: both poolings pick the same epoch, and that is reported as too close to call
+rather than as no effect - the gap between them varies across the best epochs by 1.05 times
+the margin separating the winner from the runner-up. The change is made because weighting a
+per-object quantity by batches is wrong, not because an epoch visibly moved.
+
+
 ### 2026-10-25 - a fifth set of published weights, measured in millimetres (engine `0.8.0a41`)
 
 **`available_weights()` lists `hc18-unet`.** A U-Net for the fetal skull in 2D ultrasound,
