@@ -212,6 +212,45 @@ def predictions(
     import numpy as np
     import pyplatypus
 
+    def to_class(array):
+        # +1 so the classes are 1-based on arrival: R indexes from one, and a mask whose
+        # background is 0 while its colormap starts at 1 is a trap laid for later.
+        return (array.argmax(axis=-1) + 1).astype(np.int32)
+
+    if space == "source":
+        # Source space: one array per scan, each on its own grid, so this cannot become one
+        # array and R receives a list. Keeping the shapes apart is the point - see
+        # `?predict.platypus_fit`.
+        #
+        # Taken from `predict_stream` rather than from `engine.predict`, and the reason is
+        # the NAMES. `predict` returns the arrays alone, so R used to hand back a list a
+        # caller had to pair against case names by position - which that same help page
+        # argues against two lines above the sentence documenting this return, and which
+        # the instance path already avoids. `maju116/rplatypus#223`.
+        #
+        # One pass, not two. A name and a mask that come out of the same `next()` cannot be
+        # misaligned, where a second call to list the split is one `drop_last` from being
+        # off by one - and would also run the model over the split again.
+        cases: list[str] = []
+        masks = []
+        try:
+            for case, probabilities in engine.predict_stream(
+                model_name, split=split, space=space
+            ):
+                cases.append(case)
+                masks.append(to_class(probabilities) if as_class else probabilities)
+        except pyplatypus.PlatypusError as error:
+            return _failure(error)
+        except Exception as error:  # noqa: BLE001
+            return _engine_failure(error)
+        return {
+            "ok": True,
+            "masks": masks,
+            "cases": cases,
+            "type": "class" if as_class else "probability",
+            "space": "source",
+        }
+
     try:
         probabilities = engine.predict(model_name, split=split, space=space)
     except pyplatypus.PlatypusError as error:
@@ -219,23 +258,8 @@ def predictions(
     except Exception as error:  # noqa: BLE001
         return _engine_failure(error)
 
-    def to_class(array):
-        # +1 so the classes are 1-based on arrival: R indexes from one, and a mask whose
-        # background is 0 while its colormap starts at 1 is a trap laid for later.
-        return (array.argmax(axis=-1) + 1).astype(np.int32)
-
-    if isinstance(probabilities, list):
-        # Source space: one array per scan, each on its own grid, so this cannot become one
-        # array and R receives a list. Keeping the shapes apart is the point - see
-        # `?predict.platypus_fit`.
-        masks = [to_class(one) if as_class else one for one in probabilities]
-        return {
-            "ok": True,
-            "masks": masks,
-            "type": "class" if as_class else "probability",
-            "space": "source",
-        }
-
+    # Model space is one stacked array rather than a list, so there is nothing to name: the
+    # asymmetry this function carries is between the two SPACES, not between two tasks.
     masks = to_class(probabilities) if as_class else probabilities
     return {
         "ok": True,

@@ -750,3 +750,39 @@ test_that("the engine names a class file, and this package no longer has an opin
       "case_02_whole_tumour.nii.gz", "case_02_Core_rim.nii.gz")
   )
 })
+
+test_that("a writer takes the named list `predict()` now returns, straight through", {
+  # The user path, and a regression this package shipped for about an hour.
+  # `maju116/rplatypus#223` made `predict(space = "source")` return a list NAMED by case,
+  # which is what makes it joinable - and reticulate converts a named R list into a Python
+  # `dict` where an unnamed one becomes a `list`. So the writer stopped being able to read
+  # its own input, and the message it refused with was about a shape it never got to read.
+  #
+  # The existing tests above missed it for one reason: every one of them builds its list by
+  # hand or unnames it on the way. This one takes what `predict()` gives and hands it over
+  # untouched, which is the only shape a reader of `?save_volumes` would write.
+  skip_if_no_source_space()
+  root <- tiny_volume_dataset(cases = 2, shape = c(16, 16, 8), spacing = c(1, 1, 2))
+  scans <- sort(list.files(root, pattern = "ct[.]nii[.]gz$", recursive = TRUE,
+                           full.names = TRUE))
+  spec <- platypus_spec(
+    data = segmentation_data(root, root, labels = c(0, 1), window = "soft_tissue",
+                             target_spacing = c(1, 1, 1)),
+    models = list(u_net("u", input_shape = c(8, 8, 8), channels = 1, blocks = 2, filters = 4,
+                        epochs = 1, batch_size = 1))
+  )
+  fit <- platypus_fit(spec, num_workers = 0)
+
+  masks <- predict(fit, split = "validation", space = "source")
+  # The control: if this list were unnamed the test would be the one above again, and the
+  # conversion it is about could not happen.
+  expect_false(is.null(names(masks)))
+
+  written <- save_volumes(masks, withr::local_tempdir(), reference = scans,
+                          names = names(masks))
+  expect_length(written, 2)
+  expect_true(all(file.exists(written)))
+  # And the names reached the filenames, which is the thing having them was for.
+  expect_setequal(tools::file_path_sans_ext(tools::file_path_sans_ext(basename(written))),
+                  names(masks))
+})
