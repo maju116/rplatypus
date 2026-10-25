@@ -800,6 +800,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
   <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
   <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
+  <li><a href="#what-the-one-row-pools" id="toc-what-the-one-row-pools" class="nav-link" data-scroll-target="#what-the-one-row-pools">What the one row pools</a></li>
   <li><a href="#a-note-on-the-name" id="toc-a-note-on-the-name" class="nav-link" data-scroll-target="#a-note-on-the-name">A note on the name</a></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul></li>
@@ -872,6 +873,11 @@ Which grid to score on. <code>“model”</code> is each model’s own <code>loa
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>
 <p>A data frame, one row per model.</p>
+</section>
+<section id="what-the-one-row-pools" class="level3">
+<h3 class="anchored" data-anchor-id="what-the-one-row-pools">What the one row pools</h3>
+<p>The <strong>mean over cases</strong>, since the engine’s <code style="white-space: pre;">0.8.0a40</code>. A case’s own score is a ratio of sums - where a case arrived in tiles their overlap counts are added and the formula applied once, which is reassembly rather than a choice of average - and the split’s figure is the mean of those. So this row is exactly <code>mean(evaluate_cases(fit)$dice)</code>, which is what anybody comparing the two expected and did not previously get: the engine divided an epoch’s totals by the number of batches, so a short last batch weighed more than the others and the figure moved with <code>batch_size</code>. On a tiled run the difference was larger still, because tiles were averaged rather than reassembled - worth +0.033 to +0.049 of Dice on the retinal-vessel runs.</p>
+<p><a href="../man/evaluate_cases.html"><code>evaluate_cases()</code></a> pools a <strong>group</strong> differently again, by adding the counts of the images in it, which is the better statistic for a patient rather than a slice. <code>maju116/rplatypus#196</code>.</p>
 </section>
 <section id="a-note-on-the-name" class="level3">
 <h3 class="anchored" data-anchor-id="a-note-on-the-name">A note on the name</h3>
