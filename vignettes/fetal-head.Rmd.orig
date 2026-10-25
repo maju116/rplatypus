@@ -241,15 +241,11 @@ the model.
 # size nobody recorded, and multiplying by the file's number would be wrong by the ratio of
 # the two shapes.
 #
-# And `each`, rather than taking the list the plain call returns. On a semantic fit that
-# list arrives UNNAMED, so pairing it with the pixel sizes would be pairing two sequences
-# by position - which `?predict.platypus_fit` argues against in as many words, two lines
-# above the sentence that documents this return. `each` is handed the case, so the names
-# come from the engine's own pairing. maju116/rplatypus#223.
-predicted <- predict(
-  fit, "skull", split = "test", space = "source",
-  each = function(case, mask) mask
-)
+# The list comes back NAMED BY CASE, which is what makes the join below a join rather than
+# a pairing by position - and the name and the mask come out of one step of the engine's
+# own stream, so they cannot be misaligned. That was not true until
+# `maju116/rplatypus#223`: writing this page is what found it.
+predicted <- predict(fit, "skull", split = "test", space = "source")
 
 sizes <- setNames(reference$pixel_mm, tools::file_path_sans_ext(reference$filename))
 recorded <- setNames(reference$hc_mm, tools::file_path_sans_ext(reference$filename))

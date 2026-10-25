@@ -65,7 +65,11 @@ With \code{space = "model"}: for \code{"class"}, an integer array of
 \code{"probability"}, the same with a trailing class axis. Tiled models return images at their
 original size, reassembled.
 
-With \code{space = "source"}: a list of such arrays, one per scan, each on that scan's grid.
+With \code{space = "source"}: a list of such arrays, one per scan, each on that scan's grid,
+\strong{named by case}. The name and the mask come out of one step of the engine's own
+stream, so they cannot be misaligned - which matters because the usual next move is to
+join them to something else per case, and a list paired by position is one dropped
+batch away from naming the wrong picture.
 
 On an \strong{instance} fit: a list of integer label maps \strong{named by case}, objects numbered
 from 1 and 0 for background, one entry per image. A list rather than an array for the

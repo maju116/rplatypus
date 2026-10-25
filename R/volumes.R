@@ -111,11 +111,20 @@ refuse_overlapping_volume <- function(masks) {
 #' A list from `predict(space = "source")` passes through untouched, which is the point of that
 #' argument existing: its members are already on their scans' grids and need not agree with each
 #' other. An array is unstacked instead, and probabilities are collapsed.
+#'
+#' **The result is unnamed, and that is not tidiness.** `predict(space = "source")` returns a
+#' list named by case since `maju116/rplatypus#223`, and reticulate converts a NAMED R list
+#' into a Python `dict` where an unnamed one becomes a `list`. So carrying the names across
+#' the bridge changes the type the writer receives, and it refuses with a message about a
+#' shape it never got to read. Names are useful on this side of the bridge and are a
+#' different object on the other.
 #' @keywords internal
 #' @noRd
 as_volume_list <- function(masks) {
   if (is.list(masks)) {
-    volumes <- lapply(masks, function(one) {
+    # Unnamed on the way out: see the note above. Names are useful in R and become a
+    # `dict` in Python.
+    volumes <- unname(lapply(masks, function(one) {
       dims <- length(dim(one))
       if (dims == 4L) {
         # (d, h, w, class): probabilities for one volume.
@@ -127,7 +136,7 @@ as_volume_list <- function(masks) {
         stop("a mask in the list has ", dims, " dimensions; expected 3 (class indices) or ",
              "4 (probabilities for one volume).", call. = FALSE)
       }
-    })
+    }))
     return(volumes)
   }
 
@@ -411,13 +420,15 @@ save_class_volumes <- function(masks, dir, reference, classes, names = NULL, suf
 #' @noRd
 as_channel_volume_list <- function(masks) {
   if (is.list(masks)) {
-    lapply(masks, function(one) {
+    # Unnamed, for the reason `as_volume_list` records: a named R list crosses into Python
+    # as a `dict` and the writer is handed something it cannot read.
+    unname(lapply(masks, function(one) {
       if (length(dim(one)) != 4L) {
         stop("a prediction in the list has ", length(dim(one)), " dimensions; expected 4 - ",
              "`depth x height x width x class`.", call. = FALSE)
       }
       one
-    })
+    }))
   } else if (length(dim(masks)) == 5L) {
     lapply(seq_len(dim(masks)[1]), function(i) masks[i, , , , , drop = TRUE])
   } else if (length(dim(masks)) == 4L) {

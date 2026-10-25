@@ -277,7 +277,11 @@ evaluate.platypus_fit <- function(object, split = "validation", at = NULL, ...) 
 #'   `"probability"`, the same with a trailing class axis. Tiled models return images at their
 #'   original size, reassembled.
 #'
-#'   With `space = "source"`: a list of such arrays, one per scan, each on that scan's grid.
+#'   With `space = "source"`: a list of such arrays, one per scan, each on that scan's grid,
+#'   **named by case**. The name and the mask come out of one step of the engine's own
+#'   stream, so they cannot be misaligned - which matters because the usual next move is to
+#'   join them to something else per case, and a list paired by position is one dropped
+#'   batch away from naming the wrong picture.
 #'
 #'   On an **instance** fit: a list of integer label maps **named by case**, objects numbered
 #'   from 1 and 0 for background, one entry per image. A list rather than an array for the
@@ -391,6 +395,16 @@ predict.platypus_fit <- function(object, model = NULL, split = "test",
     result <- shim()$predictions(object$engine, model, split = split,
                                  as_class = identical(type, "class"), space = space)
     if (!isTRUE(result$ok)) abort_engine(result)
+    # Named in source space, where the answer is a list and a caller holding anything else
+    # per case - a pixel size, a reference measurement, a path - would otherwise have to
+    # pair two sequences by position. That is what the paragraph in this function's own help
+    # page warns about, and it was true of this branch until `maju116/rplatypus#223`. Model
+    # space is one stacked array, so there is nothing to name.
+    if (identical(space, "source")) {
+      masks <- result$masks
+      names(masks) <- as.character(unlist(result$cases))
+      return(masks)
+    }
     return(result$masks)
   }
 
