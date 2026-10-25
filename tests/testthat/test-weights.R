@@ -150,3 +150,45 @@ test_that("an unknown name lists the published ones", {
 test_that("export_weights refuses what it cannot save", {
   expect_error(export_weights(list(), "somewhere"), "platypus_fit")
 })
+
+test_that("the fetal-head entry is the one not to choose on its Dice", {
+  # The fifth published set and the first where the score a reader reaches for first is the
+  # wrong one: these weights exist for a length in millimetres, and on this run the Dice
+  # orders the cases differently from the millimetres. Somebody picks weights by reading this
+  # description, so the warning has to be in it and not only on a model card.
+  skip_if_no_weights_registry()
+  listing <- available_weights()
+  skull <- listing[listing$name == "hc18-unet", ]
+
+  expect_equal(nrow(skull), 1)
+  expect_match(skull$description, "HC18")
+  expect_match(skull$description, "Do not choose these weights on the Dice")
+  # Not "CC BY 4.0", which appears twice - once for the data and once for the weights - the
+  # same trap `fives-unet`'s test above records.
+  expect_match(skull$description, "not MIT")
+
+  # Read the figures out of the description BY THEIR ROLE and compare what was read. The
+  # engine-side version of this test first bound them as literals and asserted one below the
+  # other, which is true whatever the description says: it stayed green with the two numbers
+  # swapped in the entry. Found by mutating the entry, not by reading the test.
+  figure <- function(pattern) {
+    found <- regmatches(skull$description, regexpr(pattern, skull$description))
+    expect_length(found, 1)
+    as.numeric(regmatches(found, regexpr("[0-9.]+", found)))
+  }
+  median_mm <- figure("Median absolute error [0-9.]+ mm")
+  mean_mm <- figure("mean [0-9.]+ mm")
+  expect_lt(median_mm, mean_mm)
+
+  # The order is the claim: millimetres first, the Dice named only inside the sentence
+  # telling the reader not to choose on it.
+  expect_lt(
+    as.integer(regexpr("millimetres", skull$description)),
+    as.integer(regexpr("Dice", skull$description))
+  )
+
+  # And the control, because every assertion here is about this entry being unlike the rest:
+  # the nearest one has to report no millimetres at all.
+  vessels <- listing[listing$name == "fives-unet", ]
+  expect_false(grepl(" mm", vessels$description))
+})

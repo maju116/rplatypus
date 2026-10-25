@@ -17,6 +17,44 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-25 - a fifth set of published weights, measured in millimetres (engine `0.8.0a41`)
+
+**`available_weights()` lists `hc18-unet`.** A U-Net for the fetal skull in 2D ultrasound,
+trained on HC18 and published for measuring **head circumference in millimetres** rather than
+for an overlap score. Nothing in this package changed but the pin: the registry lives in the
+engine, so a new published name arrives in R through it.
+
+```r
+available_weights()[["hc18-unet"]]
+```
+
+    median absolute error     2.44 mm   against the sonographer's measurement, 199 images
+    mean                      3.84 mm   quoted beside the median because they disagree
+    worst                    48.07 mm
+    against the truth mask    3.41 mm   the model's own contribution, not the drawing
+    Dice                       0.9494   and the description says not to choose on it
+
+**Read that last line rather than the Dice.** On this run the Dice and the millimetres order
+the same cases differently - Spearman 0.153 - and **85 of the 144 cases scoring 0.95 or better
+are still wrong by more than 2 mm**. A ragged boundary barely moves an integral over a region
+and a mask that is systematically fat or thin moves it linearly, which are the two errors Dice
+is respectively most and least able to see, and they are the wrong way round for anybody
+measuring a length. These are the first published weights in this family where the score a
+reader reaches for first is the wrong one.
+
+**They are CC BY 4.0 rather than MIT**, because HC18 is - the second set in the registry that
+is not MIT, after `fives-unet`, and attribution travels with them. The sidecar carries the
+citation and `weights_licence`.
+
+Measuring with them from R is `ellipse_measure()`, which arrived in `0.8.0a39`:
+
+```r
+ellipse_measure(mask, spacing = c(px, px))
+```
+
+Predict on the **source** grid and measure there. The pixel size is a property of the file, so
+a prediction resized to the model's input shape has pixels of a size nobody recorded.
+
 ### 2026-10-25 - batch_size leaves the reported score (engine `0.8.0a40`)
 
 **`evaluate()`'s figure no longer depends on `batch_size`.** The engine divided an
