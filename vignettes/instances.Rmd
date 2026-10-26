@@ -7,6 +7,23 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+<!--
+THIS PROSE HAS A COUNTERPART, AND THIS FILE IS THE SOURCE.
+
+The engine mirrors it as pyplatypus's `instances.qmd`. It exists as `instances.qmd`.
+
+By maju116/rplatypus#117 the vignette is the source and the article is the copy, so an edit
+here is an edit there, and an edit there alone is a mistake nothing will catch. What is held
+by a test is the walk: the `##` headings and their order, asserted from both sides -
+`tests/testthat/test-article-pairs.R` here and `tests/test_articles.py` in the engine. The
+route is deliberately not held, because the engine reaches each destination through a
+configuration file where this package reaches it through constructors.
+
+So: renaming or reordering a `##` heading in this file breaks both suites until the article
+follows. Changing the body of a section breaks neither, and that is the part no test can
+check - a heading test does not stop prose drifting.
+-->
+
 
 
 
@@ -273,16 +290,16 @@ scores[, c("model", "decode", "foreground_dice", "average_precision",
 #> 1 published         nearest_seed       0.9117900         0.5444811
 #> 2 published            watershed       0.9117900         0.5390481
 #> 3 published connected_components       0.9117900         0.4821945
-#> 4      mine         nearest_seed       0.9015549         0.5011777
-#> 5      mine            watershed       0.9015549         0.5003432
-#> 6      mine connected_components       0.9015549         0.4655490
+#> 4      mine         nearest_seed       0.9014591         0.4939518
+#> 5      mine            watershed       0.9014591         0.4923366
+#> 6      mine connected_components       0.9014591         0.4608787
 #>   predicted_objects truth_objects
 #> 1              5378          5999
 #> 2              5378          5999
 #> 3              4914          5999
-#> 4              5127          5999
-#> 5              5127          5999
-#> 6              5015          5999
+#> 4              5074          5999
+#> 5              5074          5999
+#> 6              4902          5999
 ```
 
 Three things in that table, in the order they matter.
@@ -297,14 +314,14 @@ the same model asked a question that ignores half its output.
 
 
 
-**The forty-epoch run is 0.0102 behind on the mask and
-0.0433 behind on average precision** - the two numbers written by
+**The forty-epoch run is 0.0103 behind on the mask and
+0.0505 behind on average precision** - the two numbers written by
 the run above rather than by hand, so re-knitting this document cannot leave them stale.
 
 Two runs of one configuration on this data differ by about **0.009** of average precision -
 measured, and the recorded spread every claim here is read against. The mask gap above is one
 of those, so on foreground Dice the short run is barely distinguishable from the published one,
-while the score gap is 4.8 of them. **The extra eighty
+while the score gap is 5.6 of them. **The extra eighty
 epochs bought a sharper rim rather than a better mask**, and `foreground_dice` cannot see a sharper rim: the rim is a third class whose quality
 only becomes visible once the channels are decoded into objects, which is the same reason the
 `class dice` column exists beside it.
@@ -391,9 +408,9 @@ again <- lapply(c("nearest_seed", "watershed", "connected_components"), function
 })
 do.call(rbind, again)
 #>                 decode objects
-#> 1         nearest_seed    5127
-#> 2            watershed    5127
-#> 3 connected_components    5015
+#> 1         nearest_seed    5074
+#> 2            watershed    5074
+#> 3 connected_components    4902
 ```
 
 Against 5,999 objects in the truth. The counts, not the scores, are where the decoding
@@ -409,12 +426,12 @@ found and then run together with a neighbour.
 sizes <- instance_sizes(mine[[worst]])
 head(sizes, 3)
 #>   object voxels
-#> 1      1     20
-#> 2      2     18
-#> 3      3     46
+#> 1      1     72
+#> 2      2     46
+#> 3      3     68
 summary(sizes$voxels)
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#>    5.00   56.50   74.00   73.16   87.75  207.00
+#>    4.00   59.75   73.50   73.61   87.00  179.00
 ```
 
 
@@ -431,7 +448,7 @@ per_case <- vapply(mine, max, integer(1))
 c(images = length(per_case), objects = sum(per_case),
   median_per_image = median(per_case), most_in_one_image = max(per_case))
 #>            images           objects  median_per_image most_in_one_image 
-#>               134              5127                26               234
+#>             134.0            5074.0              24.5             236.0
 ```
 
 **In pixels, because this dataset has no physical scale.** `instance_sizes()` takes a
@@ -439,6 +456,71 @@ c(images = length(per_case), objects = sum(per_case),
 a CT scan carries in its header, and `vignette("volumes")` ends in millilitres for exactly
 that reason. These are microscopy images with no calibration recorded, so a number in
 micrometres here would be invented. A count is still a count.
+
+### And what shape, which needs no scale at all
+
+A size needs a scale and a **shape does not**, as long as the pixels are square - so on this
+uncalibrated dataset `instance_shapes()` reports something `instance_sizes()` cannot.
+`eccentricity` is `sqrt(1 - (minor/major)^2)`, a ratio of two lengths, so whatever unit they
+are in cancels:
+
+
+``` r
+shapes <- instance_shapes(mine[[worst]])
+head(shapes, 3)
+#>   object major_px minor_px eccentricity
+#> 1      1 6.489396 4.139444    0.7701373
+#> 2      2 5.592754 2.662741    0.8793882
+#> 3      3 5.447144 4.166351    0.6441860
+summary(shapes$eccentricity)
+#>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+#>  0.1547  0.6644  0.7650  0.7383  0.8347  0.9737
+```
+
+
+``` r
+plot(shapes$major_px, shapes$minor_px, pch = 16, col = "#33442b66", asp = 1,
+     xlab = "major semi-axis in pixels", ylab = "minor semi-axis in pixels")
+abline(0, 1, col = "grey60", lty = 2)
+```
+
+![plot of chunk instances-shapes](figures/instances-shapes-1.png)
+
+Every point sits below the dashed line because the major axis is the longer one by
+definition, and how far below is the eccentricity. A nucleus on this image is typically
+0.64 times as wide as
+it is long.
+
+**An object under three pixels has no shape at all**, and that is an answer rather than a
+gap: there is no second moment to take, so the row comes back as zeros instead of as an
+error, and a speck of a prediction does not fail a table. On this image that applies to
+0 of 236 objects - at 256 by 256 a nucleus is
+rarely that small. Over all 134 validation images through the *published* weights it is 125
+of 5,378, which the engine's own article reports, and the difference is the input size
+rather than the model.
+
+**And "needs no scale" is a claim worth measuring rather than repeating.** `eccentricity` is
+unitless and it is *not* spacing-free - it describes whichever space it was computed in - so
+the two agree here only because a pixel is as tall as it is wide. The same objects, three
+ways:
+
+
+``` r
+c(grid       = median(shapes$eccentricity),
+  isotropic  = median(instance_shapes(mine[[worst]], spacing = c(0.5, 0.5))$eccentricity),
+  stretched  = median(instance_shapes(mine[[worst]], spacing = c(1.0, 0.5))$eccentricity))
+#>      grid isotropic stretched 
+#> 0.7649915 0.7649915 0.9195459
+```
+
+The first two are the same number and the third is not. So reading the grid's eccentricity as
+the object's is right on this data and would be wrong on a scan whose voxels are taller than
+they are wide - which is most of them. The column names say which you have: `major_px` and
+`minor_px` without a `spacing`, `major_mm` and `minor_mm` with one, and the suffix on the
+axes is what tells you what the row is about.
+
+A volume gets three axes - `major_mm`, `middle_mm`, `minor_mm` - and no eccentricity, because
+an ellipsoid has no single one.
 
 ## The same thing from a file
 
