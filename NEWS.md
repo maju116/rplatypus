@@ -37,11 +37,12 @@ package declares what it needs through `reticulate` and `uv` provisions the inte
 it simply provisions a newer one.
 
 **The exception is worth knowing before it happens.** If you point `RETICULATE_PYTHON` at an
-interpreter of your own - the route `platypus_engine_report()` warns about when its
-`pyplatypus` is not the pinned one - and that interpreter is 3.10, the engine can no longer
-be installed into it, and what you will see is a resolution failure from `uv` rather than
-anything this package wrote. The fix is a 3.11 interpreter, or letting `py_require()` choose
-one.
+interpreter of your own - the route this package warns about when the `pyplatypus` it finds
+there is not the pinned one, naming both versions - and that interpreter is 3.10, the engine
+can no longer be installed into it, and what you will see is a resolution failure from `uv`
+rather than anything this package wrote. The fix is a 3.11 interpreter, or letting
+`py_require()` choose one. `platypus_device()` is what reports the environment you ended up
+with.
 
 Why the engine moved: its pillow floor was `>= 10.0` while the decoder fixes it needs arrived
 in pillow 13, and pillow 13 requires Python 3.11 - so the floor could not be raised without
