@@ -82,7 +82,8 @@ groups:
       than voxels, and a NIfTI that carries the affine of the scan it was predicted from.
     contents: [colours_to_classes, classes_to_colours, mask_coverage, mask_volume,
                ellipse_measure, unite_masks, colormaps, ct_windows, save_masks,
-               save_class_masks, save_volumes, save_class_volumes, instance_sizes]
+               save_class_masks, save_volumes, save_class_volumes, instance_sizes,
+               instance_shapes]
 
   # Last here and last in the engine's grouping too, because it is the page a reader reaches
   # after something has gone wrong rather than while planning what to do. The group existed

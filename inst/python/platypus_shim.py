@@ -963,6 +963,40 @@ def ellipse_measurement(mask, spacing) -> dict:
     return {"ok": True, "major": float(major), "minor": float(minor), "around": float(around)}
 
 
+def instance_shape_rows(labels, spacing) -> dict:
+    """Per-object shape out of one label map, as columns rather than as rows.
+
+    Columns, because the row set has a varying key set - `middle_mm` only for a volume,
+    `eccentricity` only for an image, `_px` instead of `_mm` without a spacing - and a list
+    of dicts with different keys does not become a data frame on the other side without R
+    guessing. `names` carries the order explicitly rather than relying on a Python dict's
+    insertion order surviving the crossing, which is a property nothing here tests.
+
+    **The label map arrives as the engine numbers one**: 0 for background, an integer per
+    object. That is also how this package's instance predictions are numbered, so unlike
+    `ellipse_measurement` this takes no class argument - there is no asymmetry to correct.
+    """
+    from pyplatypus.measure import MeasureError, instance_shapes
+
+    sides = None if spacing is None else [float(side) for side in spacing]
+    try:
+        rows = instance_shapes(labels, sides)
+    except MeasureError as error:
+        return _failure(error)
+    except Exception as error:  # noqa: BLE001
+        return _engine_failure(error)
+
+    # The key set comes from the first row rather than from the rank and the spacing, so
+    # that R is told what the engine actually answered instead of what this function
+    # predicts it would. An empty map has no first row and no columns to name.
+    names = list(rows[0]) if rows else []
+    columns = {
+        name: [int(row[name]) if name == "object" else float(row[name]) for row in rows]
+        for name in names
+    }
+    return {"ok": True, "names": names, "columns": columns, "objects": len(rows)}
+
+
 def write_volumes(masks, paths: list, reference: list) -> dict:
     """Label-map volumes as NIfTI, through the engine's own writer.
 
