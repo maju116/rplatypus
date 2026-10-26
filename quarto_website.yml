@@ -126,6 +126,7 @@ website:
               - man/save_volumes.qmd
               - man/save_class_volumes.qmd
               - man/instance_sizes.qmd
+              - man/instance_shapes.qmd
           - section: "When something is wrong"
             contents:
               - man/platypus_conditions.qmd

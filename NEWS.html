@@ -728,6 +728,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">How big each object is, in units somebody can use</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./man/instance_shapes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">What shape each object is, not just how big</span></a>
+  </div>
+</li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
@@ -867,8 +873,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="unreleased">[0.3.0] - unreleased</h2>
 <section id="every-objects-shape-not-just-the-whole-masks-engine-0.8.0a46" class="level3">
 <h3 class="anchored" data-anchor-id="every-objects-shape-not-just-the-whole-masks-engine-0.8.0a46">2026-10-26 - every object’s shape, not just the whole mask’s (engine <code>0.8.0a46</code>)</h3>
-<p><strong>The pin moves to <code>0.8.0a46</code>, and what it brings is a measurement the engine could not make per object.</strong> <a href="man/ellipse_measure.html"><code>ellipse_measure()</code></a> fits an ellipse to a <em>whole</em> mask, which is what a fetal head circumference needs and not what a field of nuclei needs. The engine now has <code>instance_shapes()</code>: one row per object out of one label map, beside the rows <a href="man/instance_sizes.html"><code>instance_sizes()</code></a> already gives, with the semi-axes largest first and - for an image - <code>eccentricity</code>, which is the number shape analysis reports.</p>
-<p><strong>No R function wraps it yet, and this entry says so rather than implying one.</strong> The pin is what makes it reachable, through <code>reticulate::import("pyplatypus")</code>, and the R surface for it is the remaining half of the work. An <code>instance_shapes()</code> on this side will <em>forward</em>, the way <code>ellipse_measure()</code> does and unlike <code>instance_sizes()</code>, which stays R’s own arithmetic - a count times a product needs no Python, and a help page whose example needs one cannot run where there is no interpreter.</p>
+<p><strong>The pin moves to <code>0.8.0a46</code>, and what it brings is a measurement the engine could not make per object.</strong> <a href="man/ellipse_measure.html"><code>ellipse_measure()</code></a> fits an ellipse to a <em>whole</em> mask, which is what a fetal head circumference needs and not what a field of nuclei needs. The engine now has <a href="man/instance_shapes.html"><code>instance_shapes()</code></a>: one row per object out of one label map, beside the rows <a href="man/instance_sizes.html"><code>instance_sizes()</code></a> already gives, with the semi-axes largest first and - for an image - <code>eccentricity</code>, which is the number shape analysis reports.</p>
+<p><strong><code>instance_shapes()</code> is on this side too, and it forwards</strong> - the way <code>ellipse_measure()</code> does and unlike <code>instance_sizes()</code>, which stays R’s own arithmetic. That split is not a style choice: a count times a product needs no Python and a reader can verify it by eye, while an eigendecomposition per object cannot be reimplemented here without becoming a second implementation. The visible consequence is that this page’s example is wrapped in <code>\dontrun{}</code> and <code>instance_sizes()</code>’s is not, because <code>R CMD check</code> runs examples and CRAN has no interpreter.</p>
+<p>It is per object <strong>in one pass</strong>, which is the whole reason it exists rather than being a line in the documentation: calling <code>ellipse_measure()</code> on <code>labels == k</code> once per object rescans the whole array every time, and on a 512 by 512 map of 1939 objects that is 1989 ms against 143.</p>
 <p><strong>One thing to know before calling it through the bridge, because it is the trap and not a detail.</strong> <code>eccentricity</code> is unitless and it is <strong>not</strong> spacing-free: it describes whichever space it was computed in, so on anisotropic voxels the grid and the millimetres disagree completely, in both directions.</p>
 <pre><code>a circle of 80 px at spacing (2, 1)       grid 0.0000    mm 0.8660
 an 80 by 40 px ellipse at spacing (1, 2)  grid 0.8667    mm 0.0685</code></pre>
