@@ -13,7 +13,7 @@ Description: Semantic segmentation and object detection for medical images, from
 License: MIT + file LICENSE
 URL: https://github.com/maju116/rplatypus, https://maju116.github.io/rplatypus/
 BugReports: https://github.com/maju116/rplatypus/issues
-SystemRequirements: Python (>= 3.10). Not a prerequisite the user installs:
+SystemRequirements: Python (>= 3.11). Not a prerequisite the user installs:
     the package declares what it needs through 'reticulate' and 'uv' provisions an
     isolated environment on first use, leaving any system Python untouched.
 Encoding: UTF-8
