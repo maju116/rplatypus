@@ -17,6 +17,38 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-26 - every object's shape, not just the whole mask's (engine `0.8.0a46`)
+
+**The pin moves to `0.8.0a46`, and what it brings is a measurement the engine could not make
+per object.** `ellipse_measure()` fits an ellipse to a *whole* mask, which is what a fetal
+head circumference needs and not what a field of nuclei needs. The engine now has
+`instance_shapes()`: one row per object out of one label map, beside the rows
+`instance_sizes()` already gives, with the semi-axes largest first and - for an image -
+`eccentricity`, which is the number shape analysis reports.
+
+**No R function wraps it yet, and this entry says so rather than implying one.** The pin is
+what makes it reachable, through `reticulate::import("pyplatypus")`, and the R surface for it
+is the remaining half of the work. An `instance_shapes()` on this side will *forward*, the way
+`ellipse_measure()` does and unlike `instance_sizes()`, which stays R's own arithmetic -
+a count times a product needs no Python, and a help page whose example needs one cannot run
+where there is no interpreter.
+
+**One thing to know before calling it through the bridge, because it is the trap and not a
+detail.** `eccentricity` is unitless and it is **not** spacing-free: it describes whichever
+space it was computed in, so on anisotropic voxels the grid and the millimetres disagree
+completely, in both directions.
+
+    a circle of 80 px at spacing (2, 1)       grid 0.0000    mm 0.8660
+    an 80 by 40 px ellipse at spacing (1, 2)  grid 0.8667    mm 0.0685
+
+The second row is physically almost a circle and the grid calls it strongly elongated. The
+engine says which space a row is in through the key names - `major_px` and `minor_px` without
+a spacing, `major_mm` and `minor_mm` with one - so pass your voxel size and read the `_mm`
+keys unless you mean the grid. `platypus_device()` is unaffected and so is everything else:
+this release adds a function and changes none.
+
+A volume gets three axes and no eccentricity, because an ellipsoid has no single one.
+
 ### 2026-10-26 - what an image reader is allowed to decode, and Python 3.11 (engine `0.8.0a44`)
 
 **A file is now read as a picture only if its contents are PNG, JPEG, TIFF, BMP or GIF.**
