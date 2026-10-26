@@ -107,8 +107,14 @@ jobs:
         with:
           enable-cache: true
 
-      - run: uvx ruff@0.16.10 check inst/python
-      - run: uvx ruff@0.16.10 format --check --diff inst/python
+      # The version is the one `pyproject.toml` pins in the engine, and it is written here
+      # because this repository has no pyproject of its own to read it from. That makes it a
+      # second copy of one fact with nothing holding the two together: a ruff bump over there
+      # desynchronises the rules over here, silently, until the first new rule fires. The
+      # engine's bump to 0.17.2 is `maju116/pyplatypus#283` and this travels with it in the
+      # same sitting rather than afterwards.
+      - run: uvx ruff@0.17.2 check inst/python
+      - run: uvx ruff@0.17.2 format --check --diff inst/python
 
       # The issue forms and the pull-request template, held to the shape pyplatypus shares.
       # Here rather than in `tests/testthat/` because `.github` is in `.Rbuildignore`: a test
