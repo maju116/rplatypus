@@ -210,7 +210,55 @@ test_that("the measurements that stay in R do not reach the engine", {
                                                     "to go into \\dontrun{}"))
   }
 
-  # The control, without which the predicate above could be broken and silent: the one
-  # measurement that does cross says so, and its page is guarded for that reason.
-  expect_true(reaches_engine("ellipse_measure"))
+  # The control, without which the predicate above could be broken and silent: the
+  # measurements that DO cross say so, and their pages are guarded for that reason.
+  for (name in c("ellipse_measure", "instance_shapes")) {
+    expect_true(reaches_engine(name), info = paste(name, "no longer reaches the engine"))
+  }
+})
+
+
+test_that("instance_shapes forwards, and eccentricity is not spacing-free", {
+  skip_if_no_engine()
+
+  # A receipt rather than a pair: there is one implementation and what can go wrong is the
+  # forward. But the forward has a shape worth asserting - the key set changes with the rank
+  # and with whether a spacing was given, and R builds its columns from the names the engine
+  # sent rather than from its own guess about them.
+  size <- 201
+  centre <- (size + 1) / 2
+  rows <- matrix(rep(seq_len(size), size), nrow = size)
+  columns <- matrix(rep(seq_len(size), each = size), nrow = size)
+  circle <- ifelse((rows - centre)^2 + (columns - centre)^2 <= 80^2, 1L, 0L)
+
+  grid <- instance_shapes(circle)
+  expect_identical(names(grid), c("object", "major_px", "minor_px", "eccentricity"))
+  expect_identical(nrow(grid), 1L)
+  expect_identical(grid$object, 1L)
+  expect_equal(grid$eccentricity, 0, tolerance = 1e-9)
+
+  # The trap the help page is written around, and the reason it is a test rather than a
+  # sentence: a circle on anisotropic pixels IS an ellipse, and the grid cannot say so.
+  stretched <- instance_shapes(circle, spacing = c(2, 1))
+  expect_identical(names(stretched), c("object", "major_mm", "minor_mm", "eccentricity"))
+  expect_equal(stretched$eccentricity, sqrt(1 - 0.25), tolerance = 5e-4)
+  expect_equal(stretched$major_mm, 2 * grid$major_px, tolerance = 1e-9)
+
+  # The other direction, without which the assertion above is satisfied by anything that
+  # merely scales with `spacing`: a grid ellipse the spacing turns back into a circle.
+  ellipse <- ifelse(((rows - centre) / 80)^2 + ((columns - centre) / 40)^2 <= 1, 1L, 0L)
+  expect_equal(instance_shapes(ellipse)$eccentricity, 0.8667, tolerance = 5e-4)
+  expect_equal(instance_shapes(ellipse, spacing = c(1, 2))$eccentricity, 0.0685,
+               tolerance = 5e-3)
+
+  # A volume: three axes, no eccentricity, because an ellipsoid has no single one.
+  volume <- array(0L, dim = c(40, 40, 40))
+  volume[11:30, 14:27, 16:25] <- 1L
+  solid <- instance_shapes(volume, spacing = c(1, 1, 1))
+  expect_identical(names(solid), c("object", "major_mm", "middle_mm", "minor_mm"))
+  expect_true(solid$major_mm > solid$middle_mm && solid$middle_mm > solid$minor_mm)
+
+  # And the refusals are R's own, named for R's argument rather than arriving from Python.
+  expect_error(instance_shapes(array(0L, dim = c(2, 2, 2, 2))), "two dimensions")
+  expect_error(instance_shapes(matrix(0L, 4, 4), spacing = c(1, 1, 1)), "2 positive numbers")
 })

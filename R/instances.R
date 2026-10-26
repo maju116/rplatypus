@@ -659,6 +659,104 @@ instance_sizes <- function(labels, spacing = NULL) {
   out
 }
 
+#' What shape each object is, not just how big
+#'
+#' One row per object, beside the rows [instance_sizes()] gives. `voxels` and `area_mm2`
+#' answer *how big*; these answer *how stretched* - the semi-axes of the ellipse an object's
+#' second moments imply, largest first, and for an image the `eccentricity` that shape
+#' analysis actually reports.
+#'
+#' The fit is not iterative, and it is the same arithmetic [ellipse_measure()] applies to a
+#' whole mask: for a uniform solid the variance along an axis is `semi_axis^2 / (rank + 2)`,
+#' so the axes come out of one eigendecomposition per object. What this adds is that it is
+#' per object **in one pass**: the alternative a caller writes - `ellipse_measure()` on
+#' `labels == k`, once per object - rescans the whole array every time, and on a 512 x 512
+#' map of 1939 objects that is 1989 ms against 143.
+#'
+#' A volume gets three axes and no eccentricity, because an ellipsoid has no single one; the
+#' ratio of two columns is your division rather than a name this package invents.
+#'
+#' @param labels An instance label map from `predict()` - one integer per object, 0 for
+#'   background, the same numbering [instance_sizes()] reads. Two dimensions for an image,
+#'   three for a volume.
+#' @param spacing The size of one voxel in millimetres: two numbers for an image, three for a
+#'   volume, in the array's own order. Unset measures the sampling grid, and the column names
+#'   say so.
+#' @return A data frame with `object` and the semi-axes largest first - `major_mm` and
+#'   `minor_mm` for an image, with `middle_mm` between them for a volume, named `_px` instead
+#'   when `spacing` was not given. An image also gets `eccentricity`. One row per object
+#'   present, in increasing object number; an object with fewer than `rank + 1` voxels has no
+#'   second moment and gets zeros, which is an ordinary outcome rather than an error.
+#'
+#'   **`eccentricity` is unitless and it is not spacing-free.** It describes whichever space
+#'   it was computed in, so on anisotropic voxels the two disagree completely and in both
+#'   directions: a circle of 80 pixels at `spacing = c(2, 1)` reads 0.0000 on the grid and
+#'   0.8660 in millimetres, while an 80 by 40 pixel ellipse at `spacing = c(1, 2)` reads
+#'   0.8667 on the grid and 0.0685 physically - physically almost a circle, which the grid
+#'   calls strongly elongated. Pass your voxel size and read the `_mm` columns unless you
+#'   mean the grid; the suffix on the axes is what says which of the two a row is.
+#' @seealso [instance_sizes()] for how big each object is, [ellipse_measure()] for the same
+#'   fit over a whole mask, and [overlay_instances()] to look at them.
+#' @export
+#' @examples
+#' labels <- matrix(0L, nrow = 41, ncol = 81)
+#' rows <- matrix(rep(seq_len(41), 81), nrow = 41)
+#' columns <- matrix(rep(seq_len(81), each = 41), nrow = 41)
+#' labels[((rows - 21) / 10)^2 + ((columns - 21) / 18)^2 <= 1] <- 1L
+#' labels[(rows - 21)^2 + (columns - 61)^2 <= 81] <- 2L
+#' \dontrun{
+#' # Wrapped because this one crosses to the engine - unlike `instance_sizes()`, which is a
+#' # count times a product and stays in R so that a reader needs no Python to run its page.
+#' # An eigendecomposition per object is not arithmetic a reader verifies by eye, which is
+#' # the line `maju116/pyplatypus#270` drew between the two.
+#' instance_shapes(labels, spacing = c(0.5, 0.5))
+#' }
+instance_shapes <- function(labels, spacing = NULL) {
+  labels <- as.array(labels)
+  rank <- length(dim(labels))
+  if (!rank %in% c(2L, 3L)) {
+    stop("`labels` must be one instance map: two dimensions for an image or three for a ",
+         "volume; got ",
+         if (is.null(dim(labels))) "a vector" else paste(dim(labels), collapse = " x "),
+         ". For a stack, apply this to one map at a time - which is also how `predict()` ",
+         "returns them.", call. = FALSE)
+  }
+  bad_spacing <- !is.null(spacing) &&
+    (length(spacing) != rank || anyNA(spacing) || any(spacing <= 0))
+  if (bad_spacing) {
+    stop("`spacing` must be ", rank, " positive numbers, in millimetres, because `labels` ",
+         "has ", rank, " dimensions. Giving ", length(spacing), " would measure a different ",
+         "shape of thing than the one passed.", call. = FALSE)
+  }
+  # Refused here as well as in the engine, for the reason `instance_sizes()` gives its own
+  # refusals: a crossing costs the engine's first call, and a message about R's argument
+  # should name R's argument. The engine refuses the same two things, which is the pair
+  # `test-measure-pair.R` holds.
+
+  result <- shim()$instance_shape_rows(
+    array(as.integer(labels), dim = dim(labels)),
+    if (is.null(spacing)) NULL else as.numeric(spacing)
+  )
+  if (!isTRUE(result$ok)) abort_engine(result)
+
+  # Built in the order the engine named rather than from the list's own, because a Python
+  # dict's insertion order surviving reticulate is a property nothing here tests. An empty
+  # map has no columns, and a zero-row frame with the right shape is the honest answer.
+  column_names <- as.character(result$names)
+  if (!length(column_names)) {
+    return(data.frame(object = integer(0), stringsAsFactors = FALSE))
+  }
+  columns <- lapply(column_names, function(name) {
+    unlist(result$columns[[name]], use.names = FALSE)
+  })
+  names(columns) <- column_names
+  # No cast on `object`: the shim sends it as a Python `int` and reticulate lands it as an R
+  # integer, measured rather than assumed. A cast here would be a second guarantee of one
+  # fact, which is the shape §3F of the workbench's notes is a list of - and the test asserts
+  # `1L` rather than `1`, so the one guarantee is held where it lives.
+  as.data.frame(columns, stringsAsFactors = FALSE)
+}
+
 #' A vector field as a picture: hue is the direction, value is the length
 #'
 #' The convention optical flow has used for twenty years, and a convention rather than a

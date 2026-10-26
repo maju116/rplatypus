@@ -26,12 +26,18 @@ head circumference needs and not what a field of nuclei needs. The engine now ha
 `instance_sizes()` already gives, with the semi-axes largest first and - for an image -
 `eccentricity`, which is the number shape analysis reports.
 
-**No R function wraps it yet, and this entry says so rather than implying one.** The pin is
-what makes it reachable, through `reticulate::import("pyplatypus")`, and the R surface for it
-is the remaining half of the work. An `instance_shapes()` on this side will *forward*, the way
-`ellipse_measure()` does and unlike `instance_sizes()`, which stays R's own arithmetic -
-a count times a product needs no Python, and a help page whose example needs one cannot run
-where there is no interpreter.
+**`instance_shapes()` is on this side too, and it forwards** - the way `ellipse_measure()`
+does and unlike `instance_sizes()`, which stays R's own arithmetic. That split is not a style
+choice: a count times a product needs no Python and a reader can verify it by eye, while an
+eigendecomposition per object cannot be reimplemented here without becoming a second
+implementation. The visible consequence is that this page's example is wrapped in
+`\dontrun{}` and `instance_sizes()`'s is not, because `R CMD check` runs examples and CRAN
+has no interpreter.
+
+It is per object **in one pass**, which is the whole reason it exists rather than being a
+line in the documentation: calling `ellipse_measure()` on `labels == k` once per object
+rescans the whole array every time, and on a 512 by 512 map of 1939 objects that is 1989 ms
+against 143.
 
 **One thing to know before calling it through the bridge, because it is the trap and not a
 detail.** `eccentricity` is unitless and it is **not** spacing-free: it describes whichever
