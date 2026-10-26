@@ -17,6 +17,40 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-26 - what an image reader is allowed to decode, and Python 3.11 (engine `0.8.0a44`)
+
+**A file is now read as a picture only if its contents are PNG, JPEG, TIFF, BMP or GIF.**
+Nothing about how you name your files changes, and that is the point: the engine's reader
+identified a file by its *contents* and was handed nothing but a path, so a file carrying any
+other format - under any extension - went to whichever decoder its bytes asked for. One of
+those decoders hands the file to Ghostscript. A dataset of ordinary medical images is
+unaffected; a path holding something else is refused by name now, with a message saying that
+the extension was not what decided.
+
+`segmentation_data()`, `instance_data()` and `detection_data()` all reach that reader, and so
+does anything that asks for a shape without reading pixels. Volumes, DICOM and DICOM series
+never went through it and are untouched.
+
+**This package now needs Python 3.11 or newer**, and `SystemRequirements` says so. Python
+3.10 reached end of life on 2026-10-01. For almost everybody this changes nothing: the
+package declares what it needs through `reticulate` and `uv` provisions the interpreter, so
+it simply provisions a newer one.
+
+**The exception is worth knowing before it happens.** If you point `RETICULATE_PYTHON` at an
+interpreter of your own - the route `platypus_engine_report()` warns about when its
+`pyplatypus` is not the pinned one - and that interpreter is 3.10, the engine can no longer
+be installed into it, and what you will see is a resolution failure from `uv` rather than
+anything this package wrote. The fix is a 3.11 interpreter, or letting `py_require()` choose
+one.
+
+Why the engine moved: its pillow floor was `>= 10.0` while the decoder fixes it needs arrived
+in pillow 13, and pillow 13 requires Python 3.11 - so the floor could not be raised without
+dropping 3.10. Measured rather than assumed, nothing in the dependency tree moves forward
+with it: thirteen locked entries differ and every one is the removal of an old-Python branch.
+
+A Python 3.10 user of the engine directly is served `0.8.0a43` by any installer rather than
+an error, which is the migration path and asks nothing of them. This package pins `0.8.0a44`.
+
 ### 2026-10-26 - a detection epoch stops weighting batches alike (engine `0.8.0a42`)
 
 **The numbers `plot(fit)` draws for a detection run change, and nothing you wrote changes
