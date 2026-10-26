@@ -78,16 +78,6 @@ test_that("the sections that must be here are", {
   )
 })
 
-vignettes_dir <- function() {
-  for (candidate in c("vignettes", file.path("..", "..", "vignettes"),
-                      file.path("..", "..", "..", "vignettes"))) {
-    if (dir.exists(candidate)) {
-      return(candidate)
-    }
-  }
-  NULL
-}
-
 test_that("no two vignettes draw into the same figure file", {
   # knitr names a figure after its chunk, and all the vignettes share one `fig.path`. So two
   # documents with a chunk called `history` write the same PNG, the second knit silently

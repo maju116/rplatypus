@@ -7,6 +7,25 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+<!--
+THIS PROSE HAS A COUNTERPART, AND THIS FILE IS THE SOURCE.
+
+The engine mirrors it as pyplatypus's `data-science-bowl.qmd`. It exists as `data-science-bowl.qmd`,
+merged as maju116/pyplatypus#246, so this pair is compared on both sides and this vignette
+is no longer listed in `awaiting` in tests/testthat/test-article-pairs.R.
+
+By maju116/rplatypus#117 the vignette is the source and the article is the copy, so an edit
+here is an edit there, and an edit there alone is a mistake nothing will catch. What is held
+by a test is the walk: the `##` headings and their order, asserted from both sides -
+`tests/testthat/test-article-pairs.R` here and `tests/test_articles.py` in the engine. The
+route is deliberately not held, because the engine reaches each destination through a
+configuration file where this package reaches it through constructors.
+
+So: renaming or reordering a `##` heading in this file breaks both suites until the article
+follows. Changing the body of a section breaks neither, and that is the part no test can
+check - a heading test does not stop prose drifting.
+-->
+
 
 
 
@@ -59,8 +78,12 @@ measured on a held-out split when the weights were published, and travel with th
 
 ``` r
 available_weights()[, c("name", "revision")]
-#>          name                                 revision
-#> 1 dsbowl-unet 5e035c6a39827c33e19507affb9415c3908ae383
+#>               name                                 revision
+#> 1       bccd-yolo3 24fbff0833455a747c7bac9c2b8dc43073ce4e82
+#> 2 dsbowl-instances fd7bdc8686ef7fcaac0f21dd6d326c23b7c87471
+#> 3      dsbowl-unet 5e035c6a39827c33e19507affb9415c3908ae383
+#> 4       fives-unet c4492f7a23b99202d6bd55a04b2cf1248fb14fe4
+#> 5        hc18-unet 9c6d859900b262cfb073b9af371ec0b29bcfe8ea
 ```
 
 The description in that table is the part to read before trusting them - these are *semantic*, so
@@ -233,12 +256,12 @@ plot(fit)
 
 ``` r
 evaluate(fit)
-#>     model architecture loss_function parameters epochs_run best_epoch
-#> 1    unet        u_net      cce_dice    1942594         12         12
-#> 2 linknet      linknet focal_tversky    1746754         12         11
-#>         loss      dice       iou
-#> 1 0.08948598 0.8726893 0.7932749
-#> 2 0.07810771 0.8796270 0.7943703
+#>     model architecture loss_function parameters load_shape epochs_run
+#> 1    unet        u_net      cce_dice    1942594  160 x 160         12
+#> 2 linknet      linknet focal_tversky    1746754  160 x 160         12
+#>   best_epoch       loss foreground      dice       iou dice_worst iou_worst
+#> 1         11 0.10492591  0.1457751 0.8679105 0.7788040  0.3107798 0.1845319
+#> 2         11 0.08024277  0.1343505 0.8769452 0.7917425  0.3913118 0.2433291
 ```
 
 Read the `loss` column with care, and note that `loss_function` sits beside it. These two

@@ -226,7 +226,8 @@ fit
 #> platypus fit
 #>   models   : skull 
 #>   device   : NVIDIA GeForce GTX 1070 (torch 2.7.1+cu126) 
-#>   epochs   : skull=40 
+#>   epochs   : skull=31 
+#>   stopped  : skull - early stopping: val_dice has not improved on 0.93503 for 8 epochs 
 #>   next     : evaluate(fit), predict(fit, "skull")
 ```
 
@@ -269,9 +270,9 @@ measured <- do.call(rbind, lapply(names(predicted), function(key) {
 }))
 head(measured, 3)
 #>      key    major    minor circumference
-#> 1 080_HC 14.17525 10.30865      77.09630
-#> 2 153_HC 17.11731 14.28321      98.84788
-#> 3 284_HC 29.57557 23.56336     167.15846
+#> 1 080_HC 13.61917 11.01925      77.24687
+#> 2 153_HC 16.80449 14.34755      97.92852
+#> 3 284_HC 31.03666 24.53383     167.86182
 ```
 
 
@@ -288,7 +289,7 @@ against <- data.frame(
 against$error_mm <- against$mm - against$recorded
 summary(abs(against$error_mm))
 #>     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-#>  0.03321  1.06664  2.04952  4.97131  4.54742 94.67407
+#>  0.01329  0.67454  1.96079  3.50467  3.61206 53.88898
 ```
 
 ## What the annotation costs before the model does
@@ -344,7 +345,10 @@ That is the difference between an explanation and a guess, and it is why the pre
 reported **beside** the bias rather than subtracted from it: a correction folded into the
 measurement would hide the one number on this page that is about the dataset rather than
 about us. A model reproducing the truth masks perfectly would still read
-+1.12 mm high.
++1.12 mm high **on this split**, and that figure is not a constant
+of the dataset: it is `pi * w` converted to millimetres, so it scales with the pixel size,
+which HC18 records per image. The engine's article measures the same thing on its own split
+and gets a smaller number for that reason, not a different answer.
 
 So the model's own contribution is the comparison against the truth masks rather than against
 the chart, and both belong on a page that reports millimetres. Reporting only the first blames
@@ -371,13 +375,13 @@ c(
   spearman = spearman
 )
 #>       dice_mean median_error_mm   mean_error_mm        spearman 
-#>       0.9439633       2.0495229       4.9713050       0.4524714
+#>       0.9424884       1.9607895       3.5046740       0.3454987
 ```
 
-Of the 141 test images scoring 0.95 or better - a figure anybody would
-publish - **59 are still wrong by more than 2 mm**
-(42%). The Spearman correlation between the
-two orderings is 0.45, where a shared ordering would be 1 and no
+Of the 133 test images scoring 0.95 or better - a figure anybody would
+publish - **55 are still wrong by more than 2 mm**
+(41%). The Spearman correlation between the
+two orderings is 0.35, where a shared ordering would be 1 and no
 relationship at all would be 0.
 
 
@@ -399,16 +403,16 @@ is the finding: the score does not tell you what the measurement will be.
 ``` r
 worst <- against[order(-abs(against$error_mm)), ][1:5, ]
 worst[, c("key", "dice", "mm", "recorded", "error_mm")]
-#>         key      dice       mm recorded  error_mm
-#> 64  023_2HC 0.4023361 162.5741    67.90  94.67407
-#> 185  009_HC 0.4771487 127.2060    62.31  64.89595
-#> 148  753_HC 0.7053301 235.8087   293.20 -57.39132
-#> 188  026_HC 0.7362222 122.6933    75.20  47.49326
-#> 187 026_2HC 0.6738917 112.8311    67.30  45.53113
+#>         key      dice        mm recorded  error_mm
+#> 185  009_HC 0.5361094 116.19898    62.31  53.88898
+#> 64  023_2HC 0.5310252 114.16147    67.90  46.26147
+#> 148  753_HC 0.7192976 262.64523   293.20 -30.55477
+#> 105 133_4HC 0.7075314  72.45699    97.00 -24.54301
+#> 76   802_HC 0.9117828 308.75427   330.90 -22.14573
 ```
 
-The median absolute error is 2.05 mm and the
-mean is 4.97 mm. **Both belong here because they
+The median absolute error is 1.96 mm and the
+mean is 3.50 mm. **Both belong here because they
 disagree**: the distribution has a long tail, so the mean describes the tail rather than a
 typical case, and the median alone would hide that some images are out by the width of a
 head.
@@ -417,7 +421,7 @@ head.
 
 **One run.** The same recipe, trained again, gives a different correlation. Three runs of it
 on the engine's side measured 0.62, 0.44 and 0.15, and this page is a fourth at
-0.45:
+0.35:
 
 
 ```
@@ -425,7 +429,7 @@ on the engine's side measured 0.62, 0.44 and 0.15, and this page is a fourth at
 #> 1    the engine example    0.620
 #> 2              a second    0.435
 #> 3 the published weights    0.153
-#> 4         this vignette    0.452
+#> 4         this vignette    0.345
 ```
 
 All four are far from a shared ordering and they span a factor of four. The *direction* is
@@ -442,7 +446,7 @@ listing$description[listing$name == "hc18-unet"]
 ```
 
 **A measurement is not a measuring instrument.** The worst case on this page is out by
-95 mm, which is not a biometric tool with a
+54 mm, which is not a biometric tool with a
 person looking at it, let alone without.
 
 **The ellipse is the shape assumed.** `ellipse_measure()` fits one, which is right for a
@@ -453,5 +457,5 @@ an image, measured separately - is `maju116/pyplatypus#272` and is not built.
 
 Precomputed on a GTX 1070, which needs the CUDA 12 line of PyTorch; `platypus_use_torch("pascal")`
 at the top of this document is what selects it. Training is
-29 minutes at these settings, over
-40 epochs. Nothing on this page depends on which card it was, except how long it took.
+22 minutes at these settings, over
+31 epochs. Nothing on this page depends on which card it was, except how long it took.

@@ -323,7 +323,10 @@ That is the difference between an explanation and a guess, and it is why the pre
 reported **beside** the bias rather than subtracted from it: a correction folded into the
 measurement would hide the one number on this page that is about the dataset rather than
 about us. A model reproducing the truth masks perfectly would still read
-`r sprintf("%+.2f", floor_bias)` mm high.
+`r sprintf("%+.2f", floor_bias)` mm high **on this split**, and that figure is not a constant
+of the dataset: it is `pi * w` converted to millimetres, so it scales with the pixel size,
+which HC18 records per image. The engine's article measures the same thing on its own split
+and gets a smaller number for that reason, not a different answer.
 
 So the model's own contribution is the comparison against the truth masks rather than against
 the chart, and both belong on a page that reports millimetres. Reporting only the first blames

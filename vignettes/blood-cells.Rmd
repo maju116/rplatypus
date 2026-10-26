@@ -7,6 +7,25 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+<!--
+THIS PROSE HAS A COUNTERPART, AND THIS FILE IS THE SOURCE.
+
+The engine mirrors it as pyplatypus's `blood-cells.qmd`. It exists, merged as
+maju116/pyplatypus#247, so this pair is compared on both sides and this vignette is no
+longer listed in `awaiting` in tests/testthat/test-article-pairs.R.
+
+By maju116/rplatypus#117 the vignette is the source and the article is the copy, so an edit
+here is an edit there, and an edit there alone is a mistake nothing will catch. What is held
+by a test is the walk: the `##` headings and their order, asserted from both sides -
+`tests/testthat/test-article-pairs.R` here and `tests/test_articles.py` in the engine. The
+route is deliberately not held, because the engine reaches each destination through a
+configuration file where this package reaches it through constructors.
+
+So: renaming or reordering a `##` heading in this file breaks both suites until the article
+follows. Changing the body of a section breaks neither, and that is the part no test can
+check - a heading test does not stop prose drifting.
+-->
+
 
 
 
@@ -246,10 +265,10 @@ plot_anchors(fit, split = "validation", log = TRUE)
 ``` r
 tail(fit$history[, c("epoch", "train_loss", "train_coordinates", "train_objectness",
                      "val_loss")], 3)
-#>     epoch train_loss train_coordinates train_objectness val_loss
-#> 148   148   5.922336          5.917977     0.0006621822 9.890312
-#> 149   149   5.926137          5.921691     0.0006329013 9.905824
-#> 150   150   5.946839          5.942373     0.0006673209 9.966823
+#>     epoch train_loss train_coordinates train_objectness  val_loss
+#> 148   148   5.926291          5.921908     0.0006802287  9.950191
+#> 149   149   5.926131          5.921756     0.0006467079  9.976097
+#> 150   150   5.926317          5.921920     0.0007015823 10.066363
 ```
 
 
@@ -257,9 +276,9 @@ tail(fit$history[, c("epoch", "train_loss", "train_coordinates", "train_objectne
 **The total does not reach zero and that is not a stall.** Cross-entropy against a soft
 target bottoms out at the target's own entropy, so the coordinate term has a floor above zero
 that depends on the data. Which is exactly why the four parts are reported separately: a
-total of 5.95 means nothing alone, while
-`coordinates 5.94` beside
-`objectness 6.7 &times; 10<sup>-4</sup>` says the model has learned what is where
+total of 5.93 means nothing alone, while
+`coordinates 5.92` beside
+`objectness 7 &times; 10<sup>-4</sup>` says the model has learned what is where
 and is still refining the boxes.
 
 ## Scoring, and the number that is missing on purpose
@@ -268,15 +287,15 @@ and is still refining the boxes.
 ``` r
 evaluate(fit, split = "test")
 #>   model architecture parameters epochs_run    map_50 map_50_95 mean_matched_iou
-#> 1 cells        yolo3   61534504        150 0.8517078 0.5052384        0.8046374
+#> 1 cells        yolo3   61534504        150 0.8638967 0.5083634        0.8041728
 #>   n_truth n_predicted classes_without_truth
-#> 1     945        2740                     0
+#> 1     945        2535                     0
 ```
 
 
 
-**This run's `map_50` of 0.8517 sits
-below the range of the five in the
+**This run's `map_50` of 0.8639 sits
+inside the range of the five in the
 table further down (0.853 to 0.887), and that
 is the point of the table rather than a problem with it.** A seed pins which random numbers
 are drawn; it does not pin the order they are consumed in, and the number of loader workers
@@ -288,9 +307,9 @@ came to be written: the first version of it quoted a number, and the next knit d
 it.
 
 Which is the argument for reading `mean_matched_iou` first, and it holds here: the overlap
-came out at 0.8046 against the five-run mean of
+came out at 0.8042 against the five-run mean of
 0.8040, a difference of
-0.0006.
+0.0001.
 
 There is no overall precision and no overall recall in that table, and the absence is
 deliberate. Averaging them over classes needs a weighting, and every choice of weighting is a
@@ -303,23 +322,23 @@ Per class is the form in which they mean something:
 ``` r
 evaluate_classes(fit, split = "test")
 #>       class average_precision mean_matched_iou n_truth n_predicted precision
-#> 1       RBC         0.8061110        0.8075923     805         906 0.7152318
-#> 2       WBC         0.9585804        0.8469938      71          77 0.9220779
-#> 3 Platelets         0.7904320        0.7264113      69         111 0.5585586
-#>      recall
-#> 1 0.8049689
-#> 2 1.0000000
-#> 3 0.8985507
+#> 1       RBC         0.7977684        0.8074916     805         900 0.7155556
+#> 2       WBC         0.9620625        0.8503462      71          77 0.9220779
+#> 3 Platelets         0.8318592        0.7196516      69         110 0.5909091
+#>     recall
+#> 1 0.800000
+#> 2 1.000000
+#> 3 0.942029
 ```
 
 
 
 Read that table rather than the mean. White cells are nearly perfect - there is one per image
 and it is large. Platelets come back at a precision of
-0.56 at this confidence, meaning
-44% of the platelets reported are not
+0.59 at this confidence, meaning
+41% of the platelets reported are not
 there, and their boxes fit worst of the three at an overlap of
-0.73.
+0.72.
 
 ### mAP@0.5, mAP@[.50:.95], and which to believe
 
@@ -380,9 +399,9 @@ picture is worth more than either average.
 
 ## What this does not do
 
-**It is not a cell count.** A precision of 0.56 on platelets
+**It is not a cell count.** A precision of 0.59 on platelets
 means a count taken from these boxes is too high by about
-79%. Counting needs either a better
+69%. Counting needs either a better
 model for the small class or a threshold chosen for counting rather than for a figure, and
 either way it needs measuring against truth on your own data.
 
