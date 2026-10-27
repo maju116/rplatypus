@@ -300,7 +300,7 @@ masks of the same structure, were drawn independently, and no single integer can
 Those arrive as **one binary file per class**, and `classes_from` names them - one pattern
 per class, in class order, matched against a sample's mask files.
 
-```{r eval = FALSE}
+```{r}
 spec <- platypus_spec(
   data = segmentation_data(
     "data/train", "data/validation",
@@ -440,6 +440,98 @@ models:
 nine on blood cells - measured, 0.65 against 0.88 - so the default is the useful one and
 naming anchors by hand is for reproducing a published model. `detection_anchors()` reports
 them and `plot_anchors()` draws them against the boxes they were fitted to.
+
+## One label instead of a mask
+
+`task: classification` answers with one label for a whole image rather than one per voxel.
+The data block loses everything that describes a mask and gains the one thing a label
+needs - `classes`, in class order:
+
+```yaml
+task: classification
+data:
+  train_path: data/train
+  validation_path: data/validation
+  mode: nested_dirs
+  classes: [benign, malignant]
+models:
+  - name: ours
+    input_shape: [128, 128]
+    blocks: 4
+    filters: 16
+    loss: {name: cce}
+    metrics: [{name: auc}, {name: balanced_accuracy}]
+  - name: resnet
+    input_shape: [224, 224]
+    encoder: resnet34
+    pretrained: true
+    freeze_encoder: 2
+    pooling: max
+    head_dropout: 0.2
+    loss: {name: focal, gamma: 2}
+```
+
+The same thing from code is `classification_data()` and `classifier()`:
+
+```{r}
+spec <- platypus_spec(
+  data = classification_data("data/train", "data/validation",
+                             classes = c("benign", "malignant")),
+  models = list(
+    classifier("ours", input_shape = c(128, 128), blocks = 4, filters = 16,
+               loss = loss_cce(),
+               metrics = list(metric_auc(), metric_balanced_accuracy())),
+    classifier("resnet", input_shape = c(224, 224), encoder = "resnet34",
+               pretrained = TRUE, freeze_encoder = 2, pooling = "max",
+               head_dropout = 0.2, loss = loss_focal(gamma = 2))
+  )
+)
+```
+
+**Where the labelling is written follows from `mode` rather than being said twice.** In
+`nested_dirs` the directories under `train_path` are the classes, with the images inside
+them - the layout nearly every image dataset ships in - and in `config_file` the CSV's
+`label` column holds the name. `subdirs` is refused here, which is what keeps the two
+readings of `nested_dirs` apart: a sample is one image rather than a directory with the
+image in one subdirectory and what labels it in the other.
+
+**`classifier()` is the one model constructor in this package not named after an
+architecture**, and the missing field is the point rather than an omission. The network is a
+contracting path, pooled, with one dense layer on top, so `encoder` is the whole answer:
+unset it is ours, sized by `blocks` and `filters`, and named it is any of
+`available_encoders()`. The two models above are the comparison this task makes easiest -
+ours against a pretrained backbone on the same split. `blocks`, `filters` and `block_width`
+are **refused** beside `encoder` rather than ignored, because a backbone's own depth is then
+the only one there is, and `available_models("classification")` says all of this instead of
+returning rows.
+
+**`metric_auc()` is the default and that is a measurement rather than a preference.** On
+40000 images at a prevalence of 3%, with the model's own probabilities as the truth so that
+only its discrimination varies, accuracy spans 0.0100 where the AUC spans 0.4631 - and
+accuracy is not monotone in quality: the model with no signal at all scores above two that
+have one. `metric_balanced_accuracy()` and `metric_f1()` do not rescue it, moving 0.0000 and
+-0.0005 between a real signal and a collapse, because a calibrated model at that prevalence
+never crosses the threshold and everything read off the hard prediction sees the same
+all-negative answer. `class_balance()` is what makes that prevalence visible before a run
+rather than after it.
+
+**A split cut out of the training folder is stratified**, which is the one part of the walk
+this task overrides. Measured over 400 seeds, a random 70/15/15 of 100 images at a 3%
+prevalence leaves some part with none of the rare class 91% of the time, 64% at 200 images
+and 20% at 500 - and a per-class metric cannot average over a class its pass never held, so
+the run dies at the end of the first epoch with the epoch already paid for. `group_by`
+beside it is refused when a group's images do not share a label, because keeping a patient
+on one side and keeping a class on both are then two instructions that cannot both be
+followed.
+
+**What `predict()` gives back is a table rather than an array**, which is the shape the rest
+of R wants. `type = "class"` is one row per image with `key`, `label`, `predicted` and
+`probability`, and `type = "probability"` is a matrix of images by classes with the keys as
+row names - so either one joins to whatever else you hold per image. `space` and the
+`cases`/`each` pair are refused by name: they describe a grid, and a split of masks too
+large to hold at once, and neither is a thing one label per image has.
+`evaluate_cases()` is refused for a different reason - a case here is one image whose score
+is 0 or 1, so a split's worst case is 0 for any model that gets a single image wrong.
 
 ## Not training at all
 
