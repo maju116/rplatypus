@@ -2,7 +2,7 @@
 % Please edit documentation in R/fit.R
 \name{predict.platypus_fit}
 \alias{predict.platypus_fit}
-\title{Predict masks}
+\title{Predict masks, boxes, objects or labels}
 \usage{
 \method{predict}{platypus_fit}(
   object,
@@ -38,14 +38,25 @@ With \code{regions} - overlapping classes - \code{"class"} is \strong{refused} r
 The channels are independent binary questions and do not compete, so the most likely
 one is not an answer: a pixel may be in three classes and naming one of them drops the
 rest with nothing in the result to say so. Ask for \code{"probability"} and write it with
-\code{\link[=save_class_masks]{save_class_masks()}}.}
+\code{\link[=save_class_masks]{save_class_masks()}}.
+
+On a \strong{classification} fit the two readings are a table and a matrix rather than two
+arrays: \code{"class"} gives one row per image with the answer and how sure the model was,
+and \code{"probability"} gives one row per image and one column per class. \code{"channels"} is
+refused - a classifier has no channels, only one number per class, and those numbers
+are the probabilities.}
 
 \item{space}{\code{"model"} or \code{"source"}; see above. Note that the two return different
-shapes of thing, an array and a list, because they are different things.}
+shapes of thing, an array and a list, because they are different things. Refused on a
+detection, instance or classification fit, each for its own reason - boxes are in the
+source image's coordinates already, an object identity cannot survive resampling, and
+a label is not on a grid at all.}
 
 \item{cases}{Case names to predict, as \code{\link[=evaluate_cases]{evaluate_cases()}} reports them. With this the
 result is a \strong{named list} of just those, in the order asked for. A name that is not in
-the split is an error rather than a missing entry.}
+the split is an error rather than a missing entry. Both this and \code{each} exist so that a
+split of full-resolution masks never has to be in memory at once, so both are refused
+on a classification fit, where the whole answer is one row per image.}
 
 \item{each}{A function called as \code{each(case, mask)} once per image, instead of the
 predictions being returned together. Whatever it returns is collected under the case's
@@ -76,9 +87,20 @@ from 1 and 0 for background, one entry per image. A list rather than an array fo
 reason the detection one is a list, and named rather than ordered because a list paired
 against case names by position is one dropped batch away from naming the wrong picture.
 Draw them with \code{\link[=overlay_instances]{overlay_instances()}} and measure them with \code{\link[=instance_sizes]{instance_sizes()}}.
+
+On a \strong{classification} fit: for \code{"class"}, a data frame of one row per image with
+\code{key} (the name the split calls it, which is what joins this to anything else), \code{label}
+(what it was labelled, or \code{NA} on a split that carries no labelling), \code{predicted} and
+\code{probability} - the probability of the class that was chosen, not of the right one. For
+\code{"probability"}, a numeric matrix of images by classes, with the keys as row names and
+the class names as columns, in the order \code{classes} was written.
 }
 \description{
-Predict masks
+One function per fit rather than one per task, because the question - \emph{what does this
+model say about this split} - is the same one. What comes back is not: a mask for
+segmentation, a table of boxes for detection, a label map of objects for instances, and
+a row per image for classification. The arguments that describe a grid are refused where
+there is no grid, by name, rather than accepted and ignored.
 }
 \section{Which grid the answer is on}{
 

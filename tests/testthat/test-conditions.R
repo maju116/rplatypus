@@ -99,7 +99,10 @@ test_that("a raised condition carries the classes and the problems as data", {
 })
 
 test_that("the documented kinds are the ones the pinned engine can actually send", {
-  # The page lists fifteen class names. A list in prose is a claim, and this is the test
+  # The page lists nineteen class names - eighteen kinds the engine defines and one the
+  # bridge raises itself. The number in this comment is asserted nowhere and has been
+  # wrong before: it read fifteen while the list held eighteen. A list in prose is a
+  # claim, and this is the test
   # that makes it one the engine can contradict - §3C's rule, applied to a list rather
   # than to a number.
   skip_if_no_engine()

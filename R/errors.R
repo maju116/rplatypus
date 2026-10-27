@@ -164,6 +164,7 @@ problems_frame <- function(problems) {
 #' platypus_detection_data_error    annotations, boxes or classes
 #' platypus_instance_error          a separation target, or decoding one into objects
 #' platypus_instance_data_error     the per-object mask files a case has, or has not
+#' platypus_label_error             an image's label, or the class directories holding it
 #' platypus_weights_error           weights that do not belong to this model
 #' platypus_training_stopped        a callback ended the run early
 #' platypus_unknown_case            a case or model name that is not in this run
@@ -175,7 +176,7 @@ problems_frame <- function(problems) {
 #'
 #' @section Why R has more of these than Python does:
 #' The engine exports three exception classes - `PlatypusError`, `ConfigError`,
-#' `WeightsError` - and raises the other twelve internally, so a Python caller catches
+#' `WeightsError` - and raises the other fifteen internally, so a Python caller catches
 #' `PlatypusError` and inspects it. R derives its class from the `kind` the engine sends with
 #' every failure, so all of them arrive as catchable names. That is a wider surface on this
 #' side, and deliberately so: R has no exception hierarchy to lean on, and `inherits()` is

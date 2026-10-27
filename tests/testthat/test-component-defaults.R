@@ -59,7 +59,7 @@ test_that("every loss and metric default matches the engine's", {
   }
 })
 
-test_that("the two metrics whose background default differs are those two, on both sides", {
+test_that("the two mask metrics whose background default differs are those two, on both sides", {
   # This test was called "clDice is the one" until the pin moved to 0.8.0a26, and it would
   # have gone on passing while its own title was false: it asserted FALSE for clDice and
   # TRUE for the three overlap metrics and said nothing about a fifth metric. So the
@@ -68,14 +68,30 @@ test_that("the two metrics whose background default differs are those two, on bo
   skip_if_no_engine()
 
   ours <- sort(grep("^metric_", getNamespaceExports("rplatypus"), value = TRUE))
+
+  # The label metrics are a third group and they are DERIVED rather than listed: a metric
+  # that scores one label per image has no background class to leave in or out, so it has
+  # no such argument at all. Read off the engine's own listing, so a fifth classification
+  # metric arriving upstream lands in this group by itself - and fails here if R has no
+  # constructor for it, which is the half this comparison adds.
+  label <- paste0("metric_", available_metrics("classification")$name)
+  expect_gt(length(label), 0)
+  expect_identical(setdiff(label, ours), character(0),
+                   info = "the engine lists a label metric R has no constructor for")
+  for (name in label) {
+    expect_false("include_background" %in% names(formals(get(name, asNamespace("rplatypus")))),
+                 info = sprintf("%s takes `include_background` and has no background", name))
+  }
+
+  masks <- setdiff(ours, label)
   background_left_out <- c("metric_cldice", "metric_surface_dice")
   expect_identical(
-    sort(ours),
+    sort(masks),
     sort(c(background_left_out, "metric_dice", "metric_iou", "metric_tversky")),
-    info = "a metric arrived: decide which group its `include_background` default is in"
+    info = "a mask metric arrived: decide which group its `include_background` default is in"
   )
 
-  for (name in ours) {
+  for (name in masks) {
     default <- eval(formals(get(name, asNamespace("rplatypus")))$include_background)
     expect_identical(default, !name %in% background_left_out, info = name)
   }

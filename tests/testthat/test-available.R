@@ -91,7 +91,34 @@ test_that("the counts are what the engine's own unions hold", {
   expect_true(all(c("start", "start_epoch") %in% strsplit(stopping$arguments, ", ")[[1]]))
   expect_identical(nrow(available_models()), 4L)
   expect_identical(nrow(available_models("object_detection")), 1L)
-  expect_identical(nrow(available_tasks()), 3L)
+  # 4 since the pin moved to 0.8.0a49, which added `classification`. The engine holds these
+  # rows to `AnySpec`'s own members in both directions, so a task that exists in the
+  # specification and not in this listing fails there rather than here - which is what the
+  # count cannot see and is the reason that pair was written.
+  expect_identical(nrow(available_tasks()), 4L)
+
+  # Classification lists two of the eleven losses - the ones that score each answer on its
+  # own rather than scoring an overlap - and four metrics of its own, which share no name
+  # with the mask metrics above. Named rather than counted here, because the names are the
+  # claim: a count of 2 would also pass on the wrong two.
+  expect_identical(sort(available_losses("classification")$name), c("cce", "focal"))
+  expect_identical(
+    sort(available_metrics("classification")$name),
+    c("accuracy", "auc", "balanced_accuracy", "f1")
+  )
+  expect_identical(
+    intersect(available_metrics("classification")$name, available_metrics()$name),
+    character(0)
+  )
+})
+
+test_that("classification says it chooses no architecture rather than listing none", {
+  skip_if_no_engine()
+  # The same shape as detection's refusal below and a different fact: there is no
+  # `architecture` field for this task at all, because the contracting path is the network
+  # and `encoder` decides whose it is. An empty table would read as "there are none".
+  expect_error(available_models("classification"), class = "platypus_error")
+  expect_error(available_models("classification"), "encoder")
 })
 
 test_that("arguments are a readable column and recover their parts", {

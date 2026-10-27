@@ -52,8 +52,10 @@ website:
               - man/segmentation_data.qmd
               - man/detection_data.qmd
               - man/instance_data.qmd
+              - man/classification_data.qmd
               - man/models.qmd
               - man/yolo3.qmd
+              - man/classifier.qmd
               - man/save_spec.qmd
               - man/as.list.platypus_spec.qmd
           - section: "What a model is made of"
@@ -61,6 +63,7 @@ website:
               - man/losses.qmd
               - man/loss_boundary.qmd
               - man/metrics.qmd
+              - man/classification_metrics.qmd
               - man/optimizers.qmd
               - man/callbacks.qmd
               - man/callback_swa.qmd
@@ -79,6 +82,7 @@ website:
               - man/volume_info.qmd
               - man/series_report.qmd
               - man/inspect_masks.qmd
+              - man/class_balance.qmd
           - section: "Training"
             contents:
               - man/platypus_fit.qmd

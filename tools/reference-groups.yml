@@ -21,23 +21,24 @@ groups:
     desc: >
       One object says what to train, on what data, with what. Built from arguments or from
       YAML - the same specification either way.
-    contents: [platypus_spec, segmentation_data, detection_data, instance_data, models,
-               yolo3, save_spec, as.list.platypus_spec]
+    contents: [platypus_spec, segmentation_data, detection_data, instance_data,
+               classification_data, models, yolo3, classifier, save_spec,
+               as.list.platypus_spec]
 
   - title: What a model is made of
     desc: >
       Losses, metrics, optimisers, callbacks, augmentation, encoders - and the listings that
       ask the engine what those names are, rather than asking you to remember them.
-    contents: [losses, loss_boundary, metrics, optimizers, callbacks, callback_swa,
-               separations, decodings, augmentation_step, available_components,
-               available_transforms, encoders]
+    contents: [losses, loss_boundary, metrics, classification_metrics, optimizers,
+               callbacks, callback_swa, separations, decodings, augmentation_step,
+               available_components, available_transforms, encoders]
 
   - title: The data on disk
     desc: >
       Splitting by patient rather than by slice, and looking at what is actually there
       before spending an afternoon training on it.
     contents: [split_dataset, split_path, read_images, read_masks, volume_info,
-               series_report, inspect_masks]
+               series_report, inspect_masks, class_balance]
 
   - title: Training
     desc: >-

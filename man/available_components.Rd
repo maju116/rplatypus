@@ -29,14 +29,16 @@ available_separations()
 available_decodings()
 }
 \arguments{
-\item{task}{\code{"semantic_segmentation"}, \code{"instance_segmentation"} or
-\code{"object_detection"}. Which components a specification may name depends on what it is
+\item{task}{\code{"semantic_segmentation"}, \code{"instance_segmentation"}, \code{"object_detection"}
+or \code{"classification"}. Which components a specification may name depends on what it is
 asking for, and for losses it genuinely differs: the three regression losses are listed
-only at the instance task, which is the only one with a target for them. No count is
+only at the instance task, which is the only one with a target for them, and
+classification lists two of the eleven - the ones that score each answer on its own
+rather than scoring an overlap. No count is
 written here on purpose - the counts are asserted in the test suite against the pinned
 engine, which is where a number nobody can re-measure from a help page belongs. This
-parameter listed two tasks until the pin moved to \verb{0.8.0a22}; the third arrived in the
-engine's \verb{0.8.0a20}.}
+parameter listed two tasks until the pin moved to \verb{0.8.0a22}, three until it moved to
+\verb{0.8.0a49}; the third arrived in the engine's \verb{0.8.0a20} and the fourth in \verb{0.8.0a49}.}
 }
 \value{
 A data frame with \code{name}, \code{arguments} and \code{description}. \code{arguments} is a single
@@ -76,6 +78,13 @@ than going into the specification.
 So \code{available_losses("object_detection")} and \code{available_metrics("object_detection")} raise
 a condition whose message says that, rather than returning a table with no rows. An empty
 table reads as "there are none", which is a different and wrong answer.
+
+\strong{\code{available_models("classification")} raises for the same kind of reason and a different
+fact.} A classifier chooses no architecture: the network is a contracting path, pooled,
+with one dense layer on top, and \code{encoder} decides whose contracting path it is - ours
+when it is unset, any of timm's when it names a backbone. So there is no \code{architecture}
+field to write and a row here would invite one. \link{encoders} is the listing that question
+actually has.
 }
 
 \examples{

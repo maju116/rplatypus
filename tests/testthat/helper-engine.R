@@ -98,6 +98,45 @@ for i in range(%d):
   root
 }
 
+#' Images in class directories, which is what `nested_dirs` means for a classifier
+#'
+#' Two classes, and the difference between them is **learnable in one epoch on purpose**: a
+#' fixture whose classes a model cannot separate would report a trained run and an untrained
+#' one as the same thing, which is §4's probe answering an adjacent question. `bright`
+#' carries a square and `dark` does not, so a single pooled feature divides them - and the
+#' test that checks a fit learned anything is what that is for.
+#'
+#' Balanced, so that nothing here depends on the prevalence argument the engine's own
+#' metric choice was made from: an unbalanced fixture would make `accuracy` and `auc` move
+#' together and hide exactly the distinction this task's default is about.
+tiny_classification_dataset <- function(per_class = 4, size = 32) {
+  root <- withr::local_tempdir(.local_envir = parent.frame())
+  reticulate::py_run_string(sprintf("
+import numpy as np, pathlib
+from PIL import Image
+root = pathlib.Path(%s)
+rng = np.random.default_rng(0)
+for name in ('dark', 'bright'):
+    (root / name).mkdir(parents=True, exist_ok=True)
+for i in range(%d):
+    for name in ('dark', 'bright'):
+        picture = rng.random((%d, %d)) * 60
+        if name == 'bright':
+            picture[8:24, 8:24] += 170
+        image = np.clip(picture, 0, 255).astype(np.uint8)
+        Image.fromarray(image).convert('RGB').save(root / name / f'{name}_{i:02d}.png')
+", shQuote(root), per_class, size, size))
+  root
+}
+
+tiny_classification_spec <- function(root, ...) {
+  platypus_spec(
+    data = classification_data(root, root, classes = c("dark", "bright")),
+    models = list(classifier("tiny", input_shape = c(32, 32), blocks = 2, filters = 4,
+                             epochs = 1, batch_size = 2, ...))
+  )
+}
+
 tiny_instance_spec <- function(root, ...) {
   platypus_spec(
     data = instance_data(root, root),

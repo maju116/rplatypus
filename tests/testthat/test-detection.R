@@ -608,8 +608,19 @@ test_that("the task names that were renamed are named back", {
                "renamed to \"semantic_segmentation\"")
   expect_error(rplatypus:::agreed_task(data, models, stated = "detection"),
                "renamed to \"object_detection\"")
-  expect_error(rplatypus:::agreed_task(data, models, stated = "classification"),
+
+  # This read `stated = "classification"` until the pin moved to `0.8.0a49`, and then it
+  # was a refusal that could no longer fire: the example of an unknown task had become a
+  # known one. §4's fixture that stops being able to fail, and the only safe example is a
+  # value nothing could ever name - every plausible one is on a milestone somewhere.
+  expect_error(rplatypus:::agreed_task(data, models, stated = "not_a_task_anybody_has"),
                "must be one of")
+
+  # And the positive half, which is what makes the line above a change rather than a
+  # deletion: `classification` is now known, so it is refused for disagreeing with the
+  # constructors instead of for being a name nobody has heard of.
+  expect_error(rplatypus:::agreed_task(data, models, stated = "classification"),
+               "disagrees")
 })
 
 test_that("detection can divide one folder, which split_dataset cannot do for it", {
