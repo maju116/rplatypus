@@ -846,6 +846,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<!--
+THIS PROSE HAS A COUNTERPART, AND THIS FILE IS THE SOURCE.
+
+The engine mirrors it as pyplatypus's `retinal-vessels.qmd`. It exists, merged as
+maju116/pyplatypus#248, so this pair is compared on both sides and this vignette is no
+longer listed in `awaiting` in tests/testthat/test-article-pairs.R.
+
+By maju116/rplatypus#117 the vignette is the source and the article is the copy, so an edit
+here is an edit there, and an edit there alone is a mistake nothing will catch. What is held
+by a test is the walk: the `##` headings and their order, asserted from both sides -
+`tests/testthat/test-article-pairs.R` here and `tests/test_articles.py` in the engine. The
+route is deliberately not held, because the engine reaches each destination through a
+configuration file where this package reaches it through constructors.
+
+So: renaming or reordering a `##` heading in this file breaks both suites until the article
+follows. Changing the body of a section breaks neither, and that is the part no test can
+check - a heading test does not stop prose drifting.
+-->
 <p>The other vignettes work on images small enough to hand a network whole. This one does not, and that is the point: a retinal fundus photograph is 2048 x 2048, the thing to find in it is about nine pixels wide, and resizing to fit the model destroys the measurement before the model ever sees it.</p>
 <p>Three things here appear in no other vignette, and each is the reason this dataset was chosen.</p>
 <p><strong>It tiles.</strong> <code>splits</code> reads each image at full resolution and cuts it into a grid of inputs.</p>
@@ -932,7 +950,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>spec</span>
 <span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; platypus specification</span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   data        : /tmp/RtmpkhrXG3/train.csv </span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   data        : /tmp/RtmprzTrKo/train.csv </span></span>
 <span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   classes     : 2 </span></span>
 <span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   models      : 1 </span></span>
 <span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     vessels        u_net            512x512, tiled 4x4, cce_dice, 15 epochs</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -960,25 +978,25 @@ plot of chunk history
 <section id="one-number-hides-the-finding" class="level2">
 <h2 class="anchored" data-anchor-id="one-number-hides-the-finding">One number hides the finding</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate</span>(fit)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     model architecture loss_function parameters epochs_run best_epoch</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 vessels        u_net      cce_dice    1942594         15         15</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         loss      dice       iou</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.07751003 0.8345117 0.7548818</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     model architecture loss_function parameters  load_shape epochs_run</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 vessels        u_net      cce_dice    1942594 2048 x 2048         15</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   best_epoch       loss foreground      dice       iou  dice_worst   iou_worst</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         14 0.08282537  0.0657948 0.8644989 0.7781636 0.005716131 0.002882404</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>That is the whole test set as one row, and it is the least informative view of it. The distribution is the finding, and <code>summary()</code> gives it - including which case is the worst, because the first thing anyone does with a low score is go and look at that image:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>per_case <span class="ot">&lt;-</span> <span class="fu">evaluate_cases</span>(fit)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(per_case)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   metric   n      mean        sd    median         min       max worst_case</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1   dice 200 0.8693033 0.1216219 0.9002321 0.006706456 0.9563482      122_G</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    iou 200 0.7836241 0.1415640 0.8185659 0.003380554 0.9163482      122_G</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 cldice 200 0.8209798 0.1442591 0.8672186 0.009086774 0.9561177      122_G</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1   dice 200 0.8644989 0.1303245 0.8975915 0.005716131 0.9581814      122_G</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    iou 200 0.7781636 0.1506915 0.8142098 0.002882404 0.9197202      122_G</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 cldice 200 0.8121976 0.1533799 0.8567695 0.007349078 0.9516759      122_G</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Now by the disease in the file name. <code>group_by</code> pools a group’s cases into one score, the way a patient’s slices would be pooled:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate_cases</span>(fit, <span class="at">group_by =</span> <span class="st">"_([NADG])$"</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; platypus scores by group (4 rows)</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  group      dice       iou    cldice</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      A 0.9129010 0.8397590 0.8665145</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      D 0.8882682 0.7989953 0.8136649</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      G 0.8889359 0.8000760 0.7560313</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      N 0.8910453 0.8035004 0.8477083</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      A 0.9136922 0.8410988 0.8645473</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      D 0.8849608 0.7936589 0.8120603</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      G 0.8849156 0.7935862 0.7343315</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      N 0.8900695 0.8019147 0.8378514</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Pooling answers “how good is it on this group”. It does not show the spread, and the spread is where this dataset is interesting, so that comes off the per-case rows:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>diseases <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">N =</span> <span class="st">"normal"</span>, <span class="at">A =</span> <span class="st">"AMD"</span>, <span class="at">D =</span> <span class="st">"diabetic retinopathy"</span>, <span class="at">G =</span> <span class="st">"glaucoma"</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>per_case<span class="sc">$</span>disease <span class="ot">&lt;-</span> diseases[<span class="fu">sub</span>(<span class="st">".*_([NADG])$"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, per_case<span class="sc">$</span>case)]</span>
@@ -986,10 +1004,10 @@ plot of chunk history
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>spread <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">c</span>(<span class="at">n =</span> <span class="fu">length</span>(x), <span class="at">mean =</span> <span class="fu">mean</span>(x), <span class="at">sd =</span> <span class="fu">sd</span>(x), <span class="at">worst =</span> <span class="fu">min</span>(x))</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">t</span>(<span class="fu">vapply</span>(<span class="fu">split</span>(per_case<span class="sc">$</span>dice, per_case<span class="sc">$</span>disease), spread, <span class="fu">numeric</span>(<span class="dv">4</span>))), <span class="dv">4</span>)</span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                       n   mean     sd  worst</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AMD                  50 0.9048 0.0585 0.7010</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; diabetic retinopathy 50 0.8715 0.0823 0.5139</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; glaucoma             50 0.8135 0.2053 0.0067</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; normal               50 0.8875 0.0542 0.6622</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; AMD                  50 0.9050 0.0600 0.7045</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; diabetic retinopathy 50 0.8666 0.0899 0.5545</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; glaucoma             50 0.8013 0.2187 0.0057</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; normal               50 0.8852 0.0573 0.6605</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Compare that table with the pooled one above and the reason for having both becomes concrete. Pooled, glaucoma and diabetic retinopathy are within a few thousandths of each other. Per case, glaucoma’s mean is several points lower and its spread more than twice as wide, with a worst case near zero. (No figure is quoted here on purpose: the table is directly above, and a number repeated in prose is a number that goes stale the next time this is rebuilt.) Pooling hid it because Dice is a ratio of sums: fifty images’ counts added together are dominated by the ones with the most vessel to find, and a photograph the model failed on contributes little to the numerator <em>and</em> little to the denominator.</p>
 <p><strong>Before concluding that the model is worse at the disease whose row is worst, check whether it is the group whose photographs are worse.</strong> FIVES ships a <code>Quality Assessment.xlsx</code> grading every image for illumination, blur and contrast; nothing in this pipeline reads it, and when it is joined to these scores the ordering above changes substantially. The engine’s measurement of that is in <code>measurements/fives/quality.py</code> in the project’s workbench.</p>
 <p>That is the general lesson rather than a fact about retinas: a per-group table is worth having precisely because it invites the question <em>why is this group different</em>, and the first answer is rarely the right one.</p>
@@ -1002,7 +1020,7 @@ plot of chunk history
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">sd_of_difference =</span> <span class="fu">sd</span>(per_case<span class="sc">$</span>cldice <span class="sc">-</span> per_case<span class="sc">$</span>dice)</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>), <span class="dv">4</span>)</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      correlation  mean_difference sd_of_difference </span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           0.9316          -0.0483           0.0540</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           0.9350          -0.0523           0.0560</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Read those two numbers together, because they say different things. The <strong>correlation</strong> is high: the two metrics rank the cases much the same way, so clDice is not finding a different set of bad images. The <strong>mean difference</strong> is negative and not small: clDice sits about five points <em>below</em> Dice, which says the vessels this model draws are less connected than their pixel overlap suggests. It is getting the right pixels and breaking the lines.</p>
 <p>That gap is a property of the model rather than of the metric, and the engine’s own run of the same configuration is the evidence: at forty epochs instead of fifteen the two agree to a correlation of 0.978 and a mean difference of +0.004. <strong>The better-trained model closes the gap.</strong> So a large negative gap here is not clDice being pessimistic - it is clDice measuring the thing that fifteen epochs had not finished learning, and Dice not noticing.</p>
 </section>

@@ -1007,8 +1007,9 @@ is where the measurement came from.
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; platypus fit</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   models   : skull </span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   device   : NVIDIA GeForce GTX 1070 (torch 2.7.1+cu126) </span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   epochs   : skull=40 </span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   next     : evaluate(fit), predict(fit, "skull")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   epochs   : skull=31 </span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   stopped  : skull - early stopping: val_dice has not improved on 0.93503 for 8 epochs </span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   next     : evaluate(fit), predict(fit, "skull")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1044,9 +1045,9 @@ is where the measurement came from.
 <span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>}))</span>
 <span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(measured, <span class="dv">3</span>)</span>
 <span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      key    major    minor circumference</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 080_HC 14.17525 10.30865      77.09630</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 153_HC 17.11731 14.28321      98.84788</span></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 284_HC 29.57557 23.56336     167.15846</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 080_HC 13.61917 11.01925      77.24687</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 153_HC 16.80449 14.34755      97.92852</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 284_HC 31.03666 24.53383     167.86182</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cases_scored <span class="ot">&lt;-</span> <span class="fu">evaluate_cases</span>(fit, <span class="st">"skull"</span>, <span class="at">split =</span> <span class="st">"test"</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>dice <span class="ot">&lt;-</span> <span class="fu">setNames</span>(cases_scored<span class="sc">$</span>dice, cases_scored<span class="sc">$</span>case)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1059,7 +1060,7 @@ is where the measurement came from.
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>against<span class="sc">$</span>error_mm <span class="ot">&lt;-</span> against<span class="sc">$</span>mm <span class="sc">-</span> against<span class="sc">$</span>recorded</span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">abs</span>(against<span class="sc">$</span>error_mm))</span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. </span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.03321  1.06664  2.04952  4.97131  4.54742 94.67407</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  0.01329  0.67454  1.96079  3.50467  3.61206 53.88898</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="what-the-annotation-costs-before-the-model-does" class="level2">
 <h2 class="anchored" data-anchor-id="what-the-annotation-costs-before-the-model-does">What the annotation costs before the model does</h2>
@@ -1094,7 +1095,7 @@ is where the measurement came from.
 <span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; residual_mae_mm </span></span>
 <span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      0.01371169</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The truth masks are out by +1.12 mm on average, and that number is <strong>not</strong> an error of this package. HC18’s annotation is a drawn curve of finite width - these are 2.52 pixels wide - and the mask is that curve filled, so the region’s boundary sits half a width outside the ellipse the sonographer drew. A radius larger by <code>w/2</code> makes a circumference larger by <code>pi * w</code>, which predicts +1.11 mm against the +1.12 mm measured, correlated at 1.000 across the split with 0.01 mm left over.</p>
-<p>That is the difference between an explanation and a guess, and it is why the prediction is reported <strong>beside</strong> the bias rather than subtracted from it: a correction folded into the measurement would hide the one number on this page that is about the dataset rather than about us. A model reproducing the truth masks perfectly would still read +1.12 mm high.</p>
+<p>That is the difference between an explanation and a guess, and it is why the prediction is reported <strong>beside</strong> the bias rather than subtracted from it: a correction folded into the measurement would hide the one number on this page that is about the dataset rather than about us. A model reproducing the truth masks perfectly would still read +1.12 mm high <strong>on this split</strong>, and that figure is not a constant of the dataset: it is <code>pi * w</code> converted to millimetres, so it scales with the pixel size, which HC18 records per image. The engine’s article measures the same thing on its own split and gets a smaller number for that reason, not a different answer.</p>
 <p>So the model’s own contribution is the comparison against the truth masks rather than against the chart, and both belong on a page that reports millimetres. Reporting only the first blames the model for a drawing convention; reporting only the second hides the convention from the person reading the number.</p>
 </section>
 <section id="the-dice-cannot-see-this-error" class="level2">
@@ -1115,8 +1116,8 @@ is where the measurement came from.
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">spearman =</span> spearman</span>
 <span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       dice_mean median_error_mm   mean_error_mm        spearman </span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       0.9439633       2.0495229       4.9713050       0.4524714</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Of the 141 test images scoring 0.95 or better - a figure anybody would publish - <strong>59 are still wrong by more than 2 mm</strong> (42%). The Spearman correlation between the two orderings is 0.45, where a shared ordering would be 1 and no relationship at all would be 0.</p>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       0.9424884       1.9607895       3.5046740       0.3454987</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Of the 133 test images scoring 0.95 or better - a figure anybody would publish - <strong>55 are still wrong by more than 2 mm</strong> (41%). The Spearman correlation between the two orderings is 0.35, where a shared ordering would be 1 and no relationship at all would be 0.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  against<span class="sc">$</span>dice, <span class="fu">abs</span>(against<span class="sc">$</span>error_mm), <span class="at">log =</span> <span class="st">"y"</span>,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">"Dice"</span>, <span class="at">ylab =</span> <span class="st">"absolute circumference error (mm), log scale"</span>,</span>
@@ -1132,33 +1133,33 @@ is where the measurement came from.
 <p>Read the vertical spread at any fixed Dice. A column of points two orders of magnitude tall is the finding: the score does not tell you what the measurement will be.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>worst <span class="ot">&lt;-</span> against[<span class="fu">order</span>(<span class="sc">-</span><span class="fu">abs</span>(against<span class="sc">$</span>error_mm)), ][<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, ]</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>worst[, <span class="fu">c</span>(<span class="st">"key"</span>, <span class="st">"dice"</span>, <span class="st">"mm"</span>, <span class="st">"recorded"</span>, <span class="st">"error_mm"</span>)]</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         key      dice       mm recorded  error_mm</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 64  023_2HC 0.4023361 162.5741    67.90  94.67407</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 185  009_HC 0.4771487 127.2060    62.31  64.89595</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 148  753_HC 0.7053301 235.8087   293.20 -57.39132</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 188  026_HC 0.7362222 122.6933    75.20  47.49326</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 187 026_2HC 0.6738917 112.8311    67.30  45.53113</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The median absolute error is 2.05 mm and the mean is 4.97 mm. <strong>Both belong here because they disagree</strong>: the distribution has a long tail, so the mean describes the tail rather than a typical case, and the median alone would hide that some images are out by the width of a head.</p>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         key      dice        mm recorded  error_mm</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 185  009_HC 0.5361094 116.19898    62.31  53.88898</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 64  023_2HC 0.5310252 114.16147    67.90  46.26147</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 148  753_HC 0.7192976 262.64523   293.20 -30.55477</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 105 133_4HC 0.7075314  72.45699    97.00 -24.54301</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 76   802_HC 0.9117828 308.75427   330.90 -22.14573</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The median absolute error is 1.96 mm and the mean is 3.50 mm. <strong>Both belong here because they disagree</strong>: the distribution has a long tail, so the mean describes the tail rather than a typical case, and the median alone would hide that some images are out by the width of a head.</p>
 </section>
 <section id="what-this-does-not-settle" class="level2">
 <h2 class="anchored" data-anchor-id="what-this-does-not-settle">What this does not settle</h2>
-<p><strong>One run.</strong> The same recipe, trained again, gives a different correlation. Three runs of it on the engine’s side measured 0.62, 0.44 and 0.15, and this page is a fourth at 0.45:</p>
+<p><strong>One run.</strong> The same recipe, trained again, gives a different correlation. Three runs of it on the engine’s side measured 0.62, 0.44 and 0.15, and this page is a fourth at 0.35:</p>
 <pre><code>#&gt;                     run spearman
 #&gt; 1    the engine example    0.620
 #&gt; 2              a second    0.435
 #&gt; 3 the published weights    0.153
-#&gt; 4         this vignette    0.452</code></pre>
+#&gt; 4         this vignette    0.345</code></pre>
 <p>All four are far from a shared ordering and they span a factor of four. The <em>direction</em> is the finding here; the magnitude is one draw, and a single number quoted from this page would overstate the case at one end.</p>
 <p>The published <code>hc18-unet</code> weights are one of those runs rather than this one:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>listing <span class="ot">&lt;-</span> <span class="fu">available_weights</span>()</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>listing<span class="sc">$</span>description[listing<span class="sc">$</span>name <span class="sc">==</span> <span class="st">"hc18-unet"</span>]</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "U-Net, 544x800, the fetal skull in 2D ultrasound, for measuring **head circumference in millimetres**. HC18 (CC BY 4.0), split by examination rather than by row. Median absolute error 2.44 mm against the sonographer's measurement over 199 held-out images, mean 3.84 mm, worst 48.07 mm - and 3.41 mm against the truth mask's own circumference, which is this model's contribution rather than the dataset's drawing convention. **Do not choose these weights on the Dice**: it is 0.9494, it orders the cases differently from the millimetres, and 85 of the 144 cases scoring 0.95 or better are still wrong by more than 2 mm. **CC BY 4.0, not MIT**, because the data is."</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>A measurement is not a measuring instrument.</strong> The worst case on this page is out by 95 mm, which is not a biometric tool with a person looking at it, let alone without.</p>
+<p><strong>A measurement is not a measuring instrument.</strong> The worst case on this page is out by 54 mm, which is not a biometric tool with a person looking at it, let alone without.</p>
 <p><strong>The ellipse is the shape assumed.</strong> <a href="../man/ellipse_measure.html"><code>ellipse_measure()</code></a> fits one, which is right for a fetal skull and wrong for anything that is not an ellipse. The general case - every object in an image, measured separately - is <code>maju116/pyplatypus#272</code> and is not built.</p>
 </section>
 <section id="notes-on-the-machine" class="level2">
 <h2 class="anchored" data-anchor-id="notes-on-the-machine">Notes on the machine</h2>
-<p>Precomputed on a GTX 1070, which needs the CUDA 12 line of PyTorch; <code>platypus_use_torch("pascal")</code> at the top of this document is what selects it. Training is 29 minutes at these settings, over 40 epochs. Nothing on this page depends on which card it was, except how long it took.</p>
+<p>Precomputed on a GTX 1070, which needs the CUDA 12 line of PyTorch; <code>platypus_use_torch("pascal")</code> at the top of this document is what selects it. Training is 22 minutes at these settings, over 31 epochs. Nothing on this page depends on which card it was, except how long it took.</p>
 
 
 </section>

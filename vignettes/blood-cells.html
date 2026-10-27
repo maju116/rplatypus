@@ -844,6 +844,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<!--
+THIS PROSE HAS A COUNTERPART, AND THIS FILE IS THE SOURCE.
+
+The engine mirrors it as pyplatypus's `blood-cells.qmd`. It exists, merged as
+maju116/pyplatypus#247, so this pair is compared on both sides and this vignette is no
+longer listed in `awaiting` in tests/testthat/test-article-pairs.R.
+
+By maju116/rplatypus#117 the vignette is the source and the article is the copy, so an edit
+here is an edit there, and an edit there alone is a mistake nothing will catch. What is held
+by a test is the walk: the `##` headings and their order, asserted from both sides -
+`tests/testthat/test-article-pairs.R` here and `tests/test_articles.py` in the engine. The
+route is deliberately not held, because the engine reaches each destination through a
+configuration file where this package reaches it through constructors.
+
+So: renaming or reordering a `##` heading in this file breaks both suites until the article
+follows. Changing the body of a section breaks neither, and that is the part no test can
+check - a heading test does not stop prose drifting.
+-->
 <p>Segmentation asks which pixels are tissue. Detection asks how many objects there are and where, which is a different question and needs a different answer: boxes, not masks.</p>
 <p><a href="https://github.com/Shenggan/BCCD_Dataset">BCCD</a> is 364 photographs of blood smears with 4,888 boxes in three classes - red cells, white cells, platelets - and its own train/validation/test split. It is small, it is MIT-licensed, and its classes are wildly unbalanced, which turns out to be the most instructive thing about it.</p>
 <p>Every number and every picture below was produced by running the code shown.</p>
@@ -989,33 +1007,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="what-the-loss-is-doing">What the loss is doing</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(fit<span class="sc">$</span>history[, <span class="fu">c</span>(<span class="st">"epoch"</span>, <span class="st">"train_loss"</span>, <span class="st">"train_coordinates"</span>, <span class="st">"train_objectness"</span>,</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"val_loss"</span>)], <span class="dv">3</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     epoch train_loss train_coordinates train_objectness val_loss</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 148   148   5.922336          5.917977     0.0006621822 9.890312</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 149   149   5.926137          5.921691     0.0006329013 9.905824</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 150   150   5.946839          5.942373     0.0006673209 9.966823</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>The total does not reach zero and that is not a stall.</strong> Cross-entropy against a soft target bottoms out at the target’s own entropy, so the coordinate term has a floor above zero that depends on the data. Which is exactly why the four parts are reported separately: a total of 5.95 means nothing alone, while <code>coordinates 5.94</code> beside <code>objectness 6.7 &amp;times; 10&lt;sup&gt;-4&lt;/sup&gt;</code> says the model has learned what is where and is still refining the boxes.</p>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     epoch train_loss train_coordinates train_objectness  val_loss</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 148   148   5.926291          5.921908     0.0006802287  9.950191</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 149   149   5.926131          5.921756     0.0006467079  9.976097</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 150   150   5.926317          5.921920     0.0007015823 10.066363</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>The total does not reach zero and that is not a stall.</strong> Cross-entropy against a soft target bottoms out at the target’s own entropy, so the coordinate term has a floor above zero that depends on the data. Which is exactly why the four parts are reported separately: a total of 5.93 means nothing alone, while <code>coordinates 5.92</code> beside <code>objectness 7 &amp;times; 10&lt;sup&gt;-4&lt;/sup&gt;</code> says the model has learned what is where and is still refining the boxes.</p>
 </section>
 <section id="scoring-and-the-number-that-is-missing-on-purpose" class="level2">
 <h2 class="anchored" data-anchor-id="scoring-and-the-number-that-is-missing-on-purpose">Scoring, and the number that is missing on purpose</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate</span>(fit, <span class="at">split =</span> <span class="st">"test"</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   model architecture parameters epochs_run    map_50 map_50_95 mean_matched_iou</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 cells        yolo3   61534504        150 0.8517078 0.5052384        0.8046374</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 cells        yolo3   61534504        150 0.8638967 0.5083634        0.8041728</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   n_truth n_predicted classes_without_truth</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     945        2740                     0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>This run’s <code>map_50</code> of 0.8517 sits below the range of the five in the table further down (0.853 to 0.887), and that is the point of the table rather than a problem with it.</strong> A seed pins which random numbers are drawn; it does not pin the order they are consumed in, and the number of loader workers - <code>num_workers = "auto"</code> here, four in the script that produced the published weights - changes that order. So “the same seed” means the same recipe on one machine with one worker count, and not a guarantee of the same number. Knits of this very document at the same seed have differed by more than a point of <code>map_50</code>, which is how the paragraph you are reading came to be written: the first version of it quoted a number, and the next knit disagreed with it.</p>
-<p>Which is the argument for reading <code>mean_matched_iou</code> first, and it holds here: the overlap came out at 0.8046 against the five-run mean of 0.8040, a difference of 0.0006.</p>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     945        2535                     0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>This run’s <code>map_50</code> of 0.8639 sits inside the range of the five in the table further down (0.853 to 0.887), and that is the point of the table rather than a problem with it.</strong> A seed pins which random numbers are drawn; it does not pin the order they are consumed in, and the number of loader workers - <code>num_workers = "auto"</code> here, four in the script that produced the published weights - changes that order. So “the same seed” means the same recipe on one machine with one worker count, and not a guarantee of the same number. Knits of this very document at the same seed have differed by more than a point of <code>map_50</code>, which is how the paragraph you are reading came to be written: the first version of it quoted a number, and the next knit disagreed with it.</p>
+<p>Which is the argument for reading <code>mean_matched_iou</code> first, and it holds here: the overlap came out at 0.8042 against the five-run mean of 0.8040, a difference of 0.0001.</p>
 <p>There is no overall precision and no overall recall in that table, and the absence is deliberate. Averaging them over classes needs a weighting, and every choice of weighting is a different claim: over BCCD’s 4,155 red cells, 372 white and 361 platelets, a single precision is a statement about red cells wearing the costume of a statement about the model.</p>
 <p>Per class is the form in which they mean something:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluate_classes</span>(fit, <span class="at">split =</span> <span class="st">"test"</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       class average_precision mean_matched_iou n_truth n_predicted precision</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       RBC         0.8061110        0.8075923     805         906 0.7152318</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       WBC         0.9585804        0.8469938      71          77 0.9220779</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Platelets         0.7904320        0.7264113      69         111 0.5585586</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      recall</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.8049689</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 1.0000000</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.8985507</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Read that table rather than the mean. White cells are nearly perfect - there is one per image and it is large. Platelets come back at a precision of 0.56 at this confidence, meaning 44% of the platelets reported are not there, and their boxes fit worst of the three at an overlap of 0.73.</p>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1       RBC         0.7977684        0.8074916     805         900 0.7155556</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2       WBC         0.9620625        0.8503462      71          77 0.9220779</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Platelets         0.8318592        0.7196516      69         110 0.5909091</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     recall</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 0.800000</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 1.000000</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 0.942029</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Read that table rather than the mean. White cells are nearly perfect - there is one per image and it is large. Platelets come back at a precision of 0.59 at this confidence, meaning 41% of the platelets reported are not there, and their boxes fit worst of the three at an overlap of 0.72.</p>
 <section id="map0.5-map.50.95-and-which-to-believe" class="level3">
 <h3 class="anchored" data-anchor-id="map0.5-map.50.95-and-which-to-believe">mAP@0.5, mAP@[.50:.95], and which to believe</h3>
 <p>Two averages and they answer different questions. The first asks whether an object was found; the second averages over ten overlap thresholds and so also asks how well the box fits. The gap between them is localisation, and <code>mean_matched_iou</code> says that in one number instead of through a difference.</p>
@@ -1083,7 +1101,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="what-this-does-not-do" class="level2">
 <h2 class="anchored" data-anchor-id="what-this-does-not-do">What this does not do</h2>
-<p><strong>It is not a cell count.</strong> A precision of 0.56 on platelets means a count taken from these boxes is too high by about 79%. Counting needs either a better model for the small class or a threshold chosen for counting rather than for a figure, and either way it needs measuring against truth on your own data.</p>
+<p><strong>It is not a cell count.</strong> A precision of 0.59 on platelets means a count taken from these boxes is too high by about 69%. Counting needs either a better model for the small class or a threshold chosen for counting rather than for a figure, and either way it needs measuring against truth on your own data.</p>
 <p><strong>It is one small collection.</strong> 205 training images at one magnification, stained one way. BCCD is a demonstration dataset.</p>
 <p><strong>It is not a diagnostic tool</strong>, and a result from it is not a laboratory result.</p>
 </section>
