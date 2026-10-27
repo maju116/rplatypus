@@ -7,6 +7,25 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+<!--
+THIS PROSE HAS A COUNTERPART, AND THIS FILE IS THE SOURCE.
+
+The engine mirrors it as pyplatypus's `volumes.qmd`. It exists, merged as
+maju116/pyplatypus#253, so this pair is compared on both sides - and it was the last
+one, so `awaiting` in tests/testthat/test-article-pairs.R is now empty.
+
+By maju116/rplatypus#117 the vignette is the source and the article is the copy, so an edit
+here is an edit there, and an edit there alone is a mistake nothing will catch. What is held
+by a test is the walk: the `##` headings and their order, asserted from both sides -
+`tests/testthat/test-article-pairs.R` here and `tests/test_articles.py` in the engine. The
+route is deliberately not held, because the engine reaches each destination through a
+configuration file where this package reaches it through constructors.
+
+So: renaming or reordering a `##` heading in this file breaks both suites until the article
+follows. Changing the body of a section breaks neither, and that is the part no test can
+check - a heading test does not stop prose drifting.
+-->
+
 
 
 
@@ -198,7 +217,7 @@ spec <- platypus_spec(
 )
 spec
 #> platypus specification
-#>   data        : /tmp/RtmpN31LIu/splits/train.csv 
+#>   data        : /tmp/Rtmp81OYn5/splits/train.csv 
 #>   classes     : 0 
 #>   models      : 1 
 #>     lesion         u_net            32x32x32, dice, 12 epochs
@@ -256,7 +275,7 @@ plot(fit)
 ``` r
 evaluate(fit)[, c("model", "loss_function", "dice", "epochs_run")]
 #>    model loss_function      dice epochs_run
-#> 1 lesion          dice 0.9448062         12
+#> 1 lesion          dice 0.9536304         12
 ```
 
 That number hides the distribution, and the distribution is usually the finding. With
@@ -268,16 +287,16 @@ cases <- evaluate_cases(fit, group_by = "^(patient\\d+)_")
 cases
 #> platypus scores by group (3 rows)
 #>      group      dice
-#>  patient06 0.9508058
-#>  patient11 0.9174028
-#>  patient10 0.9661106
+#>  patient06 0.9500000
+#>  patient11 0.9299276
+#>  patient10 0.9808831
 ```
 
 
 ``` r
 summary(cases)
-#>   metric n      mean       sd    median       min       max worst_group
-#> 1   dice 3 0.9447731 0.024908 0.9508058 0.9174028 0.9661106   patient11
+#>   metric n      mean         sd median       min       max worst_group
+#> 1   dice 3 0.9536036 0.02566816   0.95 0.9299276 0.9808831   patient11
 ```
 
 The `worst_group` column is the one that makes this actionable. A mean of any value with a
@@ -328,16 +347,16 @@ sizes
 #>                key predicted_ml   true_ml error_pct
 #> 1 patient06_study1         0.31 0.2680826        16
 #> 2 patient06_study2         0.31 0.2680826        16
-#> 3 patient10_study1         0.98 0.9047787         8
-#> 4 patient10_study2         0.97 0.9047787         7
-#> 5 patient11_study1         0.59 0.5235988        13
-#> 6 patient11_study2         0.59 0.5235988        13
+#> 3 patient10_study1         0.95 0.9047787         5
+#> 4 patient10_study2         0.94 0.9047787         4
+#> 5 patient11_study1         0.56 0.5235988         7
+#> 6 patient11_study2         0.57 0.5235988         9
 ```
 
 These lesions are spheres, so the true volume is known exactly - which is worth doing in a
 synthetic example, because it asks a question Dice cannot. The overlap scores above were
-0.92 to 0.97, respectable
-by any standard; the volumes are 7% to 16% out.
+0.93 to 0.98, respectable
+by any standard; the volumes are 4% to 16% out.
 
 Every number in that sentence is computed rather than typed, and the first half is why: it
 used to read "around 0.88", against the table directly above it. A stale number next to the
@@ -346,9 +365,10 @@ it survived anyway.
 
 That is not a contradiction. Dice is dominated by the interior of an object and forgiving about
 its boundary, and for a small lesion the boundary *is* most of it. A model that draws every
-lesion one voxel too wide scores well and reports a volume that is wrong by a third. If the
-question is *is there a lesion*, the Dice is the relevant number. If it is *has it grown since
-March*, this table is, and the two do not follow from each other.
+lesion one voxel too wide scores well and reports a volume that is wrong by between a quarter
+and twice over, because the error **cubes**: +27% on the 12 mm sphere at 1 mm slices and +95%
+on the 4 mm one. If the question is *is there a lesion*, the Dice is the relevant number. If
+it is *has it grown since March*, this table is, and the two do not follow from each other.
 
 ## Writing a mask back onto its scan
 
