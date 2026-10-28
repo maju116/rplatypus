@@ -600,9 +600,50 @@ reading of it can be what a `monitor` watches. Use `metric_balanced_accuracy()`,
 **`predict()` answers in a different shape on this route**, because the answer is a different
 kind of thing: one row per image *per class*, with `key`, `class`, and `label` and
 `predicted` as logicals. An image with none of the findings is a row of `FALSE` per class
-rather than an empty cell, which could also mean unread. There is no `probability` column -
-that column is the chosen class's own number, and with independent questions nothing was
-chosen - so `type = "probability"` is the whole of the answer there, one column per class.
+rather than an empty cell, which could also mean unread - and a split **nobody labelled** is
+`NA`, which is the other half of that sentence and the reason `FALSE` can be trusted to mean
+*measured and absent*. There is no `probability` column - that column is the chosen class's
+own number, and with independent questions nothing was chosen - so `type = "probability"` is
+the whole of the answer there, one column per class.
+
+### Predicting on images you have no labels for
+
+A test set is often just pictures, and that is an ordinary thing to have rather than a
+half-written configuration. Name them in a CSV with no label column - `key, images` and
+nothing else - and the split is read as unlabelled:
+
+```yaml
+task: classification
+data:
+  train_path: data/train.csv
+  validation_path: data/validation.csv
+  test_path: data/to-predict.csv
+  mode: config_file
+  classes: [benign, malignant]
+models:
+  - name: ours
+    input_shape: [224, 224]
+    blocks: 4
+    filters: 16
+```
+
+`predict()` and `evaluate()` then differ in what they can honestly do with it:
+
+- **`predict()` works**, and that is what the split is for. `label` comes back as `NA`
+  rather than as a class name or as `FALSE` per class, because nothing said.
+- **`evaluate()` refuses it by name.** Scoring against labels that are not there would
+  either fail somewhere inside the metric or, worse, report a number - and a zero in a
+  table is read as a result.
+- **`class_balance()` refuses it too**, for the same reason: counted anyway it says every
+  class has no images, which reads as a finding about the dataset rather than about there
+  being nothing to count.
+
+The `key` column is what makes the answer joinable to whatever else you hold - a pixel size,
+a patient identifier, a date - so it is worth writing even where the row order would do.
+
+**One layout cannot do this and the refusal says so.** `nested_dirs` makes the directory the
+label, so there is no unlabelled form of it: an image has to sit somewhere, and where it sits
+is the answer. Point `test_path` at a CSV instead, or at the images themselves.
 
 ## Not training at all
 

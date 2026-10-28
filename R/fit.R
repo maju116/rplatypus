@@ -434,20 +434,39 @@ predict.platypus_fit <- function(object, model = NULL, split = "test",
     # only shape in which "this image has none of the findings" is four rows of FALSE
     # rather than an empty cell that could also mean unread.
     #
+    # **And that last clause is why `label` is NA rather than FALSE on an unlabelled
+    # split** (`rplatypus#245`). The argument above rests on FALSE meaning *measured and
+    # absent*, so the shape only keeps "none of them" apart from "unread" if "unread" is
+    # written as something else. `0.8.0a52` made an unlabelled classification test split
+    # reachable - a CSV of `key, images`, which is the ordinary shape of a prediction set -
+    # and the engine marks it by sending `labels: NULL` where a film carrying no finding
+    # sends an empty list. Both arrive here as `character(0)`, so the distinction has to be
+    # read from the NULL rather than from what `%in%` makes of it.
+    #
     # There is no `probability` column on this route and that is the engine's decision
     # rather than an omission here: that column is the chosen class's own number, and with
     # independent questions nothing was chosen. `type = "probability"` above is the whole
     # of the answer, and it needs no branch - the `p_<class>` keys are in both shapes.
     if (isTRUE(found$multilabel)) {
       answers <- do.call(rbind, lapply(found$rows, function(row) {
-        true_set <- as.character(unlist(row$labels))
         said <- as.character(unlist(row$predicted))
+        # NA for a split nobody labelled, and it is read from the NULL rather than from
+        # the emptiness: `character(0)` is what both an unlabelled image and a film
+        # carrying none of the findings reduce to, and `classes %in% character(0)` is
+        # FALSE either way. `NA` keeps the column logical, so `tapply` and `table` go on
+        # working and a split with no labelling is visible rather than reading as a
+        # dataset in which nothing is ever present.
+        truth <- if (is.null(row$labels)) {
+          rep(NA, length(classes))
+        } else {
+          classes %in% as.character(unlist(row$labels))
+        }
         data.frame(
           key = as.character(row$key),
           # `classes` rather than the row's own order, so two rows are comparable and the
           # class index is the specification's.
           class = classes,
-          label = classes %in% true_set,
+          label = truth,
           predicted = classes %in% said,
           stringsAsFactors = FALSE
         )

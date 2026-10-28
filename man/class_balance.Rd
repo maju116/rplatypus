@@ -9,7 +9,11 @@ class_balance(spec, split = "train")
 \arguments{
 \item{spec}{A \code{\link[=platypus_spec]{platypus_spec()}} describing a classification task.}
 
-\item{split}{Which split to count: \code{"train"}, \code{"validation"} or \code{"test"}.}
+\item{split}{Which split to count: \code{"train"}, \code{"validation"} or \code{"test"}. A split that
+carries no labelling is \strong{refused by name} rather than counted - which is the
+ordinary shape of a test set, since \verb{0.8.0a52} reads a CSV of \verb{key, images} as a
+prediction split. Counted anyway it would report every class at zero and read as a
+finding about the dataset rather than about there being nothing to count.}
 }
 \value{
 A data frame of one row per class, in class order, with columns \code{class}, \code{n} and

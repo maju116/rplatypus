@@ -353,7 +353,11 @@ classifier <- function(name, input_shape, channels = NULL,
 #' second place for one fact to live.
 #'
 #' @param spec A [platypus_spec()] describing a classification task.
-#' @param split Which split to count: `"train"`, `"validation"` or `"test"`.
+#' @param split Which split to count: `"train"`, `"validation"` or `"test"`. A split that
+#'   carries no labelling is **refused by name** rather than counted - which is the
+#'   ordinary shape of a test set, since `0.8.0a52` reads a CSV of `key, images` as a
+#'   prediction split. Counted anyway it would report every class at zero and read as a
+#'   finding about the dataset rather than about there being nothing to count.
 #' @return A data frame of one row per class, in class order, with columns `class`, `n` and
 #'   `share`, of class `platypus_class_balance` so that printing it adds the engine's own
 #'   remark about how lopsided the split is. The engine's sentence is carried on the
