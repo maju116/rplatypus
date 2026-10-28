@@ -83,9 +83,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-ee0d825c001f130fb265e92dcb17fa1f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -874,7 +874,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <code id="data">data</code>
 </td>
 <td>
-A <a href="../man/segmentation_data.html"><code>segmentation_data()</code></a>, <a href="../man/detection_data.html"><code>detection_data()</code></a>, <a href="../man/instance_data.html"><code>instance_data()</code></a> or <a href="../man/classification_data.html"><code>classification_data()</code></a> specification, or the path to a YAML file. Which one it is decides <code>task</code>.
+<p>A <a href="../man/segmentation_data.html"><code>segmentation_data()</code></a>, <a href="../man/detection_data.html"><code>detection_data()</code></a>, <a href="../man/instance_data.html"><code>instance_data()</code></a> or <a href="../man/classification_data.html"><code>classification_data()</code></a> specification, or the path to a YAML file. Which one it is decides <code>task</code>.</p>
+<strong>A plain list of the same fields also works</strong>, which is what a caller assembling a configuration programmatically reaches for, and it is the shape a YAML file already proves the engine accepts. A plain list names no task, so <code>task</code> is then taken from whatever else does - the models, if they were built by a constructor - and from the <code>task</code> argument when nothing else says anything. With neither, it is semantic segmentation. A constructor is still the better route: it refuses a wrong field here rather than across the bridge, and the fields it refuses are most of what it is for.
 </td>
 </tr>
 <tr>
