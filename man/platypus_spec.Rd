@@ -15,17 +15,21 @@ platypus_spec(
 )
 }
 \arguments{
-\item{data}{A \code{\link[=segmentation_data]{segmentation_data()}}, \code{\link[=detection_data]{detection_data()}} or \code{\link[=instance_data]{instance_data()}}
+\item{data}{A \code{\link[=segmentation_data]{segmentation_data()}}, \code{\link[=detection_data]{detection_data()}}, \code{\link[=instance_data]{instance_data()}} or
+\code{\link[=classification_data]{classification_data()}}
 specification, or the path to a YAML file. Which one it is decides \code{task}.}
 
 \item{models}{A list of model specifications, see \link{models} and \code{\link[=available_models]{available_models()}}.
 More than one is the ordinary case rather than the exception: they are trained in turn
 against the same data and the same split, which is what makes their numbers
 comparable, and a comparison is written by listing several entries of the same
-architecture with different settings.}
+architecture with different settings. For a classifier, which has no architecture to
+vary, the comparison the task makes easiest is several entries differing only in
+\code{encoder} - ours against a pretrained backbone, on the same split.}
 
 \item{task}{Which task this specification describes, one of \code{"semantic_segmentation"},
-\code{"object_detection"} or \code{"instance_segmentation"}. Normally left unset: the data and
+\code{"object_detection"}, \code{"instance_segmentation"} or \code{"classification"}. Normally left
+unset: the data and
 model constructors already decide it, and \code{segmentation_data()} with \code{u_net()} can only
 mean one thing. Given, it is \strong{checked against them rather than trusted}, so it can
 only agree or refuse.

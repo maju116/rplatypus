@@ -294,6 +294,13 @@ loss_lovasz <- function(per_image = FALSE) list(name = "lovasz", per_image = per
 #' 0.6266 - higher every time. That is agreement on the field of view rather than on the
 #' object.
 #'
+#' **Metrics for one label per image are a different family and have their own page.**
+#' `metric_accuracy()`, `metric_balanced_accuracy()`, `metric_f1()` and `metric_auc()` score
+#' a classifier, where there is no overlap to measure and no background class to leave out -
+#' see [classification_metrics]. None of the names on this page appears there and none of
+#' theirs appears here, which is the honest shape: a Dice over one label would be the label
+#' itself.
+#'
 #' @param smooth Smoothing. Zero is allowed and is the honest choice for a reported
 #'   number: with smoothing, a class absent from an image scores a perfect 1.
 #' @param include_background Average over the background class as well. In medical images
@@ -369,6 +376,61 @@ metric_surface_dice <- function(tau, smooth = 1, include_background = FALSE) {
   list(name = "surface_dice", tau = tau, smooth = smooth,
        include_background = include_background)
 }
+
+#' Metrics for one label per image
+#'
+#' What to report beside the loss for `task = "classification"`. These are a different
+#' family from [metrics] rather than more of it: there is no overlap to measure, no
+#' background class to leave out, and no `smooth` - a label is right or it is not.
+#'
+#' **They are also scored differently, and that is measured rather than stylistic.** An
+#' overlap metric is a formula on counts, so averaging a batch's scores is the score; three
+#' of these four are not means over images at all. On 4000 images at a prevalence of 3%,
+#' against a model whose own probabilities are the truth, pooling the whole pass against
+#' averaging batches of 8 moves balanced accuracy by 0.0035, macro F1 by 0.0734, and the
+#' AUC by up to 0.0371 in a direction that does not settle with a bigger batch - because at
+#' that prevalence 398 of 500 batches hold no positive at all, so a per-class recall is an
+#' average over whichever batches happened to contain the rare class. The engine therefore
+#' accumulates these over the pass and computes them once at the end.
+#'
+#' **`metric_auc()` is the engine's default and the other three are offered rather than
+#' recommended.** At a 3% prevalence a calibrated model never crosses the threshold, so
+#' everything read off the hard prediction sees the same all-negative answer: accuracy spans
+#' 0.0100 across models of genuinely different quality and is not even monotone - a model
+#' with no signal scores above two that have one - while the AUC spans 0.4631. Balanced
+#' accuracy and F1 do not rescue it; they move by 0.0000 and -0.0005 between a real signal
+#' and a collapse. Being threshold-free is the property that separates them.
+#'
+#' So `metric_accuracy()` is here because it is the number people ask for, and its page says
+#' what it costs.
+#'
+#' @return A metric specification.
+#' @name classification_metrics
+#' @seealso [classifier()], [metrics] for masks, [class_balance()] for the prevalence these
+#'   measurements are all about
+#' @examples
+#' metric_auc()
+#'
+#' # The number people ask for, beside the one that can tell a signal from a collapse.
+#' classifier("cnn", input_shape = c(128, 128),
+#'            metrics = list(metric_auc(), metric_accuracy()))
+NULL
+
+#' @rdname classification_metrics
+#' @export
+metric_accuracy <- function() list(name = "accuracy")
+
+#' @rdname classification_metrics
+#' @export
+metric_balanced_accuracy <- function() list(name = "balanced_accuracy")
+
+#' @rdname classification_metrics
+#' @export
+metric_f1 <- function() list(name = "f1")
+
+#' @rdname classification_metrics
+#' @export
+metric_auc <- function() list(name = "auc")
 
 #' Optimisers
 #'
@@ -970,14 +1032,23 @@ available_transforms <- function(rank = 2, pattern = NULL) {
 #' a condition whose message says that, rather than returning a table with no rows. An empty
 #' table reads as "there are none", which is a different and wrong answer.
 #'
-#' @param task `"semantic_segmentation"`, `"instance_segmentation"` or
-#'   `"object_detection"`. Which components a specification may name depends on what it is
+#' **`available_models("classification")` raises for the same kind of reason and a different
+#' fact.** A classifier chooses no architecture: the network is a contracting path, pooled,
+#' with one dense layer on top, and `encoder` decides whose contracting path it is - ours
+#' when it is unset, any of timm's when it names a backbone. So there is no `architecture`
+#' field to write and a row here would invite one. [encoders] is the listing that question
+#' actually has.
+#'
+#' @param task `"semantic_segmentation"`, `"instance_segmentation"`, `"object_detection"`
+#'   or `"classification"`. Which components a specification may name depends on what it is
 #'   asking for, and for losses it genuinely differs: the three regression losses are listed
-#'   only at the instance task, which is the only one with a target for them. No count is
+#'   only at the instance task, which is the only one with a target for them, and
+#'   classification lists two of the eleven - the ones that score each answer on its own
+#'   rather than scoring an overlap. No count is
 #'   written here on purpose - the counts are asserted in the test suite against the pinned
 #'   engine, which is where a number nobody can re-measure from a help page belongs. This
-#'   parameter listed two tasks until the pin moved to `0.8.0a22`; the third arrived in the
-#'   engine's `0.8.0a20`.
+#'   parameter listed two tasks until the pin moved to `0.8.0a22`, three until it moved to
+#'   `0.8.0a49`; the third arrived in the engine's `0.8.0a20` and the fourth in `0.8.0a49`.
 #' @return A data frame with `name`, `arguments` and `description`. `arguments` is a single
 #'   string per row, comma-separated, because a column of vectors prints as something nobody
 #'   can read; `strsplit(x, ", ")` takes it apart.

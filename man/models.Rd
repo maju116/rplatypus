@@ -204,7 +204,20 @@ Focal-Tversky of 0.05 is not better than a cross-entropy of 0.14, it is a differ
 question, which is why the table carries the loss's name beside the number. Unset uses
 the engine's default.}
 
-\item{metrics}{A list of metrics, see \link{metrics}.}
+\item{metrics}{A list of metrics, see \link{metrics}. These are reported beside the loss and
+are \strong{computed on the mask rather than on the objective}, which is what makes them
+comparable between models: a Focal-Tversky of 0.05 and a CCE-Dice of 0.14 are not the
+same question, and their Dice is.
+
+A callback watching \verb{val_<metric>} is refused when nothing in this list will produce
+it - when the configuration is read, rather than at the end of the first epoch with
+the epoch already paid for. Which is also why a tiled run refuses a callback watching
+\code{val_cldice} or \code{val_surface_dice}: those are properties of a whole mask, reported per
+case rather than per epoch, so the choice to tile and the choice of what to stop on
+are settled together.
+
+For a classifier the list is a different family - see \link{classification_metrics}, where
+none of these names appears and the default is measured rather than chosen.}
 
 \item{optimizer}{An optimiser, see \link{optimizers}.}
 

@@ -198,13 +198,28 @@ evaluate.platypus_fit <- function(object, split = "validation", at = NULL, ...) 
     }
     shim()$detection_table(object$engine, split = split)
   } else {
+    # `at` chooses the grid a mask is scored on, and a label is not on a grid at all - so
+    # for this task it is refused by name rather than forwarded and ignored. The detection
+    # branch above refuses it for a neighbouring reason: boxes are already in the source
+    # image's coordinates.
+    if (identical(object$task, "classification") && !is.null(at)) {
+      stop("`at` chooses the grid a mask is scored on, and this fit answers with one label ",
+           "per image. There is no grid for the answer to be on and nothing to rescore, so ",
+           "the table is the same whatever `at` would have said.", call. = FALSE)
+    }
     shim()$evaluation_table(object$engine, split = split, at = at)
   }
   if (!isTRUE(result$ok)) abort_engine(result)
   rows_to_frame(result$table)
 }
 
-#' Predict masks
+#' Predict masks, boxes, objects or labels
+#'
+#' One function per fit rather than one per task, because the question - *what does this
+#' model say about this split* - is the same one. What comes back is not: a mask for
+#' segmentation, a table of boxes for detection, a label map of objects for instances, and
+#' a row per image for classification. The arguments that describe a grid are refused where
+#' there is no grid, by name, rather than accepted and ignored.
 #'
 #' @section Which grid the answer is on:
 #'
@@ -258,15 +273,26 @@ evaluate.platypus_fit <- function(object, split = "validation", at = NULL, ...) 
 #'   one is not an answer: a pixel may be in three classes and naming one of them drops the
 #'   rest with nothing in the result to say so. Ask for `"probability"` and write it with
 #'   [save_class_masks()].
+#'
+#'   On a **classification** fit the two readings are a table and a matrix rather than two
+#'   arrays: `"class"` gives one row per image with the answer and how sure the model was,
+#'   and `"probability"` gives one row per image and one column per class. `"channels"` is
+#'   refused - a classifier has no channels, only one number per class, and those numbers
+#'   are the probabilities.
 #' @param decode Which decoding turns the predicted channels into objects, by the name used
 #'   in the model's `decode` list. Unset takes the model's first, which is the engine's own
 #'   default rather than one restated here. **Instance models only**; for anything else it
 #'   is refused, because a semantic or detection fit decodes nothing.
 #' @param space `"model"` or `"source"`; see above. Note that the two return different
-#'   shapes of thing, an array and a list, because they are different things.
+#'   shapes of thing, an array and a list, because they are different things. Refused on a
+#'   detection, instance or classification fit, each for its own reason - boxes are in the
+#'   source image's coordinates already, an object identity cannot survive resampling, and
+#'   a label is not on a grid at all.
 #' @param cases Case names to predict, as [evaluate_cases()] reports them. With this the
 #'   result is a **named list** of just those, in the order asked for. A name that is not in
-#'   the split is an error rather than a missing entry.
+#'   the split is an error rather than a missing entry. Both this and `each` exist so that a
+#'   split of full-resolution masks never has to be in memory at once, so both are refused
+#'   on a classification fit, where the whole answer is one row per image.
 #' @param each A function called as `each(case, mask)` once per image, instead of the
 #'   predictions being returned together. Whatever it returns is collected under the case's
 #'   name; return `NULL` from it and nothing accumulates. This is the form that does not
@@ -288,6 +314,13 @@ evaluate.platypus_fit <- function(object, split = "validation", at = NULL, ...) 
 #'   reason the detection one is a list, and named rather than ordered because a list paired
 #'   against case names by position is one dropped batch away from naming the wrong picture.
 #'   Draw them with [overlay_instances()] and measure them with [instance_sizes()].
+#'
+#'   On a **classification** fit: for `"class"`, a data frame of one row per image with
+#'   `key` (the name the split calls it, which is what joins this to anything else), `label`
+#'   (what it was labelled, or `NA` on a split that carries no labelling), `predicted` and
+#'   `probability` - the probability of the class that was chosen, not of the right one. For
+#'   `"probability"`, a numeric matrix of images by classes, with the keys as row names and
+#'   the class names as columns, in the order `classes` was written.
 #' @export
 #' @examples
 #' \dontrun{
@@ -323,6 +356,14 @@ predict.platypus_fit <- function(object, model = NULL, split = "test",
     stop("no model called '", model, "'; this fit has: ",
          paste(object$models, collapse = ", "), call. = FALSE)
   }
+  # Asked of every task rather than of the ones that fall through to the bottom of this
+  # function, which is where it used to sit: the detection branch returns before reaching
+  # it, so `predict(fit, decode = )` on a detector was accepted and silently ignored.
+  if (!is.null(decode) && !identical(object$task, "instance_segmentation")) {
+    stop("`decode` is how predicted channels become objects, which only an instance model ",
+         "does. This fit is ", object$task, ".", call. = FALSE)
+  }
+
   if (identical(object$task, "object_detection")) {
     if (asked_type || asked_space) {
       stop("`type` and `space` are about masks. A detector returns boxes, always in each ",
@@ -332,6 +373,54 @@ predict.platypus_fit <- function(object, model = NULL, split = "test",
     found <- shim()$detections(object$engine, model, split = split)
     if (!isTRUE(found$ok)) abort_engine(found)
     return(as_box_frames(found$detections))
+  }
+
+  if (identical(object$task, "classification")) {
+    if (asked_space) {
+      stop("`space` chooses the grid a mask comes back on, and this fit answers with one ",
+           "label per image. There is no grid for a label to sit on and no inverse to map ",
+           "it through, so neither value of `space` would mean anything.", call. = FALSE)
+    }
+    if (identical(type, "channels")) {
+      stop("`type = \"channels\"` exists for an instance model, whose vector channels are ",
+           "not probabilities. A classifier's output is one number per class and those ",
+           "numbers *are* probabilities, so `type = \"probability\"` is the ask - a matrix ",
+           "with a row per image and a column per class.", call. = FALSE)
+    }
+    if (!is.null(cases) || !is.null(each)) {
+      stop("`cases` and `each` walk a split's masks, one at a time, so that a whole set ",
+           "of them never has to be in memory at once. One label per image is already ",
+           "small: this returns a row per image, so subset the result or walk its rows ",
+           "instead.", call. = FALSE)
+    }
+    found <- shim()$classification_answers(object$engine, model, split = split)
+    if (!isTRUE(found$ok)) abort_engine(found)
+    classes <- as.character(unlist(found$classes))
+    keys <- vapply(found$rows, function(row) as.character(row$key), character(1))
+
+    if (identical(type, "probability")) {
+      # A matrix rather than a data frame, because every column is the same quantity and a
+      # caller plotting an ROC curve or taking a row-wise maximum wants it that way. Named
+      # on both margins: the keys are what joins this to anything else they hold, and the
+      # class order is the specification's rather than whatever order a row's `p_` keys
+      # happened to iterate in.
+      probabilities <- t(vapply(found$rows, function(row) {
+        vapply(classes, function(klass) as.numeric(row[[paste0("p_", klass)]]),
+               numeric(1), USE.NAMES = FALSE)
+      }, numeric(length(classes))))
+      dimnames(probabilities) <- list(keys, classes)
+      return(probabilities)
+    }
+
+    # Named by case rather than returned in the split's order alone, which is the lesson
+    # `rplatypus#223` cost on the semantic path: a prediction handed back as a bare
+    # sequence has to be paired with whatever else the caller holds by position, and one
+    # dropped last batch names the wrong picture. `label` is NA on a split that carries no
+    # labelling, which is what a test set often is.
+    answers <- rows_to_frame(lapply(found$rows, function(row) {
+      row[c("key", "label", "predicted", "probability")]
+    }))
+    return(answers)
   }
 
   if (identical(object$task, "instance_segmentation")) {
@@ -366,10 +455,6 @@ predict.platypus_fit <- function(object, model = NULL, split = "test",
     maps <- lapply(found$maps, function(one) array(as.integer(one), dim = dim(one)))
     names(maps) <- unlist(found$cases)
     return(maps)
-  }
-  if (!is.null(decode)) {
-    stop("`decode` is how predicted channels become objects, which only an instance model ",
-         "does. This fit is ", object$task, ".", call. = FALSE)
   }
   if (identical(type, "channels")) {
     stop("`type = \"channels\"` exists for an instance model, whose vector channels are ",
@@ -518,7 +603,8 @@ evaluate_classes.platypus_fit <- function(object, model = NULL,
   if (!identical(object$task, "object_detection")) {
     stop("`evaluate_classes()` reports average precision per class, which is a detection ",
          "measure. For segmentation, `evaluate_cases()` reports per case and ",
-         "`summary()` on the result summarises it.", call. = FALSE)
+         "`summary()` on the result summarises it; for classification the per-class ",
+         "figures are `evaluate()`'s own columns.", call. = FALSE)
   }
   model <- model %||% object$models[[1]]
   result <- shim()$detection_classes(object$engine, model, split = split)
@@ -579,8 +665,8 @@ evaluate_images.platypus_fit <- function(object, model = NULL, split = "validati
                                          score_threshold = NULL, ...) {
   if (!identical(object$task, "object_detection")) {
     stop("`evaluate_images()` counts boxes per image, which is a detection measure. ",
-         "For segmentation, `evaluate_cases()` scores every case separately.",
-         call. = FALSE)
+         "For segmentation, `evaluate_cases()` scores every case separately; for ",
+         "classification, `predict()` returns one row per image.", call. = FALSE)
   }
   model <- model %||% object$models[[1]]
   if (!model %in% object$models) {
@@ -858,6 +944,19 @@ evaluate_cases <- function(object, ...) UseMethod("evaluate_cases")
 #' @export
 evaluate_cases.platypus_fit <- function(object, model = NULL, split = "validation",
                                         group_by = NULL, at = NULL, ...) {
+  # Refused rather than returned, because the number it would report carries no
+  # information. A case on the segmentation side is an image with hundreds of thousands of
+  # voxels and a score of its own, which is what makes the minimum worth publishing; one
+  # image's accuracy is 0 or 1, so a split's worst case is 0 for any model that gets a
+  # single image wrong. The engine says the same thing by having no `_worst` column here.
+  if (identical(object$task, "classification")) {
+    stop("`evaluate_cases()` scores every case separately, and a case here is one image ",
+         "whose score is 0 or 1 - so the worst case of a split is 0 for any model that ",
+         "gets one image wrong, and the spread carries nothing. `predict()` returns a row ",
+         "per image with the answer and every class's probability, and `evaluate()` ",
+         "reports the per-class figures - `balanced_accuracy` and `f1` - which is the ",
+         "question this one is asking.", call. = FALSE)
+  }
   model <- model %||% object$models[[1]]
   if (!model %in% object$models) {
     stop("no model called '", model, "'; this fit has: ",

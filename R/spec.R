@@ -384,15 +384,19 @@ ct_windows <- function() {
 #' The engine validates it, so a mistake is caught here rather than part-way through a
 #' training run - and reported against the model that has it, by the name you gave it.
 #'
-#' @param data A [segmentation_data()], [detection_data()] or [instance_data()]
+#' @param data A [segmentation_data()], [detection_data()], [instance_data()] or
+#'   [classification_data()]
 #'   specification, or the path to a YAML file. Which one it is decides `task`.
 #' @param models A list of model specifications, see [models] and [available_models()].
 #'   More than one is the ordinary case rather than the exception: they are trained in turn
 #'   against the same data and the same split, which is what makes their numbers
 #'   comparable, and a comparison is written by listing several entries of the same
-#'   architecture with different settings.
+#'   architecture with different settings. For a classifier, which has no architecture to
+#'   vary, the comparison the task makes easiest is several entries differing only in
+#'   `encoder` - ours against a pretrained backbone, on the same split.
 #' @param task Which task this specification describes, one of `"semantic_segmentation"`,
-#'   `"object_detection"` or `"instance_segmentation"`. Normally left unset: the data and
+#'   `"object_detection"`, `"instance_segmentation"` or `"classification"`. Normally left
+#'   unset: the data and
 #'   model constructors already decide it, and `segmentation_data()` with `u_net()` can only
 #'   mean one thing. Given, it is **checked against them rather than trusted**, so it can
 #'   only agree or refuse.
@@ -592,9 +596,15 @@ agreed_task <- function(data, models, stated = NULL) {
   # refuses - `colormap`, `labels`, `regions`, `channels_from`, `target_spacing` - rather than
   # any it adds. `known` below gained "instance_segmentation" with that constructor and not
   # before, because a value nothing can produce would only ever reach the disagreement error.
+  #
+  # It gained "classification" the same way, with `classification_data()` and `classifier()`.
+  # That task breaks the pattern the paragraph above describes rather than extending it: a
+  # classifier has no `architecture` at all, so the *model* names its task outright instead
+  # of having it read off a field - there is nothing a semantic model could be mistaken for.
   if (!is.null(stated)) {
     stated <- as.character(stated)[[1L]]
-    known <- c("semantic_segmentation", "object_detection", "instance_segmentation")
+    known <- c("semantic_segmentation", "object_detection", "instance_segmentation",
+               "classification")
     if (!stated %in% known) {
       renamed <- c(segmentation = "semantic_segmentation", detection = "object_detection")
       if (stated %in% names(renamed)) {

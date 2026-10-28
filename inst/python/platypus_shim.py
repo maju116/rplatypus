@@ -12,6 +12,11 @@ from __future__ import annotations
 
 from typing import Any
 
+#: The tasks whose engine does not take `check_masks`, by the `Task` enum's own values.
+#: A detector has no masks and a classifier has one label per image, so there is nothing to
+#: read a sample of - the option is dropped rather than sent and refused.
+TASKS_WITHOUT_MASKS = ("object_detection", "classification")
+
 
 def _failure(error: Any) -> dict:
     payload = error.to_dict() if hasattr(error, "to_dict") else {}
@@ -89,8 +94,8 @@ def build_engine(
         options["check_masks"] = False
 
     # `build_engine` picks the engine the spec's task asks for. A detector has no masks to
-    # check, so the option is dropped rather than sent and refused: it is meaningless
-    # there, not disallowed.
+    # check and neither has a classifier, so the option is dropped rather than sent and
+    # refused: it is meaningless there, not disallowed.
     maker = getattr(pyplatypus, "build_engine", None)
     if maker is None:
         return _failure_message(
@@ -98,7 +103,16 @@ def build_engine(
             "specification from a segmentation one. Update platypus, or point "
             "PLATYPUS_ENGINE_PATH at a newer source tree."
         )
-    if getattr(getattr(spec, "task", None), "value", None) == "detection":
+    # The VALUES rather than the words they shorten to, which is the whole of why this
+    # line is written out: the comparison read `== "detection"` while the enum member is
+    # `Task.OBJECT_DETECTION` with the value `"object_detection"`, so it never fired. The
+    # cost was not a missing drop - it was the wrong diagnosis: `check_masks=False` reached
+    # `DetectionEngine`, which has no such argument, and the `TypeError` below reports
+    # "this engine predates `check_masks`" about an engine that is current. Classification
+    # is the second task in this position and `ClassificationEngine` takes no such argument
+    # either, so both are named here and `tests/testthat/test-shim-mask-option.R` holds the
+    # set against the engines' own signatures rather than against this comment.
+    if getattr(getattr(spec, "task", None), "value", None) in TASKS_WITHOUT_MASKS:
         options.pop("check_masks", None)
 
     try:
@@ -724,6 +738,62 @@ def instance_channels(engine: Any, model_name: str, split: str = "test") -> dict
     except Exception as error:  # noqa: BLE001
         return _engine_failure(error)
     return {"ok": True, "channels": np.asarray(channels)}
+
+
+def classification_answers(engine: Any, model_name: str, split: str = "test") -> dict:
+    """One row per image: its key, its label, the answer and every class's probability.
+
+    `engine.answers()` rather than `engine.predict()`, and the difference is the key. A
+    bare array of probabilities has to be paired with the split's samples by position,
+    which is one `drop_last` away from naming the wrong picture - `rplatypus#223` is that
+    defect on the semantic side and there is no reason to ship it again one task across.
+    Both shapes R offers are built from these rows, so the keys and the class order are
+    read once.
+    """
+    import pyplatypus
+
+    try:
+        rows = engine.answers(model_name, split=split)
+    except pyplatypus.PlatypusError as error:
+        return _failure(error)
+    except Exception as error:  # noqa: BLE001
+        return _engine_failure(error)
+    return {
+        "ok": True,
+        "rows": rows,
+        # The class order is the specification's, not the columns' - a row's `p_` keys are
+        # built from it, but reading them back off a dict would hand R whatever order the
+        # mapping iterated in.
+        "classes": list(engine.spec.data.classes),
+    }
+
+
+def class_balance(spec: Any, split: str = "train") -> dict:
+    """How many images each class has in a split, before anything is trained.
+
+    Built with `strict_data=False` so that a count can be taken of data that is not yet
+    tidy: the question "what have I got" is exactly the one somebody asks when a split is
+    still wrong, and refusing to answer it until the data is perfect would make this
+    useless where it is most wanted.
+
+    `remark` is the engine's own sentence rather than the numbers re-read on R's side. The
+    threshold it fires below is the engine's number, and a copy of it in R would be a second
+    place for one fact to live.
+    """
+    import pyplatypus
+
+    try:
+        engine = pyplatypus.build_engine(spec, strict_data=False)
+        balance = engine.balance(split)
+    except pyplatypus.PlatypusError as error:
+        return _failure(error)
+    except Exception as error:  # noqa: BLE001
+        return _engine_failure(error)
+    return {
+        "ok": True,
+        "counts": {str(name): int(count) for name, count in balance.counts.items()},
+        "remark": str(balance),
+    }
 
 
 def class_masks(

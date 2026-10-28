@@ -17,6 +17,60 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-28 - one label per image, from R (engine `0.8.0a49`)
+
+**The pin moves to `0.8.0a49`, and this is the first release this package could not take by
+moving the pin alone.** `platypus_spec()` sends a YAML file or a bare `data` list straight
+to the engine's validator, so a pin at `0.8.0a49` with no constructors would have accepted
+`task: classification` from a file and refused it from `classification_data()` - one
+configuration with two answers, which is the divergence recorded for `regions` in
+`0.8.0a28`. So the pin and the surface arrive together, and a test holds the two paths to
+the same specification.
+
+`classification_data()` and `classifier()` are the two new constructors.
+`classification_data()` is as much the fields it has not got as the two it adds: `colormap`,
+`labels`, `regions`, `classes_from`, `channels_from` and `target_spacing` all describe a
+mask or a grid, and a label is neither. `classifier()` is **the one model constructor in
+this package not named after an architecture** - a classifier has nothing after the pooling
+but a dense layer, so the contracting path is the architecture and `encoder` is the whole
+answer.
+
+**Four metrics of their own, and the default is measured rather than chosen.**
+`metric_auc()`, `metric_accuracy()`, `metric_balanced_accuracy()` and `metric_f1()` share no
+name with the mask metrics. `auc` is the engine's default because at a 3% prevalence a
+calibrated model never crosses the threshold: everything read off the hard prediction sees
+the same all-negative answer, so accuracy spans 0.0100 across models whose AUC spans 0.4631
+and is not even monotone in their quality. `class_balance()` is the function that makes that
+prevalence visible before a run rather than after it, and it prints the engine's own remark
+instead of a copy of its threshold.
+
+**`predict()` answers per image and is joinable.** `type = "class"` gives a row per image
+with `key`, `label`, `predicted` and `probability`; `type = "probability"` gives a matrix of
+images by classes with the keys as row names. Named rather than ordered, which is the lesson
+`predict(space = "source")` cost on the semantic side: a prediction handed back as a bare
+sequence has to be paired with whatever else the caller holds by position.
+
+**What is refused, by name, is as much of this as what is returned.** `space` and the
+`cases`/`each` pair describe a grid and a split of masks too large to hold at once, and
+neither means anything for one label per image. `evaluate(at = )` is refused for the same
+reason. `evaluate_cases()` is refused for a different one: a case here is one image whose
+score is 0 or 1, so a split's worst case is 0 for any model that gets a single image wrong -
+a number that carries nothing while reading like one that does.
+
+**Two defects found by doing this rather than by any test.** The shim dropped the
+`check_masks` option for a detection specification by comparing the task against
+`"detection"`, where the value is `"object_detection"` - so the branch never fired, the
+option reached an engine that has no such argument, and the `TypeError` was reported as
+*this engine predates `check_masks`* about an engine that is current. And `predict()`'s
+`decode` guard sat below the task branches, so a detection fit - the one branch that returns
+before reaching it - accepted `decode` and silently ignored it. Both are fixed here, because
+classification is the second task in the first position and would have inherited both.
+
+`?metrics` also gains the prose it never had: it was `A list of metrics, see [metrics].`
+against seven hundred characters in the engine, and the sentence it was missing is a
+mechanism - a callback watching `val_<metric>` is refused when nothing in the list will
+produce it.
+
 ### 2026-10-26 - every object's shape, not just the whole mask's (engine `0.8.0a46`)
 
 **The pin moves to `0.8.0a46`, and what it brings is a measurement the engine could not make

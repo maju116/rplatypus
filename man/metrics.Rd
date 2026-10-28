@@ -99,6 +99,13 @@ between any two masks whatever happened in them: measured on four random pairs a
 \code{tau = 2}, the background scored 0.6110 to 0.7030 against the foreground's 0.5583 to
 0.6266 - higher every time. That is agreement on the field of view rather than on the
 object.
+
+\strong{Metrics for one label per image are a different family and have their own page.}
+\code{metric_accuracy()}, \code{metric_balanced_accuracy()}, \code{metric_f1()} and \code{metric_auc()} score
+a classifier, where there is no overlap to measure and no background class to leave out -
+see \link{classification_metrics}. None of the names on this page appears there and none of
+theirs appears here, which is the honest shape: a Dice over one label would be the label
+itself.
 }
 \examples{
 metric_dice(include_background = FALSE)
