@@ -46,6 +46,60 @@ readme_sections <- function(path) {
   trimws(sub("^## ", "", lines[heads]))
 }
 
+# §3C: a measured number in prose needs a test holding it to the measurement, or it should
+# not be written. These two were **nine** and **three** until 2026-10-28 and had been wrong
+# since `0.8.0a2` added clDice - the engine's own README said eleven and five the whole time,
+# and §3F's README pair did not catch it because that pair holds the section ORDER and which
+# sections must exist, not the claims inside them. So this is the content half, and it reads
+# the counts off the running engine rather than restating them.
+number_words <- c(
+  one = 1L, two = 2L, three = 3L, four = 4L, five = 5L, six = 6L, seven = 7L,
+  eight = 8L, nine = 9L, ten = 10L, eleven = 11L, twelve = 12L, thirteen = 13L,
+  fourteen = 14L, fifteen = 15L, sixteen = 16L, seventeen = 17L, eighteen = 18L,
+  nineteen = 19L, twenty = 20L
+)
+
+# The count the README quotes for `noun`, as an integer, or NA if the phrase is gone or the
+# word is not one this vocabulary knows. NA is a failure rather than a skip: the phrase
+# disappearing is exactly the edit this test exists to notice.
+quoted_count <- function(text, noun) {
+  pattern <- sprintf("[*][*]([A-Za-z]+) %s", noun)
+  hits <- regmatches(text, gregexpr(pattern, text))[[1]]
+  if (length(hits) != 1L) {
+    return(NA_integer_)
+  }
+  word <- tolower(sub(sprintf("^[*][*]([A-Za-z]+) %s$", noun), "\\1", hits))
+  if (!word %in% names(number_words)) {
+    return(NA_integer_)
+  }
+  unname(number_words[[word]])
+}
+
+test_that("the counts the README quotes are the engine's own", {
+  skip_if_no_engine()
+  path <- readme_path()
+  skip_if(is.null(path), "README.md not reachable from here")
+  text <- paste(readLines(path, warn = FALSE), collapse = "\n")
+
+  losses <- quoted_count(text, "losses for segmentation")
+  metrics <- quoted_count(text, "metrics")
+  expect_false(
+    is.na(losses),
+    info = "the README no longer says `**<word> losses for segmentation**` exactly once"
+  )
+  expect_false(
+    is.na(metrics),
+    info = "the README no longer says `**<word> metrics**` exactly once"
+  )
+
+  expect_identical(losses, nrow(available_losses("semantic_segmentation")))
+  expect_identical(metrics, nrow(available_metrics("semantic_segmentation")))
+
+  # The control: a listing this test read as empty would make both comparisons vacuous.
+  expect_gt(nrow(available_losses("semantic_segmentation")), 1L)
+  expect_gt(nrow(available_metrics("semantic_segmentation")), 1L)
+})
+
 test_that("the README sections are a subsequence of the order pyplatypus shares", {
   path <- readme_path()
   skip_if(is.null(path), "README.md not reachable from here")
