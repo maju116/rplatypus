@@ -226,8 +226,19 @@ segmentation_model <- function(architecture, name, input_shape, channels, n_clas
   # `task` stays read off the constructors rather than typed. `decode` alone is not enough
   # to tag on: it is optional, and a model that decoded without predicting a signal would
   # be a specification with no way to produce one.
-  if (is.null(separation)) return(built)
-  structure(built, task = "instance_segmentation")
+  #
+  # **A semantic model is tagged too, and it did not used to be** - it returned the plain
+  # list and let `task_of()`'s default speak for it, which made it indistinguishable from a
+  # bare model list and is half of `maju116/rplatypus#239`. The set rather than the one task
+  # is this constructor's answer, and the condition is the engine's own: since pyplatypus
+  # `0.8.0a28` a U-shaped model may leave `separation` out **beside `weights`**, because a
+  # published sidecar records what the channels were trained to predict. So a model with
+  # weights and no separation is admissible for either, and `admissible_tasks()` now reads
+  # that off the tag instead of recomputing it one layer away. `maju116/rplatypus#181` is
+  # where the condition came from.
+  if (!is.null(separation)) return(structure(built, task = "instance_segmentation"))
+  if (is.null(weights)) return(structure(built, task = "semantic_segmentation"))
+  structure(built, task = c("semantic_segmentation", "instance_segmentation"))
 }
 
 

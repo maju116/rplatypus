@@ -372,14 +372,21 @@ as_anchor_groups <- function(anchors) {
   out
 }
 
-#' Which task a data block or a model belongs to
+#' Which task a data block or a model belongs to, or `NULL` when it does not say
 #'
 #' Read off the object rather than asked for. A user choosing `detection_data()` and
 #' `yolo3()` has said which they meant twice already, and a third place to say it is a
 #' third place to disagree.
 #'
+#' **`NULL` for an untagged object, and that is `maju116/rplatypus#239`.** This used to
+#' answer `"semantic_segmentation"` for anything with no tag, which made a *bare* `data`
+#' list - a plain list of fields rather than one of the four constructors - indistinguishable
+#' from `segmentation_data()`. The bare path could then express one task out of four, and a
+#' stated `task` was refused for disagreeing with an answer nobody had given. Every
+#' constructor tags itself now, including the two that used to rely on the default, so an
+#' absent tag means *this object says nothing* rather than *this object says segmentation*.
+#'
 #' @noRd
 task_of <- function(x) {
-  tagged <- attr(x, "task", exact = TRUE)
-  if (!is.null(tagged)) tagged else "semantic_segmentation"
+  attr(x, "task", exact = TRUE)
 }

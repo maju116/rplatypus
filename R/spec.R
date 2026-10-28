@@ -256,7 +256,7 @@ segmentation_data <- function(train, validation = NULL, colormap = NULL, labels 
     stop("`target_spacing` must be three positive numbers, in millimetres.", call. = FALSE)
   }
 
-  list(
+  built <- list(
     train_path = train,
     # FALSE is not a path. It travels as the engine's own `validation` flag, and
     # `validation_path` stays absent - sending both would be the contradiction the engine
@@ -298,6 +298,11 @@ segmentation_data <- function(train, validation = NULL, colormap = NULL, labels 
     column_sep = if (gave$column_sep) column_sep else NULL,
     shuffle = if (gave$shuffle) shuffle else NULL
   )
+  # Tagged like every sibling constructor, and it did not used to be: `task_of()` answered
+  # "semantic_segmentation" for anything untagged, so this block and a bare `data` list were
+  # the same object to the inference. Naming the task here is what lets an absent tag mean
+  # *nothing was said* - `maju116/rplatypus#239`.
+  structure(built, task = "semantic_segmentation")
 }
 
 #' Colormaps and their labels
@@ -387,6 +392,14 @@ ct_windows <- function() {
 #' @param data A [segmentation_data()], [detection_data()], [instance_data()] or
 #'   [classification_data()]
 #'   specification, or the path to a YAML file. Which one it is decides `task`.
+#'
+#'   **A plain list of the same fields also works**, which is what a caller assembling a
+#'   configuration programmatically reaches for, and it is the shape a YAML file already
+#'   proves the engine accepts. A plain list names no task, so `task` is then taken from
+#'   whatever else does - the models, if they were built by a constructor - and from the
+#'   `task` argument when nothing else says anything. With neither, it is semantic
+#'   segmentation. A constructor is still the better route: it refuses a wrong field here
+#'   rather than across the bridge, and the fields it refuses are most of what it is for.
 #' @param models A list of model specifications, see [models] and [available_models()].
 #'   More than one is the ordinary case rather than the exception: they are trained in turn
 #'   against the same data and the same split, which is what makes their numbers
@@ -570,7 +583,17 @@ agreed_task <- function(data, models, stated = NULL) {
   # a `u_net()` beside `detection_data()` says nothing about detection and must still be
   # refused, which "the data decides when the model is silent" would have accepted.
   from_models <- lapply(models, admissible_tasks)
-  all_tasks <- Reduce(intersect, c(list(from_data), from_models))
+
+  # Only the objects that actually said something, which is `maju116/rplatypus#239`. A bare
+  # `data` list - a plain list of fields rather than one of the four constructors - is a
+  # route `platypus_spec()` accepts and the engine validates, and until now it contributed
+  # "semantic_segmentation" to this intersection because that was `task_of()`'s default for
+  # anything untagged. So the bare path could express one task out of four: a stated
+  # `task = "classification"` was refused for disagreeing with an answer no constructor had
+  # given, and a `classifier()` beside a bare list was refused as *mixing* two tasks when
+  # only one of the two had been named at all. Nothing is inferred from silence now.
+  evidence <- Filter(Negate(is.null), c(list(from_data), from_models))
+  all_tasks <- if (length(evidence)) Reduce(intersect, evidence) else character(0)
 
   # `task` is derived rather than typed, because `segmentation_data()` with `u_net()` can
   # only mean one thing and saying it again could only ever disagree. It can still be
@@ -621,17 +644,45 @@ agreed_task <- function(data, models, stated = NULL) {
            "task; stating it is a way of being explicit, not a way of changing it.",
            call. = FALSE)
     }
+    # Nothing named a task, so there is nothing for this to disagree with and it is taken
+    # rather than checked. The guard above is untouched: `segmentation_data()` with
+    # `u_net()` names semantic segmentation twice, so a stated `"object_detection"` beside
+    # them is still two intentions in one specification. The condition is the **absence of
+    # evidence**, not the presence of a `task` argument. The engine still validates what
+    # this builds, and its refusal names the field that is wrong rather than a task nobody
+    # chose.
+    if (!length(evidence)) return(stated)
+    # Several tasks are admissible and the caller picked one of them. Reachable only from
+    # the bare path, since every data constructor names exactly one task and the
+    # intersection with it can hold at most one.
+    if (stated %in% all_tasks) return(stated)
   }
 
   if (length(all_tasks) == 1L) return(all_tasks)
 
+  if (!length(evidence)) {
+    # A bare data list and bare models, with no `task`. Semantic segmentation is what this
+    # route has always built, so it keeps building it rather than becoming a refusal for
+    # callers who were relying on the old default.
+    return("semantic_segmentation")
+  }
+
+  if (length(all_tasks) > 1L) {
+    stop("this specification does not say which task it is. ", paste(all_tasks, collapse = " and "),
+         " are both admissible for the models given, and the data block says nothing - a bare ",
+         "`data` list names no task, where `segmentation_data()` and friends each name one. ",
+         "Give `task = ` or build the data block with a constructor.", call. = FALSE)
+  }
+
   named <- vapply(seq_along(models), function(i) {
     name <- models[[i]][["name"]]
     sprintf("%s is %s", if (is.null(name)) paste0("models[[", i, "]]") else name,
-            paste(from_models[[i]], collapse = " or "))
+            if (is.null(from_models[[i]])) "a bare list and names no task"
+            else paste(from_models[[i]], collapse = " or "))
   }, character(1))
   stop("a specification describes one task, and this one mixes them: the data is ",
-       from_data, " while ", paste(named, collapse = ", "), ".\n",
+       if (is.null(from_data)) "a bare list and names no task" else from_data,
+       " while ", paste(named, collapse = ", "), ".\n",
        "  Masks and boxes are not the same pipeline, so there is nothing to reconcile - ",
        "use `segmentation_data()` with `u_net()` and friends, or `detection_data()` with ",
        "`yolo3()`.", call. = FALSE)
@@ -640,12 +691,12 @@ agreed_task <- function(data, models, stated = NULL) {
 
 #' Which tasks a model could belong to, rather than the one it claims
 #'
-#' `task_of()` answers for a data block, which always names exactly one task. A model is
-#' different as of pyplatypus `0.8.0a28`: a U-shaped model that named no `separation` is
-#' semantic **unless it names `weights`**, and then it may be either, because an instance
-#' model may now leave that field to the file - a published sidecar records what the
-#' channels were trained to predict, and `"dsbowl-instances"` is a rim of width 2, which is
-#' a training decision rather than a shape and nothing a reader can guess.
+#' A data block names exactly one task. A model may name a set, as of pyplatypus
+#' `0.8.0a28`: a U-shaped model that named no `separation` is semantic **unless it names
+#' `weights`**, and then it may be either, because an instance model may now leave that
+#' field to the file - a published sidecar records what the channels were trained to
+#' predict, and `"dsbowl-instances"` is a rim of width 2, which is a training decision
+#' rather than a shape and nothing a reader can guess.
 #'
 #' **The condition is the engine's own rather than an invention here**, which is what keeps
 #' the two from drifting: the engine permits the omission exactly where `weights` is set,
@@ -655,18 +706,18 @@ agreed_task <- function(data, models, stated = NULL) {
 #' otherwise be silent, the same layout and the same architecture differing only in whether
 #' a signal is predicted at all, and there is a test holding that case where it was.
 #'
+#' **The condition now lives in the constructor and this reads the tag**, which is the
+#' half of `maju116/rplatypus#239` about models: computing it here meant a plain list with
+#' a `weights` element answered "semantic or instance" as confidently as a `u_net()` did,
+#' so a bare model list could not be told from a built one. One function, two lines, and
+#' `NULL` for an object that says nothing.
+#'
 #' `maju116/rplatypus#181`, found by re-reading this field's prose when the field-prose
 #' ledger reported the engine had rewritten its description.
 #'
 #' @noRd
 admissible_tasks <- function(model) {
-  tagged <- attr(model, "task", exact = TRUE)
-  if (!is.null(tagged)) return(tagged)
-  if (is.null(model$weights)) {
-    "semantic_segmentation"
-  } else {
-    c("semantic_segmentation", "instance_segmentation")
-  }
+  attr(model, "task", exact = TRUE)
 }
 
 
