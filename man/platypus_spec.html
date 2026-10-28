@@ -83,9 +83,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-ee0d825c001f130fb265e92dcb17fa1f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -300,6 +300,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../man/classification_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Images and the one label each of them carries</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../man/models.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Segmentation models</span></a>
   </div>
@@ -308,6 +314,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../man/yolo3.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">YOLOv3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/classifier.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A contracting path, pooled, with one dense layer on top</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -349,6 +361,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../man/metrics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Metrics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/classification_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Metrics for one label per image</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -458,6 +476,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">What the colormap or labels match in your masks</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/class_balance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">How many images each class has, before anything is trained</span></a>
+  </div>
+</li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
@@ -501,7 +525,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/predict.platypus_fit.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Predict masks</span></a>
+ <span class="menu-text">Predict masks, boxes, objects or labels</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -850,7 +874,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <code id="data">data</code>
 </td>
 <td>
-A <a href="../man/segmentation_data.html"><code>segmentation_data()</code></a>, <a href="../man/detection_data.html"><code>detection_data()</code></a> or <a href="../man/instance_data.html"><code>instance_data()</code></a> specification, or the path to a YAML file. Which one it is decides <code>task</code>.
+A <a href="../man/segmentation_data.html"><code>segmentation_data()</code></a>, <a href="../man/detection_data.html"><code>detection_data()</code></a>, <a href="../man/instance_data.html"><code>instance_data()</code></a> or <a href="../man/classification_data.html"><code>classification_data()</code></a> specification, or the path to a YAML file. Which one it is decides <code>task</code>.
 </td>
 </tr>
 <tr>
@@ -858,7 +882,7 @@ A <a href="../man/segmentation_data.html"><code>segmentation_data()</code></a>, 
 <code id="models">models</code>
 </td>
 <td>
-A list of model specifications, see models and <a href="../man/available_components.html"><code>available_models()</code></a>. More than one is the ordinary case rather than the exception: they are trained in turn against the same data and the same split, which is what makes their numbers comparable, and a comparison is written by listing several entries of the same architecture with different settings.
+A list of model specifications, see models and <a href="../man/available_components.html"><code>available_models()</code></a>. More than one is the ordinary case rather than the exception: they are trained in turn against the same data and the same split, which is what makes their numbers comparable, and a comparison is written by listing several entries of the same architecture with different settings. For a classifier, which has no architecture to vary, the comparison the task makes easiest is several entries differing only in <code>encoder</code> - ours against a pretrained backbone, on the same split.
 </td>
 </tr>
 <tr>
@@ -866,7 +890,7 @@ A list of model specifications, see models and <a href="../man/available_compone
 <code id="task">task</code>
 </td>
 <td>
-<p>Which task this specification describes, one of <code>“semantic_segmentation”</code>, <code>“object_detection”</code> or <code>“instance_segmentation”</code>. Normally left unset: the data and model constructors already decide it, and <code>segmentation_data()</code> with <a href="../man/models.html"><code>u_net()</code></a> can only mean one thing. Given, it is <strong>checked against them rather than trusted</strong>, so it can only agree or refuse.</p>
+<p>Which task this specification describes, one of <code>“semantic_segmentation”</code>, <code>“object_detection”</code>, <code>“instance_segmentation”</code> or <code>“classification”</code>. Normally left unset: the data and model constructors already decide it, and <code>segmentation_data()</code> with <a href="../man/models.html"><code>u_net()</code></a> can only mean one thing. Given, it is <strong>checked against them rather than trusted</strong>, so it can only agree or refuse.</p>
 The third task sharpened what this argument is for rather than making it load-bearing. An instance <em>data</em> block declares nothing a segmentation one lacks, so <code>instance_data()</code> is what says the word - but a <em>model</em> can still say it on its own, because <code>separation</code> is required on an instance model and has no counterpart on a semantic one.
 </td>
 </tr>

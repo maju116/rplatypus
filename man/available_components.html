@@ -83,9 +83,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-ee0d825c001f130fb265e92dcb17fa1f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -300,6 +300,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../man/classification_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Images and the one label each of them carries</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../man/models.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Segmentation models</span></a>
   </div>
@@ -308,6 +314,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../man/yolo3.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">YOLOv3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/classifier.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A contracting path, pooled, with one dense layer on top</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -349,6 +361,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../man/metrics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Metrics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/classification_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Metrics for one label per image</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -458,6 +476,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">What the colormap or labels match in your masks</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/class_balance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">How many images each class has, before anything is trained</span></a>
+  </div>
+</li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
@@ -501,7 +525,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/predict.platypus_fit.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Predict masks</span></a>
+ <span class="menu-text">Predict masks, boxes, objects or labels</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -858,7 +882,7 @@ available_decodings()
 <code id="task">task</code>
 </td>
 <td>
-<code>“semantic_segmentation”</code>, <code>“instance_segmentation”</code> or <code>“object_detection”</code>. Which components a specification may name depends on what it is asking for, and for losses it genuinely differs: the three regression losses are listed only at the instance task, which is the only one with a target for them. No count is written here on purpose - the counts are asserted in the test suite against the pinned engine, which is where a number nobody can re-measure from a help page belongs. This parameter listed two tasks until the pin moved to <code style="white-space: pre;">0.8.0a22</code>; the third arrived in the engine’s <code style="white-space: pre;">0.8.0a20</code>.
+<code>“semantic_segmentation”</code>, <code>“instance_segmentation”</code>, <code>“object_detection”</code> or <code>“classification”</code>. Which components a specification may name depends on what it is asking for, and for losses it genuinely differs: the three regression losses are listed only at the instance task, which is the only one with a target for them, and classification lists two of the eleven - the ones that score each answer on its own rather than scoring an overlap. No count is written here on purpose - the counts are asserted in the test suite against the pinned engine, which is where a number nobody can re-measure from a help page belongs. This parameter listed two tasks until the pin moved to <code style="white-space: pre;">0.8.0a22</code>, three until it moved to <code style="white-space: pre;">0.8.0a49</code>; the third arrived in the engine’s <code style="white-space: pre;">0.8.0a20</code> and the fourth in <code style="white-space: pre;">0.8.0a49</code>.
 </td>
 </tr>
 </tbody></table>
@@ -877,6 +901,7 @@ available_decodings()
 <h3 class="anchored" data-anchor-id="detection-chooses-fewer-things-and-says-so">Detection chooses fewer things, and says so</h3>
 <p>A detection specification chooses no loss component and no metrics at all. Its objective is fixed, with <code>box_loss</code> on the model picking the box term, and every detection run reports the same set - <code>map_50</code>, <code>map_50_95</code>, <code>mean_matched_iou</code> - which comes out of the run rather than going into the specification.</p>
 <p>So <code>available_losses(“object_detection”)</code> and <code>available_metrics(“object_detection”)</code> raise a condition whose message says that, rather than returning a table with no rows. An empty table reads as "there are none", which is a different and wrong answer.</p>
+<p><strong><code>available_models(“classification”)</code> raises for the same kind of reason and a different fact.</strong> A classifier chooses no architecture: the network is a contracting path, pooled, with one dense layer on top, and <code>encoder</code> decides whose contracting path it is - ours when it is unset, any of timm’s when it names a backbone. So there is no <code>architecture</code> field to write and a row here would invite one. encoders is the listing that question actually has.</p>
 </section>
 <section id="see-also" class="level3">
 <h3 class="anchored" data-anchor-id="see-also">See Also</h3>

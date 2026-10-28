@@ -83,9 +83,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-ee0d825c001f130fb265e92dcb17fa1f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -300,6 +300,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../man/classification_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Images and the one label each of them carries</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../man/models.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Segmentation models</span></a>
   </div>
@@ -308,6 +314,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../man/yolo3.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">YOLOv3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/classifier.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A contracting path, pooled, with one dense layer on top</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -349,6 +361,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../man/metrics.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Metrics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/classification_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Metrics for one label per image</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -458,6 +476,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">What the colormap or labels match in your masks</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/class_balance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">How many images each class has, before anything is trained</span></a>
+  </div>
+</li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
@@ -501,7 +525,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/predict.platypus_fit.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Predict masks</span></a>
+ <span class="menu-text">Predict masks, boxes, objects or labels</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -895,6 +919,7 @@ For <code>metric_surface_dice()</code>, the tolerance a boundary is allowed to b
 <p><code>metric_surface_dice()</code> is the other kind of disagreement. <code>loss_boundary()</code>’s own page reports a model at Dice 0.9525 whose volumes run 5% small and 17% wrong per case, and no overlap column says that: a displaced boundary and a correct one of the same area score alike. This is normalised surface Dice (Nikolov et al., 2018), symmetric on purpose - the truth’s surface near the prediction is the boundary’s recall, the prediction’s surface near the truth is its precision - and it is the one metric here that reads the voxel spacing, so <code>tau</code> is in millimetres when <code>target_spacing</code> has put the data on a common grid and in voxels when it has not. It is also what <code>loss_boundary()</code> optimises, so until now that loss was being judged by the metric it exists to improve on.</p>
 <p>Like clDice it is a property of a whole mask rather than of a batch of counts, so on a tiled run (<code>splits</code>) it is reported <strong>per case</strong> by <a href="../man/evaluate_cases.html"><code>evaluate_cases()</code></a> and is absent from the epoch history - a per-batch average of per-tile boundaries would be a number about nothing. A callback asking to watch <code>val_surface_dice</code> on such a run is refused when the configuration is read, the way one watching <code>val_cldice</code> is - so the choice to tile and the choice of what to stop on are settled together, before anything is trained.</p>
 <p><code>include_background</code> defaults to <code>FALSE</code> for those two and <code>TRUE</code> for the three overlap metrics, and each has its own measured reason. The background’s skeleton lies inside the background by construction, so that class scores 1 for clDice whatever the model did - averaging it in moved 0.7865 to 0.8933 on a three-pixel vessel. The background’s <em>boundary</em> is the foreground’s boundary plus the edge of the picture, and that edge agrees between any two masks whatever happened in them: measured on four random pairs at <code>tau = 2</code>, the background scored 0.6110 to 0.7030 against the foreground’s 0.5583 to 0.6266 - higher every time. That is agreement on the field of view rather than on the object.</p>
+<p><strong>Metrics for one label per image are a different family and have their own page.</strong> <a href="../man/classification_metrics.html"><code>metric_accuracy()</code></a>, <a href="../man/classification_metrics.html"><code>metric_balanced_accuracy()</code></a>, <a href="../man/classification_metrics.html"><code>metric_f1()</code></a> and <a href="../man/classification_metrics.html"><code>metric_auc()</code></a> score a classifier, where there is no overlap to measure and no background class to leave out - see classification_metrics. None of the names on this page appears there and none of theirs appears here, which is the honest shape: a Dice over one label would be the label itself.</p>
 </section>
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>

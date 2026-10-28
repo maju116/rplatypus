@@ -83,9 +83,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-ee0d825c001f130fb265e92dcb17fa1f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -150,7 +150,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../overview.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/predict.platypus_fit.html">Predicting and scoring</a></li><li class="breadcrumb-item"><a href="../man/predict.platypus_fit.html">Predict masks</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../overview.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/predict.platypus_fit.html">Predicting and scoring</a></li><li class="breadcrumb-item"><a href="../man/predict.platypus_fit.html">Predict masks, boxes, objects or labels</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -300,6 +300,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../man/classification_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Images and the one label each of them carries</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../man/models.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Segmentation models</span></a>
   </div>
@@ -308,6 +314,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../man/yolo3.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">YOLOv3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/classifier.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A contracting path, pooled, with one dense layer on top</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -349,6 +361,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="../man/metrics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Metrics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/classification_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Metrics for one label per image</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -458,6 +476,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">What the colormap or labels match in your masks</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/class_balance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">How many images each class has, before anything is trained</span></a>
+  </div>
+</li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
@@ -501,7 +525,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/predict.platypus_fit.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Predict masks</span></a>
+ <span class="menu-text">Predict masks, boxes, objects or labels</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -805,7 +829,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#predict-masks" id="toc-predict-masks" class="nav-link active" data-scroll-target="#predict-masks">Predict masks</a>
+  <li><a href="#predict-masks-boxes-objects-or-labels" id="toc-predict-masks-boxes-objects-or-labels" class="nav-link active" data-scroll-target="#predict-masks-boxes-objects-or-labels">Predict masks, boxes, objects or labels</a>
   <ul class="collapse">
   <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
@@ -819,16 +843,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../overview.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/predict.platypus_fit.html">Predicting and scoring</a></li><li class="breadcrumb-item"><a href="../man/predict.platypus_fit.html">Predict masks</a></li></ol></nav></header>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../overview.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/predict.platypus_fit.html">Predicting and scoring</a></li><li class="breadcrumb-item"><a href="../man/predict.platypus_fit.html">Predict masks, boxes, objects or labels</a></li></ol></nav></header>
 
 
 
 
-<section id="predict-masks" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="predict-masks">Predict masks</h2>
+<section id="predict-masks-boxes-objects-or-labels" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="predict-masks-boxes-objects-or-labels">Predict masks, boxes, objects or labels</h2>
 <section id="description" class="level3">
 <h3 class="anchored" data-anchor-id="description">Description</h3>
-<p>Predict masks</p>
+<p>One function per fit rather than one per task, because the question - <em>what does this model say about this split</em> - is the same one. What comes back is not: a mask for segmentation, a table of boxes for detection, a label map of objects for instances, and a row per image for classification. The arguments that describe a grid are refused where there is no grid, by name, rather than accepted and ignored.</p>
 </section>
 <section id="usage" class="level3">
 <h3 class="anchored" data-anchor-id="usage">Usage</h3>
@@ -880,7 +904,8 @@ Which data to predict on.
 <td>
 <p><code>“class”</code> gives the class index per pixel, which is the mask to look at; <code>“probability”</code> keeps the per-class channel. <code>“channels”</code> is for an <strong>instance</strong> model only and means the model’s own output before any decoding: the class channels are probabilities and a flow field’s components are <strong>raw</strong>, which is why they are not called probabilities here - a softmax across a flow component and a class returns a number that means nothing. Read them with <a href="../man/flow_to_colours.html"><code>flow_to_colours()</code></a>.</p>
 <p>On an instance fit, <code>“class”</code> is a label map of <strong>objects</strong>, numbered from 1, and <code>“probability”</code> is refused by name for the reason above.</p>
-With <code>regions</code> - overlapping classes - <code>“class”</code> is <strong>refused</strong> rather than computed. The channels are independent binary questions and do not compete, so the most likely one is not an answer: a pixel may be in three classes and naming one of them drops the rest with nothing in the result to say so. Ask for <code>“probability”</code> and write it with <a href="../man/save_class_masks.html"><code>save_class_masks()</code></a>.
+<p>With <code>regions</code> - overlapping classes - <code>“class”</code> is <strong>refused</strong> rather than computed. The channels are independent binary questions and do not compete, so the most likely one is not an answer: a pixel may be in three classes and naming one of them drops the rest with nothing in the result to say so. Ask for <code>“probability”</code> and write it with <a href="../man/save_class_masks.html"><code>save_class_masks()</code></a>.</p>
+On a <strong>classification</strong> fit the two readings are a table and a matrix rather than two arrays: <code>“class”</code> gives one row per image with the answer and how sure the model was, and <code>“probability”</code> gives one row per image and one column per class. <code>“channels”</code> is refused - a classifier has no channels, only one number per class, and those numbers are the probabilities.
 </td>
 </tr>
 <tr>
@@ -888,7 +913,7 @@ With <code>regions</code> - overlapping classes - <code>“class”</code> is <s
 <code id="space">space</code>
 </td>
 <td>
-<code>“model”</code> or <code>“source”</code>; see above. Note that the two return different shapes of thing, an array and a list, because they are different things.
+<code>“model”</code> or <code>“source”</code>; see above. Note that the two return different shapes of thing, an array and a list, because they are different things. Refused on a detection, instance or classification fit, each for its own reason - boxes are in the source image’s coordinates already, an object identity cannot survive resampling, and a label is not on a grid at all.
 </td>
 </tr>
 <tr>
@@ -896,7 +921,7 @@ With <code>regions</code> - overlapping classes - <code>“class”</code> is <s
 <code id="cases">cases</code>
 </td>
 <td>
-Case names to predict, as <a href="../man/evaluate_cases.html"><code>evaluate_cases()</code></a> reports them. With this the result is a <strong>named list</strong> of just those, in the order asked for. A name that is not in the split is an error rather than a missing entry.
+Case names to predict, as <a href="../man/evaluate_cases.html"><code>evaluate_cases()</code></a> reports them. With this the result is a <strong>named list</strong> of just those, in the order asked for. A name that is not in the split is an error rather than a missing entry. Both this and <code>each</code> exist so that a split of full-resolution masks never has to be in memory at once, so both are refused on a classification fit, where the whole answer is one row per image.
 </td>
 </tr>
 <tr>
@@ -930,6 +955,7 @@ Unused.
 <p>With <code>space = “model”</code>: for <code>“class”</code>, an integer array of <code style="white-space: pre;">image x height x width</code>, classes numbered from 1 to match the colormap; for <code>“probability”</code>, the same with a trailing class axis. Tiled models return images at their original size, reassembled.</p>
 <p>With <code>space = “source”</code>: a list of such arrays, one per scan, each on that scan’s grid, <strong>named by case</strong>. The name and the mask come out of one step of the engine’s own stream, so they cannot be misaligned - which matters because the usual next move is to join them to something else per case, and a list paired by position is one dropped batch away from naming the wrong picture.</p>
 <p>On an <strong>instance</strong> fit: a list of integer label maps <strong>named by case</strong>, objects numbered from 1 and 0 for background, one entry per image. A list rather than an array for the reason the detection one is a list, and named rather than ordered because a list paired against case names by position is one dropped batch away from naming the wrong picture. Draw them with <a href="../man/overlay_instances.html"><code>overlay_instances()</code></a> and measure them with <a href="../man/instance_sizes.html"><code>instance_sizes()</code></a>.</p>
+<p>On a <strong>classification</strong> fit: for <code>“class”</code>, a data frame of one row per image with <code>key</code> (the name the split calls it, which is what joins this to anything else), <code>label</code> (what it was labelled, or <code>NA</code> on a split that carries no labelling), <code>predicted</code> and <code>probability</code> - the probability of the class that was chosen, not of the right one. For <code>“probability”</code>, a numeric matrix of images by classes, with the keys as row names and the class names as columns, in the order <code>classes</code> was written.</p>
 </section>
 <section id="which-grid-the-answer-is-on" class="level3">
 <h3 class="anchored" data-anchor-id="which-grid-the-answer-is-on">Which grid the answer is on</h3>
