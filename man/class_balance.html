@@ -83,9 +83,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-ee0d825c001f130fb265e92dcb17fa1f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fe59a2a7790bac0413e99a27709fd6b5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -875,7 +875,7 @@ A <a href="../man/platypus_spec.html"><code>platypus_spec()</code></a> describin
 <code id="split">split</code>
 </td>
 <td>
-Which split to count: <code>“train”</code>, <code>“validation”</code> or <code>“test”</code>.
+Which split to count: <code>“train”</code>, <code>“validation”</code> or <code>“test”</code>. A split that carries no labelling is <strong>refused by name</strong> rather than counted - which is the ordinary shape of a test set, since <code style="white-space: pre;">0.8.0a52</code> reads a CSV of <code style="white-space: pre;">key, images</code> as a prediction split. Counted anyway it would report every class at zero and read as a finding about the dataset rather than about there being nothing to count.
 </td>
 </tr>
 </tbody></table>
