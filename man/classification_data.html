@@ -150,7 +150,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../overview.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/platypus_spec.html">A specification</a></li><li class="breadcrumb-item"><a href="../man/classification_data.html">Images and the one label each of them carries</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../overview.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/platypus_spec.html">A specification</a></li><li class="breadcrumb-item"><a href="../man/classification_data.html">Images and the label each of them carries, which may be a set</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -301,7 +301,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/classification_data.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Images and the one label each of them carries</span></a>
+ <span class="menu-text">Images and the label each of them carries, which may be a set</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -829,7 +829,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#images-and-the-one-label-each-of-them-carries" id="toc-images-and-the-one-label-each-of-them-carries" class="nav-link active" data-scroll-target="#images-and-the-one-label-each-of-them-carries">Images and the one label each of them carries</a>
+  <li><a href="#images-and-the-label-each-of-them-carries-which-may-be-a-set" id="toc-images-and-the-label-each-of-them-carries-which-may-be-a-set" class="nav-link active" data-scroll-target="#images-and-the-label-each-of-them-carries-which-may-be-a-set">Images and the label each of them carries, which may be a set</a>
   <ul class="collapse">
   <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
   <li><a href="#usage" id="toc-usage" class="nav-link" data-scroll-target="#usage">Usage</a></li>
@@ -843,16 +843,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../overview.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/platypus_spec.html">A specification</a></li><li class="breadcrumb-item"><a href="../man/classification_data.html">Images and the one label each of them carries</a></li></ol></nav></header>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../overview.html">Reference</a></li><li class="breadcrumb-item"><a href="../man/platypus_spec.html">A specification</a></li><li class="breadcrumb-item"><a href="../man/classification_data.html">Images and the label each of them carries, which may be a set</a></li></ol></nav></header>
 
 
 
 
-<section id="images-and-the-one-label-each-of-them-carries" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="images-and-the-one-label-each-of-them-carries">Images and the one label each of them carries</h2>
+<section id="images-and-the-label-each-of-them-carries-which-may-be-a-set" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="images-and-the-label-each-of-them-carries-which-may-be-a-set">Images and the label each of them carries, which may be a set</h2>
 <section id="description" class="level3">
 <h3 class="anchored" data-anchor-id="description">Description</h3>
-<p>The data block for <code>task = “classification”</code>. What this constructor is <em>for</em> is as much the fields it has not got as the two it adds: <code>colormap</code>, <code>labels</code>, <code>regions</code>, <code>classes_from</code>, <code>channels_from</code> and <code>target_spacing</code> all describe a mask or a grid, and a label is neither.</p>
+<p>The data block for <code>task = “classification”</code>. This title said <em>the one label each of them carries</em> until <code>labels_from</code> arrived, and the field-prose ledger is what asked: the engine rewrote its own one-line description of this block to name all three labellings, and re-reading R’s prose for it turned up a heading that had become false rather than a sentence that had.</p>
 </section>
 <section id="usage" class="level3">
 <h3 class="anchored" data-anchor-id="usage">Usage</h3>
@@ -860,6 +860,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   train,
   validation = NULL,
   classes,
+  labels_from = NULL,
   test = NULL,
   split = NULL,
   mode = c("nested_dirs", "config_file"),
@@ -902,6 +903,17 @@ There is no background entry. An image is one of these, and a picture of nothing
 </tr>
 <tr>
 <td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="labels_from">labels_from</code>
+</td>
+<td>
+<p>One CSV column per class, in class order, each cell <code>0</code> or <code>1</code> - the layout for a label that is a <strong>set</strong>. Position in this list is paired with <code>classes</code>, so the headers may be called whatever the dataset calls them and the model still learns the classes in the order you named; stated rather than read off the header row for <code>channels_from</code>’s reason, that sorting is reproducible and clinically meaningless.</p>
+<p><code>“config_file”</code> mode only, and that is a refusal rather than a gap: an image cannot sit in two directories without being two files, so <code>nested_dirs</code> cannot express a set of labels at all. <code>strict_labels</code> has nothing to choose between here - the columns <em>are</em> the classes - and is refused rather than ignored.</p>
+<p>A cell that is not <code>0</code>, <code>1</code>, <code>0.0</code> or <code>1.0</code> is refused by name, and the case that is written for is <code>-1</code>: the datasets shaped this way write <code>-1</code> for <em>uncertain</em> and leave the cell empty for <em>not mentioned</em>, both of which have a defensible mapping to 0 or to 1, which is exactly why the reader must not pick one for you. An image with none of the findings is an ordinary labelled row, written as a line of zeros.</p>
+<strong>There is no threshold, and <a href="../man/classification_metrics.html"><code>metric_accuracy()</code></a> is refused.</strong> Each class decides for itself at a probability of 0.5, and a threshold is a number about your data rather than one this format should invent. Accuracy is refused outright rather than redefined: measured on 4000 images with findings at 10%, 5%, 3% and 2%, a model answering no to everything scores 0.8137 on exact match and 0.9507 per class, <strong>above a model holding half the available signal</strong> - so neither reading can be what a <code>monitor</code> watches. Use <a href="../man/classification_metrics.html"><code>metric_balanced_accuracy()</code></a>, <a href="../man/classification_metrics.html"><code>metric_f1()</code></a> or <a href="../man/classification_metrics.html"><code>metric_auc()</code></a>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
 <code id="test">test</code>
 </td>
 <td>
@@ -929,7 +941,8 @@ A <code>split()</code> block, to cut a validation and test set out of the traini
 <code id="strict_labels">strict_labels</code>
 </td>
 <td>
-Refuse an image whose label is not in <code>classes</code>. <code>FALSE</code> skips it instead, which is how to train on two of a dataset’s three classes without moving any files. It matters more here than it does for a box: a skipped object leaves the rest of its image in the training set, while a skipped image leaves nothing, so the same setting quietly changes how much data there is.
+<p>Refuse an image whose label is not in <code>classes</code>. <code>FALSE</code> skips it instead, which is how to train on two of a dataset’s three classes without moving any files. It matters more here than it does for a box: a skipped object leaves the rest of its image in the training set, while a skipped image leaves nothing, so the same setting quietly changes how much data there is.</p>
+Refused beside <code>labels_from</code>, where the state it chooses between cannot arise: the columns are the classes, so there is no cell that could hold a class nobody named.
 </td>
 </tr>
 <tr>
@@ -968,7 +981,9 @@ Shuffle the training data between epochs.
 </section>
 <section id="details" class="level3">
 <h3 class="anchored" data-anchor-id="details">Details</h3>
+<p>What this constructor is <em>for</em> is as much the fields it has not got as the two it adds: <code>colormap</code>, <code>labels</code>, <code>regions</code>, <code>classes_from</code>, <code>channels_from</code> and <code>target_spacing</code> all describe a mask or a grid, and a label is neither.</p>
 <p><strong>Where the labelling is written follows from <code>mode</code> rather than being said twice.</strong> In <code>“nested_dirs”</code> mode the directories under <code>train</code> are the classes, with the images inside them - the layout nearly every image dataset ships in. In <code>“config_file”</code> mode the CSV’s <code>label</code> column holds the class name.</p>
+<p><strong>And <code>labels_from</code> is the third way, for a label that is a set rather than one of a list of alternatives</strong> - a chest film with four findings is four independent questions. It is a naming rather than a switch, for the reason <code>regions</code> and <code>classes_from</code> are on the mask side: the <em>target</em> changes and not only the activation, so there is nothing a <code>multilabel = TRUE</code> could have meant on a <code>label</code> column that structurally cannot say an image has two findings.</p>
 </section>
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>
@@ -1005,6 +1020,9 @@ NULL
 
 $classes
 [1] "benign"    "malignant"
+
+$labels_from
+NULL
 
 $strict_labels
 NULL

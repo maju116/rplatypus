@@ -301,7 +301,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/classification_data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Images and the one label each of them carries</span></a>
+ <span class="menu-text">Images and the label each of them carries, which may be a set</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -956,6 +956,8 @@ Unused.
 <p>With <code>space = “source”</code>: a list of such arrays, one per scan, each on that scan’s grid, <strong>named by case</strong>. The name and the mask come out of one step of the engine’s own stream, so they cannot be misaligned - which matters because the usual next move is to join them to something else per case, and a list paired by position is one dropped batch away from naming the wrong picture.</p>
 <p>On an <strong>instance</strong> fit: a list of integer label maps <strong>named by case</strong>, objects numbered from 1 and 0 for background, one entry per image. A list rather than an array for the reason the detection one is a list, and named rather than ordered because a list paired against case names by position is one dropped batch away from naming the wrong picture. Draw them with <a href="../man/overlay_instances.html"><code>overlay_instances()</code></a> and measure them with <a href="../man/instance_sizes.html"><code>instance_sizes()</code></a>.</p>
 <p>On a <strong>classification</strong> fit: for <code>“class”</code>, a data frame of one row per image with <code>key</code> (the name the split calls it, which is what joins this to anything else), <code>label</code> (what it was labelled, or <code>NA</code> on a split that carries no labelling), <code>predicted</code> and <code>probability</code> - the probability of the class that was chosen, not of the right one. For <code>“probability”</code>, a numeric matrix of images by classes, with the keys as row names and the class names as columns, in the order <code>classes</code> was written.</p>
+<p><strong>With <code>labels_from</code>, where a label is a set, <code>“class”</code> is a longer frame instead</strong>: one row per image <em>per class</em>, with <code>key</code>, <code>class</code>, and <code>label</code> and <code>predicted</code> as logicals. It is a different answer rather than the same answer with a longer string, and this is the shape that says so - an image with none of the findings is a row of <code>FALSE</code> per class rather than an empty cell, which could also mean unread. Summarise per class with one <code>tapply</code>, or reshape it if you want it wide.</p>
+<p>There is no <code>probability</code> column on that route, and it is missing on purpose: that column is the chosen class’s own number, and with independent questions nothing was chosen. <code>“probability”</code> is the whole of the answer there and comes back as the same matrix, one column per class.</p>
 </section>
 <section id="which-grid-the-answer-is-on" class="level3">
 <h3 class="anchored" data-anchor-id="which-grid-the-answer-is-on">Which grid the answer is on</h3>

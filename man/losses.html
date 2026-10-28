@@ -301,7 +301,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../man/classification_data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Images and the one label each of them carries</span></a>
+ <span class="menu-text">Images and the label each of them carries, which may be a set</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -915,7 +915,7 @@ For <code>loss_cce_dice()</code>, how much of the total the cross-entropy half p
 <code id="gamma">gamma</code>
 </td>
 <td>
-For focal losses, how hard to discount the pixels already classified well.
+For focal losses, how hard to discount what is already classified well - a pixel or voxel for a mask, a whole image for a label - so the gradient comes from what is not. 0 is plain cross-entropy and 2 is the usual value.
 </td>
 </tr>
 <tr>
