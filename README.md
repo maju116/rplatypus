@@ -128,10 +128,21 @@ can be handed to a colleague.
 convolutions, spatial dropout, interpolated or learned upsampling, deep supervision and
 block width.
 
-**Nine losses** (IoU, Dice, cross-entropy, CCE-Dice, Focal, Tversky, Focal-Tversky, Combo,
-Lovász) and **three metrics**, each of which can leave the background out. In medical
+**Eleven losses for segmentation** (IoU, Dice, cross-entropy, CCE-Dice, Focal, Tversky,
+Focal-Tversky, Combo, Lovász, Boundary and generalized Dice) and **five metrics** (Dice, IoU,
+Tversky, clDice and surface Dice), each of which can leave the background out. In medical
 images the background is usually most of the picture, and averaging it in turns a model
-that found nothing into one that looks respectable.
+that found nothing into one that looks respectable. `available_losses()` and
+`available_metrics()` take a task, and instance work has fourteen losses rather than eleven.
+
+**One label for a whole image.** `classification_data()` and `classifier()` are the fourth
+task, since the engine's `0.8.0a49`: the label is the directory an image sits in, or a column
+in a CSV. There is no architecture to choose - the network is a contracting path with a dense
+layer on top, and `encoder` decides whose path it is - and the default metric is
+`metric_auc()` rather than accuracy, because a classifier that answers "no finding" where 3%
+have one scores 0.97 and has learnt nothing. `class_balance()` says what the labels look like
+before you train on them, and the split is stratified, because a random 70/15/15 of 100
+images at 3% prevalence leaves some part with none of the rare class 91% of the time.
 
 **Tiling that goes both ways** — cut a large image into a grid instead of shrinking it, and
 get a full-size mask back.
@@ -379,8 +390,12 @@ group whose photographs are worst, and the dataset's own quality grading says so
 
 ## What is not in it yet
 
-Ensembling. Classification. Boxes in three dimensions - `yolo3()` is 2D and says so rather
-than accepting a third number and ignoring it.
+Ensembling. Boxes in three dimensions - `yolo3()` is 2D and says so rather than accepting a
+third number and ignoring it.
+
+Multi-label classification - one image with several findings at once, which is a different
+target from one label per image rather than a setting on it. `pyplatypus#307` is where it is
+being built.
 
 Augmentation in 3D works, but unevenly, because albumentations supports volumes for most of
 its transforms and not all of them. Every transform in a 3D specification is probed while the
