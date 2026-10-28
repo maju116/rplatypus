@@ -321,6 +321,18 @@ evaluate.platypus_fit <- function(object, split = "validation", at = NULL, ...) 
 #'   `probability` - the probability of the class that was chosen, not of the right one. For
 #'   `"probability"`, a numeric matrix of images by classes, with the keys as row names and
 #'   the class names as columns, in the order `classes` was written.
+#'
+#'   **With `labels_from`, where a label is a set, `"class"` is a longer frame instead**:
+#'   one row per image *per class*, with `key`, `class`, and `label` and `predicted` as
+#'   logicals. It is a different answer rather than the same answer with a longer string,
+#'   and this is the shape that says so - an image with none of the findings is a row of
+#'   `FALSE` per class rather than an empty cell, which could also mean unread. Summarise
+#'   per class with one `tapply`, or reshape it if you want it wide.
+#'
+#'   There is no `probability` column on that route, and it is missing on purpose: that
+#'   column is the chosen class's own number, and with independent questions nothing was
+#'   chosen. `"probability"` is the whole of the answer there and comes back as the same
+#'   matrix, one column per class.
 #' @export
 #' @examples
 #' \dontrun{
@@ -410,6 +422,38 @@ predict.platypus_fit <- function(object, model = NULL, split = "test",
       }, numeric(length(classes))))
       dimnames(probabilities) <- list(keys, classes)
       return(probabilities)
+    }
+
+    # **A set of labels is a different answer and not the same answer with a longer
+    # string**, so it comes back in a different shape: one row per image per class, with
+    # `label` and `predicted` as logicals. The alternatives were measured against what a
+    # reader does with it. A wide frame needs two columns per class - the truth and the
+    # answer - and names them by pasting, which is how a class called `Mass_label` becomes
+    # ambiguous. A list column holds the sets but nothing in base R aggregates it. Long
+    # form joins to anything by `key`, summarises per class with one `tapply`, and is the
+    # only shape in which "this image has none of the findings" is four rows of FALSE
+    # rather than an empty cell that could also mean unread.
+    #
+    # There is no `probability` column on this route and that is the engine's decision
+    # rather than an omission here: that column is the chosen class's own number, and with
+    # independent questions nothing was chosen. `type = "probability"` above is the whole
+    # of the answer, and it needs no branch - the `p_<class>` keys are in both shapes.
+    if (isTRUE(found$multilabel)) {
+      answers <- do.call(rbind, lapply(found$rows, function(row) {
+        true_set <- as.character(unlist(row$labels))
+        said <- as.character(unlist(row$predicted))
+        data.frame(
+          key = as.character(row$key),
+          # `classes` rather than the row's own order, so two rows are comparable and the
+          # class index is the specification's.
+          class = classes,
+          label = classes %in% true_set,
+          predicted = classes %in% said,
+          stringsAsFactors = FALSE
+        )
+      }))
+      rownames(answers) <- NULL
+      return(answers)
     }
 
     # Named by case rather than returned in the split's order alone, which is the lesson

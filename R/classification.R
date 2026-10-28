@@ -3,9 +3,15 @@
 # there is no mask to name classes with, no grid for an answer to live on, and no spatial
 # quantity for a metric to average.
 
-#' Images and the one label each of them carries
+#' Images and the label each of them carries, which may be a set
 #'
-#' The data block for `task = "classification"`. What this constructor is *for* is as much
+#' The data block for `task = "classification"`. This title said *the one label each of them
+#' carries* until `labels_from` arrived, and the field-prose ledger is what asked: the
+#' engine rewrote its own one-line description of this block to name all three labellings,
+#' and re-reading R's prose for it turned up a heading that had become false rather than a
+#' sentence that had.
+#'
+#' What this constructor is *for* is as much
 #' the fields it has not got as the two it adds: `colormap`, `labels`, `regions`,
 #' `classes_from`, `channels_from` and `target_spacing` all describe a mask or a grid, and
 #' a label is neither.
@@ -14,6 +20,13 @@
 #' `"nested_dirs"` mode the directories under `train` are the classes, with the images
 #' inside them - the layout nearly every image dataset ships in. In `"config_file"` mode
 #' the CSV's `label` column holds the class name.
+#'
+#' **And `labels_from` is the third way, for a label that is a set rather than one of a
+#' list of alternatives** - a chest film with four findings is four independent questions.
+#' It is a naming rather than a switch, for the reason `regions` and `classes_from` are on
+#' the mask side: the *target* changes and not only the activation, so there is nothing a
+#' `multilabel = TRUE` could have meant on a `label` column that structurally cannot say an
+#' image has two findings.
 #'
 #' @param train Path to the training data: a directory of class directories in
 #'   `"nested_dirs"` mode, or a CSV in `"config_file"` mode.
@@ -31,6 +44,30 @@
 #'
 #'   There is no background entry. An image is one of these, and a picture of nothing in
 #'   particular is a class somebody has to name.
+#' @param labels_from One CSV column per class, in class order, each cell `0` or `1` - the
+#'   layout for a label that is a **set**. Position in this list is paired with `classes`,
+#'   so the headers may be called whatever the dataset calls them and the model still learns
+#'   the classes in the order you named; stated rather than read off the header row for
+#'   `channels_from`'s reason, that sorting is reproducible and clinically meaningless.
+#'
+#'   `"config_file"` mode only, and that is a refusal rather than a gap: an image cannot sit
+#'   in two directories without being two files, so `nested_dirs` cannot express a set of
+#'   labels at all. `strict_labels` has nothing to choose between here - the columns *are*
+#'   the classes - and is refused rather than ignored.
+#'
+#'   A cell that is not `0`, `1`, `0.0` or `1.0` is refused by name, and the case that is
+#'   written for is `-1`: the datasets shaped this way write `-1` for *uncertain* and leave
+#'   the cell empty for *not mentioned*, both of which have a defensible mapping to 0 or to
+#'   1, which is exactly why the reader must not pick one for you. An image with none of the
+#'   findings is an ordinary labelled row, written as a line of zeros.
+#'
+#'   **There is no threshold, and `metric_accuracy()` is refused.** Each class decides for
+#'   itself at a probability of 0.5, and a threshold is a number about your data rather than
+#'   one this format should invent. Accuracy is refused outright rather than redefined:
+#'   measured on 4000 images with findings at 10%, 5%, 3% and 2%, a model answering no to
+#'   everything scores 0.8137 on exact match and 0.9507 per class, **above a model holding
+#'   half the available signal** - so neither reading can be what a `monitor` watches. Use
+#'   [metric_balanced_accuracy()], [metric_f1()] or [metric_auc()].
 #' @param test Path to a held-out set, scored but never trained on.
 #' @param split A [split()] block, to cut a validation and test set out of the training
 #'   data. For this task the cut is **stratified** by the engine, so every class reaches
@@ -43,6 +80,9 @@
 #'   files. It matters more here than it does for a box: a skipped object leaves the rest of
 #'   its image in the training set, while a skipped image leaves nothing, so the same
 #'   setting quietly changes how much data there is.
+#'
+#'   Refused beside `labels_from`, where the state it chooses between cannot arise: the
+#'   columns are the classes, so there is no cell that could hold a class nobody named.
 #' @param window How values in real units reach the model, for DICOM and NIfTI - see
 #'   [segmentation_data()], which documents the named windows. Ignored for ordinary
 #'   pictures.
@@ -57,7 +97,8 @@
 #' @export
 #' @examples
 #' classification_data("train/", "valid/", classes = c("benign", "malignant"))
-classification_data <- function(train, validation = NULL, classes, test = NULL,
+classification_data <- function(train, validation = NULL, classes, labels_from = NULL,
+                                test = NULL,
                                 split = NULL,
                                 mode = c("nested_dirs", "config_file"),
                                 strict_labels = TRUE, window = NULL,
@@ -94,6 +135,30 @@ classification_data <- function(train, validation = NULL, classes, test = NULL,
          call. = FALSE)
   }
 
+  # The three `labels_from` refusals, local for the reason the `subdirs` one above is: the
+  # sentence is the engine's own, and this way no interpreter starts in order to deliver it.
+  # All three are duplicated rather than forwarded because `platypus_spec()` sends a bare
+  # list or a YAML file straight to the validator, so the two routes have to agree.
+  if (!is.null(labels_from)) {
+    labels_from <- as.character(labels_from)
+    if (identical(mode, "nested_dirs")) {
+      stop("`labels_from` reads one column per class, which is `config_file` mode. An ",
+           "image cannot sit in two directories without being two files, so `nested_dirs` ",
+           "cannot express a set of labels at all - give `mode = \"config_file\"` and a ",
+           "CSV with one column per class.", call. = FALSE)
+    }
+    if (length(labels_from) < 2L) {
+      stop("`labels_from` needs one column per class, so at least two. With a single class ",
+           "there is nothing for the set to be, and a `label` column already names one of ",
+           "a list of alternatives.", call. = FALSE)
+    }
+    if (gave$strict_labels) {
+      stop("`strict_labels` has nothing to choose between beside `labels_from`: the ",
+           "columns *are* the classes, paired by position, so there is no cell that could ",
+           "hold a class nobody named. Remove it.", call. = FALSE)
+    }
+  }
+
   # The same three checks `detection_data()` makes of its own `classes`, and for the same
   # reasons: the two paths into the engine have to agree, and `platypus_spec()` sends a
   # bare list or a YAML file straight to the validator.
@@ -116,6 +181,14 @@ classification_data <- function(train, validation = NULL, classes, test = NULL,
          "classifier with one class is not.", call. = FALSE)
   }
 
+  # Checked after `classes` rather than with the three above, because the comparison needs
+  # both lists and a message about a mismatch has to be able to name each count.
+  if (!is.null(labels_from) && length(labels_from) != length(classes)) {
+    stop("`labels_from` names ", length(labels_from), " column(s) and `classes` names ",
+         length(classes), ". They are paired by position - one column per class, in class ",
+         "order - so the two lists have to be the same length.", call. = FALSE)
+  }
+
   structure(
     list(
       train_path = train,
@@ -130,6 +203,7 @@ classification_data <- function(train, validation = NULL, classes, test = NULL,
       split = split_block(split),
       mode = if (explicit_mode || !identical(mode, "nested_dirs")) mode else NULL,
       classes = classes,
+      labels_from = labels_from,
       strict_labels = if (gave$strict_labels) strict_labels else NULL,
       # Aligned under the `if` it continues: the chain reads as one decision.
       window = if (is.null(window)) NULL

@@ -260,3 +260,128 @@ test_that("a detector is told that decode means nothing to it, rather than ignor
   fake <- structure(list(task = "object_detection", models = "y"), class = "platypus_fit")
   expect_error(predict(fake, decode = decode_watershed()), "instance model")
 })
+
+
+# ------------------------------------------------- a label that is a set, `#241`
+
+test_that("labels_from is refused where the engine refuses it, before any interpreter starts", {
+  # All four are the engine's own refusals, duplicated here for the reason the `subdirs` one
+  # is: the sentence is the same and this way no Python starts in order to deliver it. They
+  # have to be duplicated rather than forwarded because `platypus_spec()` sends a bare list
+  # or a YAML file straight to the validator, so the two routes must agree.
+  expect_error(
+    classification_data("t/", "v/", classes = c("a", "b"), labels_from = c("A", "B")),
+    "config_file"
+  )
+  expect_error(
+    classification_data("t.csv", "v.csv", classes = c("a", "b"), labels_from = "A",
+                        mode = "config_file"),
+    "at least two"
+  )
+  expect_error(
+    classification_data("t.csv", "v.csv", classes = c("a", "b"), labels_from = c("A", "B"),
+                        mode = "config_file", strict_labels = FALSE),
+    "nothing to choose between"
+  )
+  expect_error(
+    classification_data("t.csv", "v.csv", classes = c("a", "b", "c"),
+                        labels_from = c("A", "B"), mode = "config_file"),
+    "paired by position"
+  )
+})
+
+test_that("the three controls are accepted, or the refusals above prove nothing", {
+  # A check calibrated loosely enough admits the failure it was written to prevent, and one
+  # calibrated tightly enough fails on correct content. Both halves, every time.
+  expect_no_error(
+    classification_data("t.csv", "v.csv", classes = c("a", "b"), labels_from = c("A", "B"),
+                        mode = "config_file")
+  )
+  expect_no_error(classification_data("t/", "v/", classes = c("a", "b")))
+  expect_no_error(
+    classification_data("t/", "v/", classes = c("a", "b"), strict_labels = FALSE)
+  )
+})
+
+test_that("labels_from is dropped from the request when it is not given", {
+  # §3D's rule: an option defaults to NULL and is left out, so an engine that does not know
+  # the field keeps working for everybody not asking for it. Checked on the built list
+  # rather than on the engine, because this is about what R sends.
+  plain <- classification_data("t/", "v/", classes = c("a", "b"))
+  expect_false("labels_from" %in% names(rplatypus:::compact(plain)))
+
+  asked <- classification_data("t.csv", "v.csv", classes = c("a", "b"),
+                               labels_from = c("A", "B"), mode = "config_file")
+  expect_identical(rplatypus:::compact(asked)$labels_from, c("A", "B"))
+})
+
+test_that("a set of labels reaches the engine, and accuracy is refused beside it", {
+  skip_if_no_engine()
+  path <- tiny_multilabel_dataset()
+
+  expect_identical(rplatypus:::spec_task(tiny_multilabel_spec(path)), "classification")
+
+  # The engine's refusal, forwarded rather than restated: `metric_accuracy()` on a set is
+  # exact match, and a model answering no to everything scores 0.8137 on it against 0.8023
+  # for one holding half the signal, so no reading of it can be what a `monitor` watches.
+  expect_error(
+    tiny_multilabel_spec(path, metrics = list(metric_accuracy())),
+    "accuracy"
+  )
+  # The control, and it is the one that matters: the same metric is admissible when the
+  # label is a name, so the refusal is about the labelling and not about the metric.
+  expect_no_error(
+    tiny_multilabel_spec(path, metrics = list(metric_auc(), metric_f1()))
+  )
+})
+
+test_that("predict() on a set of labels answers one row per image per class", {
+  # The whole route, walked the way a reader of the help page would walk it, because green
+  # on both halves proves the halves and not the join.
+  skip_if_no_engine()
+  path <- tiny_multilabel_dataset()
+  fit <- platypus_fit(tiny_multilabel_spec(path), num_workers = 0)
+
+  answers <- predict(fit, split = "validation")
+  expect_identical(names(answers), c("key", "class", "label", "predicted"))
+  expect_true(is.logical(answers$label) && is.logical(answers$predicted))
+  expect_identical(nrow(answers), 24L)
+  expect_identical(length(unique(answers$key)), 12L)
+
+  # **The classes are `classes`, not the CSV's headers.** The file says `Bright` and `Wide`
+  # and the specification says `bright` and `wide`; the engine pairs them by position, which
+  # is the whole reason `labels_from` is a list rather than a flag, and a result carrying the
+  # headers would make the class index depend on the file.
+  expect_identical(sort(unique(answers$class)), c("bright", "wide"))
+
+  # An image with neither finding is a row of FALSE per class rather than an absence. This
+  # is the commonest row in a dataset shaped this way, and the one shape that cannot say
+  # "unread" by accident.
+  neither <- answers[answers$key == "case_0_00", ]
+  expect_identical(nrow(neither), 2L)
+  expect_false(any(neither$label))
+
+  # And the truth in the frame is the truth in the file, read back from the CSV rather than
+  # restated here - a test that writes its own expectation checks itself.
+  written <- utils::read.csv(path)
+  for (index in seq_len(nrow(written))) {
+    row <- written[index, ]
+    mine <- answers[answers$key == row$key, ]
+    expect_identical(mine$label[mine$class == "bright"], row$Bright == 1L)
+    expect_identical(mine$label[mine$class == "wide"], row$Wide == 1L)
+  }
+})
+
+test_that("type = probability needs no branch for a set of labels", {
+  # The `p_<class>` keys are in both shapes, so this path is the same code. Asserted rather
+  # than assumed, because "it should still work" is how a shared path stops working.
+  skip_if_no_engine()
+  path <- tiny_multilabel_dataset()
+  fit <- platypus_fit(tiny_multilabel_spec(path), num_workers = 0)
+
+  chances <- predict(fit, split = "validation", type = "probability")
+  expect_true(is.matrix(chances))
+  expect_identical(dim(chances), c(12L, 2L))
+  expect_identical(colnames(chances), c("bright", "wide"))
+  expect_true(all(chances >= 0 & chances <= 1))
+})

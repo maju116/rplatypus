@@ -94,6 +94,18 @@ On a \strong{classification} fit: for \code{"class"}, a data frame of one row pe
 \code{probability} - the probability of the class that was chosen, not of the right one. For
 \code{"probability"}, a numeric matrix of images by classes, with the keys as row names and
 the class names as columns, in the order \code{classes} was written.
+
+\strong{With \code{labels_from}, where a label is a set, \code{"class"} is a longer frame instead}:
+one row per image \emph{per class}, with \code{key}, \code{class}, and \code{label} and \code{predicted} as
+logicals. It is a different answer rather than the same answer with a longer string,
+and this is the shape that says so - an image with none of the findings is a row of
+\code{FALSE} per class rather than an empty cell, which could also mean unread. Summarise
+per class with one \code{tapply}, or reshape it if you want it wide.
+
+There is no \code{probability} column on that route, and it is missing on purpose: that
+column is the chosen class's own number, and with independent questions nothing was
+chosen. \code{"probability"} is the whole of the answer there and comes back as the same
+matrix, one column per class.
 }
 \description{
 One function per fit rather than one per task, because the question - \emph{what does this

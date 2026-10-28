@@ -137,6 +137,52 @@ tiny_classification_spec <- function(root, ...) {
   )
 }
 
+#' A tiny dataset whose label is a SET, written the way `labels_from` reads it
+#'
+#' One CSV, one column per class, cells `0` or `1`. The two findings are made separable on
+#' purpose - `bright` is a square in the middle and `wide` a bar down the side - so a model
+#' with one epoch has something to learn and the test is about the route rather than about
+#' whether a model trains. Every combination occurs, including the row with neither, which
+#' is the commonest row in a dataset shaped this way and the one an empty cell would hide.
+tiny_multilabel_dataset <- function(per_combination = 3, size = 32) {
+  root <- withr::local_tempdir(.local_envir = parent.frame())
+  reticulate::py_run_string(sprintf("
+import csv, numpy as np, pathlib
+from PIL import Image
+root = pathlib.Path(%s)
+root.mkdir(parents=True, exist_ok=True)
+rng = np.random.default_rng(0)
+rows = []
+for i in range(%d):
+    for bright in (0, 1):
+        for wide in (0, 1):
+            picture = rng.random((%d, %d)) * 60
+            if bright:
+                picture[8:24, 8:24] += 170
+            if wide:
+                picture[:, 0:6] += 170
+            name = f'case_{i}_{bright}{wide}.png'
+            Image.fromarray(np.clip(picture, 0, 255).astype(np.uint8)).convert('RGB').save(
+                root / name)
+            rows.append((name.removesuffix('.png'), name, bright, wide))
+with (root / 'all.csv').open('w', newline='') as handle:
+    writer = csv.writer(handle)
+    writer.writerow(['key', 'images', 'Bright', 'Wide'])
+    writer.writerows(rows)
+", shQuote(root), per_combination, size, size))
+  file.path(root, "all.csv")
+}
+
+tiny_multilabel_spec <- function(path, ...) {
+  platypus_spec(
+    data = classification_data(path, path, classes = c("bright", "wide"),
+                               labels_from = c("Bright", "Wide"),
+                               mode = "config_file"),
+    models = list(classifier("tiny", input_shape = c(32, 32), blocks = 2, filters = 4,
+                             epochs = 1, batch_size = 2, ...))
+  )
+}
+
 tiny_instance_spec <- function(root, ...) {
   platypus_spec(
     data = instance_data(root, root),

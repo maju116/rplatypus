@@ -765,6 +765,13 @@ def classification_answers(engine: Any, model_name: str, split: str = "test") ->
         # built from it, but reading them back off a dict would hand R whatever order the
         # mapping iterated in.
         "classes": list(engine.spec.data.classes),
+        # Read off the specification rather than sniffed off a row. The two shapes differ by
+        # which keys they carry - a set of labels has `labels` and no `probability` - so R
+        # could infer it, and an inference from a shape is one release away from being wrong
+        # about a shape that gained a key. `multilabel` is the property the whole engine
+        # reads this from, derived from the naming, which is the thing that carries the
+        # claim.
+        "multilabel": bool(engine.spec.data.multilabel),
     }
 
 
