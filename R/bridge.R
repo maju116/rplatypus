@@ -15,7 +15,7 @@
 #' and an R package should not break because a Python dependency drifted underneath it.
 #' @keywords internal
 #' @noRd
-pyplatypus_version <- "0.8.0a49"
+pyplatypus_version <- "0.8.0a51"
 
 #' What this session will ask for. Set by [platypus_use_torch()] before the engine starts.
 #' @keywords internal

@@ -54,7 +54,9 @@ themselves are uncertain, which on a hand-drawn boundary they are.}
 provides. At 0 or 1 it is one of the two alone, which is worth knowing before tuning it
 as though it were a third thing.}
 
-\item{gamma}{For focal losses, how hard to discount the pixels already classified well.}
+\item{gamma}{For focal losses, how hard to discount what is already classified well -
+a pixel or voxel for a mask, a whole image for a label - so the gradient comes from
+what is not. 0 is plain cross-entropy and 2 is the usual value.}
 
 \item{alpha}{For Tversky, the weight on false negatives; raising it buys recall.
 Note that \code{alpha = 0.5} is Dice exactly only when \code{smooth = 0}.}

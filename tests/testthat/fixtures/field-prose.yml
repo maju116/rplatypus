@@ -6,7 +6,7 @@
 #
 # A digest that no longer matches is not the engine's failure. It is a question - does R's
 # prose still say the right thing? - asked at the only moment anybody would ask it.
-engine: 0.8.0a49
+engine: 0.8.0a51
 fields:
   - field: activation
     engine_digest: 4822b126e39826a504979a6b123cc241
@@ -87,7 +87,7 @@ fields:
     engine_digest: 86740597ee6bb0ce54cdf36985dee01a
     documented_in: [detection_data]
   - field: data
-    engine_digest: e86c077f0086f067d054bf9f9fa45c67
+    engine_digest: a4a420e8cfb08676febc1ade47528596
     documented_in: [platypus_spec]
   - field: decay
     engine_digest: 35cfa1ab942cc9bd02e5b067c7d51011
@@ -138,7 +138,7 @@ fields:
     engine_digest: 45cd58ac6f554eb1de5604337c12e6d5
     documented_in: [classifier, models]
   - field: gamma
-    engine_digest: 3ed013965450e9531c4d994a705a96af
+    engine_digest: 5fb9af1e78b16e81d684b64be19cb696
     documented_in: [losses]
   - field: group_by
     engine_digest: 1d73b2ed9f89cd1de0934ae841e5bcd8
@@ -170,6 +170,9 @@ fields:
   - field: labels
     engine_digest: ea9d0a07ce04298c9edd4ac416797497
     documented_in: [instance_shapes, instance_sizes, mask_coverage, overlay_instances, plot_boxes, plot_masks, read_masks, segmentation_data]
+  - field: labels_from
+    engine_digest: 71e581793a5033d2876207e20fc75f61
+    documented_in: [classification_data]
   - field: learning_rate
     engine_digest: 1703e6fd9efb1d843d14859114088a80
     documented_in: [callback_swa, optimizers]
@@ -303,7 +306,7 @@ fields:
     engine_digest: 63964264a34c52e2d549ebae34162765
     documented_in: [decodings]
   - field: strict_labels
-    engine_digest: ed945a396be574a03874d54675fd8a95
+    engine_digest: 5ef314c56235fcc3f8e5d7ebbece43d0
     documented_in: [classification_data, detection_data]
   - field: subdirs
     engine_digest: ff7a4b1625adafb6b874005fe109c355

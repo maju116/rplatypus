@@ -66,7 +66,9 @@ int1 <- function(x) if (is.null(x)) NULL else as.integer(x)
 #' engine refuses it at either task now (`pyplatypus#223`).
 #'
 #' @param smooth Added to numerator and denominator to keep an empty class finite.
-#' @param gamma For focal losses, how hard to discount the pixels already classified well.
+#' @param gamma For focal losses, how hard to discount what is already classified well -
+#'   a pixel or voxel for a mask, a whole image for a label - so the gradient comes from
+#'   what is not. 0 is plain cross-entropy and 2 is the usual value.
 #' @param alpha For Tversky, the weight on false negatives; raising it buys recall.
 #'   Note that `alpha = 0.5` is Dice exactly only when `smooth = 0`.
 #' @param label_smoothing For cross-entropy, train towards `1 - label_smoothing` instead of

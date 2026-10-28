@@ -17,6 +17,70 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-28 - a label that is a set, from R (engine `0.8.0a51`)
+
+**The pin moves to `0.8.0a51`, one move for two releases.** `0.8.0a50` shipped `labels_from`
+and this package needed it; `a51` fixed two defects this package needed nothing from, so the
+ratchet carries it along rather than moving twice. `maju116/rplatypus#241`.
+
+#### Added
+
+- **`classification_data(labels_from = )`**: one CSV column per class, in class order, each
+  cell `0` or `1` - the layout for a label that is a **set** rather than one of a list of
+  alternatives. A chest film with four findings is four independent questions.
+
+  It is a naming rather than a switch, for the reason `regions` and `classes_from` are on the
+  mask side: the *target* changes and not only the activation, so there was nothing a
+  `multilabel = TRUE` could have meant on a `label` column that structurally cannot say an
+  image has two findings.
+
+  **Position is the pairing**, so the CSV's headers may be called whatever the dataset calls
+  them and the model still learns the classes in the order `classes` names them. Four
+  refusals are duplicated here rather than forwarded, for the reason the `subdirs` one is -
+  the sentence is the engine's own and this way no interpreter starts to deliver it:
+  `nested_dirs`, which cannot express a set at all; fewer than two columns; `strict_labels`,
+  which has nothing to choose between when the columns *are* the classes; and a column count
+  that disagrees with `classes`. Each has a control asserting the same call is accepted
+  without the thing being refused.
+
+- **`predict()` answers in a different shape on that route, because the answer is a
+  different kind of thing**: one row per image *per class*, with `key`, `class`, and `label`
+  and `predicted` as logicals.
+
+  The alternatives were weighed against what a reader does with it rather than chosen. A
+  wide frame needs two columns per class and names them by pasting, which is how a class
+  called `Mass_label` becomes ambiguous. A list column holds the sets and nothing in base R
+  aggregates it. Long form joins by `key`, summarises per class with one `tapply`, and is
+  the only shape in which *this image has none of the findings* is a row of `FALSE` rather
+  than an empty cell that could also mean unread.
+
+  `type = "probability"` needs no branch and got none: the `p_<class>` keys are in both
+  shapes. There is no `probability` column in the frame, and that is the engine's decision
+  rather than an omission here - that column is the chosen class's own number, and with
+  independent questions nothing was chosen.
+
+#### Fixed
+
+- **Two pieces of prose the field-prose ledger asked about**, which is the third time that
+  mechanism has paid for itself and the second time what it found was not the field it
+  named. The engine rewrote three descriptions in `0.8.0a50`; re-reading R's own prose for
+  each turned up that `?classification_data`'s **title** said *the one label each of them
+  carries*, which `labels_from` makes false, and that `?losses` described `gamma` as
+  discounting *the pixels already classified well* when focal loss applies to a whole image
+  as well. `strict_labels` was the third, and R's prose for it was written in this change,
+  so it was already right.
+
+  What the ledger asks for is the re-reading, not the regenerated digest: a ledger
+  regenerated without reading is a rubber stamp, and its own failure message says so.
+
+#### Documentation
+
+- **The configuration guide gains `### When the label is a set: labels_from` on both
+  sides**, with the YAML block validated by a test in each suite and the code block beside
+  it. Measured rather than assumed: both suites pin only `##` headings, by `^## (.+)$`, so a
+  subsection moves neither list and the two halves needed no merge ordering - which is what
+  the issue had predicted they would.
+
 ### 2026-10-28 - nothing is inferred from silence (engine `0.8.0a49`, the pin does not move)
 
 **No engine change and no pin move.** `platypus_spec()` accepts a plain list of fields in
