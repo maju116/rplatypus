@@ -173,6 +173,19 @@ with (root / 'all.csv').open('w', newline='') as handle:
   file.path(root, "all.csv")
 }
 
+#' The same images listed with NO class columns, which is a prediction set
+#'
+#' Written beside `all.csv` rather than instead of it, so one dataset serves both halves of
+#' the distinction `rplatypus#245` is about: a film carrying none of the findings is
+#' labelled and reads FALSE, and an image nobody labelled reads NA. Either alone proves
+#' nothing.
+tiny_unlabelled_csv <- function(labelled_csv) {
+  rows <- utils::read.csv(labelled_csv)
+  path <- file.path(dirname(labelled_csv), "images-only.csv")
+  utils::write.csv(rows[, c("key", "images")], path, row.names = FALSE, quote = FALSE)
+  path
+}
+
 tiny_multilabel_spec <- function(path, ...) {
   platypus_spec(
     data = classification_data(path, path, classes = c("bright", "wide"),

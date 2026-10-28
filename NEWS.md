@@ -17,6 +17,50 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-28 - a split nobody labelled, and the one shape that can say so (engine `0.8.0a53`)
+
+**The pin moves to `0.8.0a53`, one move for two releases.** `0.8.0a52` made an unlabelled
+classification test split reachable - a CSV of `key, images`, which is the ordinary shape of
+a prediction set - and this package needed a representation for it. `a53` is a defect an R
+user meets through `predict(fit, split = "train")` and whose fix arrives by the pin moving
+and by nothing else, so the ratchet carries both rather than moving twice.
+`maju116/rplatypus#245`, `maju116/pyplatypus#320` and `#321`.
+
+#### Fixed
+
+- **`predict()`'s long form said *none of the findings* where the truth was *nobody
+  said***. For a label that is a set the frame carries one row per image per class, and
+  `label` was `classes %in% as.character(unlist(row$labels))` - which is `FALSE` for every
+  class both when the image carries none of them and when nothing labelled it at all. Both
+  states reduce to `character(0)` on the way in, so the comparison cannot tell them apart.
+
+  The comment above that branch is what made it a defect rather than a gap: it argues for
+  long form over a wide frame and a list column precisely because long form is *"the only
+  shape in which 'this image has none of the findings' is four rows of FALSE rather than an
+  empty cell that could also mean unread"*. That property only holds while `FALSE` means
+  *measured and absent*. `label` is `NA` now when the engine said nothing, read from the
+  `NULL` rather than from the emptiness, and the column stays logical so `tapply()` and
+  `table()` go on working.
+
+  One test holds both halves, because neither means anything alone: an unlabelled split is
+  `NA` throughout, and a film carrying no finding at all stays `FALSE` twice. Three
+  mutations, three caught - including the one that makes *every* row `NA`, which is the
+  same defect with the sign reversed.
+
+  The route a single label takes was already right and already documented: `rows_to_frame()`
+  maps an absent cell to `NA`, and the comment there said *"`label` is NA on a split that
+  carries no labelling, which is what a test set often is"* - a sentence describing a state
+  this package could not reach until `0.8.0a52`, and true now rather than aspirational.
+
+#### Changed
+
+- **`class_balance()`'s `split` argument says what an unlabelled split does.** The engine
+  refuses one by name since `0.8.0a52`, because counted anyway it reports every class at
+  zero and reads as a finding about the dataset. `?class_balance` named `"test"` as a split
+  to count and said nothing about this, which is the prose going stale in the direction of
+  the work having been done one package over. A receipt test asserts the refusal arrives
+  here, with the same call on a labelled split as its control.
+
 ### 2026-10-28 - a label that is a set, from R (engine `0.8.0a51`)
 
 **The pin moves to `0.8.0a51`, one move for two releases.** `0.8.0a50` shipped `labels_from`

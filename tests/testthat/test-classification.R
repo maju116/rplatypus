@@ -385,3 +385,68 @@ test_that("type = probability needs no branch for a set of labels", {
   expect_identical(colnames(chances), c("bright", "wide"))
   expect_true(all(chances >= 0 & chances <= 1))
 })
+
+test_that("nobody said is NA and none of the findings is FALSE, in one frame", {
+  # The distinction the long form was chosen for, and it only held while an unlabelled
+  # classification split was unreachable. `0.8.0a52` made it reachable - a CSV of
+  # `key, images` as `test_path`, which is what a prediction set looks like - and both
+  # states reduce to `character(0)` on the way in, so `%in%` cannot tell them apart.
+  #
+  # One dataset, two splits, both halves asserted: either alone proves nothing. A test
+  # showing NA where nobody labelled would pass just as well if FALSE had become NA
+  # everywhere, which would be the same defect with the other sign.
+  skip_if_no_engine()
+  labelled <- tiny_multilabel_dataset()
+  images_only <- tiny_unlabelled_csv(labelled)
+  spec <- platypus_spec(
+    data = classification_data(labelled, labelled, test = images_only,
+                               classes = c("bright", "wide"),
+                               labels_from = c("Bright", "Wide"),
+                               mode = "config_file"),
+    models = list(classifier("tiny", input_shape = c(32, 32), blocks = 2, filters = 4,
+                             epochs = 1, batch_size = 2))
+  )
+  fit <- platypus_fit(spec, num_workers = 0)
+
+  unlabelled <- predict(fit, split = "test")
+  expect_identical(names(unlabelled), c("key", "class", "label", "predicted"))
+  expect_true(all(is.na(unlabelled$label)))
+  expect_true(is.logical(unlabelled$label))
+  # `predicted` is the model's own answer and is unaffected: there is nothing unknown
+  # about what the model said.
+  expect_false(any(is.na(unlabelled$predicted)))
+  expect_identical(nrow(unlabelled), 2L * nrow(utils::read.csv(images_only)))
+
+  # The other half, on the split that carries labels: a film with neither finding is FALSE
+  # twice rather than NA, because that is a measured answer.
+  scored <- predict(fit, split = "validation")
+  neither <- scored[scored$key == "case_0_00", ]
+  expect_identical(nrow(neither), 2L)
+  expect_false(any(is.na(neither$label)))
+  expect_false(any(neither$label))
+  expect_false(any(is.na(scored$label)))
+})
+
+test_that("a split with no labelling has no balance to report", {
+  # The engine's refusal, reaching an R user through the one function that forwards it.
+  # `?class_balance` names `test` as a split to count and said nothing about this until
+  # `0.8.0a52` made an unlabelled one reachable; counted anyway it reports every class at
+  # zero, which reads as a finding about the dataset.
+  skip_if_no_engine()
+  labelled <- tiny_multilabel_dataset()
+  images_only <- tiny_unlabelled_csv(labelled)
+  spec <- platypus_spec(
+    data = classification_data(labelled, labelled, test = images_only,
+                               classes = c("bright", "wide"),
+                               labels_from = c("Bright", "Wide"),
+                               mode = "config_file"),
+    models = list(classifier("tiny", input_shape = c(32, 32), blocks = 2, filters = 4,
+                             epochs = 1, batch_size = 2))
+  )
+
+  expect_error(class_balance(spec, "test"), "no balance to report")
+  # the control: the same call on a split that has labels answers
+  counted <- class_balance(spec, "train")
+  expect_identical(nrow(counted), 2L)
+  expect_true(all(counted$n > 0))
+})
