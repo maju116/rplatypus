@@ -646,3 +646,112 @@ test_that("either averager alone reaches the engine", {
     expect_length(as.list(spec)$models[[1]]$callbacks, 1L)
   }
 })
+
+
+# ---------------------------------------------------- a bare `data` list, `#239`
+
+bare_data <- function() list(train_path = "train/", validation_path = "valid/")
+
+bare_model <- function() list(name = "cnn", architecture = "u_net", input_shape = c(32L, 32L))
+
+test_that("a bare data list names no task, so a stated one is taken rather than checked", {
+  # `#239`: `platypus_spec()` accepts a plain list of fields, and that path could express
+  # one task out of four. `task_of()` answered "semantic_segmentation" for anything with no
+  # tag, so the inference always had an answer, and a stated task was then refused for
+  # disagreeing with it - *"the data and model constructors decide the task"*, to a caller
+  # who had used no constructor. Nothing is inferred from silence now.
+  for (task in c("classification", "object_detection", "instance_segmentation")) {
+    expect_identical(
+      rplatypus:::agreed_task(bare_data(), list(bare_model()), stated = task), task
+    )
+  }
+})
+
+test_that("a bare data list with nothing stated is still semantic segmentation", {
+  # The control that the change did not take a route away from anybody: this is what the
+  # bare path has always built, and it keeps building it.
+  expect_identical(
+    rplatypus:::agreed_task(bare_data(), list(bare_model())), "semantic_segmentation"
+  )
+})
+
+test_that("a model that was built still decides, beside a bare data list", {
+  # The half of `#239` the issue did not report. A `classifier()` beside a bare list used
+  # to be refused as *mixing* two tasks when only one of them had been named at all, and
+  # the same for `yolo3()`. The model names its task; the data block saying nothing is not
+  # a disagreement with it.
+  expect_identical(
+    rplatypus:::agreed_task(bare_data(), list(classifier("cnn", input_shape = c(32, 32)))),
+    "classification"
+  )
+  expect_identical(
+    rplatypus:::agreed_task(bare_data(), list(u_net("u", input_shape = c(32, 32)))),
+    "semantic_segmentation"
+  )
+})
+
+test_that("the guard the absence of evidence is not an excuse for is intact", {
+  # The condition is the absence of evidence, never the presence of a `task` argument. Both
+  # of these name a task twice, so a third answer is still two intentions in one
+  # specification - which is what this check exists for and what a looser reading of `#239`
+  # would have broken.
+  expect_error(
+    rplatypus:::agreed_task(
+      segmentation_data("a/", "b/", colormap = binary_colormap),
+      list(u_net("u", input_shape = c(32, 32))),
+      stated = "object_detection"
+    ),
+    "disagrees"
+  )
+  expect_error(
+    rplatypus:::agreed_task(
+      classification_data("a/", "b/", classes = c("x", "y")),
+      list(classifier("cnn", input_shape = c(32, 32))),
+      stated = "semantic_segmentation"
+    ),
+    "disagrees"
+  )
+})
+
+test_that("a bare list beside a model admissible for two tasks is refused, naming the choice", {
+  # Reachable only from the bare path: every data constructor names exactly one task, so the
+  # intersection with it can hold at most one. A guess here would be the fallback this
+  # function's own comments argue against, so it asks instead.
+  weighted <- u_net("u", input_shape = c(32, 32), weights = "dsbowl-unet")
+  expect_error(
+    rplatypus:::agreed_task(bare_data(), list(weighted)),
+    "does not say which task"
+  )
+  expect_identical(
+    rplatypus:::agreed_task(bare_data(), list(weighted), stated = "instance_segmentation"),
+    "instance_segmentation"
+  )
+})
+
+test_that("a task name that is not a task is still refused, and the rename still explained", {
+  # The name check runs before any of the above, so the absence of evidence never turns a
+  # typo into a task.
+  expect_error(
+    rplatypus:::agreed_task(bare_data(), list(bare_model()), stated = "segmentation"),
+    "renamed"
+  )
+  expect_error(
+    rplatypus:::agreed_task(bare_data(), list(bare_model()), stated = "clasification"),
+    "`task` must be one of"
+  )
+})
+
+test_that("the disagreement message says which side said nothing", {
+  # `from_data` used to be printed unconditionally and is `NULL` now, so the message had to
+  # learn the word for it. Without this the sentence reads "the data is  while ...".
+  expect_error(
+    rplatypus:::agreed_task(
+      bare_data(),
+      list(classifier("cnn", input_shape = c(32, 32)), yolo3(
+        "y", input_shape = c(32, 32),
+        anchors = lapply(1:3, function(g) lapply(1:3, function(a) c(0.1 * g, 0.1 * a)))
+      ))
+    ),
+    "a bare list and names no task"
+  )
+})

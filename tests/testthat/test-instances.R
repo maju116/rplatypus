@@ -28,18 +28,31 @@ test_that("instance_data refuses the five fields that do not apply, by not havin
   expect_no_error(instance_data("train/", "valid/"))
 })
 
-test_that("a model names its task through separation, and only through separation", {
+test_that("a model names its task, and separation is what makes it instances", {
+  # These two assertions were `expect_null()` until `#239`: a semantic model returned the
+  # plain list and let `task_of()`'s default speak for it, which is what made a built model
+  # indistinguishable from a bare one. The tag is explicit now and the thing being tested is
+  # unchanged - `separation` is the only field that turns it into instances.
   semantic <- u_net("m", input_shape = c(256, 256))
-  expect_null(attr(semantic, "task", exact = TRUE))
+  expect_identical(attr(semantic, "task", exact = TRUE), "semantic_segmentation")
 
   instance <- u_net("m", input_shape = c(256, 256), separation = separation_rim())
   expect_identical(attr(instance, "task", exact = TRUE), "instance_segmentation")
   expect_identical(instance$separation, list(name = "rim"))
 
-  # `decode` alone must not tag: it is optional on an instance model, so a model that
-  # decoded without predicting a signal would be a specification with no way to produce one.
+  # `decode` alone must not make it an instance model: it is optional on one, so a model
+  # that decoded without predicting a signal would be a specification with no way to
+  # produce one.
   decoded <- u_net("m", input_shape = c(256, 256), decode = list(decode_watershed()))
-  expect_null(attr(decoded, "task", exact = TRUE))
+  expect_identical(attr(decoded, "task", exact = TRUE), "semantic_segmentation")
+
+  # And `weights` without `separation` is the one that admits either, which pyplatypus
+  # `0.8.0a28` permits because the sidecar records what the channels predict.
+  weighted <- u_net("m", input_shape = c(256, 256), weights = "dsbowl-instances")
+  expect_identical(
+    attr(weighted, "task", exact = TRUE),
+    c("semantic_segmentation", "instance_segmentation")
+  )
 })
 
 test_that("all four architectures carry separation, not just the one that was tested", {

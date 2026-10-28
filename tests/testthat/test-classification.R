@@ -152,18 +152,19 @@ test_that("a YAML file and the constructors reach the same specification", {
   expect_identical(as.list(from_file), as.list(from_constructors))
   expect_identical(rplatypus:::spec_task(from_file), "classification")
 
-  # And the file path really is the one with no constructor in it, which is what makes the
-  # comparison worth making: a bare `data` list is read as semantic segmentation whatever
-  # task is stated, for this task exactly as for detection today.
-  expect_error(
-    platypus_spec(
-      data = list(train_path = root, validation_path = root,
-                  classes = c("dark", "bright")),
-      models = list(list(name = "tiny", input_shape = c(32L, 32L))),
-      task = "classification"
-    ),
-    "disagrees"
+  # **This assertion was the defect, asserted.** It read `expect_error(..., "disagrees")`
+  # with a comment saying a bare `data` list "is read as semantic segmentation whatever task
+  # is stated", which is what `#239` was filed about the same evening: the inference had no
+  # evidence, answered semantic anyway, and refused the stated task for disagreeing with an
+  # answer nobody had given. A plain list names no task now, so the task argument is taken,
+  # and the third route reaches the same specification as the other two.
+  from_bare <- platypus_spec(
+    data = list(train_path = root, validation_path = root,
+                classes = c("dark", "bright")),
+    models = list(list(name = "tiny", input_shape = c(32L, 32L))),
+    task = "classification"
   )
+  expect_identical(rplatypus:::spec_task(from_bare), "classification")
 })
 
 test_that("class_balance counts in class order and prints the engine's own sentence", {

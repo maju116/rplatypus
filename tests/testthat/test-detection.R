@@ -21,10 +21,18 @@ test_that("detection_data carries the task so nobody has to type it", {
   )
 })
 
-test_that("a segmentation data block has no task attribute and defaults to segmentation", {
+test_that("a segmentation data block names its task, and a bare list names none", {
+  # This test used to assert the opposite - `expect_null(attr(data, "task"))` - because
+  # `task_of()` answered "semantic_segmentation" for anything untagged and this constructor
+  # relied on it. That default is what made a bare `data` list indistinguishable from this
+  # block, which is `#239`: the inference had no evidence, answered semantic anyway, and
+  # then refused a stated task for disagreeing with an answer nobody had given. The
+  # assertion is inverted rather than deleted, because the old one is the record of why.
   data <- segmentation_data("train/", "valid/", colormap = binary_colormap)
-  expect_null(attr(data, "task"))
+  expect_identical(attr(data, "task"), "semantic_segmentation")
   expect_identical(rplatypus:::task_of(data), "semantic_segmentation")
+
+  expect_null(rplatypus:::task_of(list(train = "train/", validation = "valid/")))
 })
 
 test_that("classes must be named, distinct and non-empty", {

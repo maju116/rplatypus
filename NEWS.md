@@ -17,6 +17,59 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-28 - nothing is inferred from silence (engine `0.8.0a49`, the pin does not move)
+
+**No engine change and no pin move.** `platypus_spec()` accepts a plain list of fields in
+`data` as well as one of the four constructors, and that route could describe **one task out
+of four**. `maju116/rplatypus#239`.
+
+#### Fixed
+
+- **A bare `data` list named a task nobody had chosen, and a stated `task` was refused for
+  disagreeing with it.** `task_of()` answered `"semantic_segmentation"` for any object with
+  no task attribute, and `segmentation_data()` carried none - so the constructor and a plain
+  list were the same object to the inference, which therefore always had an answer. Measured
+  with the one that works as the control:
+
+  ```
+                                         before                       after
+  bare list + bare model, task stated    REFUSED, all three tasks     the stated task
+  bare list + classifier()               REFUSED as "mixing" tasks    classification
+  bare list + yolo3()                    REFUSED as "mixing" tasks    object_detection
+  bare list + bare model, nothing said   semantic_segmentation        unchanged
+  segmentation_data() + u_net()          semantic_segmentation        unchanged
+  ```
+
+  The second and third rows are the half the issue did not report: a model that names its
+  task unambiguously was overruled by a data block that had named nothing, and the refusal
+  said the specification *mixes* two tasks when only one of them had been named at all.
+
+  **Every constructor tags itself now**, including `segmentation_data()` and the four
+  U-shaped model constructors, which both used to lean on that default. So an absent tag
+  means *this object says nothing* rather than *this object says segmentation*, and the
+  inference is taken over the objects that spoke. What a stated `task` is trusted for is
+  precisely the absence of evidence - **not** the presence of the argument: with
+  `segmentation_data()` and `u_net()`, a stated `"object_detection"` is still two intentions
+  in one specification and still refused, and there is a test on that pair.
+
+  One state the bare route can now reach and a constructor cannot: a model admissible for
+  two tasks - a U-shaped one with `weights` and no `separation`, which pyplatypus `0.8.0a28`
+  permits because the sidecar records what the channels predict - beside a data block that
+  says nothing. That is refused naming the choice rather than guessed at, because a guess
+  here is the fallback `agreed_task()`'s own comments argue against.
+
+  The refusal's wording also learnt the word for a side that said nothing; it used to print
+  the inferred task unconditionally, which is now `NULL`.
+
+#### Documentation
+
+- **`?platypus_spec` describes the bare-list route**, which existed, worked for one task and
+  was documented nowhere - `@param data` named the four constructors and a YAML path, and a
+  plain list is neither. That is why it went unnoticed since detection shipped. The page says
+  what names the task on that route and why a constructor is still the better one: it refuses
+  a wrong field here rather than across the bridge, and the fields it refuses are most of
+  what it is for.
+
 ### 2026-10-28 - one label per image, from R (engine `0.8.0a49`)
 
 **The pin moves to `0.8.0a49`, and this is the first release this package could not take by
