@@ -204,6 +204,11 @@ test_that("the measurements that stay in R do not reach the engine", {
     grepl("shim()", body, fixed = TRUE) || grepl("engine()", body, fixed = TRUE)
   }
 
+  # These three by name, because their pages are runnable ON PURPOSE and that is a stronger
+  # statement than the general property. The general one - no runnable example anywhere
+  # reaches the bridge, over all 72 pages - is `test-runnable-examples.R`, added by
+  # `rplatypus#249` after §3F's row was found to describe this loop as if it covered every
+  # page.
   for (name in c("mask_volume", "instance_sizes", "mask_coverage")) {
     expect_false(reaches_engine(name), info = paste(name, "now reaches the engine, so its ",
                                                     "example needs Python and its page has ",

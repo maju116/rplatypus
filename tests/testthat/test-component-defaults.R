@@ -128,3 +128,73 @@ test_that("the one required argument in either family is `tau`, and the engine r
   expect_true("tau" %in% unlist(defs$SurfaceDiceMetric$required))
   expect_false("smooth" %in% unlist(defs$SurfaceDiceMetric$required))
 })
+
+
+# The callbacks were outside the loop above, which selected `^(loss|metric)_`, while this
+# file's own first line claims *every* default this package writes down. `rplatypus#248`.
+#
+# They cannot be found by the suffix the loop above uses: a callback's schema key is
+# `EarlyStopping` or `Ema`, with no family in the name, and keying by the tag alone collides
+# because `dice` is both a loss and a metric. So the authority is the engine's own
+# **callbacks union** - the `anyOf` of a model's `callbacks` field - which is the list that
+# decides what a configuration may carry, rather than anything written down twice.
+
+test_that("every callback default matches the engine's", {
+  skip_if_no_engine()
+
+  schema <- rplatypus:::engine()$spec_schema()$`$defs`
+  # `oneOf` with a discriminator rather than `anyOf`, read off the field rather than
+  # assumed: pydantic emits a tagged union here and the first version of this test looked
+  # for `anyOf`, found NULL, and would have compared nothing had the control below not
+  # refused it.
+  union <- schema$SegmentationModel$properties$callbacks$items$oneOf
+  members <- vapply(union, function(entry) basename(entry$`$ref`), character(1))
+  # The control that the union was read at all: with this empty every comparison below is
+  # skipped and the test passes having looked at nothing, which is the shape §4 warns about.
+  expect_gt(length(members), 8)
+
+  theirs <- list()
+  for (key in members) {
+    props <- schema[[key]]$properties
+    tag <- props$name$const %||% props$name$enum[[1]] %||% NULL
+    expect_false(is.null(tag), info = paste(key, "carries no name tag"))
+    theirs[[paste0("callback_", tag)]] <- props
+  }
+
+  ours <- grep("^callback_", getNamespaceExports("rplatypus"), value = TRUE)
+  expect_gt(length(ours), 8)
+  # Both directions: a callback the engine gained and R has not is a different question from
+  # a default that drifted, and it is the one that makes this list go stale silently.
+  expect_setequal(sort(ours), sort(names(theirs)))
+
+  compared <- 0L
+  for (name in sort(ours)) {
+    props <- theirs[[name]]
+    expect_false(is.null(props), info = paste(name, "names nothing the engine accepts"))
+
+    arguments <- formals(get(name, asNamespace("rplatypus")))
+    for (argument in names(arguments)) {
+      # A required argument has the empty symbol, which has to be recognised before it is
+      # bound - the same trap the loop above records `metric_surface_dice(tau)` falling into.
+      if (identical(arguments[[argument]], quote(expr = ))) next
+      ours_default <- arguments[[argument]]
+      # R sends nothing for an unset argument, so the engine's default applies.
+      if (is.null(ours_default)) next
+      theirs_default <- props[[argument]]$default
+      expect_false(
+        is.null(theirs_default),
+        info = sprintf("%s(%s=) has a default here and none in the engine", name, argument)
+      )
+      expect_equal(
+        eval(ours_default), theirs_default,
+        info = sprintf("%s(%s=)", name, argument)
+      )
+      compared <- compared + 1L
+    }
+  }
+
+  # And the second control, which is the one the loop above does not carry: a run in which
+  # every default happened to be NULL would skip every comparison and report green. This
+  # says how many were actually looked at.
+  expect_gt(compared, 10)
+})
