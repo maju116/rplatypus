@@ -34,11 +34,17 @@ number that means nothing. Read them with \code{\link[=flow_to_colours]{flow_to_
 On an instance fit, \code{"class"} is a label map of \strong{objects}, numbered from 1, and
 \code{"probability"} is refused by name for the reason above.
 
-With \code{regions} - overlapping classes - \code{"class"} is \strong{refused} rather than computed.
-The channels are independent binary questions and do not compete, so the most likely
-one is not an answer: a pixel may be in three classes and naming one of them drops the
-rest with nothing in the result to say so. Ask for \code{"probability"} and write it with
+With \code{regions} \strong{or} \code{classes_from} - the two namings that make a pixel's classes
+independent - \code{"class"} is \strong{refused} rather than computed. The channels are
+independent binary questions and do not compete, so the most likely one is not an
+answer: a pixel may be in three classes and naming one of them drops the rest with
+nothing in the result to say so. Ask for \code{"probability"} and write it with
 \code{\link[=save_class_masks]{save_class_masks()}}.
+
+This page named \code{regions} alone until \code{maju116/rplatypus#252}, and so did the refusal:
+a \code{classes_from} fit got the most likely channel, which gives every background pixel a
+class, because there is no background channel for it to lose to. The question is asked
+of the engine now rather than of either field.
 
 On a \strong{classification} fit the two readings are a table and a matrix rather than two
 arrays: \code{"class"} gives one row per image with the answer and how sure the model was,

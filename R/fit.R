@@ -268,11 +268,17 @@ evaluate.platypus_fit <- function(object, split = "validation", at = NULL, ...) 
 #'   On an instance fit, `"class"` is a label map of **objects**, numbered from 1, and
 #'   `"probability"` is refused by name for the reason above.
 #'
-#'   With `regions` - overlapping classes - `"class"` is **refused** rather than computed.
-#'   The channels are independent binary questions and do not compete, so the most likely
-#'   one is not an answer: a pixel may be in three classes and naming one of them drops the
-#'   rest with nothing in the result to say so. Ask for `"probability"` and write it with
+#'   With `regions` **or** `classes_from` - the two namings that make a pixel's classes
+#'   independent - `"class"` is **refused** rather than computed. The channels are
+#'   independent binary questions and do not compete, so the most likely one is not an
+#'   answer: a pixel may be in three classes and naming one of them drops the rest with
+#'   nothing in the result to say so. Ask for `"probability"` and write it with
 #'   [save_class_masks()].
+#'
+#'   This page named `regions` alone until `maju116/rplatypus#252`, and so did the refusal:
+#'   a `classes_from` fit got the most likely channel, which gives every background pixel a
+#'   class, because there is no background channel for it to lose to. The question is asked
+#'   of the engine now rather than of either field.
 #'
 #'   On a **classification** fit the two readings are a table and a matrix rather than two
 #'   arrays: `"class"` gives one row per image with the answer and how sure the model was,
@@ -530,13 +536,23 @@ predict.platypus_fit <- function(object, model = NULL, split = "test",
   # classes a pixel is in and drops the others. The shape cannot answer this - sigmoid
   # channels and a softmax's channels are the same array - so it is read off the
   # specification this fit carries, which is a lever R owns rather than one it borrows.
-  if (identical(type, "class") && length(as.list(object$spec)$data$regions)) {
-    stop("this specification names overlapping classes (`regions`), so there is no one ",
-         "class per pixel to return - each channel is an independent question and a pixel ",
-         "may be in several at once. Ask for `type = \"probability\"`, which gives one ",
-         "channel per region in the order they were written, and `save_class_masks()` ",
-         "writes those one file per class. `inspect_masks()` names the channels.",
-         call. = FALSE)
+  # ASKED of the engine rather than inferred from one field. This read
+  # `length(as.list(object$spec)$data$regions)` until `maju116/rplatypus#252`, and
+  # `classes_from` makes the channels independent exactly as `regions` does - so a
+  # `classes_from` fit got an argmax over sigmoids with no background channel, which gives
+  # every background pixel a class and nothing downstream can see it. The engine has one
+  # switch for this and says so in `SegmentationData.multilabel`'s own docstring.
+  facts <- if (identical(type, "class")) shim()$data_facts(object$spec$py) else NULL
+  if (isTRUE(facts$multilabel)) {
+    # And the message names the naming the caller actually used. It said `regions`
+    # unconditionally, which was the same mistake as the guard one line up: a reader with a
+    # `classes_from` specification would have gone looking for a field they never wrote.
+    stop("this specification names overlapping classes (`", facts$naming, "`), so there ",
+         "is no one class per pixel to return - each channel is an independent question ",
+         "and a pixel may be in several at once. Ask for `type = \"probability\"`, which ",
+         "gives one channel per class in the order they were written, and ",
+         "`save_class_masks()` writes those one file per class. `inspect_masks()` names ",
+         "the channels.", call. = FALSE)
   }
 
   if (is.null(cases) && is.null(each)) {

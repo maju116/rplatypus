@@ -8,8 +8,26 @@
 # Integers are coerced here rather than left to pydantic. R numbers are doubles, so a
 # plain `4` arrives in Python as `4.0`; relying on coercion works until someone writes
 # `blocks = 4.5` and gets a puzzling message from a library they never invoked.
+#
+# **That comment described the intention and not the code until `maju116/rplatypus#254`.**
+# `as.integer(4.5)` is `4`, silently, so `blocks = 4.5` was neither refused here nor seen by
+# pydantic - it became a different valid value. The engine refuses a number with a fractional
+# part by name on the YAML route, which made this one configuration with two answers. The
+# test is `trunc`, which is the one `check_regions()` has always used for the same rule.
 
-int1 <- function(x) if (is.null(x)) NULL else as.integer(x)
+whole <- function(x, what) {
+  if (is.null(x)) return(NULL)
+  if (!is.numeric(x) || anyNA(x) || any(x != trunc(x))) {
+    bad <- if (is.numeric(x)) x[is.na(x) | x != trunc(x)] else x
+    stop("`", what, "` is a whole number", if (length(x) > 1L) "s" else "", "; got ",
+         paste(utils::head(format(bad), 3), collapse = ", "),
+         ". A fractional value used to be truncated silently, which produced a different ",
+         "valid setting rather than a message.", call. = FALSE)
+  }
+  as.integer(x)
+}
+
+int1 <- function(x) whole(x, deparse(substitute(x)))
 
 #' Loss functions
 #'
