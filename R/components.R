@@ -681,6 +681,15 @@ optimizer_nadam <- function(learning_rate = 1e-3, beta_1 = 0.9, beta_2 = 0.999,
 #' @param restore_best Put the best weights back when training stops, rather than keeping
 #'   the last - which are by definition the ones that were not improving. On by default.
 #'   Note that `callback_swa()` replaces nothing if a run stops before averaging began.
+#'
+#'   **An averager beside this one wins.** `callback_ema()` and `callback_swa()` also
+#'   replace the weights when training ends, and since engine `0.8.0a57` the order is fixed
+#'   rather than left to wherever the callbacks sat in the list: the average is what the run
+#'   hands back, because somebody who configured averaging asked for the averaged model and
+#'   this argument is a statement about which *epoch* was best. Before that release the
+#'   answer was whichever of the two this package happened to send last, and the run record
+#'   reported the EMA steps either way. Re-read here because the engine rewrote its own
+#'   sentence for this field, which is what the field-prose ledger is for.
 #' @param path Where to write. For `callback_model_checkpoint()` that is the weights file; for
 #'   `callback_csv_logger()` it is one row per epoch appended as the epoch ends - the same
 #'   numbers [training_history()] returns, so a run that is interrupted still leaves its

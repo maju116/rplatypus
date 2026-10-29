@@ -17,6 +17,39 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-29 (night) - the pin, for four defects that reach an R user through it (engine `0.8.0a57`)
+
+**The pin moves to `0.8.0a57` and this package gains nothing else.** None of that release's
+four findings is a surface an R user calls, and all four are defects an R user meets
+**through the pin moving and by nothing else** - which is §3E's distinction rather than its
+default, the same shape as `0.8.0a47` and `a48`. `maju116/pyplatypus#333` to `#336`.
+
+**Two of them reach R through the order a user writes their callbacks in**, and this package
+sends that order unchanged. `callback_early_stopping(restore_best = TRUE)` beside `callback_ema()`
+ended a run on the raw best epoch or on the average depending on which came first - 0.578
+apart in the largest weight on one run with nothing but the order changed - while the record
+reported the EMA steps either way. And the epoch loop asked `any()` over a generator, which
+short-circuits, so a `callback_csv_logger()` written after a stopper lost the run's final
+row, and `callback_stop_after()` written before `callback_early_stopping()` restored the second-best
+epoch rather than the best. The averager wins now, stated rather than inherited, and every
+callback sees every epoch.
+
+The other two are narrower. `callback_swa()` resolved its `start` fraction by a different
+rounding rule from every other callback's `start`, so the same fraction began an epoch later
+whenever the arithmetic landed on a half - at 10 epochs, `start = 0.75` folded two epochs
+where the shared rule folds three. And the detector's letterbox pasted the image at a rounded
+offset while the boxes used the exact one, so every letterboxed frame and its targets were
+up to a pixel apart; `predict()` on a detector returns boxes in each image's own pixels, so
+the inverse carried that offset back out.
+
+**And the field-prose ledger found something, which is the third time it has.** Regenerating
+it for the new pin reported `restore_best`'s description rewritten in the engine's
+`callbacks` schema, and re-reading R's own `@param` for it - the only thing that step is for
+- turned up that the sentence was now incomplete rather than wrong: it said nothing about
+`callback_ema()` superseding it, which is the decision `0.8.0a57` took. So
+`?callback_early_stopping` says it now. 116 fields, and that one digest plus the recorded
+engine version are the whole diff.
+
 ### 2026-10-29 (evening) - the seam, and a class that went missing (engine `0.8.0a56`)
 
 **Five findings from the reviewer's second pass. Four are the same shape - this package

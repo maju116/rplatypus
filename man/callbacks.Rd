@@ -81,7 +81,16 @@ not 1 because an early epoch legitimately predicts almost nothing.}
 
 \item{restore_best}{Put the best weights back when training stops, rather than keeping
 the last - which are by definition the ones that were not improving. On by default.
-Note that \code{callback_swa()} replaces nothing if a run stops before averaging began.}
+Note that \code{callback_swa()} replaces nothing if a run stops before averaging began.
+
+\strong{An averager beside this one wins.} \code{callback_ema()} and \code{callback_swa()} also
+replace the weights when training ends, and since engine \verb{0.8.0a57} the order is fixed
+rather than left to wherever the callbacks sat in the list: the average is what the run
+hands back, because somebody who configured averaging asked for the averaged model and
+this argument is a statement about which \emph{epoch} was best. Before that release the
+answer was whichever of the two this package happened to send last, and the run record
+reported the EMA steps either way. Re-read here because the engine rewrote its own
+sentence for this field, which is what the field-prose ledger is for.}
 
 \item{start, start_epoch}{When the callback may begin to act - \strong{one of the two and
 never both}. \code{start} is a fraction of the run (\code{0.1} leaves the first tenth alone)
