@@ -17,6 +17,53 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-29 - the review's R half: two guards that described more than they held
+
+The review agent's first audit produced nine findings and three of them are R's.
+`maju116/rplatypus#248` and `#249` are here; `#247` waits on the engine release that carries
+its fix. The whole audit is in the workbench's `REVIEWER_FINDINGS.md`, and each finding was
+reproduced independently before it was filed.
+
+#### Fixed
+
+- **Every callback default is compared with the engine's now**, which `#248` found nobody
+  doing. `test-component-defaults.R` opens with *"Every default this package writes down is
+  one the engine also writes down"* and selected `^(loss|metric)_`, so the callback
+  constructors were outside it - **twelve of them**, not the eight the finding counted, and
+  they send their values unconditionally, so an engine that changed a default would be
+  silently overruled for every R user who did not pass the argument.
+
+  There was no drift: all twelve agree today, which is the only reason this is a widened
+  guard rather than a bug. Three mutations, three caught, and the comparison is driven by
+  the engine's **callbacks union** - the `oneOf` of a model's `callbacks` field - rather than
+  by a list written down here. A callback cannot be found by the suffix the loss and metric
+  loop uses, because its schema key is `EarlyStopping` with no family in it, and the tag
+  alone collides: `dice` is both a loss and a metric.
+
+  The test asserts both directions - a callback the engine gained and this package has not
+  fails too - and counts how many defaults it actually compared, because a run in which
+  every default happened to be `NULL` would skip every comparison and report green.
+
+- **No runnable example reaches the engine, over every help page**, which is what §3F's row
+  has claimed and what `#249` found it was not. The test it named looped over a literal
+  `c("mask_volume", "instance_sizes", "mask_coverage")` and searched each one's own body, so
+  a new export with a runnable example reaching `shim()` passed it, and so did a helper one
+  level down.
+
+  `test-runnable-examples.R` parses all **72** `man/*.Rd`, drops the `\dontrun{}` blocks -
+  the one thing CRAN does not run - collects the exported names used in what is left, and
+  follows each one's **call graph** through the namespace. Measured: 0 pages reach the bridge,
+  0 failed to parse, and **29 reach it when `\dontrun` is kept**, which is the control that
+  the scan is not vacuous.
+
+  Three mutations, three caught, including a runnable example planted into `mask_volume.Rd`
+  that calls a function which forwards. That is the case the three-name loop could not see,
+  and §4's reason it matters: `R CMD check` runs every example not in `\dontrun{}`, this
+  machine has the engine, so the check is green here and CRAN would be the first to fail.
+
+  The three-name loop stays, because *those* pages are runnable on purpose, which is a
+  stronger statement than the general property.
+
 ### 2026-10-28 - a split nobody labelled, and the one shape that can say so (engine `0.8.0a53`)
 
 **The pin moves to `0.8.0a53`, one move for two releases.** `0.8.0a52` made an unlabelled
