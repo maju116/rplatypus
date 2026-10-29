@@ -4,15 +4,26 @@
 \alias{mask_coverage}
 \title{How much of each class a mask covers}
 \usage{
-mask_coverage(mask, labels = NULL)
+mask_coverage(mask, labels = NULL, n_class = NULL)
 }
 \arguments{
 \item{mask}{Class indices, counted from 1.}
 
-\item{labels}{Optional names for the classes.}
+\item{labels}{Optional names for the classes. \strong{Also what says how many classes there
+are}, when the mask does not hold them all - see the note below.}
+
+\item{n_class}{How many classes the mask is meant to have, when \code{labels} was not given.
+Unset means the largest value present, which is only right when every class occurs.}
 }
 \value{
-A data frame with one row per class.
+A data frame with one row per class, including the classes with no pixels.
+
+\strong{A class above the largest value present used to have no row at all}, which was the
+one case this function is for: \code{tabulate()} sizes its table by the largest value it
+sees, so a three-class mask holding only 1 and 2 reported two classes and said nothing
+about the third. The highest-numbered class is the usual position of a rare foreground,
+so the row that went missing was the one worth reading.
+\code{maju116/rplatypus#255}.
 }
 \description{
 A quick sanity check before training: a foreground of half a percent is a problem the

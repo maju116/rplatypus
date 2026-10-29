@@ -325,8 +325,18 @@ ellipse_measure <- function(mask, spacing = NULL, class = 2L) {
 #' loss has to be chosen for, and it is better to know before the run than after.
 #'
 #' @param mask Class indices, counted from 1.
-#' @param labels Optional names for the classes.
-#' @return A data frame with one row per class.
+#' @param labels Optional names for the classes. **Also what says how many classes there
+#'   are**, when the mask does not hold them all - see the note below.
+#' @param n_class How many classes the mask is meant to have, when `labels` was not given.
+#'   Unset means the largest value present, which is only right when every class occurs.
+#' @return A data frame with one row per class, including the classes with no pixels.
+#'
+#'   **A class above the largest value present used to have no row at all**, which was the
+#'   one case this function is for: `tabulate()` sizes its table by the largest value it
+#'   sees, so a three-class mask holding only 1 and 2 reported two classes and said nothing
+#'   about the third. The highest-numbered class is the usual position of a rare foreground,
+#'   so the row that went missing was the one worth reading.
+#'   `maju116/rplatypus#255`.
 #' @export
 #' @examples
 #' mask <- matrix(1L, 8, 8); mask[2:4, 2:4] <- 2L
@@ -335,8 +345,14 @@ ellipse_measure <- function(mask, spacing = NULL, class = 2L) {
 #' # A class with 0 pixels is the thing to look for: its target channel is zero
 #' # everywhere, so there is no gradient towards it and the model is never shown
 #' # what it is being asked to find.
-mask_coverage <- function(mask, labels = NULL) {
-  counts <- tabulate(as.vector(mask))
+mask_coverage <- function(mask, labels = NULL, n_class = NULL) {
+  # `nbins` rather than `tabulate()`'s default, which is `max(mask)` - the whole of
+  # `maju116/rplatypus#255`. The count comes from whatever says how many classes there are:
+  # `n_class` if given, then `labels`, and only then the mask itself.
+  declared <- n_class %||% length(labels)
+  present <- suppressWarnings(max(as.vector(mask), na.rm = TRUE))
+  if (!is.finite(present)) present <- 0L
+  counts <- tabulate(as.vector(mask), nbins = max(declared, present, 0L))
   classes <- seq_along(counts)
   data.frame(
     class = classes,

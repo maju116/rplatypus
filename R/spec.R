@@ -273,8 +273,14 @@ segmentation_data <- function(train, validation = NULL, colormap = NULL, labels 
     # `config_file` on their behalf - R deciding is as good a reason as the user deciding,
     # and the engine cannot tell them apart anyway.
     mode = if (explicit_mode || !identical(mode, "nested_dirs")) mode else NULL,
-    colormap = if (is.null(colormap)) NULL else lapply(colormap, as.integer),
-    labels = if (is.null(labels)) NULL else as.integer(labels),
+    # Through `whole()` rather than `as.integer()`: a fractional value here was truncated
+    # in silence, and for a colormap that can land one class's colour on another's.
+    # `maju116/rplatypus#254`.
+    colormap = if (is.null(colormap)) NULL else lapply(
+      seq_along(colormap),
+      function(i) whole(colormap[[i]], paste0("colormap[[", i, "]]"))
+    ),
+    labels = whole(labels, "labels"),
     # `as.list()` around each `of` rather than `as.integer()` alone, and the single-value
     # case is why: reticulate turns a length-1 integer vector into a Python *scalar*, so
     # `of = 4` would arrive as `4` where the schema wants `[4]` - and `of: [4]` is the
@@ -512,7 +518,10 @@ print.platypus_spec <- function(x, ...) {
   cat("platypus specification\n")
   if (!is.null(x$source)) cat("  from        :", x$source, "\n")
   cat("  data        :", info$data$train_path, "\n")
-  cat("  classes     :", length(info$data$colormap), "\n")
+  # The engine's own count, not the colormap's length: `labels`, `regions` and
+  # `classes_from` leave `colormap` empty, so three of the four namings printed
+  # `classes : 0`. `maju116/rplatypus#256`.
+  cat("  classes     :", shim()$data_facts(x$py)$n_class, "\n")
   cat("  models      :", length(models), "\n")
   for (m in models) {
     shape <- paste(unlist(m$input_shape), collapse = "x")
@@ -829,12 +838,34 @@ check_split <- function(validation, split, test) {
 #' @noRd
 split_block <- function(split) {
   if (is.null(split)) return(NULL)
-  structure(
-    c(list(fractions = as.numeric(split$fractions)),
-      list(group_by = split$group_by),
-      if (is.null(split$seed)) list() else list(seed = int1(split$seed))),
-    class = c("platypus_verbatim", "list")
+  if (!is.list(split)) {
+    stop("`split` is a list: `fractions`, and optionally `group_by` and `seed`.",
+         call. = FALSE)
+  }
+  # `[[` rather than `$`, because `$` on a list matches a name by PREFIX - so `seeds = 7`
+  # was read as `seed` and worked, which is the quietest way for a misspelling to survive.
+  # §4 of the workbench's notes records `cb$start` matching `start_epoch` for this reason.
+  known <- c("fractions", "group_by", "seed")
+  # Assembled with `c(list(...))` throughout and never with `block$key <- value`, because
+  # assigning NULL to a list element REMOVES it - which is the very thing the paragraph
+  # above exists to prevent, and which the first version of this fix did, taking
+  # `group_by = NULL` back out and making the engine refuse a key the caller wrote. Caught
+  # by the control beside the test rather than by reading it.
+  block <- c(
+    list(fractions = as.numeric(split[["fractions"]])),
+    list(group_by = split[["group_by"]]),
+    # `[[` rather than `$` here too, for the prefix reason above.
+    if (is.null(split[["seed"]])) list() else list(seed = int1(split[["seed"]]))
   )
+  # EVERYTHING ELSE IS FORWARDED rather than dropped. This rebuilt the block from the three
+  # names above and discarded the rest, so `split = list(fractions = ..., sed = 7)` was
+  # accepted by R and refused by name on the YAML route - one configuration, two answers.
+  # The engine's `SplitSpec` is `extra = "forbid"`, so forwarding is what makes R's refusal
+  # the engine's refusal rather than a second copy of its field list.
+  # `maju116/rplatypus#253`.
+  extra <- setdiff(names(split), known)
+  block <- c(block, split[extra])
+  structure(block, class = c("platypus_verbatim", "list"))
 }
 
 

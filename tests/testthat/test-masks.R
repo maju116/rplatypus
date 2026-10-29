@@ -321,3 +321,41 @@ test_that("save_class_masks() counts its file names against the images", {
   )
   expect_length(list.files(out), 0L)
 })
+
+
+test_that("mask_coverage reports a class with no pixels, including the last one", {
+  # `maju116/rplatypus#255`. `tabulate()` sizes its table by the largest value PRESENT, so a
+  # declared class above it had no row - and the help page's own example says a class with 0
+  # pixels is the thing to look for. The highest-numbered class is the usual position of a
+  # rare foreground, so the row that disappeared was the one worth reading.
+  labels <- c("bg", "liver", "tumour")
+
+  no_tumour <- mask_coverage(matrix(c(1, 1, 2, 2), 2), labels = labels)
+  expect_identical(nrow(no_tumour), 3L)
+  expect_identical(no_tumour$label[3], "tumour")
+  expect_identical(no_tumour$pixels[3], 0L)
+  expect_identical(no_tumour$fraction[3], 0)
+
+  # The control: a missing MIDDLE class was always reported, so the assertion above is about
+  # the last row rather than about counting having started to work at all.
+  no_liver <- mask_coverage(matrix(c(1, 1, 3, 3), 2), labels = labels)
+  expect_identical(nrow(no_liver), 3L)
+  expect_identical(no_liver$pixels, c(2L, 0L, 2L))
+
+  # And the fractions still sum to the share of the mask that is labelled, which is what
+  # would break if the table were widened by padding rather than by counting.
+  expect_equal(sum(no_tumour$fraction), 1)
+})
+
+
+test_that("mask_coverage takes the class count from n_class when there are no labels", {
+  # Without either, the largest value present is all there is to go on - which is the old
+  # behaviour and is correct whenever every class occurs.
+  by_number <- mask_coverage(matrix(c(1, 1, 2, 2), 2), n_class = 4)
+  expect_identical(nrow(by_number), 4L)
+  expect_identical(by_number$pixels, c(2L, 2L, 0L, 0L))
+  expect_identical(by_number$label, paste("class", 1:4))
+
+  # The control: nothing declared, so the answer is what the mask holds.
+  expect_identical(nrow(mask_coverage(matrix(c(1, 1, 2, 2), 2))), 2L)
+})

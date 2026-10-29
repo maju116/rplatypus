@@ -60,6 +60,39 @@ def spec_as_dict(spec: Any) -> dict:
     return spec.to_dict()
 
 
+def data_facts(spec: Any) -> dict:
+    """What the data block MEANS, as the engine derives it, rather than what it says.
+
+    Two questions R was answering for itself out of the fields, and getting wrong for three
+    of the four class namings:
+
+    `multilabel` - whether a voxel may belong to more than one class. `regions` and
+    `classes_from` both answer yes, and `SegmentationData.multilabel`'s own docstring says
+    *"everything downstream reads this rather than either of them"*. R read `regions` alone,
+    so `predict(type = "class")` returned an argmax over independent sigmoid channels for a
+    `classes_from` fit - every background pixel given a class. `maju116/rplatypus#252`.
+
+    `n_class` - the number of output channels. R counted the colormap, which only one of the
+    four namings fills, so `print()` of a specification said `classes : 0` for the other
+    three. `maju116/rplatypus#256`.
+
+    `naming` is which of the four the block used, so a refusal can name it. Derived here from
+    the fields, because the engine has no single word for it - and it is only ever used in a
+    message, never as the answer to either question above.
+    """
+    data = spec.data
+    naming = None
+    for field in ("colormap", "labels", "regions", "classes_from"):
+        if getattr(data, field, None) is not None:
+            naming = field
+            break
+    return {
+        "multilabel": bool(data.multilabel),
+        "n_class": int(data.n_class),
+        "naming": naming,
+    }
+
+
 def _engine_failure(error: Any) -> dict:
     """A failure during a run, rather than in a specification.
 

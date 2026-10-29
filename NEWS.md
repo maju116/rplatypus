@@ -17,6 +17,67 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-29 (evening) - the seam, and a class that went missing (engine `0.8.0a56`)
+
+**Five findings from the reviewer's second pass. Four are the same shape - this package
+answered a question the engine already answers, and the two disagreed - and the fifth is
+this package's own arithmetic.** No engine release: the pin stays at `0.8.0a56` because
+every fix is on this side.
+
+**`predict()` with `type = "class"` was refused for `regions` and computed for
+`classes_from`.** `maju116/rplatypus#252`. Both namings make a pixel's classes independent -
+the engine has one switch for it and its own documentation says everything downstream reads
+that rather than either field - and this package read `regions`. So a `classes_from` fit
+returned the most likely channel over sigmoids with **no background channel**, which gives
+every background pixel a class. Nothing downstream could see it: `save_class_masks()`
+detects an overlap from a probability array and a class map has none.
+
+Measured on a 4-sample 32x32 fixture with two binary mask files each: the call returned a
+`4 x 32 x 32` array holding only 1 and 2, with a pixel outside both masks given class 2 on
+probabilities of 0.497-0.500 and 0.499-0.527. The control is the same pictures written as
+one label map with `regions`, which was refused. The refusal also names the naming the
+caller actually wrote now, where it said `regions` whatever had been given.
+
+**`print()` of a specification said `classes : 0` for three of the four namings.**
+`maju116/rplatypus#256`. It counted the colormap's length, which only `colormap` fills, so
+`labels`, `regions` and `classes_from` all printed zero on the one summary a user prints
+first - and it reads as *the classes were not understood*. The count comes from the engine
+now: `labels = c(0, 1, 2)` prints 3, with `voc_colormap`'s 21 as the control.
+
+**A misspelt key in `split` was accepted here and refused by name in a YAML file.**
+`maju116/rplatypus#253`. The block was rebuilt from `fractions`, `group_by` and `seed` and
+everything else dropped, so `sed = 7` reached the engine as a seed of 0 - an unseeded run
+whose author believes it is seeded. Worse, `$` on an R list matches a name by **prefix**, so
+`seeds = 7` was read as `seed` and simply worked. Both are refused by the engine now,
+because unknown keys are forwarded rather than discarded, and `[[` replaces `$`.
+
+The two halves are separate claims and the forwarding one hides the other, which the
+mutation batch is what showed: with every key forwarded, putting `$` back failed nothing.
+So the prefix is asserted against what this package **sends** rather than against the
+engine's answer - and the first draft of that test used `$` and reported the field as set,
+which is the defect demonstrating itself.
+
+**A fractional whole number was truncated in silence.** `maju116/rplatypus#254`.
+`as.integer(1.5)` is 1, so `labels = c(0, 1.5)` became `c(0, 1)` and a colormap entry of
+255.9 became 255 - a *different valid value* rather than a message, where the engine refuses
+a number with a fractional part by name. The comment above that coercion had always said it
+was there so nobody "gets a puzzling message from a library they never invoked", which
+described the intention and not the code. The test is `trunc`, which `segmentation_data()`
+has always used for `regions`.
+
+**And one finding is not about the seam at all: `mask_coverage()` hid a class with no
+pixels.** `maju116/rplatypus#255`. `tabulate()` sizes its table by the largest value it
+sees, so a declared class above that got no row - and `?mask_coverage`'s own example says a
+class with 0 pixels *"is the thing to look for"*. With `labels = c("bg", "liver", "tumour")`
+a mask holding only 1 and 2 returned **two** rows; a mask holding 1 and 3 returned three,
+with liver at 0, which is the control that says the last row was the only one affected. The
+highest-numbered class is the usual position of a rare foreground, so the row that
+disappeared was the one worth reading. The count now comes from `n_class` if given, then
+from `labels`, and only then from the mask.
+
+No field's description moved, so the field-prose ledger is unchanged and no `@param` needed
+re-reading.
+
 ### 2026-10-29 - the pin, and the metric that path was built for (engine `0.8.0a56`)
 
 **The pin moves to `0.8.0a56`, which is a defect reaching an R user and nothing else.**
