@@ -854,7 +854,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="usage" class="level3">
 <h3 class="anchored" data-anchor-id="usage">Usage</h3>
-<pre><code class="language-R">mask_coverage(mask, labels = NULL)
+<pre><code class="language-R">mask_coverage(mask, labels = NULL, n_class = NULL)
 </code></pre>
 </section>
 <section id="arguments" class="level3">
@@ -873,14 +873,23 @@ Class indices, counted from 1.
 <code id="labels">labels</code>
 </td>
 <td>
-Optional names for the classes.
+Optional names for the classes. <strong>Also what says how many classes there are</strong>, when the mask does not hold them all - see the note below.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="n_class">n_class</code>
+</td>
+<td>
+How many classes the mask is meant to have, when <code>labels</code> was not given. Unset means the largest value present, which is only right when every class occurs.
 </td>
 </tr>
 </tbody></table>
 </section>
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>
-<p>A data frame with one row per class.</p>
+<p>A data frame with one row per class, including the classes with no pixels.</p>
+<p><strong>A class above the largest value present used to have no row at all</strong>, which was the one case this function is for: <code>tabulate()</code> sizes its table by the largest value it sees, so a three-class mask holding only 1 and 2 reported two classes and said nothing about the third. The highest-numbered class is the usual position of a rare foreground, so the row that went missing was the one worth reading. <code>maju116/rplatypus#255</code>.</p>
 </section>
 <section id="examples" class="level3">
 <h3 class="anchored" data-anchor-id="examples">Examples</h3>
