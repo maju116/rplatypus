@@ -17,6 +17,36 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-10-29 - the pin, and the metric that path was built for (engine `0.8.0a56`)
+
+**The pin moves to `0.8.0a56`, which is a defect reaching an R user and nothing else.**
+`maju116/rplatypus#247`: `evaluate()` and `evaluate_cases()` with `at = "source"` raised a
+`ValueError` for `cldice` and `surface_dice`, naming neither the metric nor `at` - and
+`?evaluate` calls that route *"the answer to that warning"*. The whole fix is the engine's,
+so this is §3E's *None beyond the pin* in the version that costs somebody something, the
+same shape as `0.8.0a47` and `a48`.
+
+Measured on the engine's side before the release: four 64x64 cases with `[dice]` returned a
+number on both grids while `[dice, cldice]` raised on `at = "source"` from both functions,
+with the `dice`-only row as the control. After: `cldice` 0.28 on the model grid and 0.4839
+at source, which is two grids giving two numbers - what the route exists for.
+
+**It is `a56` rather than `a55` because `a55` carried a regression this package found.**
+`0.8.0a55` made the engine's IoU matrix index the object numbers *present* rather than
+`1..max`, and the engine's own agreement overlay still mapped a row back with `row + 1` - so
+an agreement figure over a label map with a gap coloured the wrong objects. What caught it
+is `test-instance-drawing.R`, which compares `overlay_instance_agreement()`'s output with
+this package's own pixel for pixel and carries a fixture named `gapped`, whose comment says
+that taking `seq_len(max(labels))` instead of the values present *changes nothing* - true
+here, and untrue there from that release until `a56`.
+
+So this package held the correct copy of that rule the whole time: `matched_objects()` has
+always taken `sort(unique(...))` of each side. That is the second time the engine was the
+wrong copy and the first time in code rather than prose, and the pair is what reported it.
+
+The field-prose ledger was regenerated for the new pin and the diff is **two lines**, both
+the recorded engine version: no field's description moved, so no `@param` needed re-reading.
+
 ### 2026-10-29 - the review's R half: two guards that described more than they held
 
 The review agent's first audit produced nine findings and three of them are R's.
