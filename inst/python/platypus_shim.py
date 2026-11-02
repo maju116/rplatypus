@@ -646,15 +646,28 @@ def device_report() -> dict:
 
 
 def read_images(
-    paths: list, channels: int = 3, size: list | None = None, nearest: bool = False
+    paths: list,
+    channels: int = 3,
+    size: list | None = None,
+    nearest: bool = False,
+    label_map: bool = False,
 ) -> dict:
     """Read images exactly as the data pipeline would.
 
     Not a convenience: a picture plotted from a differently resized copy is a picture of
     something the model never saw, and the disagreements it shows may be the resizing.
+
+    `label_map` says the file holds class identities rather than brightness, so the engine
+    reads it at full integer width instead of through 8-bit greyscale - which flattened
+    every value above 255 and merged two classes into one. `pyplatypus#346`.
     """
     import numpy as np
     from pyplatypus.data import read_image
+
+    # Passed only when it is asked for, by the rule every new option here follows: an
+    # engine that predates the argument keeps working for everyone not using it. The pin
+    # makes that nearly moot, and `RETICULATE_PYTHON` is the route where it is not.
+    widen = {"label_map": True} if label_map else {}
 
     try:
         arrays = [
@@ -663,6 +676,7 @@ def read_images(
                 channels=int(channels),
                 size=tuple(int(s) for s in size) if size else None,
                 nearest=bool(nearest),
+                **widen,
             )
             for p in paths
         ]

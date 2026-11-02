@@ -16,17 +16,28 @@
 #' @param channels 3 for colour, 1 for greyscale.
 #' @param nearest Use nearest-neighbour resizing. Required for masks: interpolating one
 #'   invents colours belonging to no class, which then quietly become background.
-#' @return An `image x height x width x channels` array of 0-255 values.
+#' @param label_map The file holds class identities rather than brightness, so read it at
+#'   full integer width. A 16-bit PNG or a 32-bit TIFF label map is otherwise read through
+#'   8-bit greyscale, where every value above 255 arrives as 255 - two classes then merge
+#'   into one with nothing unmatched to say so. One channel only, because a label map has
+#'   one, and never for an image: a picture is divided by 255 later.
+#' @return An `image x height x width x channels` array of 0-255 values - or of the file's
+#'   own integer values with `label_map = TRUE`, which is the point of that argument.
 #' @export
 #' @examples
 #' \dontrun{
 #' images <- read_images(list.files("test/", full.names = TRUE), size = c(256, 256))
+#'
+#' # A label map stored wide, whose values are classes rather than brightness.
+#' values <- read_images("seg.png", channels = 1, nearest = TRUE, label_map = TRUE)
 #' }
-read_images <- function(paths, size = NULL, channels = 3, nearest = FALSE) {
+read_images <- function(paths, size = NULL, channels = 3, nearest = FALSE,
+                        label_map = FALSE) {
   result <- shim()$read_images(as.list(as.character(paths)),
                                channels = as.integer(channels),
                                size = if (is.null(size)) NULL else as.integer(size),
-                               nearest = nearest)
+                               nearest = nearest,
+                               label_map = label_map)
   if (!isTRUE(result$ok)) abort_engine(result)
   result$images
 }
