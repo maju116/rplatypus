@@ -810,7 +810,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="usage" class="level3">
 <h3 class="anchored" data-anchor-id="usage">Usage</h3>
-<pre><code class="language-R">read_images(paths, size = NULL, channels = 3, nearest = FALSE)
+<pre><code class="language-R">read_images(
+  paths,
+  size = NULL,
+  channels = 3,
+  nearest = FALSE,
+  label_map = FALSE
+)
 </code></pre>
 </section>
 <section id="arguments" class="level3">
@@ -848,18 +854,29 @@ Image files.
 Use nearest-neighbour resizing. Required for masks: interpolating one invents colours belonging to no class, which then quietly become background.
 </td>
 </tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="label_map">label_map</code>
+</td>
+<td>
+The file holds class identities rather than brightness, so read it at full integer width. A 16-bit PNG or a 32-bit TIFF label map is otherwise read through 8-bit greyscale, where every value above 255 arrives as 255 - two classes then merge into one with nothing unmatched to say so. One channel only, because a label map has one, and never for an image: a picture is divided by 255 later.
+</td>
+</tr>
 </tbody></table>
 </section>
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>
-<p>An <code style="white-space: pre;">image x height x width x channels</code> array of 0-255 values.</p>
+<p>An <code style="white-space: pre;">image x height x width x channels</code> array of 0-255 values - or of the file’s own integer values with <code>label_map = TRUE</code>, which is the point of that argument.</p>
 </section>
 <section id="examples" class="level3">
 <h3 class="anchored" data-anchor-id="examples">Examples</h3>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"rplatypus"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>images <span class="ot">&lt;-</span> <span class="fu">read_images</span>(<span class="fu">list.files</span>(<span class="st">"test/"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>), <span class="at">size =</span> <span class="fu">c</span>(<span class="dv">256</span>, <span class="dv">256</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>images <span class="ot">&lt;-</span> <span class="fu">read_images</span>(<span class="fu">list.files</span>(<span class="st">"test/"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>), <span class="at">size =</span> <span class="fu">c</span>(<span class="dv">256</span>, <span class="dv">256</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># A label map stored wide, whose values are classes rather than brightness.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>values <span class="ot">&lt;-</span> <span class="fu">read_images</span>(<span class="st">"seg.png"</span>, <span class="at">channels =</span> <span class="dv">1</span>, <span class="at">nearest =</span> <span class="cn">TRUE</span>, <span class="at">label_map =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 
 
