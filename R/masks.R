@@ -104,7 +104,12 @@ read_masks <- function(paths, colormap = NULL, labels = NULL, size = NULL, toler
   # quietly become background - and the plot would show a disagreement that is nothing but the
   # resizing.
   if (!is.null(labels)) {
-    values <- read_images(paths, size = size, channels = 1, nearest = TRUE)
+    # `label_map = TRUE`, because these values are class identities: read through 8-bit
+    # greyscale a 16-bit label map arrives with everything above 255 flattened to 255, so
+    # `labels = c(0, 255, 1000)` would match two bands to one class and report nothing
+    # unmatched. `pyplatypus#346`. The colormap branch below is a picture and stays 8-bit.
+    values <- read_images(paths, size = size, channels = 1, nearest = TRUE,
+                          label_map = TRUE)
     return(label_classes(values, labels))
   }
   coloured <- read_images(paths, size = size, channels = 3, nearest = TRUE)

@@ -359,3 +359,81 @@ test_that("mask_coverage takes the class count from n_class when there are no la
   # The control: nothing declared, so the answer is what the mask holds.
   expect_identical(nrow(mask_coverage(matrix(c(1, 1, 2, 2), 2))), 2L)
 })
+
+# ------------------------------------------ a label map stored wider than a byte
+# `pyplatypus#346`, and `rplatypus#262` is R's half of it. `read_masks(labels = )` crosses
+# to the engine's reader with `channels = 1`, and that reader converted through 8-bit
+# greyscale: every value above 255 arrived as 255, so two classes merged into one and
+# `label_classes` reported nothing unmatched.
+
+# The fixture is written through the engine's own imaging library rather than through
+# `png`, which cannot write 16-bit at all - `writePNG` has no bit depth argument. These
+# tests already need the engine to read the file, so writing it the same way costs nothing
+# and the depth is the dtype rather than an argument somebody has to trust.
+write_label_png <- function(path, values, wide = TRUE) {
+  # Written in Python rather than through `reticulate::import`, because reticulate converts
+  # a numpy array straight back to an R one and the dtype - which is the whole point here,
+  # since it is what sets the file's bit depth - does not survive the round trip.
+  lines <- c(
+    "import numpy as np",
+    "from PIL import Image",
+    "values = np.array(%s, dtype=np.%s).reshape(%d, %d)",
+    "Image.fromarray(values).save(%s)"
+  )
+  code <- sprintf(
+    paste(lines, collapse = "\n"),
+    paste0("[", paste(as.vector(t(values)), collapse = ", "), "]"),
+    if (wide) "uint16" else "uint8",
+    nrow(values), ncol(values),
+    paste0("r'", path, "'")
+  )
+  reticulate::py_run_string(code)
+  path
+}
+
+test_that("a 16-bit label map keeps the classes its values name", {
+  skip_if_no_engine()
+  out <- withr::local_tempdir()
+  values <- matrix(0, nrow = 6, ncol = 4)
+  values[3:4, ] <- 255
+  values[5:6, ] <- 1000
+  path <- write_label_png(file.path(out, "m.png"), values)
+
+  classes <- read_masks(path, labels = c(0, 255, 1000))
+
+  # Counted from 1, as everywhere in the R surface: three bands, three classes.
+  expect_identical(dim(classes), c(1L, 6L, 4L))
+  expect_setequal(unique(as.vector(classes)), c(1L, 2L, 3L))
+  expect_true(all(classes[1, 5:6, ] == 3L))
+})
+
+test_that("the reading that made it a defect is still available on an image", {
+  # The control, and the reason `label_map` is an argument rather than the new default: an
+  # ordinary picture is 0-255 and is divided by 255 downstream, so widening it would stop
+  # it being normalised. The same file read as an image clips, which is correct for one.
+  skip_if_no_engine()
+  out <- withr::local_tempdir()
+  values <- matrix(c(0, 255, 1000, 300), nrow = 2)
+  path <- write_label_png(file.path(out, "m.png"), values)
+
+  plain <- read_images(path, channels = 1, nearest = TRUE)
+  widened <- read_images(path, channels = 1, nearest = TRUE, label_map = TRUE)
+
+  expect_identical(sort(unique(as.vector(plain))), c(0L, 255L))
+  expect_identical(sort(unique(as.vector(widened))), c(0L, 255L, 300L, 1000L))
+})
+
+test_that("an ordinary 8-bit label map reads the same either way", {
+  # The control that the widening changed nothing for the case every example in this
+  # package ships: an 8-bit file has no value the conversion could have clipped.
+  skip_if_no_engine()
+  out <- withr::local_tempdir()
+  values <- matrix(c(0, 1, 2, 0), nrow = 2)
+  path <- write_label_png(file.path(out, "byte.png"), values, wide = FALSE)
+
+  expect_identical(
+    read_images(path, channels = 1, nearest = TRUE),
+    read_images(path, channels = 1, nearest = TRUE, label_map = TRUE)
+  )
+  expect_setequal(unique(as.vector(read_masks(path, labels = c(0, 1, 2)))), c(1L, 2L, 3L))
+})

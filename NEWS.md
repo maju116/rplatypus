@@ -17,6 +17,42 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-02 - a label map read at its own width, and a pair for the rule that reads it (engine `0.8.0a59`)
+
+**The pin moves to `0.8.0a59`, and R needs something *from* the release rather than only
+through it.** `maju116/rplatypus#262`: `read_masks(labels = )` crosses to the engine's
+reader with `channels = 1`, and that reader converted every ordinary picture through 8-bit
+greyscale - so a 16-bit PNG or a 32-bit TIFF label map arrived with every value above 255
+flattened to 255. Measured on the same file:
+
+    read as an image    0, 255              the two values a byte can hold
+    read as a label map 0, 255, 300, 1000   the values the file actually stores
+
+With `labels = c(0, 255, 1000)` that made two bands one class and `label_classes()` reported
+nothing unmatched, so there was no symptom at all. `read_images()` takes `label_map` now and
+`read_masks()` passes it on the `labels` branch; the `colormap` branch is a picture and stays
+8-bit, which is why this is an argument rather than the new default - an ordinary image is
+divided by 255 later.
+
+**And writing that turned up a second copy of a rule nothing was holding**, which is
+`maju116/rplatypus#263`. `label_classes()` and the engine's `labels_to_classes` both compare
+a label map's values to within half a unit and both send a value no label claims to the first
+class, and nothing compared them: `label_classes()` is called in one place and no test in
+either suite mentioned the engine's function. `test-label-classes-pair.R` is that pair now,
+on the arrays where the two could disagree rather than the ones any implementation agrees on
+- the tolerance's own boundary, a value no label claims, a value two labels can both claim,
+and values wider than a byte. Three mutations of R's half are caught by it and by nothing
+else: the tolerance narrowed, the fallback removed, and the loop reversed so the first
+matching label wins instead of the last.
+
+**What else `0.8.0a59` carries reaches R through the pin and by nothing else.** A repeated
+`key` in a `config_file` CSV used to pass through as two samples with one name, so
+`evaluate_cases()` returned three rows for four images and `predict(each = TRUE)` returned
+one entry for two; the engine refuses it now, naming the keys, and points at
+`evaluate_cases(group_by = )` for the pooling somebody repeating a key was reaching for. R
+sends the specification and the engine does the discovery, so there is nothing for this
+package to add.
+
 ### 2026-11-02 - the class names R was deriving, and the pin (engine `0.8.0a58`)
 
 **The pin moves to `0.8.0a58`, and this time R needs something *from* the release rather
