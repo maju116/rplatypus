@@ -17,6 +17,43 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-02 - the class names R was deriving, and the pin (engine `0.8.0a58`)
+
+**The pin moves to `0.8.0a58`, and this time R needs something *from* the release rather
+than only through it.** `maju116/rplatypus#259`: `inspect_masks()` named a class when the
+specification used `regions` and returned the bare index for the other three namings -
+while `named_classes`' own documentation said it mirrored the engine's
+`_describe_classes`, which names a region, a `classes_from` pattern, a `labels` value and
+a `colormap` colour. So the claim was false for three namings out of four, and a
+`classes_from` user asking which class was missing got `1` where the engine's own refusal
+for the same data says *"class 1 (files matching '\_organ\\.png$')"* - which `?inspect_masks`
+calls the one thing a reader cannot work out for themselves.
+
+**What the fix turned on is a distinction the finding did not have, and a measurement is
+what found it.** Forwarding `_describe_classes` - "name it the way the engine does" - turned
+five of this package's own assertions from `"one, both"` into `"region 'one' (of [1]),
+region 'both' (of [1, 2])"`. That sentence is written for a **refusal**; it reads well in a
+message and badly in a column, and `save_class_masks()` writes files from these names. Two
+jobs, conflated.
+
+So `0.8.0a58` adds `SegmentationData.class_names` - one short label per class, a region's
+name or a `classes_from` pattern, and the index for `labels` and `colormap` where the number
+*is* the class - and this package forwards to it instead of deriving anything. The engine's
+refusal keeps its sentence. §3A decides where the rule lives: the engine's name wins.
+
+**And four engine fixes reach an R user through the pin moving and by nothing else.**
+`maju116/pyplatypus#341` is the one worth reading: `seed` promised that a run's augmentation
+was repeatable and **nothing seeded the augmentation pipeline**, so two runs at one seed
+differed whenever a model augmented - `deterministic = TRUE` included. `?platypus_spec`
+carries the same promise, which is now true. The other three: `loss_boundary(region =
+loss_lovasz())` was accepted beside `regions` or `classes_from` where `loss_lovasz()` alone
+is refused; a `callback_model_checkpoint()` condition on a `val_` quantity was accepted
+under `validation = FALSE` and died with a bare `KeyError` after one epoch; and a refusal
+quoted an unmatched-voxel share that the engine itself calls meaningless for those namings.
+
+The field-prose ledger was regenerated: 116 fields, and the recorded engine version is the
+whole diff - no description moved, so no `@param` needed re-reading.
+
 ### 2026-10-29 (night) - the pin, for four defects that reach an R user through it (engine `0.8.0a57`)
 
 **The pin moves to `0.8.0a57` and this package gains nothing else.** None of that release's

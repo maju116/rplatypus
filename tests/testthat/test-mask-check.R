@@ -281,14 +281,9 @@ test_that("predict(type = \"probability\") is the way through, and says the chan
   spec <- regions_spec(root, list(list(name = "one", of = 1),
                                   list(name = "both", of = c(1, 2))))
   # The names `save_class_masks()` wants, in the order it wants them, from the same place
-  # `inspect_masks()` reads them. Asserted here rather than left to prose because the order
-  # is what pairs a file on disk with a score in a table.
-  # `:::`, because this is internal and the `engine` job runs `test_dir()` against the
-  # installed package with no `package =` argument. A bare call works under `load_all()` and
-  # under `test_dir(package = )`, and fails in the one place that matters - which is §4's
-  # "installed is not source", met for the third time in a new costume.
-  expect_identical(
-    unname(rplatypus:::named_classes(spec, 0:1)),
-    c("one", "both")
-  )
+  # `inspect_masks()` reads them - and now through the real route rather than through the
+  # internal, because `maju116/rplatypus#259` moved the naming to the engine. What this
+  # asserts is the pairing a file on disk has with a score in a table.
+  report <- inspect_masks(spec)
+  expect_identical(report$present_classes, "one, both")
 })

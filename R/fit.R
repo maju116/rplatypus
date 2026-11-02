@@ -1162,26 +1162,36 @@ export_weights <- function(object, path, model = NULL, ...) {
 #' in a configuration file to find out which is the step nobody takes. With `colormap` or
 #' `labels` the number *is* the class, so it stays a number.
 #'
-#' The mapping is positional and zero-based, measured rather than assumed: on a spec whose
-#' second region matches nothing, the engine returned `missing = 1`. The out-of-range fallback
-#' to the bare number mirrors `EngineBase._describe_classes`, which does the same - so a
-#' report never loses an index it cannot name.
+#' **Read from the engine rather than derived here, since `maju116/rplatypus#259`.** The
+#' sentence that stood here said the opposite - that deriving it in R avoided "a release and
+#' a pin move for a label" - and that reasoning is what made the copy diverge. It was also
+#' false: the shim builds an engine inside `inspect_masks` already, so asking that engine to
+#' name each class costs nothing and needs no release. What R derived handled `regions` and
+#' numbered everything else, while `EngineBase._describe_classes` names a region, a
+#' `classes_from` pattern, a `labels` value and a `colormap` colour - so the claim that this
+#' mirrored it was false for three namings out of four.
 #'
-#' Derived here rather than returned by the engine because the specification is R's own and
-#' asking for it would mean a release and a pin move for a label. What holds the two together
-#' is a test: the engine's refusal names the same region, so R's naming is compared against
-#' that sentence rather than against an opinion.
+#' The engine is asked one index at a time, because its own call joins several into one
+#' sentence for a refusal and R needs them apart. An index the engine did not describe keeps
+#' its number, so a report never loses one it cannot name.
 #'
 #' @keywords internal
 #' @noRd
-named_classes <- function(spec, indices) {
+named_classes <- function(described, indices) {
   indices <- unique(as.integer(indices))
   out <- stats::setNames(as.character(indices), as.character(indices))
-  regions <- as.list(spec)$data$regions
-  if (!length(regions) || !length(indices)) return(out)
-  names_given <- vapply(regions, function(region) as.character(region$name), character(1))
-  inside <- indices >= 0L & indices < length(names_given)
-  out[inside] <- names_given[indices[inside] + 1L]
+  if (!length(indices) || !length(described)) return(out)
+  # READ from the engine rather than derived here. This used to take `spec` and name a
+  # class from `data$regions` alone, while its own roxygen said it mirrored
+  # `EngineBase._describe_classes` - which names a region, a `classes_from` pattern, a
+  # `labels` value and a `colormap` colour. So the claim was false for three namings out
+  # of four, and `inspect_masks()` answered `missing_classes: 1` where the engine's own
+  # refusal for the same data says "class 1 (files matching '_organ\.png$')" - which is
+  # the one thing `?inspect_masks` says a reader cannot work out for themselves.
+  # `maju116/rplatypus#259`.
+  # reticulate turns the engine's `{0: 'one', 1: 'both'}` into a list named "0", "1".
+  known <- as.character(indices)[as.character(indices) %in% names(described)]
+  out[known] <- vapply(described[known], as.character, character(1))
   out
 }
 
@@ -1248,7 +1258,7 @@ inspect_masks <- function(spec, split = c("train", "validation", "test"), limit 
 
   present <- as.integer(unlist(result$present_classes))
   missing <- as.integer(unlist(result$missing_classes))
-  named <- named_classes(spec, c(present, missing))
+  named <- named_classes(result$class_names, c(present, missing))
   out <- data.frame(
     split = split,
     unmatched = as.numeric(result$unmatched),
