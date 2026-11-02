@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.19">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -74,18 +74,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="./../man/figures/hexsticker_platypus.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-ee0d825c001f130fb265e92dcb17fa1f.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-86a2d7ae3330a5c8f2af512998a51a4c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-ee0d825c001f130fb265e92dcb17fa1f.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-0d03878fed8da18bf6c52072959b97e8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-4c32c6d34817a83bec6f7f8287961574.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-0d03878fed8da18bf6c52072959b97e8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-49dd25a0cb74a96880f649f38c655561.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-700af53f4d56938a46a0601ab0c32dc0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-700af53f4d56938a46a0601ab0c32dc0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-700af53f4d56938a46a0601ab0c32dc0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -117,19 +118,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="nav-sidebar docked nav-fixed quarto-light">
+<body class="nav-sidebar docked nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">rplatypus</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -143,15 +143,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
 </div>
+            <div id="quarto-search" class="" title="Search"></div>
       </div> <!-- /container-fluid -->
     </nav>
-  <nav class="quarto-secondary-nav">
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
     <div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./NEWS.html">About</a></li><li class="breadcrumb-item"><a href="./NEWS.html">Changelog</a></li></ol></nav>
-        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./NEWS.html">About</a></li><li class="breadcrumb-item"><a href="./NEWS.html">Changelog</a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
   </nav>
@@ -159,7 +160,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Section">
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
@@ -170,13 +171,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
- <span class="menu-text">Articles</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Articles</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./vignettes/blood-cells.html" class="sidebar-item-text sidebar-link">
@@ -223,13 +221,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
- <span class="menu-text">Reference</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Reference</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./overview.html" class="sidebar-item-text sidebar-link">
@@ -238,13 +233,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
- <span class="menu-text">Setting up</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Setting up</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./man/platypus_status.html" class="sidebar-item-text sidebar-link">
@@ -267,13 +259,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
- <span class="menu-text">A specification</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">A specification</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./man/platypus_spec.html" class="sidebar-item-text sidebar-link">
@@ -338,13 +327,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
- <span class="menu-text">What a model is made of</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">What a model is made of</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./man/losses.html" class="sidebar-item-text sidebar-link">
@@ -427,13 +413,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false">
- <span class="menu-text">The data on disk</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">The data on disk</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./man/split_dataset.html" class="sidebar-item-text sidebar-link">
@@ -486,13 +469,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false">
- <span class="menu-text">Training</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-controls="quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-7-label">Training</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-7" aria-labelledby="quarto-sidebar-section-7-label" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./man/platypus_fit.html" class="sidebar-item-text sidebar-link">
@@ -515,13 +495,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false">
- <span class="menu-text">Predicting and scoring</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-controls="quarto-sidebar-section-8" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-8-label">Predicting and scoring</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-8" aria-labelledby="quarto-sidebar-section-8-label" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./man/predict.platypus_fit.html" class="sidebar-item-text sidebar-link">
@@ -568,13 +545,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false">
- <span class="menu-text">Weights</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-controls="quarto-sidebar-section-9" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-9-label">Weights</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-9" aria-labelledby="quarto-sidebar-section-9-label" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./man/export_weights.html" class="sidebar-item-text sidebar-link">
@@ -591,24 +565,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false">
- <span class="menu-text">Records</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-controls="quarto-sidebar-section-10" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-10-label">Records</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-10" aria-labelledby="quarto-sidebar-section-10-label" class="collapse list-unstyled sidebar-section depth2 ">  
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false">
- <span class="menu-text">Looking at the results</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-controls="quarto-sidebar-section-12" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-12-label">Looking at the results</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-12" aria-labelledby="quarto-sidebar-section-12-label" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./man/plot_masks.html" class="sidebar-item-text sidebar-link">
@@ -667,13 +635,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="false">
- <span class="menu-text">Masks and volumes</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-controls="quarto-sidebar-section-13" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-13-label">Masks and volumes</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-13" aria-labelledby="quarto-sidebar-section-13-label" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./man/colours_to_classes.html" class="sidebar-item-text sidebar-link">
@@ -762,37 +727,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false">
- <span class="menu-text">When something is wrong</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" aria-controls="quarto-sidebar-section-14" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-14-label">When something is wrong</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-14" aria-labelledby="quarto-sidebar-section-14-label" class="collapse list-unstyled sidebar-section depth2 ">  
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false">
- <span class="menu-text">The animal</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" role="navigation" aria-expanded="false" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" aria-controls="quarto-sidebar-section-16" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-16-label">The animal</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth2 ">  
+      <ul id="quarto-sidebar-section-16" aria-labelledby="quarto-sidebar-section-16-label" class="collapse list-unstyled sidebar-section depth2 ">  
       </ul>
   </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" role="navigation" aria-expanded="true">
- <span class="menu-text">About</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" role="navigation" aria-expanded="true" aria-label="Toggle section">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" aria-controls="quarto-sidebar-section-18" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-18-label">About</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
       </div>
-      <ul id="quarto-sidebar-section-18" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-18" aria-labelledby="quarto-sidebar-section-18-label" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./NEWS.html" class="sidebar-item-text sidebar-link active">
@@ -825,7 +781,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
   <ul>
@@ -833,6 +789,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#unreleased" id="toc-unreleased" class="nav-link" data-scroll-target="#unreleased">[0.3.0] - unreleased</a>
   <ul class="collapse">
+  <li><a href="#the-class-names-r-was-deriving-and-the-pin-engine-0.8.0a58" id="toc-the-class-names-r-was-deriving-and-the-pin-engine-0.8.0a58" class="nav-link" data-scroll-target="#the-class-names-r-was-deriving-and-the-pin-engine-0.8.0a58">2026-11-02 - the class names R was deriving, and the pin (engine <code>0.8.0a58</code>)</a></li>
   <li><a href="#night---the-pin-for-four-defects-that-reach-an-r-user-through-it-engine-0.8.0a57" id="toc-night---the-pin-for-four-defects-that-reach-an-r-user-through-it-engine-0.8.0a57" class="nav-link" data-scroll-target="#night---the-pin-for-four-defects-that-reach-an-r-user-through-it-engine-0.8.0a57">2026-10-29 (night) - the pin, for four defects that reach an R user through it (engine <code>0.8.0a57</code>)</a></li>
   <li><a href="#evening---the-seam-and-a-class-that-went-missing-engine-0.8.0a56" id="toc-evening---the-seam-and-a-class-that-went-missing-engine-0.8.0a56" class="nav-link" data-scroll-target="#evening---the-seam-and-a-class-that-went-missing-engine-0.8.0a56">2026-10-29 (evening) - the seam, and a class that went missing (engine <code>0.8.0a56</code>)</a></li>
   <li><a href="#the-pin-and-the-metric-that-path-was-built-for-engine-0.8.0a56" id="toc-the-pin-and-the-metric-that-path-was-built-for-engine-0.8.0a56" class="nav-link" data-scroll-target="#the-pin-and-the-metric-that-path-was-built-for-engine-0.8.0a56">2026-10-29 - the pin, and the metric that path was built for (engine <code>0.8.0a56</code>)</a></li>
@@ -891,7 +848,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./NEWS.html">About</a></li><li class="breadcrumb-item"><a href="./NEWS.html">Changelog</a></li></ol></nav></header>
+<main class="content" id="quarto-document-content" tabindex="-1"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./NEWS.html">About</a></li><li class="breadcrumb-item"><a href="./NEWS.html">Changelog</a></li></ol></nav></header>
 
 
 
@@ -903,6 +860,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Every entry names the engine it needs.</strong> The computation lives in <a href="https://github.com/maju116/pyplatypus">pyplatypus</a> and this package pins one exact version of it. A feature lands in the engine, the engine is published to PyPI, and only then can this package reach it - so the pin moving is part of a change here, not housekeeping alongside it. The pin is what stops a release of this package breaking because the engine drifted underneath it.</p>
 <section id="unreleased" class="level2">
 <h2 class="anchored" data-anchor-id="unreleased">[0.3.0] - unreleased</h2>
+<section id="the-class-names-r-was-deriving-and-the-pin-engine-0.8.0a58" class="level3">
+<h3 class="anchored" data-anchor-id="the-class-names-r-was-deriving-and-the-pin-engine-0.8.0a58">2026-11-02 - the class names R was deriving, and the pin (engine <code>0.8.0a58</code>)</h3>
+<p><strong>The pin moves to <code>0.8.0a58</code>, and this time R needs something <em>from</em> the release rather than only through it.</strong> <code>maju116/rplatypus[#259](https://github.com/maju116/rplatypus/issues/259)</code>: <a href="man/inspect_masks.html"><code>inspect_masks()</code></a> named a class when the specification used <code>regions</code> and returned the bare index for the other three namings - while <code>named_classes</code>’ own documentation said it mirrored the engine’s <code>_describe_classes</code>, which names a region, a <code>classes_from</code> pattern, a <code>labels</code> value and a <code>colormap</code> colour. So the claim was false for three namings out of four, and a <code>classes_from</code> user asking which class was missing got <code>1</code> where the engine’s own refusal for the same data says <em>“class 1 (files matching ‘_organ\.png$’)”</em> - which <code>?inspect_masks</code> calls the one thing a reader cannot work out for themselves.</p>
+<p><strong>What the fix turned on is a distinction the finding did not have, and a measurement is what found it.</strong> Forwarding <code>_describe_classes</code> - “name it the way the engine does” - turned five of this package’s own assertions from <code>"one, both"</code> into <code>"region 'one' (of [1]), region 'both' (of [1, 2])"</code>. That sentence is written for a <strong>refusal</strong>; it reads well in a message and badly in a column, and <a href="man/save_class_masks.html"><code>save_class_masks()</code></a> writes files from these names. Two jobs, conflated.</p>
+<p>So <code>0.8.0a58</code> adds <code>SegmentationData.class_names</code> - one short label per class, a region’s name or a <code>classes_from</code> pattern, and the index for <code>labels</code> and <code>colormap</code> where the number <em>is</em> the class - and this package forwards to it instead of deriving anything. The engine’s refusal keeps its sentence. §3A decides where the rule lives: the engine’s name wins.</p>
+<p><strong>And four engine fixes reach an R user through the pin moving and by nothing else.</strong> <code>maju116/pyplatypus[#341](https://github.com/maju116/rplatypus/issues/341)</code> is the one worth reading: <code>seed</code> promised that a run’s augmentation was repeatable and <strong>nothing seeded the augmentation pipeline</strong>, so two runs at one seed differed whenever a model augmented - <code>deterministic = TRUE</code> included. <code>?platypus_spec</code> carries the same promise, which is now true. The other three: <code>loss_boundary(region = loss_lovasz())</code> was accepted beside <code>regions</code> or <code>classes_from</code> where <a href="man/losses.html"><code>loss_lovasz()</code></a> alone is refused; a <a href="man/callbacks.html"><code>callback_model_checkpoint()</code></a> condition on a <code>val_</code> quantity was accepted under <code>validation = FALSE</code> and died with a bare <code>KeyError</code> after one epoch; and a refusal quoted an unmatched-voxel share that the engine itself calls meaningless for those namings.</p>
+<p>The field-prose ledger was regenerated: 116 fields, and the recorded engine version is the whole diff - no description moved, so no <code>@param</code> needed re-reading.</p>
+</section>
 <section id="night---the-pin-for-four-defects-that-reach-an-r-user-through-it-engine-0.8.0a57" class="level3">
 <h3 class="anchored" data-anchor-id="night---the-pin-for-four-defects-that-reach-an-r-user-through-it-engine-0.8.0a57">2026-10-29 (night) - the pin, for four defects that reach an R user through it (engine <code>0.8.0a57</code>)</h3>
 <p><strong>The pin moves to <code>0.8.0a57</code> and this package gains nothing else.</strong> None of that release’s four findings is a surface an R user calls, and all four are defects an R user meets <strong>through the pin moving and by nothing else</strong> - which is §3E’s distinction rather than its default, the same shape as <code>0.8.0a47</code> and <code>a48</code>. <code>maju116/pyplatypus[#333](https://github.com/maju116/rplatypus/issues/333)</code> to <code>[#336](https://github.com/maju116/rplatypus/issues/336)</code>.</p>
@@ -913,7 +878,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="evening---the-seam-and-a-class-that-went-missing-engine-0.8.0a56" class="level3">
 <h3 class="anchored" data-anchor-id="evening---the-seam-and-a-class-that-went-missing-engine-0.8.0a56">2026-10-29 (evening) - the seam, and a class that went missing (engine <code>0.8.0a56</code>)</h3>
 <p><strong>Five findings from the reviewer’s second pass. Four are the same shape - this package answered a question the engine already answers, and the two disagreed - and the fifth is this package’s own arithmetic.</strong> No engine release: the pin stays at <code>0.8.0a56</code> because every fix is on this side.</p>
-<p><strong><code>predict()</code> with <code>type = "class"</code> was refused for <code>regions</code> and computed for <code>classes_from</code>.</strong> <code>maju116/rplatypus[#252](https://github.com/maju116/rplatypus/issues/252)</code>. Both namings make a pixel’s classes independent - the engine has one switch for it and its own documentation says everything downstream reads that rather than either field - and this package read <code>regions</code>. So a <code>classes_from</code> fit returned the most likely channel over sigmoids with <strong>no background channel</strong>, which gives every background pixel a class. Nothing downstream could see it: <a href="man/save_class_masks.html"><code>save_class_masks()</code></a> detects an overlap from a probability array and a class map has none.</p>
+<p><strong><code>predict()</code> with <code>type = "class"</code> was refused for <code>regions</code> and computed for <code>classes_from</code>.</strong> <code>maju116/rplatypus[#252](https://github.com/maju116/rplatypus/issues/252)</code>. Both namings make a pixel’s classes independent - the engine has one switch for it and its own documentation says everything downstream reads that rather than either field - and this package read <code>regions</code>. So a <code>classes_from</code> fit returned the most likely channel over sigmoids with <strong>no background channel</strong>, which gives every background pixel a class. Nothing downstream could see it: <code>save_class_masks()</code> detects an overlap from a probability array and a class map has none.</p>
 <p>Measured on a 4-sample 32x32 fixture with two binary mask files each: the call returned a <code>4 x 32 x 32</code> array holding only 1 and 2, with a pixel outside both masks given class 2 on probabilities of 0.497-0.500 and 0.499-0.527. The control is the same pictures written as one label map with <code>regions</code>, which was refused. The refusal also names the naming the caller actually wrote now, where it said <code>regions</code> whatever had been given.</p>
 <p><strong><code>print()</code> of a specification said <code>classes : 0</code> for three of the four namings.</strong> <code>maju116/rplatypus[#256](https://github.com/maju116/rplatypus/issues/256)</code>. It counted the colormap’s length, which only <code>colormap</code> fills, so <code>labels</code>, <code>regions</code> and <code>classes_from</code> all printed zero on the one summary a user prints first - and it reads as <em>the classes were not understood</em>. The count comes from the engine now: <code>labels = c(0, 1, 2)</code> prints 3, with <code>voc_colormap</code>’s 21 as the control.</p>
 <p><strong>A misspelt key in <code>split</code> was accepted here and refused by name in a YAML file.</strong> <code>maju116/rplatypus[#253](https://github.com/maju116/rplatypus/issues/253)</code>. The block was rebuilt from <code>fractions</code>, <code>group_by</code> and <code>seed</code> and everything else dropped, so <code>sed = 7</code> reached the engine as a seed of 0 - an unseeded run whose author believes it is seeded. Worse, <code>$</code> on an R list matches a name by <strong>prefix</strong>, so <code>seeds = 7</code> was read as <code>seed</code> and simply worked. Both are refused by the engine now, because unknown keys are forwarded rather than discarded, and <code>[[</code> replaces <code>$</code>.</p>
@@ -1133,7 +1098,7 @@ Dice                       0.9494   and the description says not to choose on it
 <p>Every epoch now reports <strong><code>foreground</code></strong> for both passes - the share of the prediction that is not background. Nothing is compared against the truth, so it is not a measure of quality: it answers whether the model is still producing a segmentation at all.</p>
 <p>It arrives whether or not you ask for it, and that is the point. A model that collapses to predicting background everywhere is invisible in the numbers it already produced - with <code>include_background = TRUE</code> the Dice is a mean over class channels and the background channel is nearly perfect, so a collapsed model reports around 0.5 while its loss falls. A collapse you have to opt into noticing is one you will not notice.</p>
 <p><a href="man/callbacks.html"><code>callback_terminate_on_collapse()</code></a> ends the run once that share has stayed at or below <code>floor</code> for <code>patience</code> epochs. A floor rather than a test for zero, because 0.01% foreground against a target that is 14% foreground has collapsed in every sense that matters; and a patience, because an early epoch legitimately predicts almost nothing. It can watch <code>train_foreground</code> instead, which answers a different question.</p>
-<p><code>evaluate()</code> carries the column, <a href="man/callbacks.html"><code>callback_model_checkpoint()</code></a>’s <code>when</code> can take a condition on it, and any callback’s <code>monitor</code> can watch it.</p>
+<p><code>evaluate()</code> carries the column, <code>callback_model_checkpoint()</code>’s <code>when</code> can take a condition on it, and any callback’s <code>monitor</code> can watch it.</p>
 <p><code>maju116/rplatypus[#206](https://github.com/maju116/rplatypus/issues/206)</code>, engine half <code>maju116/pyplatypus[#262](https://github.com/maju116/rplatypus/issues/262)</code>.</p>
 </section>
 <section id="when-a-callback-may-act-and-on-what-evidence-engine-0.8.0a34" class="level3">
@@ -1444,7 +1409,7 @@ mentions of `value` or `colormaps`        0 in all four logs</code></pre>
 <p>That is the BraTS shape, and the second entry shows that a single value is ordinary rather than an edge case. The engine has had the field since <code>0.8.0a14</code>; <strong>R forwarding it was a code change rather than a pin bump</strong>, which is worth saying because the first guess was the opposite: <code>segmentation_data()</code> enumerates its parameters, so <code>regions</code> was an <code>unused argument</code> while a bare <code>data</code> list and a YAML file both reached the engine’s own validator and were accepted. The constructor refusing what YAML took is the asymmetry this closes. <code>pyplatypus[#91](https://github.com/maju116/rplatypus/issues/91)</code>, <code>[#152](https://github.com/maju116/rplatypus/issues/152)</code>.</p>
 <p>Two things <code>?segmentation_data</code> now says that the field name does not. There is <strong>no background entry</strong>, so <code>n_class</code> is not the number it would be for that many <code>labels</code>. And each channel is an <strong>independent binary question</strong> - a sigmoid per channel rather than one softmax across them - so a voxel may be in several regions at once, which is the point.</p></li>
 <li><p><strong>The configuration vignette has a section on overlapping classes</strong>, <em>Overlapping classes instead of one per voxel</em>, between the augmentation section and the instance one - because <code>regions</code> is still <code>semantic_segmentation</code> and what changes is what a channel means rather than what the task is. The section list is pinned by a test here and by the same list in the engine’s suite, so it landed in both repositories together: <code>pyplatypus[#229](https://github.com/maju116/rplatypus/issues/229)</code> first, because this side compares itself against that list.</p>
-<p>Two things in it are R’s own: a region is a <code>list(name = , of = )</code> and the last one shows that <code>of = 4</code> is ordinary rather than an edge case, and <a href="man/inspect_masks.html"><code>inspect_masks()</code></a> <strong>names</strong> the region that matched nothing instead of giving its position. Both the YAML block and the R chunk are validated - checked by breaking each, which fails the test that reads it rather than passing quietly.</p></li>
+<p>Two things in it are R’s own: a region is a <code>list(name = , of = )</code> and the last one shows that <code>of = 4</code> is ordinary rather than an edge case, and <code>inspect_masks()</code> <strong>names</strong> the region that matched nothing instead of giving its position. Both the YAML block and the R chunk are validated - checked by breaking each, which fails the test that reads it rather than passing quietly.</p></li>
 <li><p><strong><code>inspect_masks()</code> names regions rather than numbering them.</strong> The engine reports classes by position, and with <code>regions</code> a position is the one thing a reader cannot resolve: <code>missing_classes: 1</code> means the second region, and counting entries in a configuration file to find out which is the step nobody takes. With <code>colormap</code> or <code>labels</code> the number <em>is</em> the class, so it stays a number - naming it would invent something the specification did not say, and a test holds that.</p>
 <p>It matters most for the one failure <code>regions</code> invites: <code>of = 3</code> against a label map holding <code>4</code> is a channel of zeros, so the model trains to predict nothing and scores a Dice of 0 for that region while every other number in the run looks ordinary.</p>
 <p>The positions are still attached as the <code>present</code> and <code>missing</code> attributes, so anything reading them keeps working. The mapping is derived in R from the specification R owns rather than asked of the engine - which would mean a release and a pin move for a label - and what holds the two together is a test comparing R’s name against the engine’s own refusal sentence. An off-by-one in that mapping fails it, which is the one mistake whose output otherwise looks entirely ordinary.</p></li>
@@ -1869,7 +1834,8 @@ mentions of `value` or `colormaps`        0 in all four logs</code></pre>
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -1878,8 +1844,69 @@ mentions of `value` or `colormaps`        0 in all four logs</code></pre>
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -1893,6 +1920,7 @@ mentions of `value` or `colormaps`        0 in all four logs</code></pre>
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -2055,44 +2083,54 @@ mentions of `value` or `colormaps`        0 in all four logs</code></pre>
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -2190,6 +2228,9 @@ mentions of `value` or `colormaps`        0 in all four logs</code></pre>
       }
     }
   });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
   </script>
 </div> <!-- /content -->
 
