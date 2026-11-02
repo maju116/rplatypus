@@ -161,3 +161,42 @@ test_that("predict(type = 'class') refuses every naming that makes channels inde
   )
   expect_false(grepl("overlapping classes", reached_further, fixed = TRUE))
 })
+
+
+test_that("inspect_masks names a classes_from class by its pattern, as the engine does", {
+  skip_if_no_engine()
+  skip_if_no_classes_from()
+  # `maju116/rplatypus#259`. R derived the name from `data$regions` alone, so every other
+  # naming came back as a bare index - and `?inspect_masks` says the index is the one thing
+  # a reader cannot resolve. The engine's own refusal for this data says
+  # "class 1 (files matching '_organ\\.png$')"; R said `1`.
+  root <- withr::local_tempdir()
+  reticulate::py_run_string(sprintf("
+import numpy as np, pathlib
+from PIL import Image
+root = pathlib.Path(%s)
+for i in range(4):
+    sample = root / f'case_{i}'
+    (sample / 'images').mkdir(parents=True, exist_ok=True)
+    (sample / 'masks').mkdir(parents=True, exist_ok=True)
+    rng = np.random.default_rng(i)
+    Image.fromarray(rng.integers(0, 255, (32, 32, 3), dtype=np.uint8)).save(
+        sample / 'images' / 'a.png')
+    vessel = np.zeros((32, 32), np.uint8); vessel[8:16, :] = 255
+    Image.fromarray(vessel).save(sample / 'masks' / 'a_vessel.png')
+    # Empty in every sample, which is what makes class 1 the missing one.
+    Image.fromarray(np.zeros((32, 32), np.uint8)).save(sample / 'masks' / 'a_organ.png')
+", shQuote(root)))
+
+  spec <- platypus_spec(
+    data = segmentation_data(root, root,
+                             classes_from = c("_vessel\\.png$", "_organ\\.png$")),
+    models = list(u_net("m", input_shape = c(32, 32), blocks = 2, filters = 4,
+                        epochs = 1, batch_size = 1))
+  )
+  report <- inspect_masks(spec)
+  expect_match(report$missing_classes, "_organ", fixed = TRUE)
+  # The control: the class that IS present is named by its own pattern too, so the fix is
+  # not "say something about the missing one".
+  expect_match(report$present_classes, "_vessel", fixed = TRUE)
+})

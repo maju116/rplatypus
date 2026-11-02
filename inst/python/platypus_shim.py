@@ -195,6 +195,17 @@ def inspect_masks(spec: Any, split: str = "train", limit: int = 500) -> dict:
         "missing_classes": [int(c) for c in report.missing_classes],
         "samples_checked": int(report.samples_checked),
         "total_samples": int(report.total_samples),
+        # The ENGINE's short label per class, not R's own derivation.
+        # `SegmentationData.class_names` is a region's name, a `classes_from` pattern, or
+        # the index for `labels` and `colormap` - where the number IS the class. R held a
+        # copy that covered `regions` alone and numbered the other three, while its
+        # roxygen claimed to mirror the engine. `maju116/rplatypus#259`.
+        #
+        # NOT `_describe_classes`, which is the other job: it writes a sentence for a
+        # refusal - "region 'absent' (of [9])" - and that reads well in a message and
+        # badly in a table. Asking for that one turned five of this package's own
+        # assertions into sentences, which is how the two came to be told apart.
+        "class_names": dict(enumerate(spec.data.class_names)),
     }
 
 
