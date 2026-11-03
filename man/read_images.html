@@ -859,14 +859,15 @@ Use nearest-neighbour resizing. Required for masks: interpolating one invents co
 <code id="label_map">label_map</code>
 </td>
 <td>
-The file holds class identities rather than brightness, so read it at full integer width. A 16-bit PNG or a 32-bit TIFF label map is otherwise read through 8-bit greyscale, where every value above 255 arrives as 255 - two classes then merge into one with nothing unmatched to say so. One channel only, because a label map has one, and never for an image: a picture is divided by 255 later.
+<p>The file holds class identities rather than brightness, so read it at full integer width. A 16-bit PNG or a 32-bit TIFF label map is otherwise read through 8-bit greyscale, where every value above 255 arrives as 255 - two classes then merge into one with nothing unmatched to say so. One channel only, because a label map has one, and never for an image: a picture is divided by 255 later.</p>
+<strong>For a volume this argument does nothing and <code>nearest</code> is what matters</strong>, which is the engine’s own rule rather than this package’s: a NIfTI or a DICOM series never went through an 8-bit conversion, so there is no width to widen, and the flag that says <em>these numbers are classes</em> on that route is <code>nearest</code>. Passing <code>label_map = TRUE</code> alone on a volume returns the values divided by the largest one. Pass both.
 </td>
 </tr>
 </tbody></table>
 </section>
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>
-<p>An <code style="white-space: pre;">image x height x width x channels</code> array of 0-255 values - or of the file’s own integer values with <code>label_map = TRUE</code>, which is the point of that argument.</p>
+<p>An <code style="white-space: pre;">image x height x width x channels</code> array of 0-255 values - or of the file’s own integer values with <code>label_map = TRUE</code> <strong>and</strong>, for a volume, <code>nearest = TRUE</code>. A volume read with <code>label_map = TRUE</code> and <code>nearest = FALSE</code> comes back rescaled to 0-1, and this function warns when it is asked for that combination.</p>
 </section>
 <section id="examples" class="level3">
 <h3 class="anchored" data-anchor-id="examples">Examples</h3>
