@@ -17,6 +17,44 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-03 - the volume rule `label_map` does not follow, and the pin (engine `0.8.0a61`)
+
+**`read_images(label_map = TRUE)` on a volume returned the file's values divided by the
+largest one**, and `@return` promised the values themselves. `maju116/rplatypus#266`. The
+engine documents `label_map` as **ignored for volume formats** - a NIfTI or a DICOM series
+never went through the 8-bit conversion that argument exists to widen - and on that route
+the flag meaning *these numbers are classes* is `nearest`, which `volumes._rescale` says in
+as many words. Measured through the shim on a NIfTI holding 0, 1, 2 and 7:
+
+    nearest = FALSE, label_map = TRUE    0, 0.1429, 0.2857, 1.0     the classes over 7
+    nearest = TRUE,  label_map = TRUE    0, 1, 2, 7                 the file's own values
+
+The page says so now, and `read_images()` **warns** when it is asked for that combination,
+because it is always a mistake: the caller has asked for the file's values. Not a refusal,
+since nothing is read at that point and the function cannot know whether any of the paths is
+a volume. `read_masks()` already passed both flags, which is why nothing here ever warned.
+
+**The pin moves to `0.8.0a61` and this package needs nothing else from it.** Six engine
+fixes, all defects an R user meets through the pin moving and by nothing else:
+
+- a **LabelMe `circle`** was read as the box from its centre to one point on its rim - an
+  eighth of the object at best, and nothing at all when the rim point sat level with the
+  centre, where it was dropped as degenerate and counted against the letterbox. A dataset
+  annotated in LabelMe and trained from R was learning the wrong boxes with no symptom
+  (`maju116/pyplatypus#357`);
+- a detection run with `callback_terminate_on_collapse()` **died with a bare `KeyError`**
+  after its first epoch, because the engine accepted a monitor detection never reports. The
+  four loss terms are watchable now, so `callback_model_checkpoint(monitor = "val_coordinates")`
+  is a thing an R user can write (`#358`);
+- the detector's **ignore mask** punished a correct prediction of an object the target could
+  not hold (`#359`);
+- a **float32 TIFF** label map was truncated rather than rounded, so a class stored as
+  0.9999 arrived as the class below with nothing unmatched to say so (`#361`);
+- `metric_dice()` and `metric_iou()` **do not rank models identically**, which the engine's
+  documentation claimed and `?metrics` never did - worth knowing before dropping one of
+  them from a report (`#360`);
+- and a test for the detector's augmentation seed, which nothing held (`#362`).
+
 ### 2026-11-03 - the pin for three defects an R user meets through it (engine `0.8.0a60`)
 
 **The pin moves to `0.8.0a60` and this package needs nothing else**, which is the state §3E
