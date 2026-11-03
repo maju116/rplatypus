@@ -726,7 +726,14 @@ evaluate_classes.platypus_fit <- function(object, model = NULL,
 #'   counts as a prediction.
 #' @param ... Unused.
 #' @return A data frame of class `platypus_images`, one row per image: `key`, `n_truth`,
-#'   `n_predicted`, `matched`, `missed`, `spurious` and `mean_matched_iou`.
+#'   `n_predicted`, `matched`, `missed`, `ignored`, `spurious` and `mean_matched_iou`.
+#'
+#'   `ignored` counts predictions attributed to a truth marked `difficult` in a Pascal VOC
+#'   annotation, which Pascal VOC's own evaluation sets aside: calling one `matched` would
+#'   claim the model found something the benchmark left out, and calling it `spurious`
+#'   would charge it for the same thing. So the counts are
+#'   `n_predicted == matched + ignored + spurious`, and `ignored` is zero for a dataset
+#'   that marks nothing difficult.
 #' @seealso [evaluate_classes()] for one row per class, [evaluate_cases()] for the
 #'   segmentation counterpart.
 #' @examples

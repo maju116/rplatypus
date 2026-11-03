@@ -31,7 +31,14 @@ counts as a prediction.}
 }
 \value{
 A data frame of class \code{platypus_images}, one row per image: \code{key}, \code{n_truth},
-\code{n_predicted}, \code{matched}, \code{missed}, \code{spurious} and \code{mean_matched_iou}.
+\code{n_predicted}, \code{matched}, \code{missed}, \code{ignored}, \code{spurious} and \code{mean_matched_iou}.
+
+\code{ignored} counts predictions attributed to a truth marked \code{difficult} in a Pascal VOC
+annotation, which Pascal VOC's own evaluation sets aside: calling one \code{matched} would
+claim the model found something the benchmark left out, and calling it \code{spurious}
+would charge it for the same thing. So the counts are
+\code{n_predicted == matched + ignored + spurious}, and \code{ignored} is zero for a dataset
+that marks nothing difficult.
 }
 \description{
 \strong{Detection only.} On a segmentation fit this refuses by name and points at

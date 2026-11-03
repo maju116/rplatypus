@@ -17,6 +17,33 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-03 (evening) - a `difficult` object no longer counts against a detector (engine `0.8.0a62`)
+
+**A model that FOUND a hard object scored below one that MISSED it.** Pascal VOC marks some
+objects `difficult` and leaves them out of its own evaluation; the engine deleted them from
+the truth before matching, so a prediction that found one had nothing to match and was
+counted as a false positive. On two truths of one class with the second marked difficult,
+both detected and the hard one ranked first, `evaluate()` reported an average precision of
+0.500 with one false positive, against 1.000 for a model that predicted only the ordinary
+object.
+
+**`evaluate_images()` gains an `ignored` column**, and that is the part worth reading before
+a script breaks on it. A prediction attributed to a difficult truth belongs in neither of
+the two columns that were there: calling it `matched` would claim the model found something
+the benchmark left out, and calling it `spurious` would charge it for the same thing. So the
+counts now read `n_predicted == matched + ignored + spurious`, and the column is zero for any
+dataset that marks nothing difficult - which is every dataset this package ships an example
+for, BCCD included.
+
+Two more fixes arrive through the pin alone, both in the LabelMe reader
+`detection_data(annotation_format = "labelme")` forwards to. A shape drawn with the point
+tool was refused as a malformed box rather than by name, so the message naming the tool to
+use instead was unreachable for the shape LabelMe actually writes. And a circle drawn
+against an edge gave a box reaching past the frame, which an augmented run clipped and an
+unaugmented one did not - one annotation, two different targets.
+
+The engine: `0.8.0a62`. `rplatypus#270`.
+
 ### 2026-11-03 (evening) - `codetools` declared, so `--as-cran` is clean again
 
 **`R CMD check --as-cran` reported a WARNING, and had done since 2026-10-29.**
