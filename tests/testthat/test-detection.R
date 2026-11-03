@@ -538,12 +538,18 @@ test_that("evaluate_images gives one row per image, and the counts add up", {
   expect_equal(nrow(images), 4L)
   expect_setequal(
     names(images),
-    c("key", "n_truth", "n_predicted", "matched", "missed", "spurious",
+    c("key", "n_truth", "n_predicted", "matched", "missed", "ignored", "spurious",
       "mean_matched_iou")
   )
-  # Per row, the three outcomes are a partition of the counts, not three free numbers.
+  # Per row, the outcomes are a partition of the counts, not free numbers. `ignored` is
+  # the fourth of them, and it is why `spurious` is not simply what was not matched: a
+  # prediction attributed to a `difficult` truth belongs in neither column. It is zero on
+  # this fixture, which marks nothing difficult - so the identity below would also hold
+  # without the term, and the engine's own suite is where that case is covered
+  # (`pyplatypus#364`). Written with the term because the arithmetic is the claim.
   expect_equal(images$missed, images$n_truth - images$matched)
-  expect_equal(images$spurious, images$n_predicted - images$matched)
+  expect_equal(images$spurious, images$n_predicted - images$matched - images$ignored)
+  expect_true(all(images$ignored == 0L))
 
   # And they decompose the per-class table, which is the assertion that stops the two
   # from drifting apart.
