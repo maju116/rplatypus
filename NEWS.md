@@ -17,6 +17,33 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-03 (evening) - `codetools` declared, so `--as-cran` is clean again
+
+**`R CMD check --as-cran` reported a WARNING, and had done since 2026-10-29.**
+`tests/testthat/test-runnable-examples.R` calls `codetools::findGlobals()` to walk a
+function's call graph, and `codetools` was not in `Suggests` - it is a *recommended*
+package rather than a base one, so the check wants it declared:
+
+    * checking for unstated dependencies in 'tests' ... WARNING
+    '::' or ':::' import not declared from: 'codetools'
+
+It matters because the default branch is the CRAN submission candidate and CRAN does not
+accept a WARNING. With `codetools` declared, the same run gives **1 WARNING -> 0**, leaving
+the three NOTEs this project already expects.
+
+Nothing caught it because none of the gates run before a push use `--as-cran`: the suite
+does not look at `DESCRIPTION`, and `R CMD check --no-manual` does not imply it.
+
+**And the guard stopped swallowing an error.** The scan's own helper turned a failure of
+`codetools::findGlobals` into `character()`, which reads as *"this function calls nothing"*
+- so a function the scan could not walk would have **passed** the check rather than failing
+it. (Named without a call here on purpose: it lives in the test file, so it is not a
+function a reader can reach, and the guard over this file's prose is right to say so.)
+It now stops and names the function. Measured: the whole scan is unchanged over every help
+page, so nothing in this package was relying on the swallow.
+
+The engine: none. `rplatypus#268`.
+
 ### 2026-11-03 - the volume rule `label_map` does not follow, and the pin (engine `0.8.0a61`)
 
 **`read_images(label_map = TRUE)` on a volume returned the file's values divided by the

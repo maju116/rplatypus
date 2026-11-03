@@ -18,8 +18,16 @@ reachable_from <- function(name, namespace = asNamespace("rplatypus"), seen = ch
   if (is.null(fn)) return(seen)
   # The call graph rather than a text search, so a helper that reaches the bridge is found
   # one level down - which is the half the three-name version could not see.
+  # NOT swallowed into `character()`: that reads as "this function calls nothing", so a
+  # function the scan cannot walk would PASS the guard rather than failing it - the
+  # loose direction, in a check whose whole job is to find a call. `codetools` is
+  # declared in Suggests and this test skips without it, so an error here is a function
+  # worth hearing about by name.
   called <- tryCatch(codetools::findGlobals(fn, merge = FALSE)$functions,
-                     error = function(e) character())
+                     error = function(e) {
+                       stop(sprintf("the call graph of `%s` could not be walked: %s",
+                                    name, conditionMessage(e)), call. = FALSE)
+                     })
   internal <- intersect(called, ls(namespace, all.names = TRUE))
   for (nxt in setdiff(internal, seen)) seen <- reachable_from(nxt, namespace, seen)
   seen

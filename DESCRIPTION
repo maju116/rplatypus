@@ -29,6 +29,7 @@ Imports:
     utils
 Suggests:
     callr,
+    codetools,
     jsonlite,
     knitr,
     pkgload,
