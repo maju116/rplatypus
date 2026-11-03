@@ -17,6 +17,33 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-03 - the pin for three defects an R user meets through it (engine `0.8.0a60`)
+
+**The pin moves to `0.8.0a60` and this package needs nothing else**, which is the state §3E
+is written for - with the distinction `0.8.0a47` records, because all three of the release's
+fixes are **defects an R user meets through the pin moving and by nothing else** rather than
+features this package forwards.
+
+**The one worth knowing about is the detector's augmentation.** `platypus_fit(num_workers =
+"auto")` resolves to `min(4, cores - 1)`, so on any multi-core machine an augmented detector
+trained from R ran with workers - and every worker drew the **same** augmentation sequence,
+because the engine's worker hook asks the augmenter for a `reseed` by name and the box
+augmenter had none. A four-worker run therefore saw a quarter of the transforms it believed
+it saw, the BCCD recipe's flips and rotations among them. Silent: nothing in the shape of a
+run says so. `maju116/pyplatypus#351`.
+
+**Two more arrive with it.** A detection epoch's reported loss - including the `val_loss`
+that `callback_early_stopping()`, `callback_model_checkpoint()` and
+`callback_reduce_lr_on_plateau()` watch - depended on `batch_size` whenever a grid was empty
+in some batch, so two runs at different batch sizes were not comparable
+(`maju116/pyplatypus#352`). And a mask stored as a **palettised** or a **one-bit** PNG, read
+through `read_masks(labels = )`, came back as the palette's luminance or as 0 and 255 rather
+than the values the file holds - the shape Pascal VOC's masks arrive in, and the one
+`0.8.0a59`'s widening could not reach (`maju116/pyplatypus#353`).
+
+`read_images()` already forwards `label_map`, so the third needs nothing here either: the
+fix is in the reader the shim calls.
+
 ### 2026-11-02 - a label map read at its own width, and a pair for the rule that reads it (engine `0.8.0a59`)
 
 **The pin moves to `0.8.0a59`, and R needs something *from* the release rather than only
