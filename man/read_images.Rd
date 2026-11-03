@@ -27,11 +27,19 @@ invents colours belonging to no class, which then quietly become background.}
 full integer width. A 16-bit PNG or a 32-bit TIFF label map is otherwise read through
 8-bit greyscale, where every value above 255 arrives as 255 - two classes then merge
 into one with nothing unmatched to say so. One channel only, because a label map has
-one, and never for an image: a picture is divided by 255 later.}
+one, and never for an image: a picture is divided by 255 later.
+
+\strong{For a volume this argument does nothing and \code{nearest} is what matters}, which is
+the engine's own rule rather than this package's: a NIfTI or a DICOM series never went
+through an 8-bit conversion, so there is no width to widen, and the flag that says
+\emph{these numbers are classes} on that route is \code{nearest}. Passing \code{label_map = TRUE}
+alone on a volume returns the values divided by the largest one. Pass both.}
 }
 \value{
 An \verb{image x height x width x channels} array of 0-255 values - or of the file's
-own integer values with \code{label_map = TRUE}, which is the point of that argument.
+own integer values with \code{label_map = TRUE} \strong{and}, for a volume, \code{nearest = TRUE}.
+A volume read with \code{label_map = TRUE} and \code{nearest = FALSE} comes back rescaled to
+0-1, and this function warns when it is asked for that combination.
 }
 \description{
 Reads through the engine's own pipeline rather than a separate decoder, so what you

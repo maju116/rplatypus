@@ -92,3 +92,30 @@ test_that("masks are read at nearest neighbour, whatever the caller does", {
   # Interpolation would invent values between the two classes; nearest cannot.
   expect_true(all(classes %in% c(1L, 2L)))
 })
+
+test_that("asking for a label map without nearest warns, because a volume is rescaled", {
+  # `maju116/rplatypus#266`. The engine documents `label_map` as ignored for volume
+  # formats - a NIfTI never went through an 8-bit conversion - and `nearest` is what says
+  # "these numbers are classes" on that route. So the combination below is always a
+  # mistake, and `@return` promised the file's own values without saying so.
+  #
+  # Measured through the shim on a NIfTI holding 0, 1, 2 and 7: with `nearest = FALSE` it
+  # came back as 0, 0.1429, 0.2857, 1.0 - the classes divided by 7 - and with
+  # `nearest = TRUE` it came back as the file's own values.
+  skip_if_no_engine()
+
+  path <- withr::local_tempfile(fileext = ".png")
+  png::writePNG(matrix(c(0, 1, 0, 1) / 255, nrow = 2), path)
+
+  expect_warning(
+    read_images(path, channels = 1, label_map = TRUE),
+    "nearest = TRUE"
+  )
+
+  # The control: with both flags there is nothing to warn about, and the package's own
+  # route - `read_masks()` - passes both, which is why nothing in the suite warned before.
+  expect_silent(read_images(path, channels = 1, nearest = TRUE, label_map = TRUE))
+
+  # And the other control: an ordinary image asks for neither and is silent.
+  expect_silent(read_images(path, channels = 1))
+})
