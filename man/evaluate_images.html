@@ -878,7 +878,8 @@ The confidence at which the counts are read. Unset, the specification’s <code>
 </section>
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>
-<p>A data frame of class <code>platypus_images</code>, one row per image: <code>key</code>, <code>n_truth</code>, <code>n_predicted</code>, <code>matched</code>, <code>missed</code>, <code>spurious</code> and <code>mean_matched_iou</code>.</p>
+<p>A data frame of class <code>platypus_images</code>, one row per image: <code>key</code>, <code>n_truth</code>, <code>n_predicted</code>, <code>matched</code>, <code>missed</code>, <code>ignored</code>, <code>spurious</code> and <code>mean_matched_iou</code>.</p>
+<p><code>ignored</code> counts predictions attributed to a truth marked <code>difficult</code> in a Pascal VOC annotation, which Pascal VOC’s own evaluation sets aside: calling one <code>matched</code> would claim the model found something the benchmark left out, and calling it <code>spurious</code> would charge it for the same thing. So the counts are <code>n_predicted == matched + ignored + spurious</code>, and <code>ignored</code> is zero for a dataset that marks nothing difficult.</p>
 </section>
 <section id="see-also" class="level3">
 <h3 class="anchored" data-anchor-id="see-also">See Also</h3>
