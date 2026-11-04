@@ -336,3 +336,73 @@ test_that("the development route is exempt, because it asks for a tree with no v
     expect_silent(rplatypus:::check_engine_version())
   })
 })
+
+test_that("the version check sits on the route every engine call takes", {
+  # `rplatypus#272`. `#214`'s warning was attached to the delayed import's `on_load` hook,
+  # which fires when something touches the R object `engine()` returns - and `engine()` is
+  # called once in this package, inside `platypus_status()`, against 44 calls of `shim()`.
+  # So a session that never asked for the status compared nothing, and the warning
+  # described a route nobody takes.
+  #
+  # Read off the body rather than by counting calls, because this half must hold with no
+  # Python on the machine, which is how CRAN sees the package. It fails if the call is
+  # removed, which is the whole of what it claims.
+  body_text <- paste(deparse(body(rplatypus:::shim)), collapse = " ")
+  expect_match(body_text, "check_engine_version_once()", fixed = TRUE)
+  # The control: the hook is still there too, so a session that only calls
+  # `platypus_status()` keeps paying it.
+  load_text <- paste(deparse(body(rplatypus:::.onLoad)), collapse = " ")
+  expect_match(load_text, "check_engine_version_once()", fixed = TRUE)
+})
+
+test_that("the version is compared once per session rather than on every engine call", {
+  # Every one of those 44 calls goes through `shim()`, so the comparison has to be cheap
+  # and quiet after the first. The flag is also what stops the check re-entering itself:
+  # reading the engine's version touches the delayed import, whose hook calls it again.
+  env <- rplatypus:::.platypus
+  old_engine <- env$engine
+  old_flag <- env$version_checked
+  on.exit({
+    env$engine <- old_engine
+    env$version_checked <- old_flag
+  })
+
+  # A fake engine, so this needs no Python: what is under test is the comparison and the
+  # flag, and a real engine would answer with the version the pin asks for.
+  env$engine <- list(`__version__` = "0.0.0a0")
+  env$version_checked <- FALSE
+  expect_warning(rplatypus:::check_engine_version_once(), "0.0.0a0", fixed = TRUE)
+  expect_silent(rplatypus:::check_engine_version_once())
+  # And the unwrapped helper still warns every time it is called, which is its own
+  # contract and what `test-bridge.R`'s older test reads both halves of the message from.
+  # Folding the flag into it made that second call silent, which is why the flag is a
+  # wrapper.
+  expect_warning(rplatypus:::check_engine_version(), "0.0.0a0", fixed = TRUE)
+
+  # And the other direction: an engine that agrees with the pin says nothing at all, so
+  # the warning above is not simply unconditional.
+  env$engine <- list(`__version__` = rplatypus:::pyplatypus_version)
+  env$version_checked <- FALSE
+  expect_silent(rplatypus:::check_engine_version_once())
+})
+
+test_that("a foreign engine reached through the shim is reported, not only through status", {
+  skip_if_no_engine()
+  skip_if(nzchar(Sys.getenv("PLATYPUS_ENGINE_PATH")), "that route is exempt by design")
+  # The end-to-end half of the first test: the route itself, with the memo and the flag
+  # reset so that `shim()` does its first-call work again.
+  env <- rplatypus:::.platypus
+  old_shim <- env$shim
+  old_engine <- env$engine
+  old_flag <- env$version_checked
+  on.exit({
+    env$shim <- old_shim
+    env$engine <- old_engine
+    env$version_checked <- old_flag
+  })
+
+  env$shim <- NULL
+  env$engine <- list(`__version__` = "0.0.0a0")
+  env$version_checked <- FALSE
+  expect_warning(rplatypus:::shim(), "0.0.0a0", fixed = TRUE)
+})

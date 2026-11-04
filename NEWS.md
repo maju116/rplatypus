@@ -17,6 +17,36 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-04 - the warning for a foreign engine now runs on the route every call takes (engine `0.8.0a63`)
+
+**`RETICULATE_PYTHON` is the one route the pin cannot hold, and the warning written for it
+reached almost nobody.** The comparison between the engine that answered and the version this
+package pins was attached to the module import, which this package touches in exactly one
+place - `platypus_status()`. Every other call into the engine, all 44 of them, goes through
+the Python shim instead, and that route never triggered it. So a session pointed at somebody
+else's `pyplatypus` ran it without a word unless the user happened to ask for the status.
+The comparison now runs when the shim is first imported, once per session, which is the route
+every call takes. `rplatypus#272`.
+
+**Six fixes arrive through the pin alone**, and the first two are in the detector's scoring.
+`evaluate()`'s `map_50_95` was computed from a single ranking built at the lowest IoU
+threshold, which stopped describing the higher ones the moment a `difficult` truth could
+absorb a prediction - so the figure was wrong on exactly the Pascal VOC data last week's fix
+was about. `map_50` was never affected, and neither was any published number: BCCD marks none
+of its objects difficult. The rule the matcher follows is also named correctly now - it is
+COCO's, which is what `map_50_95` is defined against, rather than `voc_eval`'s.
+
+The other four are a reader being protected from a silent answer. Weights now refuse to load
+into a model whose `activation` differs from the one they were trained with, or whose encoder
+no longer normalises its input the way a pretrained one does: both change what the network
+computes while every tensor keeps its shape, so a published file used to load without a word
+and predict confidently. A description that fails to *download* beside its weights is no
+longer treated as weights published without one, which had skipped the colormap and class
+checks. A multi-frame DICOM file - an enhanced CT or MR, or a cine loop - is refused by name
+instead of being read as a picture whose rows are the frames. And `read_record()` can open a
+run that went to `NaN`: the engine was writing a token R's JSON parser rejects, so the record
+of the one run worth inspecting was the one this package could not read.
+
 ### 2026-11-03 (evening) - a `difficult` object no longer counts against a detector (engine `0.8.0a62`)
 
 **A model that FOUND a hard object scored below one that MISSED it.** Pascal VOC marks some
