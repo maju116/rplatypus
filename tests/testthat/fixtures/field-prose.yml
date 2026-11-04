@@ -6,7 +6,7 @@
 #
 # A digest that no longer matches is not the engine's failure. It is a question - does R's
 # prose still say the right thing? - asked at the only moment anybody would ask it.
-engine: 0.8.0a64
+engine: 0.8.0a65
 fields:
   - field: activation
     engine_digest: 4822b126e39826a504979a6b123cc241
@@ -221,6 +221,9 @@ fields:
   - field: nms_threshold
     engine_digest: d454bdcd67eb1091255794579ade264c
     documented_in: [yolo3]
+  - field: normalise
+    engine_digest: 403e932861180ba09740a0d06783cfc9
+    documented_in: [classifier, models]
   - field: of
     engine_digest: 88afce214fb8ee9ab26dc780169bdda6
     documented_in: []

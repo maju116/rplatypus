@@ -120,6 +120,14 @@
 #'   purpose, so naming an architecture never reaches the network on a machine that has
 #'   none. Measured on three datasets, transfer does not beat the built-in encoder here -
 #'   see [encoders] for the table and what it is actually good for.
+#' @param normalise Normalise the input with the backbone's own ImageNet statistics.
+#'   Defaults to `pretrained`, which is what it meant before it was a setting, so leaving
+#'   it alone changes nothing. It exists to be set `TRUE` **with** `pretrained = FALSE`,
+#'   which is the only way to reload weights you exported from a pretrained encoder on a
+#'   machine with no network: the statistics come from the backbone's own configuration and
+#'   need no download, while the weights themselves are yours. It is recorded in the
+#'   weights' fingerprint either way, so a mismatch is refused by name rather than
+#'   silently predicting something else.
 #' @param freeze_encoder Hold the transferred layers still for this many epochs, then
 #'   train them. **Use this rather than `encoder_learning_rate` alone**: it was the better
 #'   of the two on all three datasets measured. A number at or above `epochs` keeps them
@@ -171,7 +179,7 @@ segmentation_model <- function(architecture, name, input_shape, channels, n_clas
                                upsample, deep_supervision, activation, initialiser,
                                loss, metrics, optimizer, callbacks, augmentation,
                                epochs, batch_size, splits, weights, fit,
-                               encoder, pretrained, freeze_encoder,
+                               encoder, pretrained, normalise, freeze_encoder,
                                encoder_learning_rate, separation, decode) {
   if (!is.null(n_class)) {
     stop("`n_class` is not a model setting: the number of classes comes from the data, ",
@@ -214,6 +222,7 @@ segmentation_model <- function(architecture, name, input_shape, channels, n_clas
     fit = fit,
     encoder = encoder,
     pretrained = pretrained,
+    normalise = normalise,
     freeze_encoder = if (is.null(freeze_encoder)) NULL else int1(freeze_encoder),
     encoder_learning_rate = encoder_learning_rate,
     separation = separation,
@@ -253,7 +262,8 @@ u_net <- function(name, input_shape, channels = NULL, n_class = NULL,
                   metrics = NULL, optimizer = NULL, callbacks = NULL,
                   augmentation = NULL, epochs = NULL, batch_size = NULL,
                   splits = NULL, weights = NULL, fit = NULL,
-                  encoder = NULL, pretrained = NULL, freeze_encoder = NULL,
+                  encoder = NULL, pretrained = NULL, normalise = NULL,
+                  freeze_encoder = NULL,
                   encoder_learning_rate = NULL,
                   separation = NULL, decode = NULL) {
   segmentation_model(
@@ -285,6 +295,7 @@ u_net <- function(name, input_shape, channels = NULL, n_class = NULL,
     fit = fit,
     encoder = encoder,
     pretrained = pretrained,
+    normalise = normalise,
     freeze_encoder = freeze_encoder,
     encoder_learning_rate = encoder_learning_rate,
     separation = separation,
@@ -303,7 +314,8 @@ u_net_plus_plus <- function(name, input_shape, channels = NULL, n_class = NULL,
                             metrics = NULL, optimizer = NULL, callbacks = NULL,
                             augmentation = NULL, epochs = NULL, batch_size = NULL,
                             splits = NULL, weights = NULL, fit = NULL,
-                            encoder = NULL, pretrained = NULL, freeze_encoder = NULL,
+                            encoder = NULL, pretrained = NULL, normalise = NULL,
+                            freeze_encoder = NULL,
                             encoder_learning_rate = NULL,
                             separation = NULL, decode = NULL) {
   segmentation_model(
@@ -335,6 +347,7 @@ u_net_plus_plus <- function(name, input_shape, channels = NULL, n_class = NULL,
     fit = fit,
     encoder = encoder,
     pretrained = pretrained,
+    normalise = normalise,
     freeze_encoder = freeze_encoder,
     encoder_learning_rate = encoder_learning_rate,
     separation = separation,
@@ -353,7 +366,8 @@ res_u_net <- function(name, input_shape, channels = NULL, n_class = NULL,
                       metrics = NULL, optimizer = NULL, callbacks = NULL,
                       augmentation = NULL, epochs = NULL, batch_size = NULL,
                       splits = NULL, weights = NULL, fit = NULL,
-                      encoder = NULL, pretrained = NULL, freeze_encoder = NULL,
+                      encoder = NULL, pretrained = NULL, normalise = NULL,
+                      freeze_encoder = NULL,
                       encoder_learning_rate = NULL,
                       separation = NULL, decode = NULL) {
   segmentation_model(
@@ -385,6 +399,7 @@ res_u_net <- function(name, input_shape, channels = NULL, n_class = NULL,
     fit = fit,
     encoder = encoder,
     pretrained = pretrained,
+    normalise = normalise,
     freeze_encoder = freeze_encoder,
     encoder_learning_rate = encoder_learning_rate,
     separation = separation,
@@ -403,7 +418,8 @@ linknet <- function(name, input_shape, channels = NULL, n_class = NULL,
                     metrics = NULL, optimizer = NULL, callbacks = NULL,
                     augmentation = NULL, epochs = NULL, batch_size = NULL,
                     splits = NULL, weights = NULL, fit = NULL,
-                    encoder = NULL, pretrained = NULL, freeze_encoder = NULL,
+                    encoder = NULL, pretrained = NULL, normalise = NULL,
+                    freeze_encoder = NULL,
                     encoder_learning_rate = NULL,
                     separation = NULL, decode = NULL) {
   segmentation_model(
@@ -435,6 +451,7 @@ linknet <- function(name, input_shape, channels = NULL, n_class = NULL,
     fit = fit,
     encoder = encoder,
     pretrained = pretrained,
+    normalise = normalise,
     freeze_encoder = freeze_encoder,
     encoder_learning_rate = encoder_learning_rate,
     separation = separation,

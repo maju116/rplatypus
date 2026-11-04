@@ -30,6 +30,7 @@ classifier(
   fit = NULL,
   encoder = NULL,
   pretrained = NULL,
+  normalise = NULL,
   freeze_encoder = NULL,
   encoder_learning_rate = NULL
 )
@@ -95,6 +96,12 @@ class and reports no such share.}
 
 \item{pretrained, freeze_encoder, encoder_learning_rate}{How the backbone arrives and how
 it is trained, as in \code{\link[=u_net]{u_net()}}.}
+
+\item{normalise}{Normalise the input with the backbone's own ImageNet statistics,
+defaulting to \code{pretrained}. Set it \code{TRUE} with \code{pretrained = FALSE} to reload weights
+you exported from a pretrained encoder without a network: the statistics come from the
+backbone's configuration rather than from its weights. See \link{u_net} for the whole of
+it; it is recorded in the weights' fingerprint either way.}
 }
 \value{
 A model specification, to be passed to \code{\link[=platypus_spec]{platypus_spec()}}.

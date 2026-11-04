@@ -32,7 +32,7 @@ test_that("what was never set stays unset in the file", {
   save_spec(specification(), path)
   written <- yaml::read_yaml(path)
 
-  # The engine resolves 29 fields on this model. Writing them all is what would break the
+  # The engine resolves 30 fields on this model. Writing them all is what would break the
   # adoption described at the top of this file, so the lean file is the contract.
   expect_lt(length(written$models[[1]]), 10)
   expect_false("loss" %in% names(written$models[[1]]))
@@ -51,7 +51,7 @@ test_that("defaults = TRUE freezes the run and says so by being bigger", {
   save_spec(spec, lean)
   save_spec(spec, frozen, defaults = TRUE)
 
-  expect_identical(length(yaml::read_yaml(frozen)$models[[1]]), 29L)
+  expect_identical(length(yaml::read_yaml(frozen)$models[[1]]), 30L)
   expect_gt(length(yaml::read_yaml(frozen)$models[[1]]),
             length(yaml::read_yaml(lean)$models[[1]]))
   # Both still describe the same experiment once the engine has resolved them.

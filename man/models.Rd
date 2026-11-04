@@ -36,6 +36,7 @@ u_net(
   fit = NULL,
   encoder = NULL,
   pretrained = NULL,
+  normalise = NULL,
   freeze_encoder = NULL,
   encoder_learning_rate = NULL,
   separation = NULL,
@@ -70,6 +71,7 @@ u_net_plus_plus(
   fit = NULL,
   encoder = NULL,
   pretrained = NULL,
+  normalise = NULL,
   freeze_encoder = NULL,
   encoder_learning_rate = NULL,
   separation = NULL,
@@ -104,6 +106,7 @@ res_u_net(
   fit = NULL,
   encoder = NULL,
   pretrained = NULL,
+  normalise = NULL,
   freeze_encoder = NULL,
   encoder_learning_rate = NULL,
   separation = NULL,
@@ -138,6 +141,7 @@ linknet(
   fit = NULL,
   encoder = NULL,
   pretrained = NULL,
+  normalise = NULL,
   freeze_encoder = NULL,
   encoder_learning_rate = NULL,
   separation = NULL,
@@ -249,6 +253,15 @@ half-resolution level a U-shaped decoder recovers fine detail from does not exis
 purpose, so naming an architecture never reaches the network on a machine that has
 none. Measured on three datasets, transfer does not beat the built-in encoder here -
 see \link{encoders} for the table and what it is actually good for.}
+
+\item{normalise}{Normalise the input with the backbone's own ImageNet statistics.
+Defaults to \code{pretrained}, which is what it meant before it was a setting, so leaving
+it alone changes nothing. It exists to be set \code{TRUE} \strong{with} \code{pretrained = FALSE},
+which is the only way to reload weights you exported from a pretrained encoder on a
+machine with no network: the statistics come from the backbone's own configuration and
+need no download, while the weights themselves are yours. It is recorded in the
+weights' fingerprint either way, so a mismatch is refused by name rather than
+silently predicting something else.}
 
 \item{freeze_encoder}{Hold the transferred layers still for this many epochs, then
 train them. \strong{Use this rather than \code{encoder_learning_rate} alone}: it was the better
