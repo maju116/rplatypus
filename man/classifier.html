@@ -838,6 +838,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   fit = NULL,
   encoder = NULL,
   pretrained = NULL,
+  normalise = NULL,
   freeze_encoder = NULL,
   encoder_learning_rate = NULL
 )
@@ -964,6 +965,14 @@ A pretrained backbone instead of our own contracting path, by name - see encoder
 </td>
 <td>
 How the backbone arrives and how it is trained, as in <code>u_net()</code>.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="normalise">normalise</code>
+</td>
+<td>
+Normalise the input with the backbone’s own ImageNet statistics, defaulting to <code>pretrained</code>. Set it <code>TRUE</code> with <code>pretrained = FALSE</code> to reload weights you exported from a pretrained encoder without a network: the statistics come from the backbone’s configuration rather than from its weights. See u_net for the whole of it; it is recorded in the weights’ fingerprint either way.
 </td>
 </tr>
 </tbody></table>
