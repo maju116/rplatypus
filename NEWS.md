@@ -17,6 +17,26 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-04 (evening) - a warning about loading somebody else's checkpoint (engine `0.8.0a64`)
+
+**CVE-2026-24747 is in PyTorch, not in this package, and the part that reaches you is a
+warning.** Below torch 2.10 the `weights_only=True` unpickler does not validate what it is
+reading, so a crafted checkpoint can corrupt memory and may reach code execution. Passing a
+`.pth` file to `weights` - a torch archive rather than safetensors - now warns, in R, naming
+the advisory and the version it was fixed in. Every set of weights this project publishes is
+safetensors, which has no such surface, so this is about files from elsewhere.
+
+**It is a warning rather than a refusal, and this package cannot do better than that for
+you.** `platypus_use_torch("pascal")` exists because a GTX 10-series card needs a CUDA 12
+build, and the engine can ask for a torch *version* without being able to ask for a *build*:
+`py_require()` takes no index argument. The last version whose default PyPI wheel serves that
+card is 2.7.x, which is inside the vulnerable range. Measured on such a card: `torch==2.14.1`
+from `https://download.pytorch.org/whl/cu126` is patched **and** works there, so the way out
+is to install that build yourself before the first run.
+
+Also through the pin: a detection report method the engine no longer offers, which nothing in
+this package ever called.
+
 ### 2026-11-04 - the warning for a foreign engine now runs on the route every call takes (engine `0.8.0a63`)
 
 **`RETICULATE_PYTHON` is the one route the pin cannot hold, and the warning written for it
