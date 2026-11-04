@@ -15,7 +15,7 @@
 #' and an R package should not break because a Python dependency drifted underneath it.
 #' @keywords internal
 #' @noRd
-pyplatypus_version <- "0.8.0a62"
+pyplatypus_version <- "0.8.0a63"
 
 #' What this session will ask for. Set by [platypus_use_torch()] before the engine starts.
 #' @keywords internal
@@ -186,6 +186,14 @@ torch_build_requested <- function() {
 #'
 #' `PLATYPUS_ENGINE_PATH` is exempt: that route asks for a source tree with no version at
 #' all, and is this package's own documented way of meeting an unpublished engine.
+#'
+#' **Called from `shim()` as well as from the delayed import's `on_load` hook, and the
+#' first of those is the route that matters.** The hook fires when something touches the R
+#' object `engine()` returns, and `engine()` is called once in this package - inside
+#' `platypus_status()` - against 44 calls of `shim()`, whose own `import pyplatypus` never
+#' touches that object. So for as long as the hook was the only site, a session that never
+#' asked for the status compared nothing at all, and this warning described a route nobody
+#' takes. `rplatypus#272`. Once per session, by a flag on the package environment.
 #' @keywords internal
 #' @noRd
 check_engine_version <- function() {
@@ -208,6 +216,28 @@ check_engine_version <- function() {
   invisible(NULL)
 }
 
+#' The same comparison, at most once in a session
+#'
+#' Both call sites want it once: `shim()` is on the path of all 44 engine calls and
+#' `.onLoad`'s hook fires on the first touch of the delayed import. The flag is set
+#' **before** the comparison runs rather than after, because reading the engine's version
+#' touches that delayed import, whose hook calls this again - so the flag is re-entry
+#' protection first and an optimisation second.
+#'
+#' Separate from `check_engine_version()` on purpose: that function's contract is "compare
+#' and warn", a test calls it twice to read both halves of the message, and folding a
+#' once-per-session flag into it made the second call silent. A guard belongs at the site
+#' that needs guarding.
+#' @keywords internal
+#' @noRd
+check_engine_version_once <- function() {
+  if (isTRUE(.platypus$version_checked)) {
+    return(invisible(NULL))
+  }
+  .platypus$version_checked <- TRUE
+  check_engine_version()
+}
+
 .onLoad <- function(libname, pkgname) {
   check_reticulate_python()
   # Before `py_require()`, because the requirement is built from it and nothing after this
@@ -224,7 +254,7 @@ check_engine_version <- function() {
       # Fires when something first needs Python, which is the earliest moment the
       # engine's own version can be asked for.
       on_load = function() {
-        check_engine_version()
+        check_engine_version_once()
       },
       on_error = function(e) {
         stop(engine_start_failure(conditionMessage(e)), call. = FALSE)
@@ -254,6 +284,14 @@ shim <- function() {
       "platypus_shim",
       path = system.file("python", package = "rplatypus", mustWork = TRUE)
     )
+    # The version comparison runs HERE as well as on the delayed import's own `on_load`
+    # hook, and this is the route that matters. That hook fires only when something touches
+    # the R object `engine()` returns, and `engine()` is called once in this whole package,
+    # inside `platypus_status()`; every other engine call - 44 of them - comes through this
+    # shim, whose own `import pyplatypus` never touches the delayed object. So a session
+    # that never asked for the status never compared anything, which left `rplatypus#214`'s
+    # warning describing a route nobody takes. `rplatypus#272`.
+    check_engine_version_once()
   }
   .platypus$shim
 }
