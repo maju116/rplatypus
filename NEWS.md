@@ -17,6 +17,33 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-04 (late) - `normalise`, and a threshold that now cuts what it says it cuts (engine `0.8.0a65`)
+
+**`normalise` is new on every model that takes an `encoder`** - `u_net()`, `linknet()`,
+`res_u_net()`, `u_net_plus_plus()` and `classifier()`. It defaults to `pretrained`, so
+nothing changes unless you set it, and it exists for one case: reloading weights you
+exported from a pretrained encoder **on a machine with no network**. A pretrained backbone
+normalises its input with that backbone's ImageNet statistics, and until now those existed
+only when the weights were downloaded - so reloading your own weights meant fetching
+ImageNet weights to overwrite them, and offline it could not be done at all. Set
+`normalise = TRUE` with `pretrained = FALSE` and the statistics come from the backbone's
+configuration, which needs no download, while the weights stay yours.
+
+**`predict()` on a detector now drops boxes scored below `score_threshold`, which is what
+that argument always said it did.** The engine was cutting on the network's objectness while
+reporting each box at `objectness x class probability` - a smaller number - so a box scored
+0.06 survived a threshold of 0.5 and one scored 0.396 was dropped. Measured on the published
+`bccd-yolo3` weights over their own 72 held-out images: 2,771 predictions become 2,537, and
+`map_50`, `map_50_95` and `mean_matched_iou` are identical to six decimals, so no published
+figure moves. If you filtered the returned data frame yourself, you can stop;
+`plot_boxes(min_score =)` was already filtering again and is unaffected.
+
+Two more arrive through the pin alone, both in the weights path. A description beside a
+published file that could not be **reached** - offline, or on a dropped connection with
+nothing cached - was being read as a file published without one, which skipped the colormap
+and class checks; it raises now. And a multi-frame DICOM whose header does not admit how
+many frames it holds is refused rather than read as a picture whose rows are the frames.
+
 ### 2026-11-04 (evening) - a warning about loading somebody else's checkpoint (engine `0.8.0a64`)
 
 **CVE-2026-24747 is in PyTorch, not in this package, and the part that reaches you is a

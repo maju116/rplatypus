@@ -278,6 +278,11 @@ classification_data <- function(train, validation = NULL, classes, labels_from =
 #' @param encoder A pretrained backbone instead of our own contracting path, by name - see
 #'   [encoders] for the table and what it is actually good for. With this, `blocks`,
 #'   `filters` and `block_width` are refused.
+#' @param normalise Normalise the input with the backbone's own ImageNet statistics,
+#'   defaulting to `pretrained`. Set it `TRUE` with `pretrained = FALSE` to reload weights
+#'   you exported from a pretrained encoder without a network: the statistics come from the
+#'   backbone's configuration rather than from its weights. See [u_net] for the whole of
+#'   it; it is recorded in the weights' fingerprint either way.
 #' @param pretrained,freeze_encoder,encoder_learning_rate How the backbone arrives and how
 #'   it is trained, as in [u_net()].
 #' @return A model specification, to be passed to [platypus_spec()].
@@ -298,7 +303,8 @@ classifier <- function(name, input_shape, channels = NULL,
                        loss = NULL, metrics = NULL, optimizer = NULL,
                        callbacks = NULL, augmentation = NULL,
                        epochs = NULL, batch_size = NULL, weights = NULL, fit = NULL,
-                       encoder = NULL, pretrained = NULL, freeze_encoder = NULL,
+                       encoder = NULL, pretrained = NULL, normalise = NULL,
+                       freeze_encoder = NULL,
                        encoder_learning_rate = NULL) {
   # Everything optional arrives as NULL and `compact()` drops it before the request is
   # built, so the engine's own default applies. A value repeated here is a second place for
@@ -330,6 +336,7 @@ classifier <- function(name, input_shape, channels = NULL,
     fit = fit,
     encoder = encoder,
     pretrained = pretrained,
+    normalise = normalise,
     freeze_encoder = if (is.null(freeze_encoder)) NULL else int1(freeze_encoder),
     encoder_learning_rate = encoder_learning_rate
   ))
