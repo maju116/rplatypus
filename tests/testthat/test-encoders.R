@@ -9,7 +9,10 @@ test_that("the four encoder fields are absent unless asked for", {
   # The point of the NULL default, and the reason an older engine keeps working for
   # everyone who is not asking: compact() drops the key entirely.
   plain <- u_net("m", input_shape = c(256, 256))
-  for (field in c("encoder", "pretrained", "freeze_encoder", "encoder_learning_rate")) {
+  # Five since `normalise` arrived in 0.8.0a65; it was missing from this list, which is the
+  # same omission one level up as the forward `maju116/rplatypus#278` is about.
+  for (field in c("encoder", "pretrained", "normalise", "freeze_encoder",
+                  "encoder_learning_rate")) {
     expect_null(plain[[field]], info = field)
   }
 
@@ -142,4 +145,37 @@ test_that("a model with a backbone trains and predicts at the input size", {
   # Level 0 of a backbone is at half resolution; the decoder's head sits on level 0, so a
   # mask the size of the input is the proof that the full-resolution stage is in place.
   expect_identical(dim(masks)[2:3], c(64L, 64L))
+})
+
+
+test_that("normalise reaches the request from every constructor that takes an encoder", {
+  # `maju116/rplatypus#278`, and the finding is that nothing held this. One line per
+  # constructor forwards the field - `normalise = normalise` - and deleting either of the
+  # two sites in R left the whole suite at 1948 passed. The engine's own halves could be
+  # deleted the same way (`maju116/pyplatypus#385`), and the result is the silence the
+  # fingerprint exists to refuse: a record saying the input was normalised for a network
+  # that never normalised it.
+  #
+  # Read off the request rather than from a fit: a fit would need the engine and a
+  # backbone, and the question is whether the key arrives.
+  segmentation <- list(u_net = u_net, u_net_plus_plus = u_net_plus_plus,
+                       res_u_net = res_u_net, linknet = linknet)
+  for (name in names(segmentation)) {
+    make <- segmentation[[name]]
+    asked <- make("m", input_shape = c(256, 256), encoder = "resnet34",
+                  pretrained = FALSE, normalise = TRUE)
+    expect_true(asked$normalise, info = name)
+    expect_true("normalise" %in% names(rplatypus:::compact(asked)), info = name)
+
+    # And FALSE is a value the caller gave rather than nothing, so it must survive
+    # `compact()` too - the trap `group_by` is documented for.
+    refused <- make("m", input_shape = c(256, 256), encoder = "resnet34", normalise = FALSE)
+    expect_false(refused$normalise, info = name)
+    expect_true("normalise" %in% names(rplatypus:::compact(refused)), info = name)
+  }
+
+  classification <- classifier("c", input_shape = c(224, 224), encoder = "resnet34",
+                               pretrained = FALSE, normalise = TRUE)
+  expect_true(classification$normalise)
+  expect_true("normalise" %in% names(rplatypus:::compact(classification)))
 })
