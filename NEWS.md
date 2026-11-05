@@ -20,6 +20,35 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-05 (evening) - a seventh vignette, for the task that had none
+
+**`vignette("classification")`**, and it is the fourth task's first worked example on either
+side. Nothing in the package changed and the pin did not move: the page is built out of what
+is already here, which is the point of it.
+
+It continues the detection vignette. `detection_crops()` cuts the published `bccd-yolo3`
+detector's boxes out of the BCCD photographs, a dozen lines label each crop by what it
+overlaps and write them to one directory per class, and `classification_data()` reads that
+layout straight. Then `classifier()`, `class_balance()` before the fit rather than after it,
+and `predict()` for the probabilities a threshold is chosen from.
+
+**It is the only page here whose subject fails, and that is why it is worth reading.** The
+classifier learns the three cell types nearly perfectly - 637 of 638 red cells - and cannot
+do the one thing it was added for, which is reject the boxes that match no annotation: 32 of
+312. The page measures why rather than asserting it. Those crops are red cells that BCCD does
+not annotate, at a median detector score of 0.9864, so the label is a statement about the
+annotation and not about the picture; and the detector's own `operating_point`, one number
+already in the specification, reaches the same precision for the same cost with nothing
+trained.
+
+One thing it found reaches a page that already shipped: a precision measured against an
+incomplete annotation is a lower bound, so `vignette("blood-cells")`'s per-class precision
+understates the detector. It is said on the new page.
+
+Two corrections to the README came with it. **Multi-label classification is no longer listed
+as missing** - `labels_from` has been there since the engine's `0.8.0a50` - and the section
+that lists what is in the package now says so.
+
 ### 2026-11-05 - a palette DICOM read through a wide lookup table, and twenty-one fields now held (engine `0.8.0a67`)
 
 **The pin moves to `0.8.0a67`**, the reviewer's eleventh pass, and **nothing in it changes

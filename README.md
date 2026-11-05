@@ -156,6 +156,14 @@ have one scores 0.97 and has learnt nothing. `class_balance()` says what the lab
 before you train on them, and the split is stratified, because a random 70/15/15 of 100
 images at 3% prevalence leaves some part with none of the rare class 91% of the time.
 
+**A label that is a set**, for one image with several findings at once. `labels_from` names
+one CSV column per class, in class order, and it is a third labelling rather than a switch:
+the target changes and not only the activation, so there is nothing a `multilabel = TRUE`
+could have meant on a `label` column that structurally cannot say an image has two findings.
+`metric_accuracy()` is refused there outright - on 4000 images with findings at 10%, 5%, 3%
+and 2%, a model answering no to everything scores 0.8137 on exact match, above a model
+holding half the signal.
+
 **Tiling that goes both ways** — cut a large image into a grid instead of shrinking it, and
 get a full-size mask back.
 
@@ -372,6 +380,15 @@ published detector before any training. It ends on the finding that made the mea
 honest — across five seeds the overlap of the matched boxes varies six times less than the
 average precision does, so on a dataset that size a point of mAP is not a result.
 
+`vignette("classification")` is the fourth task and it continues the detection page: it
+cuts that published detector's boxes out with `detection_crops()`, writes them to disk as one
+directory per class, and trains a classifier on the pieces. It is the only vignette here whose
+subject fails. The classifier learns the three cell types nearly perfectly and cannot do the
+one thing it was added for - reject the boxes that match no annotation - and the measurement
+says why: those crops are red cells that BCCD does not annotate, so the label is a statement
+about the annotation rather than about the picture, and no model can read it off a picture of
+a cell.
+
 `vignette("volumes")` is CT, and generates its own synthetic data so it can be run without
 downloading anything: voxel spacing, splitting by patient, resampling, per-patient scores, a
 slice to look at, and the size of a finding in millilitres. It ends on something worth knowing —
@@ -404,10 +421,6 @@ group whose photographs are worst, and the dataset's own quality grading says so
 
 Ensembling. Boxes in three dimensions - `yolo3()` is 2D and says so rather than accepting a
 third number and ignoring it.
-
-Multi-label classification - one image with several findings at once, which is a different
-target from one label per image rather than a setting on it. `pyplatypus#307` is where it is
-being built.
 
 Augmentation in 3D works, but unevenly, because albumentations supports volumes for most of
 its transforms and not all of them. Every transform in a 3D specification is probed while the

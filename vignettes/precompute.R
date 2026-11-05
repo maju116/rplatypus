@@ -29,6 +29,10 @@
 # card, which is why every document here calls platypus_use_torch("pascal") - and why that
 # function had to start working before this one could be built at all.
 #
+# The classification one is the cheapest that runs something - the detector is loaded
+# rather than trained, and the three classifiers it fits are two minutes each on the same
+# card. What it costs instead is disk: it writes about 5,300 crops into `tempdir()`.
+#
 # The fetal-head one fills 999 drawn annotations into masks before it can start - about 70
 # seconds, in R, with no dependency beyond `png` - and then trains at 544x800 for up to 40
 # epochs, which is roughly half an hour on the same card. It is the only document here whose
@@ -37,7 +41,7 @@
 
 which <- commandArgs(trailingOnly = TRUE)
 if (!length(which)) which <- c("data-science-bowl", "instances", "volumes", "blood-cells",
-                               "retinal-vessels", "fetal-head")
+                               "retinal-vessels", "fetal-head", "classification")
 
 if ("data-science-bowl" %in% which) {
   stopifnot(nzchar(Sys.getenv("PLATYPUS_DSBOWL")))
@@ -48,6 +52,11 @@ if ("instances" %in% which) {
   stopifnot(nzchar(Sys.getenv("PLATYPUS_DSBOWL")))
 }
 if ("blood-cells" %in% which) {
+  stopifnot(nzchar(Sys.getenv("PLATYPUS_BCCD")))
+}
+if ("classification" %in% which) {
+  # The same data as the detection one: it cuts that detector's boxes out and classifies
+  # the pieces, so it needs no images the other does not.
   stopifnot(nzchar(Sys.getenv("PLATYPUS_BCCD")))
 }
 if ("retinal-vessels" %in% which) {
