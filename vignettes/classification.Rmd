@@ -370,7 +370,7 @@ fit
 #>   models   : cells 
 #>   device   : NVIDIA GeForce GTX 1070 (torch 2.7.1+cu126) 
 #>   epochs   : cells=44 
-#>   stopped  : cells - early stopping: val_auc has not improved on 0.88155 for 15 epochs 
+#>   stopped  : cells - early stopping: val_auc has not improved on 0.88287 for 15 epochs 
 #>   next     : evaluate(fit), predict(fit, "cells")
 ```
 
@@ -382,22 +382,23 @@ plot(fit)
 ![plot of chunk cls-history](figures/cls-cls-history-1.png)
 
 **The gap between the two lines is the whole of what 2,919
-crops buys.** Training AUC reaches 0.9971 while validation
-stops at 0.8816, and the loss panel is the clearer half: the
+crops buys.** Training AUC reaches 0.9972 while validation
+stops at 0.8829, and the loss panel is the clearer half: the
 training loss falls to 0.047 while the validation
-loss **rises** from 1.54 to
-1.94. The model is memorising crops.
+loss **rises** from 1.53 to
+1.87. The model is memorising crops.
 Early stopping restored epoch 29 of
 44 - the best `val_auc`, which is what it was told to watch - and
 nothing after it was learning anything that transfers.
 
-**The `best_epoch` column in the table below says
-18 instead, and that gap is worth a sentence rather
-than a second look.** That column is the lowest validation *loss*, read off the history
-whatever the callback was watching, and on a run whose loss rises while its AUC improves the
-two are 11
-epochs apart. The scores in that row are the restored epoch's; the column names another one.
-`maju116/pyplatypus#398` asks which of the two the column should be.
+**The `best_epoch` column in the table below says the same number, and this page is why it
+does.** It used to be the lowest validation *loss*, read off the history whatever the
+callback was watching - so on a run like this one, whose loss rises from the first epoch
+while its AUC keeps improving, the row named one epoch and scored another. Writing this page
+printed the two side by side, which is how anybody noticed; `maju116/pyplatypus#398` fixed it
+in `0.8.0a68`, and the column is now the epoch the row's own scores came from. It is empty
+rather than wrong when they came from no single epoch - an average, or a run that selected
+nothing and therefore ended on its last, which `epochs_run` already names.
 
 ## Scoring per class, because the mean is the commonest class
 
@@ -406,9 +407,9 @@ epochs apart. The scores in that row are the restored epoch's; the column names 
 score <- evaluate(fit, split = "test")
 score
 #>   model architecture loss_function parameters split epochs_run best_epoch
-#> 1 cells    plain_cnn           cce     294516  test         44         18
+#> 1 cells    plain_cnn           cce     294516  test         44         29
 #>       loss      auc balanced_accuracy        f1
-#> 1 1.712858 0.872728         0.7283742 0.6816569
+#> 1 1.885172 0.878069         0.7209535 0.6783647
 ```
 
 
@@ -416,16 +417,16 @@ score
 said <- predict(fit, split = "test")
 head(said, 3)
 #>                                  key     label predicted probability
-#> 1 Platelets/BloodImage_00011-008.png Platelets Platelets   0.9075906
-#> 2 Platelets/BloodImage_00015-007.png Platelets Platelets   0.9427061
-#> 3 Platelets/BloodImage_00016-010.png Platelets Platelets   0.5885475
+#> 1 Platelets/BloodImage_00011-008.png Platelets Platelets   0.9325355
+#> 2 Platelets/BloodImage_00015-007.png Platelets Platelets   0.9153976
+#> 3 Platelets/BloodImage_00016-010.png Platelets Platelets   0.6201115
 table(truth = factor(said$label, kinds), said = factor(said$predicted, kinds))
 #>            said
 #> truth       RBC WBC Platelets nothing
-#>   RBC       637   0         0       1
+#>   RBC       638   0         0       0
 #>   WBC         0  71         0       0
-#>   Platelets   0   1        52      11
-#>   nothing   253   5        22      32
+#>   Platelets   0   1        50      13
+#>   nothing   254   5        21      32
 ```
 
 
@@ -433,26 +434,26 @@ table(truth = factor(said$label, kinds), said = factor(said$predicted, kinds))
 c(accuracy = mean(said$label == said$predicted),
   always_the_commonest = max(table(said$label)) / nrow(said))
 #>             accuracy always_the_commonest 
-#>            0.7299539            0.5880184
+#>            0.7290323            0.5880184
 ```
 
-**An accuracy of 0.730 against
+**An accuracy of 0.729 against
 0.588 for a model that answers `RBC` to
 everything.** That is the whole argument for the default metric in one pair of numbers: the
-gap is 0.142,
+gap is 0.141,
 and a reader told only the first would believe something had been learned about all four
 classes. Balanced accuracy, which weighs a rare class as much as a common one, reads
-0.7284.
+0.721.
 
 The table above says where it went. The three cell types are nearly perfect - red cells
-637 of
+638 of
 638, white cells 71
 of 71, platelets
-52 of
+50 of
 64. The fourth class is a rout:
 32 of
 312, with
-253 of them called a red cell.
+254 of them called a red cell.
 
 ### Two things that do not help, measured rather than assumed
 
@@ -474,19 +475,19 @@ others <- lapply(arms, function(s) {
 cbind(arm = c("seed 1", names(others)),
       do.call(rbind, c(list(cbind(score, rejected = rejected(said))), others))[
         , c("auc", "balanced_accuracy", "rejected")])
-#>           arm       auc balanced_accuracy   rejected
-#> 1      seed 1 0.8727280         0.7283742 0.10256410
-#> seed 2 seed 2 0.8656669         0.7458934 0.09294872
-#> focal   focal 0.8803432         0.7237580 0.05128205
+#>           arm       auc balanced_accuracy  rejected
+#> 1      seed 1 0.8780690         0.7209535 0.1025641
+#> seed 2 seed 2 0.8668425         0.7152289 0.1250000
+#> focal   focal 0.8783265         0.7463787 0.1089744
 ```
 
 
 
-Two seeds of one recipe differ by 0.0071 of AUC and focal loss moves
-it by 0.0076, which are the same order of magnitude - and **two runs
+Two seeds of one recipe differ by 0.0112 of AUC and focal loss moves
+it by 0.0003, which are the same order of magnitude - and **two runs
 are not a spread**, so neither figure is worth a conclusion on its own. The column that can
 carry one is the last: the share of the detector's unmatched boxes that the model rejects
-runs from 0.05 to 0.10 across all
+runs from 0.10 to 0.12 across all
 three, which is to say that none of them does it. The arms differ in the figure that is
 noisy and agree in the one the page is about.
 
@@ -514,17 +515,17 @@ reject_at <- function(split, thresholds = c(0.1, 0.3, 0.5, 0.7, 0.9, 0.99)) {
 ladder <- rbind(reject_at("validation"), reject_at("test"))
 ladder
 #>         split threshold cells_kept alarms_dropped precision
-#> 1  validation      0.10  0.9568421     0.15000000 0.7378247
-#> 2  validation      0.30  0.9842105     0.11842105 0.7362205
-#> 3  validation      0.50  0.9915789     0.09473684 0.7325039
-#> 4  validation      0.70  0.9968421     0.06842105 0.7279016
-#> 5  validation      0.90  1.0000000     0.02894737 0.7202426
+#> 1  validation      0.10  0.9557895     0.15789474 0.7394137
+#> 2  validation      0.30  0.9831579     0.12105263 0.7365931
+#> 3  validation      0.50  0.9905263     0.09736842 0.7328660
+#> 4  validation      0.70  0.9957895     0.06052632 0.7260169
+#> 5  validation      0.90  1.0000000     0.01842105 0.7180650
 #> 6  validation      0.99  1.0000000     0.00000000 0.7142857
-#> 7        test      0.10  0.9573092     0.20192308 0.7482305
-#> 8        test      0.30  0.9767141     0.13141026 0.7358674
-#> 9        test      0.50  0.9844761     0.09615385 0.7296261
-#> 10       test      0.70  0.9909444     0.07371795 0.7260664
-#> 11       test      0.90  0.9987063     0.03205128 0.7188082
+#> 7        test      0.10  0.9508409     0.17628205 0.7409274
+#> 8        test      0.30  0.9715395     0.12820513 0.7341153
+#> 9        test      0.50  0.9831824     0.10256410 0.7307692
+#> 10       test      0.70  0.9896507     0.07051282 0.7251185
+#> 11       test      0.90  1.0000000     0.02243590 0.7170686
 #> 12       test      0.99  1.0000000     0.00000000 0.7124424
 ```
 
@@ -532,10 +533,10 @@ ladder
 
 Precision before any of this is 0.7124 - the share of what the detector
 hands over that is an annotated object. The best this buys on the test split is
-0.7482, at the cost of
-4.3% of the real cells: **a gain of
-0.036 of precision for
-33
+0.7409, at the cost of
+4.9% of the real cells: **a gain of
+0.028 of precision for
+38
 cells, from a second model, a second dataset and a second training run.**
 
 And a second model has to be worth more than the one number the first one already has. The
@@ -587,8 +588,8 @@ The first row is the one everything above was measured at, and `boxes` reproduce
 predictions read a second way. The rest of the table is the same trade the classifier was
 making, made by one argument: at an `operating_point` of 0.8, the
 detector keeps 0.955 of the cells against the classifier's
-0.957, at a precision of
-0.7455 against 0.7482.
+0.951, at a precision of
+0.7455 against 0.7409.
 **A number that is already in the specification is on the same curve as a second model**, and
 that is the comparison a page like this owes before it recommends anything.
 
