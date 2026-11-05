@@ -20,6 +20,27 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-05 (night) - `best_epoch` names the epoch a row's scores came from (engine `0.8.0a68`)
+
+**The pin moves to `0.8.0a68`**, and what it carries is one column of `evaluate()` meaning
+what everybody already read it as. `best_epoch` was the epoch with the lowest validation
+**loss**, read off the run's history whatever a callback was watching, while the scores
+beside it come from the weights `callback_early_stopping(restore_best = TRUE)` kept - the
+best **monitored** epoch. Those are the same epoch whenever `monitor` is left at its default
+of `"val_loss"`, and different exactly when you set it to something else.
+
+It is now the epoch the row's own scores came from, and **empty rather than wrong** when they
+came from no single epoch: an average left by `callback_ema()` or `callback_swa()`, or a run
+that selected nothing and therefore ended on its last epoch, which `epochs_run` already
+names. The epoch that was best by some other quantity is in `training_history(fit)`, which is
+where it always was.
+
+**`vignette("classification")` is re-knitted, because it described the defect.** That page
+printed both numbers - 29 restored, 18 reported - and explained the gap, which is how anybody
+noticed; the paragraph now says what the column is and that this page is the reason. Nothing
+else on it changed in kind, and its figures are a fresh run's.
+
+
 ### 2026-11-05 (evening) - a seventh vignette, for the task that had none
 
 **`vignette("classification")`**, and it is the fourth task's first worked example on either

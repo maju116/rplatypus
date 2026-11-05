@@ -361,13 +361,14 @@ Early stopping restored epoch `r fit$history$epoch[which.max(fit$history$val_auc
 `r max(fit$history$epoch)` - the best `val_auc`, which is what it was told to watch - and
 nothing after it was learning anything that transfers.
 
-**The `best_epoch` column in the table below says
-`r evaluate(fit, split = "test")$best_epoch` instead, and that gap is worth a sentence rather
-than a second look.** That column is the lowest validation *loss*, read off the history
-whatever the callback was watching, and on a run whose loss rises while its AUC improves the
-two are `r abs(fit$history$epoch[which.max(fit$history$val_auc)] - evaluate(fit, split = "test")$best_epoch)`
-epochs apart. The scores in that row are the restored epoch's; the column names another one.
-`maju116/pyplatypus#398` asks which of the two the column should be.
+**The `best_epoch` column in the table below says the same number, and this page is why it
+does.** It used to be the lowest validation *loss*, read off the history whatever the
+callback was watching - so on a run like this one, whose loss rises from the first epoch
+while its AUC keeps improving, the row named one epoch and scored another. Writing this page
+printed the two side by side, which is how anybody noticed; `maju116/pyplatypus#398` fixed it
+in `0.8.0a68`, and the column is now the epoch the row's own scores came from. It is empty
+rather than wrong when they came from no single epoch - an average, or a run that selected
+nothing and therefore ended on its last, which `epochs_run` already names.
 
 ## Scoring per class, because the mean is the commonest class
 
