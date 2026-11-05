@@ -33,13 +33,29 @@ test_that("platypus_use_torch replaces the requirement instead of adding a secon
   skip_if_not_installed("callr")
   source_tree <- normalizePath(testthat::test_path("..", ".."), mustWork = FALSE)
   loaded_from_source <- file.exists(file.path(source_tree, "DESCRIPTION"))
+  # **The needle is how the requirement NAMES the engine, which is route-dependent.** The
+  # published route asks for `pyplatypus[extras]==version`; the development route asks for
+  # `normalizePath(PLATYPUS_ENGINE_PATH)[extras]`, and that string contains the word
+  # "pyplatypus" only when the tree happens to be called that. §7 carries two development
+  # commands and they differ in exactly that: `PLATYPUS_ENGINE_PATH="$PWD/../pyplatypus"`
+  # matches, and the `git archive` one, which extracts into `mktemp -d`, does not - so this
+  # test used to fail by construction under the second, with `asked` of length 0 and four
+  # failures that read like a broken pin. Measured 2026-11-05: the same tree copied to a
+  # path containing the word passed, and the only thing that changed was the directory's
+  # name. The two-mode branch below was written for this and fixed one of the two commands.
+  engine_path <- Sys.getenv("PLATYPUS_ENGINE_PATH", unset = "")
+  needle <- if (nzchar(engine_path)) {
+    normalizePath(engine_path, mustWork = TRUE)
+  } else {
+    "pyplatypus"
+  }
   asked <- callr::r(
-    function(source_tree, loaded_from_source) {
+    function(source_tree, loaded_from_source, needle) {
       if (loaded_from_source) pkgload::load_all(source_tree, quiet = TRUE) else library(rplatypus)
       platypus_use_torch("pascal")
-      grep("pyplatypus", reticulate::py_require()$packages, fixed = TRUE, value = TRUE)
+      grep(needle, reticulate::py_require()$packages, fixed = TRUE, value = TRUE)
     },
-    args = list(source_tree, loaded_from_source)
+    args = list(source_tree, loaded_from_source, needle)
   )
   expect_length(asked, 1)
   expect_match(asked, "pascal", fixed = TRUE)
@@ -49,7 +65,7 @@ test_that("platypus_use_torch replaces the requirement instead of adding a secon
   # command - the one where the two halves meet before a release - fail by construction,
   # on a line that reads like a wrong pin. The control that found it: the same failure
   # appears with the previous pin, so it was never about which version the pin names.
-  if (nzchar(Sys.getenv("PLATYPUS_ENGINE_PATH"))) {
+  if (nzchar(engine_path)) {
     tree <- sub("\\[.*$", "", asked)
     expect_true(dir.exists(tree))
     expect_true(file.exists(file.path(tree, "pyproject.toml")))
@@ -314,6 +330,15 @@ test_that("an engine that is not the pinned one says so, naming both versions", 
   # The pin is the mechanism, and on the RETICULATE_PYTHON route it is not in force. The
   # failure without this is a validator refusing a configuration field by name, which
   # tells a reader nothing about their interpreter.
+  #
+  # **The envvar is unset rather than skipped, because this claim is about the ordinary
+  # route and is true whatever the suite was invoked with.** The test below proves the
+  # development route is exempt by SETTING the variable; these two asserted a warning
+  # while inheriting whatever the session had, so under either of §7's development
+  # commands they failed - the exemption working, read as the warning missing. Unsetting
+  # keeps the test asking its own question; skipping would have hidden it on exactly the
+  # run where the two halves meet.
+  withr::local_envvar(c(PLATYPUS_ENGINE_PATH = NA))
   env <- rplatypus:::.platypus
   old <- env$engine
   withr::defer(env$engine <- old)
@@ -356,13 +381,23 @@ test_that("the version check sits on the route every engine call takes", {
 })
 
 test_that("the version is compared once per session rather than on every engine call", {
+  # The same reason as the test three above: the claim is about the ordinary route, so the
+  # development route's exemption is unset rather than skipped around.
+  withr::local_envvar(c(PLATYPUS_ENGINE_PATH = NA))
   # Every one of those 44 calls goes through `shim()`, so the comparison has to be cheap
   # and quiet after the first. The flag is also what stops the check re-entering itself:
   # reading the engine's version touches the delayed import, whose hook calls it again.
   env <- rplatypus:::.platypus
   old_engine <- env$engine
   old_flag <- env$version_checked
-  on.exit({
+  # **`withr::defer` rather than `on.exit`, and the difference is not style.** `on.exit`
+  # without `add = TRUE` REPLACES every handler already registered on this frame - and
+  # `local_envvar` above registers its restore there. Measured 2026-11-05: with `on.exit`
+  # here, `PLATYPUS_ENGINE_PATH` was never put back, so the test four below - which skips
+  # when that variable is set - ran instead of skipping, on a route it was written to stay
+  # out of. Two tests passed for the wrong reason and the suite's skip count, which §3D.7
+  # reads as the signal, said 0 because a cleanup had been silently discarded.
+  withr::defer({
     env$engine <- old_engine
     env$version_checked <- old_flag
   })
