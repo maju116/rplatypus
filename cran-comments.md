@@ -1,12 +1,25 @@
 # cran-comments
 
-First submission of `rplatypus`.
+**An update.** `rplatypus 0.2.1` is on CRAN, published 2026-11-04; this is `0.3.0`. The
+previous version of this file described a first submission and is replaced rather than
+amended, because every claim in it that began *"this is a first submission"* stopped being
+true on that date.
+
+`NEWS.md` is the record of what changed. The short form, measured against the published
+tarball rather than remembered: **95 exported names to 120**, 17 S3 methods to 19, and **5
+vignettes to 7**. Twenty-five new exported functions is why the version is `0.3.0` rather
+than `0.2.2`.
 
 ## Test environments
 
 - local: Ubuntu 24.04, R 4.5.3
 - GitHub Actions, on every push: Ubuntu (R devel, release, oldrel-1), macOS (release),
   Windows (release)
+- CRAN's own daily checks of `0.2.1`, read before preparing this submission: **OK on all
+  six flavours that have reported** - both Fedora R-devels and four macOS - with no other
+  status present on the page at all. The Windows and Linux r-release and r-oldrel flavours
+  had not yet reported, which is the *"at least 48 hours after a publication"* the policy
+  describes
 
 ## R CMD check results
 
@@ -15,7 +28,8 @@ WARNINGs, three NOTEs**, and none of the three is a finding about the package.
 
     * checking CRAN incoming feasibility ... NOTE
       Maintainer: 'Michal Maj <michalmaj116@gmail.com>'
-      New submission
+      Days since last update: <n>
+      Size of tarball: 6170691 bytes
 
     * checking for future file timestamps ... NOTE
       unable to verify current time
@@ -23,9 +37,20 @@ WARNINGs, three NOTEs**, and none of the three is a finding about the package.
     * checking HTML version of manual ... NOTE
       Skipping checking HTML validation: no command 'tidy' found.
 
-The first is expected of a first submission. The second is this machine being unable to
-reach the time server the check consults. The third is a local tool that is not installed
-here; it is present on CRAN's machines, so the HTML validation will actually run there.
+The first NOTE's first two lines are about the submission rather than the package, and the
+*Days since last update* line is arithmetic against the day the check was run.
+
+**The size line is worth a word, because it is new.** The published `0.2.1` tarball is
+3,418,519 bytes and this one is 6,170,691, so this is the first version of this package to
+pass the 5 MB the policy names. **No data is shipped.** It is documentation: seven vignettes,
+each one precomputed from an `.Rmd.orig` so that no model is trained on a CRAN machine, and
+`inst/doc`'s rendered HTML embeds the figures it shows, so each figure is carried once as a
+file and once inside the page that displays it. Measured on this tarball: `inst/doc` 3.6 MB,
+`vignettes/` 2.4 MB, `man/figures` 1.1 MB.
+
+The second NOTE is this machine being unable to reach the time server the check consults, and
+it does not fire on every run. The third is a local tool that is not installed here; it is
+present on CRAN's machines, so the HTML validation will actually run there.
 
 The run was made with the manual built (`R_RD4PDF='times,hyper'`, which drops the
 `inconsolata` font this machine does not carry). That matters rather than being a detail:
@@ -35,20 +60,16 @@ character shipped undetected for six releases before a run like this one found i
 
 ## The package name
 
-This file previously described a conflict and promised to resubmit under another name if it
-could not be resolved. **That is what this name is.** The package was called `platypus` on
-GitHub from 2020 until 2026-10-14; `R CMD check --as-cran` reported a conflict with
-`Platypus`, archived from CRAN on 2026-02-02 - unrelated work in immunology, last released
-2024-10-18 - and the two differed only in case, which the policy treats as a conflict and
-which archiving does not release. Rather than ask for an exception or wait on a name that is
-still reserved, the package was renamed.
+Kept here because it may become a question again rather than because it is open. The package
+was called `platypus` on GitHub from 2020 until 2026-10-14, and `R CMD check --as-cran`
+reported a conflict with `Platypus` — unrelated work in immunology, archived from CRAN on
+2026-02-02, differing only in case, which archiving does not release. It was renamed rather
+than asking for an exception, and `rplatypus` was accepted under that name.
 
-`rplatypus` appears in neither the current index nor the archive, checked against both. The
-name also says what the package is: the computation lives in a Python package, `pyplatypus`,
-and this is its R surface - one name per language rather than one name reused.
-
-The GitHub repository was renamed with it, so the URLs in `DESCRIPTION` are the current ones
-and the former addresses redirect.
+Its former maintainer has since said they intend to return `Platypus` to CRAN. When that
+happens, a `--as-cran` run here will report it as a *current* package rather than an archive
+entry. The name of this package does not change either way: one name per language, beside the
+`pyplatypus` engine on PyPI.
 
 ## This package calls Python, and provisions it itself
 
@@ -79,11 +100,10 @@ network, so:
   inside `\dontrun{}` already. `checking examples ... OK` on a machine that *has* Python does
   not establish that; this does.
 
-  Re-measured on 2026-10-14, after the package was renamed and three `.Rd` files were
-  regenerated, **and with the lever controlled in both directions**: under that variable
-  `available_weights()` refuses by name, and without it the same call returns three rows. So
-  the `OK` is the examples not reaching Python, rather than the variable having had no
-  effect - which is the other thing an `OK` there is consistent with.
+  Measured on 2026-10-14, **with the lever controlled in both directions**: under that
+  variable `available_weights()` refuses by name, and without it the same call returns three
+  rows. So the `OK` is the examples not reaching Python, rather than the variable having had
+  no effect - which is the other thing an `OK` there is consistent with.
 
 Nothing in `R CMD check` therefore reaches the network or starts Python. The one thing worth
 stating plainly because it would surprise a *user* rather than a check: the first real call
@@ -95,4 +115,11 @@ user installs.
 
 ## Downstream dependencies
 
-None — this is a first submission.
+**None.** Checked rather than assumed, and with a control, because a zero is the answer a
+broken probe gives too: `tools::package_dependencies(reverse = TRUE)` over `Depends`,
+`Imports`, `LinkingTo`, `Suggests` and `Enhances` across the 25,608 packages in the index
+returns **0** for `rplatypus` and **354** for `reticulate`, with `rplatypus` confirmed
+present in that index so the zero is not an unknown name.
+
+So there is nobody the policy's two weeks' notice is owed to, and no maintainer has been
+contacted because there is none to contact.

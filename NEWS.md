@@ -3,10 +3,13 @@
 All notable changes to this package will be documented in this file. Two things about its
 shape are worth stating, because neither is the usual one.
 
-**There is no release yet.** `remotes::install_github("maju116/rplatypus")` serves the
-default branch, so "the version I had working" is a commit rather than a tag. Entries are
-therefore dated rather than numbered: the heading they sit under is the version in
-`DESCRIPTION`, and the `0.1.1` below it is the 2020 package this one replaced.
+**Entries are dated rather than numbered, and that is still true now that there is a
+release.** `rplatypus 0.2.1` reached CRAN on 2026-11-04, so there are two ways to have this
+package and they are different: `install.packages()` gives the submitted version, and
+`remotes::install_github("maju116/rplatypus")` gives the default branch, which is where work
+lands between submissions. A heading here is the version in `DESCRIPTION` - the one the next
+submission will carry - and the dated entries under it are what a commit gives you before it
+is sent. The `0.1.1` at the bottom is the 2020 package this one replaced.
 
 **Every entry names the engine it needs.** The computation lives in
 [pyplatypus](https://github.com/maju116/pyplatypus) and this package pins one exact version
@@ -16,6 +19,32 @@ alongside it. The pin is what stops a release of this package breaking because t
 drifted underneath it.
 
 ## [0.3.0] - unreleased
+
+### 2026-11-05 - a palette DICOM read through a wide lookup table, and twenty-one fields now held (engine `0.8.0a67`)
+
+**The pin moves to `0.8.0a67`**, the reviewer's eleventh pass, and **nothing in it changes
+what this package accepts.** One defect reaches you through the pin and by nothing else: a
+`PALETTE COLOR` DICOM whose lookup table is declared 16-bit while its entries only reach 255
+came back almost black - through `read_images()` and through a run's own reading of your
+data alike - because the colour was scaled by what the table's type can hold
+rather than by what the table holds. Such files exist - it is a writer quirk that pydicom
+documents - and `0.8.0a66`, which fixed palette files being read as their raw indices,
+introduced this narrower case while doing it. It is scaled correctly now, and it says so
+rather than rescaling in silence. A `window` passed for a palette file also warns instead of
+being dropped without a word: an index carries no ordering, so there is nothing to window.
+
+**And `u_net(..., batch_normalization = FALSE)` is held by a test for the first time**, along
+with twenty other model settings. Nothing changes in what any of them does. What changed is
+that nine of the twenty fields the constructors forward to the engine could have stopped
+being forwarded with the whole suite still green - the value was assembled correctly and
+nothing asserted it - and six of those have an engine-side guard that cannot see a field
+which never arrives. One test now reads every constructor's own arguments against the
+schema, so a field added later is either covered or named with a reason.
+
+**The CRAN entry is live**, and `README.md` and this file said otherwise until today:
+`install.packages("rplatypus")` gives `0.2.1`, published 2026-11-04, while
+`remotes::install_github("maju116/rplatypus")` gives the default branch, which is ahead of
+it between submissions.
 
 ### 2026-11-05 - `normalise = TRUE` now needs an encoder, and three defects through the pin (engine `0.8.0a66`)
 

@@ -8,6 +8,7 @@ figure.**
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/maju116/rplatypus/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/maju116/rplatypus/actions/workflows/R-CMD-check.yaml)
 [![docs](https://github.com/maju116/rplatypus/actions/workflows/docs.yaml/badge.svg)](https://maju116.github.io/rplatypus/)
+[![CRAN status](https://www.r-pkg.org/badges/version/rplatypus)](https://CRAN.R-project.org/package=rplatypus)
 <!-- badges: end -->
 
 > **This is a rewrite, and an alpha.** The package released in 2020 was built on
@@ -17,17 +18,28 @@ figure.**
 > branch.
 
 R has excellent tools for reading medical images and a healthy deep learning stack, and
-almost nothing joining them: as of August 2025 the CRAN Task View for *Medical Image
-Analysis* listed no deep learning packages at all. This is an attempt at the missing
+almost nothing joining them: re-counted on 2026-11-05, the CRAN Task View for *Medical
+Image Analysis* lists 49 packages and not one of them is a neural network. This is an attempt at the missing
 piece — not a wrapper around a Python library you then have to learn, but an R package
 that happens to compute in Python.
 
 ## Installing
 
 ```r
+install.packages("rplatypus")
+```
+
+```r
+# or the development version, which is ahead of CRAN
 # install.packages("remotes")
 remotes::install_github("maju116/rplatypus")
 ```
+
+**The two are not the same thing.** CRAN carries the version that was submitted and
+accepted; `install_github` serves the default branch, which is where work lands and is
+therefore usually ahead of it - including fixes that have not been sent to CRAN yet, since
+the policy asks for no more than one submission every one to two months. Take CRAN unless
+you are waiting on something specific.
 
 There is nothing to set up afterwards. The first call that needs the engine builds an
 isolated Python environment for it, and everything after that uses the cache. You never
@@ -406,9 +418,12 @@ Resampling volumes to isotropic spacing is deliberate rather than automatic: `vo
 reads and reports the spacing, and `target_spacing` applies it, but applying it changes the
 voxel grid the model sees, which is a decision to take rather than a default to inherit.
 
-The package is **not on CRAN yet**: `0.2.0` was submitted on 2026-10-14 and sits in the
-incoming queue until CRAN's own checks run and a human looks at it. Its page on CRAN is the
-live answer rather than this sentence, which can only say what was true when it was written.
+**The package is on CRAN**: `0.2.1`, published 2026-11-04, after `0.2.0` was submitted on
+2026-10-14 and sent back for two documentation points. Its
+[page on CRAN](https://CRAN.R-project.org/package=rplatypus) is the live answer rather than
+this sentence, which can only say what was true when it was written - and the check page
+beside it is the one that matters, since CRAN runs the checks daily on more platforms than
+any CI matrix here.
 The name question that used to stand here is settled, and the answer is the name at the top
 of this page: `Platypus`, unrelated work in immunology, was archived from CRAN in February
 2026, archiving does not release a name, and this package was renamed rather than asking for
