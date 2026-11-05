@@ -37,20 +37,18 @@ article_for <- function(stem) {
 # out of it with no article fails the first test below, and a vignette left *in* it after the
 # article appears fails the second. So it is a record of the remaining work rather than a set
 # of exemptions somebody has to remember to prune.
-# It has emptied twice rather than being deleted, and filled again three times, which is the
-# shape to expect: `volumes` was the last entry before `maju116/pyplatypus#175`, `fetal-head`
-# was the next, and each came out because the second test below failed the moment the article
-# appeared on the engine's default branch, naming the entry and what to do about it. That is
-# the whole point of reading the list in both directions: an entry nobody removes is a pair
-# that quietly stopped being compared, and this is the only mechanism that says so.
+# It has emptied three times rather than being deleted, and filled again as often, which is
+# the shape to expect: `volumes` was the last entry before `maju116/pyplatypus#175`,
+# `fetal-head` was the next, and `classification` was here for the two hours of 2026-11-05
+# between `rplatypus#283` merging and `pyplatypus#399` doing so. Every one of them came out
+# because the second test below failed the moment the article appeared on the engine's
+# default branch, naming the entry and what to do about it - this one included, which is the
+# third time that has been watched rather than assumed. That is the whole point of reading
+# the list in both directions: an entry nobody removes is a pair that quietly stopped being
+# compared, and this is the only mechanism that says so.
 #
-# Six of the seven pairs are compared today.
-# `classification` landed on 2026-11-05 as `rplatypus#280`, which carries the article as a
-# task of its own: by `maju116/rplatypus#117` the vignette is the source and the article is
-# the copy, so the source lands first and this is what says the copy is owed. The entry comes
-# out when `classification.qmd` appears on the engine's default branch - and the second test
-# below is what will say so, rather than anybody remembering.
-awaiting <- c(classification = "maju116/rplatypus#280")
+# All seven pairs are compared.
+awaiting <- c(character(0))
 
 fetch_lines <- function(address) {
   tryCatch(
