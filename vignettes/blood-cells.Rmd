@@ -265,10 +265,10 @@ plot_anchors(fit, split = "validation", log = TRUE)
 ``` r
 tail(fit$history[, c("epoch", "train_loss", "train_coordinates", "train_objectness",
                      "val_loss")], 3)
-#>     epoch train_loss train_coordinates train_objectness  val_loss
-#> 148   148   5.926291          5.921908     0.0006802287  9.950191
-#> 149   149   5.926131          5.921756     0.0006467079  9.976097
-#> 150   150   5.926317          5.921920     0.0007015823 10.066363
+#>     epoch train_loss train_coordinates train_objectness val_loss
+#> 148   148   5.926517          5.922094     0.0006585576 10.13793
+#> 149   149   5.926129          5.921740     0.0006725759 10.15564
+#> 150   150   5.926410          5.921948     0.0007225743 10.22855
 ```
 
 
@@ -278,7 +278,7 @@ target bottoms out at the target's own entropy, so the coordinate term has a flo
 that depends on the data. Which is exactly why the four parts are reported separately: a
 total of 5.93 means nothing alone, while
 `coordinates 5.92` beside
-`objectness 7 &times; 10<sup>-4</sup>` says the model has learned what is where
+`objectness 7.2 &times; 10<sup>-4</sup>` says the model has learned what is where
 and is still refining the boxes.
 
 ## Scoring, and the number that is missing on purpose
@@ -287,14 +287,14 @@ and is still refining the boxes.
 ``` r
 evaluate(fit, split = "test")
 #>   model architecture parameters epochs_run    map_50 map_50_95 mean_matched_iou
-#> 1 cells        yolo3   61534504        150 0.8638967 0.5083634        0.8041728
+#> 1 cells        yolo3   61534504        150 0.8627735 0.5121223        0.8038798
 #>   n_truth n_predicted classes_without_truth
-#> 1     945        2535                     0
+#> 1     945        2496                     0
 ```
 
 
 
-**This run's `map_50` of 0.8639 sits
+**This run's `map_50` of 0.8628 sits
 inside the range of the five in the
 table further down (0.853 to 0.887), and that
 is the point of the table rather than a problem with it.** A seed pins which random numbers
@@ -307,9 +307,9 @@ came to be written: the first version of it quoted a number, and the next knit d
 it.
 
 Which is the argument for reading `mean_matched_iou` first, and it holds here: the overlap
-came out at 0.8042 against the five-run mean of
+came out at 0.8039 against the five-run mean of
 0.8040, a difference of
-0.0001.
+0.0002.
 
 There is no overall precision and no overall recall in that table, and the absence is
 deliberate. Averaging them over classes needs a weighting, and every choice of weighting is a
@@ -322,13 +322,13 @@ Per class is the form in which they mean something:
 ``` r
 evaluate_classes(fit, split = "test")
 #>       class average_precision mean_matched_iou n_truth n_predicted precision
-#> 1       RBC         0.7977684        0.8074916     805         900 0.7155556
-#> 2       WBC         0.9620625        0.8503462      71          77 0.9220779
-#> 3 Platelets         0.8318592        0.7196516      69         110 0.5909091
-#>     recall
-#> 1 0.800000
-#> 2 1.000000
-#> 3 0.942029
+#> 1       RBC         0.7991014        0.8065542     805         888 0.7207207
+#> 2       WBC         0.9637139        0.8553475      71          77 0.9220779
+#> 3 Platelets         0.8255051        0.7194421      69         106 0.5943396
+#>      recall
+#> 1 0.7950311
+#> 2 1.0000000
+#> 3 0.9130435
 ```
 
 
@@ -336,8 +336,9 @@ evaluate_classes(fit, split = "test")
 Read that table rather than the mean. White cells are nearly perfect - there is one per image
 and it is large. Platelets come back at a precision of
 0.59 at this confidence, meaning
-41% of the platelets reported are not
-there, and their boxes fit worst of the three at an overlap of
+41% of the platelets reported **match no
+annotated object** - which is not the same as not being there, and the last section measures
+the difference. Their boxes also fit worst of the three, at an overlap of
 0.72.
 
 ### mAP@0.5, mAP@[.50:.95], and which to believe
@@ -368,24 +369,23 @@ The comparison is the point. Truth in one colour, predictions in another, on the
 
 
 ``` r
-truth <- lapply(read.csv(splits[["test"]])$annotations[1:2], function(path) {
-  xml <- readLines(path, warn = FALSE)
-  nodes <- regmatches(paste(xml, collapse = ""),
-                      gregexpr("<object>.*?</object>", paste(xml, collapse = "")))[[1]]
-  pull <- function(node, tag) {
-    as.numeric(sub(paste0(".*<", tag, ">([^<]*)</", tag, ">.*"), "\\1", node))
+voc_boxes <- function(path) {
+  xml <- paste(readLines(path, warn = FALSE), collapse = "")
+  nodes <- regmatches(xml, gregexpr("<object>.*?</object>", xml))[[1]]
+  pull <- function(tag) {
+    as.numeric(sub(paste0(".*<", tag, ">([^<]*)</", tag, ">.*"), "\\1", nodes))
   }
   data.frame(
     # Pascal VOC is 1-based and inclusive of both ends, so a box written xmin=1 xmax=10 is
     # 0..10 as a continuous interval. Reading it as 0-based shifts every box by a pixel and
     # shrinks it by one - invisible by eye, and real IoU on a platelet 41 pixels across.
-    xmin = vapply(nodes, pull, numeric(1), "xmin") - 1,
-    ymin = vapply(nodes, pull, numeric(1), "ymin") - 1,
-    xmax = vapply(nodes, pull, numeric(1), "xmax"),
-    ymax = vapply(nodes, pull, numeric(1), "ymax"),
+    xmin = pull("xmin") - 1, ymin = pull("ymin") - 1,
+    xmax = pull("xmax"), ymax = pull("ymax"),
     name = sub(".*<name>([^<]*)</name>.*", "\\1", nodes)
   )
-})
+}
+
+truth <- lapply(read.csv(splits[["test"]])$annotations[1:2], voc_boxes)
 
 mine <- predict(fit, split = "test")
 plot_boxes(images, mine[1:2], truth = truth, min_score = 0.5)
@@ -399,11 +399,57 @@ picture is worth more than either average.
 
 ## What this does not do
 
-**It is not a cell count.** A precision of 0.59 on platelets
-means a count taken from these boxes is too high by about
-69%. Counting needs either a better
-model for the small class or a threshold chosen for counting rather than for a figure, and
-either way it needs measuring against truth on your own data.
+**It is not a cell count, and the reason is not only the model.** Every precision on this
+page is measured against BCCD's annotation, and a reported box that matches no annotated
+object is not the same thing as a box with nothing in it:
+
+
+``` r
+files <- read.csv(splits[["test"]])
+overlap <- function(box, truth) {
+  wide <- pmax(0, pmin(box[3], truth$xmax) - pmax(box[1], truth$xmin))
+  tall <- pmax(0, pmin(box[4], truth$ymax) - pmax(box[2], truth$ymin))
+  both <- wide * tall
+  either <- (box[3] - box[1]) * (box[4] - box[2]) +
+    (truth$xmax - truth$xmin) * (truth$ymax - truth$ymin) - both
+  ifelse(either > 0, both / either, 0)
+}
+
+reported <- 0; unmatched <- 0; touching_nothing <- 0
+for (key in names(mine)) {
+  truth <- voc_boxes(files$annotations[match(key, files$key)])
+  claimed <- rep(FALSE, nrow(truth))
+  above <- mine[[key]][mine[[key]]$score >= 0.5, ]
+  above <- above[order(above$score, decreasing = TRUE), ]
+  reported <- reported + nrow(above)
+  for (i in seq_len(nrow(above))) {
+    ratios <- overlap(c(above$xmin[i], above$ymin[i], above$xmax[i], above$ymax[i]), truth)
+    free <- ratios
+    free[claimed] <- 0
+    best <- which.max(free)
+    if (length(best) == 1L && free[best] >= 0.5) {
+      claimed[best] <- TRUE
+    } else {
+      unmatched <- unmatched + 1
+      if (max(c(0, ratios)) == 0) touching_nothing <- touching_nothing + 1
+    }
+  }
+}
+c(reported = reported, unmatched = unmatched, touching_nothing = touching_nothing)
+#>         reported        unmatched touching_nothing 
+#>             1071              295               91
+```
+
+91 of the 295 unmatched boxes overlap **no annotated object at
+all** - not a duplicate, not a box half off its target - on photographs whose other cells are
+annotated. `vignette("classification")` cuts those crops out and looks at them: they are red
+cells BCCD does not mention. So a precision here is a **lower bound** on this detector rather
+than an estimate of how often it invents something, and turning it into *the count is too
+high by so much* is the one inference it does not support.
+
+Counting needs truth counted for counting, on your own data - and if you take the count from
+these boxes anyway, the threshold is the lever, not the model: at the operating point this
+page scores at, the tail is 295 boxes the annotation does not vouch for either way.
 
 **It is one small collection.** 205 training images at one magnification, stained one way.
 BCCD is a demonstration dataset.

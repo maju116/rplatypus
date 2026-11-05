@@ -299,8 +299,9 @@ platelets <- per_class[per_class$class == "Platelets", ]
 Read that table rather than the mean. White cells are nearly perfect - there is one per image
 and it is large. Platelets come back at a precision of
 `r round(platelets$precision, 2)` at this confidence, meaning
-`r sprintf("%.0f%%", 100 * (1 - platelets$precision))` of the platelets reported are not
-there, and their boxes fit worst of the three at an overlap of
+`r sprintf("%.0f%%", 100 * (1 - platelets$precision))` of the platelets reported **match no
+annotated object** - which is not the same as not being there, and the last section measures
+the difference. Their boxes also fit worst of the three, at an overlap of
 `r round(platelets$mean_matched_iou, 2)`.
 
 ### mAP@0.5, mAP@[.50:.95], and which to believe
@@ -330,24 +331,23 @@ is what these 364 images do, and it was found by running five seeds rather than 
 The comparison is the point. Truth in one colour, predictions in another, on the same image:
 
 ```{r bccd-compare, fig.height = 5.2}
-truth <- lapply(read.csv(splits[["test"]])$annotations[1:2], function(path) {
-  xml <- readLines(path, warn = FALSE)
-  nodes <- regmatches(paste(xml, collapse = ""),
-                      gregexpr("<object>.*?</object>", paste(xml, collapse = "")))[[1]]
-  pull <- function(node, tag) {
-    as.numeric(sub(paste0(".*<", tag, ">([^<]*)</", tag, ">.*"), "\\1", node))
+voc_boxes <- function(path) {
+  xml <- paste(readLines(path, warn = FALSE), collapse = "")
+  nodes <- regmatches(xml, gregexpr("<object>.*?</object>", xml))[[1]]
+  pull <- function(tag) {
+    as.numeric(sub(paste0(".*<", tag, ">([^<]*)</", tag, ">.*"), "\\1", nodes))
   }
   data.frame(
     # Pascal VOC is 1-based and inclusive of both ends, so a box written xmin=1 xmax=10 is
     # 0..10 as a continuous interval. Reading it as 0-based shifts every box by a pixel and
     # shrinks it by one - invisible by eye, and real IoU on a platelet 41 pixels across.
-    xmin = vapply(nodes, pull, numeric(1), "xmin") - 1,
-    ymin = vapply(nodes, pull, numeric(1), "ymin") - 1,
-    xmax = vapply(nodes, pull, numeric(1), "xmax"),
-    ymax = vapply(nodes, pull, numeric(1), "ymax"),
+    xmin = pull("xmin") - 1, ymin = pull("ymin") - 1,
+    xmax = pull("xmax"), ymax = pull("ymax"),
     name = sub(".*<name>([^<]*)</name>.*", "\\1", nodes)
   )
-})
+}
+
+truth <- lapply(read.csv(splits[["test"]])$annotations[1:2], voc_boxes)
 
 mine <- predict(fit, split = "test")
 plot_boxes(images, mine[1:2], truth = truth, min_score = 0.5)
@@ -359,11 +359,54 @@ picture is worth more than either average.
 
 ## What this does not do
 
-**It is not a cell count.** A precision of `r round(platelets$precision, 2)` on platelets
-means a count taken from these boxes is too high by about
-`r sprintf("%.0f%%", 100 * (1 / platelets$precision - 1))`. Counting needs either a better
-model for the small class or a threshold chosen for counting rather than for a figure, and
-either way it needs measuring against truth on your own data.
+**It is not a cell count, and the reason is not only the model.** Every precision on this
+page is measured against BCCD's annotation, and a reported box that matches no annotated
+object is not the same thing as a box with nothing in it:
+
+```{r bccd-unannotated}
+files <- read.csv(splits[["test"]])
+overlap <- function(box, truth) {
+  wide <- pmax(0, pmin(box[3], truth$xmax) - pmax(box[1], truth$xmin))
+  tall <- pmax(0, pmin(box[4], truth$ymax) - pmax(box[2], truth$ymin))
+  both <- wide * tall
+  either <- (box[3] - box[1]) * (box[4] - box[2]) +
+    (truth$xmax - truth$xmin) * (truth$ymax - truth$ymin) - both
+  ifelse(either > 0, both / either, 0)
+}
+
+reported <- 0; unmatched <- 0; touching_nothing <- 0
+for (key in names(mine)) {
+  truth <- voc_boxes(files$annotations[match(key, files$key)])
+  claimed <- rep(FALSE, nrow(truth))
+  above <- mine[[key]][mine[[key]]$score >= 0.5, ]
+  above <- above[order(above$score, decreasing = TRUE), ]
+  reported <- reported + nrow(above)
+  for (i in seq_len(nrow(above))) {
+    ratios <- overlap(c(above$xmin[i], above$ymin[i], above$xmax[i], above$ymax[i]), truth)
+    free <- ratios
+    free[claimed] <- 0
+    best <- which.max(free)
+    if (length(best) == 1L && free[best] >= 0.5) {
+      claimed[best] <- TRUE
+    } else {
+      unmatched <- unmatched + 1
+      if (max(c(0, ratios)) == 0) touching_nothing <- touching_nothing + 1
+    }
+  }
+}
+c(reported = reported, unmatched = unmatched, touching_nothing = touching_nothing)
+```
+
+`r touching_nothing` of the `r unmatched` unmatched boxes overlap **no annotated object at
+all** - not a duplicate, not a box half off its target - on photographs whose other cells are
+annotated. `vignette("classification")` cuts those crops out and looks at them: they are red
+cells BCCD does not mention. So a precision here is a **lower bound** on this detector rather
+than an estimate of how often it invents something, and turning it into *the count is too
+high by so much* is the one inference it does not support.
+
+Counting needs truth counted for counting, on your own data - and if you take the count from
+these boxes anyway, the threshold is the lever, not the model: at the operating point this
+page scores at, the tail is `r unmatched` boxes the annotation does not vouch for either way.
 
 **It is one small collection.** 205 training images at one magnification, stained one way.
 BCCD is a demonstration dataset.
