@@ -84,9 +84,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-0d03878fed8da18bf6c52072959b97e8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-700af53f4d56938a46a0601ab0c32dc0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-700af53f4d56938a46a0601ab0c32dc0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-700af53f4d56938a46a0601ab0c32dc0.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-6a61a096c58657be10ddd1f1a2304406.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-6a61a096c58657be10ddd1f1a2304406.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-6a61a096c58657be10ddd1f1a2304406.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -1171,7 +1171,7 @@ Load the backbone’s ImageNet weights. Separate from <code>encoder</code> on pu
 <code id="normalise">normalise</code>
 </td>
 <td>
-Normalise the input with the backbone’s own ImageNet statistics. Defaults to <code>pretrained</code>, which is what it meant before it was a setting, so leaving it alone changes nothing. It exists to be set <code>TRUE</code> <strong>with</strong> <code>pretrained = FALSE</code>, which is the only way to reload weights you exported from a pretrained encoder on a machine with no network: the statistics come from the backbone’s own configuration and need no download, while the weights themselves are yours. It is recorded in the weights’ fingerprint either way, so a mismatch is refused by name rather than silently predicting something else.
+Normalise the input with the backbone’s own ImageNet statistics. Defaults to <code>pretrained</code>, which is what it meant before it was a setting, so leaving it alone changes nothing. It exists to be set <code>TRUE</code> <strong>with</strong> <code>pretrained = FALSE</code>, which is the only way to reload weights you exported from a pretrained encoder on a machine with no network: the statistics come from the backbone’s own configuration and need no download, while the weights themselves are yours. It is recorded in the weights’ fingerprint either way, so a mismatch is refused by name rather than silently predicting something else. Setting it <code>TRUE</code> needs <code>encoder</code>: the statistics belong to a backbone and the built-in encoder has none, so without one it is refused rather than quietly ignored.
 </td>
 </tr>
 <tr>
