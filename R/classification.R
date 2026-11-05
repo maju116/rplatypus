@@ -282,7 +282,8 @@ classification_data <- function(train, validation = NULL, classes, labels_from =
 #'   defaulting to `pretrained`. Set it `TRUE` with `pretrained = FALSE` to reload weights
 #'   you exported from a pretrained encoder without a network: the statistics come from the
 #'   backbone's configuration rather than from its weights. See [u_net] for the whole of
-#'   it; it is recorded in the weights' fingerprint either way.
+#'   it; it is recorded in the weights' fingerprint either way, and setting it `TRUE`
+#'   needs `encoder`, because the statistics belong to a backbone.
 #' @param pretrained,freeze_encoder,encoder_learning_rate How the backbone arrives and how
 #'   it is trained, as in [u_net()].
 #' @return A model specification, to be passed to [platypus_spec()].

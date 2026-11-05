@@ -261,7 +261,9 @@ which is the only way to reload weights you exported from a pretrained encoder o
 machine with no network: the statistics come from the backbone's own configuration and
 need no download, while the weights themselves are yours. It is recorded in the
 weights' fingerprint either way, so a mismatch is refused by name rather than
-silently predicting something else.}
+silently predicting something else. Setting it \code{TRUE} needs \code{encoder}: the statistics
+belong to a backbone and the built-in encoder has none, so without one it is refused
+rather than quietly ignored.}
 
 \item{freeze_encoder}{Hold the transferred layers still for this many epochs, then
 train them. \strong{Use this rather than \code{encoder_learning_rate} alone}: it was the better

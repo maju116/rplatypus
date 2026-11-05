@@ -101,7 +101,8 @@ it is trained, as in \code{\link[=u_net]{u_net()}}.}
 defaulting to \code{pretrained}. Set it \code{TRUE} with \code{pretrained = FALSE} to reload weights
 you exported from a pretrained encoder without a network: the statistics come from the
 backbone's configuration rather than from its weights. See \link{u_net} for the whole of
-it; it is recorded in the weights' fingerprint either way.}
+it; it is recorded in the weights' fingerprint either way, and setting it \code{TRUE}
+needs \code{encoder}, because the statistics belong to a backbone.}
 }
 \value{
 A model specification, to be passed to \code{\link[=platypus_spec]{platypus_spec()}}.

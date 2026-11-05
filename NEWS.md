@@ -17,6 +17,36 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-05 - `normalise = TRUE` now needs an encoder, and three defects through the pin (engine `0.8.0a66`)
+
+**The pin moves to `0.8.0a66`**, the reviewer's tenth pass, and **one thing in it changes
+what this package accepts**: `normalise = TRUE` without `encoder` is refused rather than
+quietly ignored, by the engine's validator and with a message naming the field. The
+statistics it applies belong to a backbone, and the built-in encoder has none - so setting
+it without one asked for something that could not happen. It applies to all five
+constructors that take one: `u_net()`, `linknet()`, `res_u_net()`, `u_net_plus_plus()` and
+`classifier()`. It arrived a day earlier, in
+`0.8.0a65`, accepted and doing nothing; nothing can depend on the old behaviour.
+`normalise = FALSE` without an encoder is still fine: it asks for nothing.
+
+**Two defects reach you through the pin and by nothing else.** Weights from
+`hf://owner/repo/file@commit` can be used offline again - the `weights =` argument of any
+model constructor, beside the names `available_weights()` lists - when the repository
+publishes no description beside them - `0.8.0a65` had started refusing that, which took away the one
+route that form exists for, because the hub raises the same error for a file it cannot
+reach and for one it has already recorded as absent. And a `PALETTE COLOR` DICOM is read
+through its lookup table instead of as its palette indices: such a file used to come back
+as the index numbers, windowed, so a red-and-blue picture was black and white and a model
+trained on it learned from an ordering the file never claimed.
+
+**Nothing else here is behaviour.** Six of the pass's nine findings were guards for lines
+that had none, which is why this entry is short against a release of nine issues: the
+largest of them is that a model setting could be read out of your specification and
+dropped on the way to the network with every test still passing. Two of those lines were
+this package's own - `normalise` reaching the request from each constructor - and they are
+held now. `maju116/pyplatypus#384` to `#392`, and this side's half is
+`maju116/rplatypus#278`.
+
 ### 2026-11-04 (late) - `normalise`, and a threshold that now cuts what it says it cuts (engine `0.8.0a65`)
 
 **`normalise` is new on every model that takes an `encoder`** - `u_net()`, `linknet()`,
@@ -32,7 +62,12 @@ configuration, which needs no download, while the weights stay yours.
 **`predict()` on a detector now drops boxes scored below `score_threshold`, which is what
 that argument always said it did.** The engine was cutting on the network's objectness while
 reporting each box at `objectness x class probability` - a smaller number - so a box scored
-0.06 survived a threshold of 0.5 and one scored 0.396 was dropped. Measured on the published
+0.06 survived a threshold of 0.5. **This entry also said *"and one scored 0.396 was
+dropped"*, which was wrong and is corrected rather than deleted**
+(`maju116/pyplatypus#390`): 0.396 is below 0.5 and is dropped after the fix as well, so it
+was the control in the report rather than a second symptom. Nothing above the threshold was
+ever lost - the reported score never exceeds the objectness - so if you went looking for
+boxes in that position among your own results, there are none to find. Measured on the published
 `bccd-yolo3` weights over their own 72 held-out images: 2,771 predictions become 2,537, and
 `map_50`, `map_50_95` and `mean_matched_iou` are identical to six decimals, so no published
 figure moves. If you filtered the returned data frame yourself, you can stop;

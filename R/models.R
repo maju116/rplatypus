@@ -127,7 +127,9 @@
 #'   machine with no network: the statistics come from the backbone's own configuration and
 #'   need no download, while the weights themselves are yours. It is recorded in the
 #'   weights' fingerprint either way, so a mismatch is refused by name rather than
-#'   silently predicting something else.
+#'   silently predicting something else. Setting it `TRUE` needs `encoder`: the statistics
+#'   belong to a backbone and the built-in encoder has none, so without one it is refused
+#'   rather than quietly ignored.
 #' @param freeze_encoder Hold the transferred layers still for this many epochs, then
 #'   train them. **Use this rather than `encoder_learning_rate` alone**: it was the better
 #'   of the two on all three datasets measured. A number at or above `epochs` keeps them
