@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Naming what a detector found – rplatypus</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../../man/figures/hexsticker_platypus.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0d03878fed8da18bf6c52072959b97e8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-4c32c6d34817a83bec6f7f8287961574.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0d03878fed8da18bf6c52072959b97e8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-6a61a096c58657be10ddd1f1a2304406.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-6a61a096c58657be10ddd1f1a2304406.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-6a61a096c58657be10ddd1f1a2304406.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">rplatypus</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/maju116/rplatypus"> <i class="bi bi-github" role="img" aria-label="rplatypus GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+            <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/blood-cells.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/classification.html">Naming what a detector found</a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Section">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">Articles</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/blood-cells.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Finding blood cells with YOLOv3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/classification.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Naming what a detector found</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/configuration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Writing a configuration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/data-science-bowl.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Finding nuclei in the 2018 Data Science Bowl</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/fetal-head.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A fetal head circumference: the measurement a Dice cannot see</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/instances.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Telling touching nuclei apart</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/retinal-vessels.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Retinal vessels: tiling, and a metric Dice cannot replace</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../vignettes/volumes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Segmenting volumes: CT, spacing and per-patient scores</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">Reference</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">Setting up</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/platypus_status.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Is the engine ready?</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/platypus_device.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Where the work will happen</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/platypus_use_torch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ask for a particular PyTorch build</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">A specification</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/platypus_spec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Build an experiment specification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/segmentation_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Where the images and masks are</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/detection_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Where the images and their annotation files are</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/instance_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data for instance segmentation: tell the objects apart, not just find them</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/classification_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Images and the label each of them carries, which may be a set</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Segmentation models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/yolo3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">YOLOv3</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/classifier.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A contracting path, pooled, with one dense layer on top</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/save_spec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Write a specification back out as YAML</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/as.list.platypus_spec.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Turn a specification back into plain R data</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">What a model is made of</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/losses.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Loss functions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/loss_boundary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A loss that knows how far a wrong voxel is from the truth</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Metrics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/classification_metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Metrics for one label per image</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/optimizers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Optimisers</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/callbacks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Callbacks</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/callback_swa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average the weights over the last part of the run</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/separations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">What the network predicts, so objects can be told apart</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/decodings.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">How predicted channels become objects</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/augmentation_step.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">An augmentation step</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/available_components.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">What this package can do, asked of the package</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/available_transforms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Which augmentations are available</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/encoders.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pretrained encoders, and what they are worth</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">The data on disk</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/split_dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Split a dataset into training, validation and test sets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/split_path.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The files in one part of a split</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/read_images.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Read images as the model sees them</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/read_masks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Read mask files as class indices</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/volume_info.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">What is in a volume file</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/series_report.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Check folders of DICOM slices before training on them</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/inspect_masks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">What the colormap or labels match in your masks</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/class_balance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">How many images each class has, before anything is trained</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-controls="quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-7-label">Training</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-7" aria-labelledby="quarto-sidebar-section-7-label" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/platypus_fit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Train the models in a specification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/training_history.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The epoch-by-epoch record</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/plot.platypus_fit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Plot what happened during training</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-controls="quarto-sidebar-section-8" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-8-label">Predicting and scoring</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-8" aria-labelledby="quarto-sidebar-section-8-label" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/predict.platypus_fit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Predict masks, boxes, objects or labels</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/evaluate.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Compare the trained models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/evaluate_cases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Score every case separately</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/evaluate_classes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Average precision per class</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/evaluate_images.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Score every image separately</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/detection_anchors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The anchors a detector used, and whether they were fitted</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/detection_crops.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cut every detection out of the image it was found in</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-controls="quarto-sidebar-section-9" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-9-label">Weights</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-9" aria-labelledby="quarto-sidebar-section-9-label" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/export_weights.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Save a trained model’s weights</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/available_weights.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The published weights, and what they are</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-controls="quarto-sidebar-section-10" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-10-label">Records</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-10" aria-labelledby="quarto-sidebar-section-10-label" class="collapse list-unstyled sidebar-section depth2 ">  
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-controls="quarto-sidebar-section-12" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-12-label">Looking at the results</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-12" aria-labelledby="quarto-sidebar-section-12-label" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/plot_masks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Look at masks beside the images they came from</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/plot_boxes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Draw boxes on images</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/plot_anchors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Draw the anchors against the boxes they were fitted to</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/overlay_mask.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lay a mask over the image it belongs to</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/overlay_agreement.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Where a prediction and the truth disagree</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/overlay_instances.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Draw an instance map over its image</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/overlay_instance_agreement.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Found, missed and invented objects</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/flow_to_colours.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A vector field as a picture: hue is the direction, value is the length</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/drawing_style.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The decisions a drawing makes</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-controls="quarto-sidebar-section-13" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-13-label">Masks and volumes</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-13" aria-labelledby="quarto-sidebar-section-13-label" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/colours_to_classes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Read a colour mask back to class indices</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/classes_to_colours.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paint a mask with its colormap</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/mask_coverage.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">How much of each class a mask covers</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/mask_volume.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">How much of a volume a class occupies, in millilitres</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/ellipse_measure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The ellipse a segmented structure implies, in millimetres</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/unite_masks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Combine several binary masks into one</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/colormaps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Colormaps and their labels</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/ct_windows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The named CT windows</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/save_masks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Write masks to files</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/save_class_masks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Write overlapping classes, one file per class</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/save_volumes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Save predicted volumes as NIfTI</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/save_class_volumes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Save overlapping classes as one NIfTI per class</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/instance_sizes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">How big each object is, in units somebody can use</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../man/instance_shapes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">What shape each object is, not just how big</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" aria-controls="quarto-sidebar-section-14" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-14-label">When something is wrong</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-14" aria-labelledby="quarto-sidebar-section-14-label" class="collapse list-unstyled sidebar-section depth2 ">  
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" aria-controls="quarto-sidebar-section-16" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-16-label">The animal</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-16" aria-labelledby="quarto-sidebar-section-16-label" class="collapse list-unstyled sidebar-section depth2 ">  
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-18" aria-controls="quarto-sidebar-section-18" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-18-label">About</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-18" aria-labelledby="quarto-sidebar-section-18-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../NEWS.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Changelog</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../CODE_OF_CONDUCT.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Code of conduct</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../LICENSE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Licence</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../CITATION.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Citation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#cutting-the-objects-out-which-is-a-decision-about-the-data" id="toc-cutting-the-objects-out-which-is-a-decision-about-the-data" class="nav-link active" data-scroll-target="#cutting-the-objects-out-which-is-a-decision-about-the-data">Cutting the objects out, which is a decision about the data</a>
+  <ul class="collapse">
+  <li><a href="#a-crop-needs-a-label-and-the-label-is-a-decision" id="toc-a-crop-needs-a-label-and-the-label-is-a-decision" class="nav-link" data-scroll-target="#a-crop-needs-a-label-and-the-label-is-a-decision">A crop needs a label, and the label is a decision</a></li>
+  </ul></li>
+  <li><a href="#what-the-detector-already-answers" id="toc-what-the-detector-already-answers" class="nav-link" data-scroll-target="#what-the-detector-already-answers">What the detector already answers</a></li>
+  <li><a href="#the-classifier-and-the-metric-that-is-not-accuracy" id="toc-the-classifier-and-the-metric-that-is-not-accuracy" class="nav-link" data-scroll-target="#the-classifier-and-the-metric-that-is-not-accuracy">The classifier, and the metric that is not accuracy</a></li>
+  <li><a href="#scoring-per-class-because-the-mean-is-the-commonest-class" id="toc-scoring-per-class-because-the-mean-is-the-commonest-class" class="nav-link" data-scroll-target="#scoring-per-class-because-the-mean-is-the-commonest-class">Scoring per class, because the mean is the commonest class</a>
+  <ul class="collapse">
+  <li><a href="#two-things-that-do-not-help-measured-rather-than-assumed" id="toc-two-things-that-do-not-help-measured-rather-than-assumed" class="nav-link" data-scroll-target="#two-things-that-do-not-help-measured-rather-than-assumed">Two things that do not help, measured rather than assumed</a></li>
+  </ul></li>
+  <li><a href="#the-class-that-is-not-a-picture-of-anything" id="toc-the-class-that-is-not-a-picture-of-anything" class="nav-link" data-scroll-target="#the-class-that-is-not-a-picture-of-anything">The class that is not a picture of anything</a></li>
+  <li><a href="#what-this-does-not-do" id="toc-what-this-does-not-do" class="nav-link" data-scroll-target="#what-this-does-not-do">What this does not do</a></li>
+  <li><a href="#notes-on-the-machine" id="toc-notes-on-the-machine" class="nav-link" data-scroll-target="#notes-on-the-machine">Notes on the machine</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../vignettes/blood-cells.html">Articles</a></li><li class="breadcrumb-item"><a href="../vignettes/classification.html">Naming what a detector found</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Naming what a detector found</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!--
+THIS PROSE HAS A COUNTERPART, AND THIS FILE IS THE SOURCE.
+
+The engine mirrors it as pyplatypus's `classification.qmd`. It does not exist yet, so this
+vignette is listed in `awaiting` in tests/testthat/test-article-pairs.R with the issue that
+will write it - and that list is read in both directions, so the entry has to come out the
+moment the article appears.
+
+By maju116/rplatypus#117 the vignette is the source and the article is the copy, so an edit
+here is an edit there. What is held by a test is the walk: the `##` headings and their order,
+asserted from both sides. The route is deliberately not held, because the engine reaches each
+destination through a configuration file where this package reaches it through constructors.
+-->
+<p>A detector answers <em>how many objects are there and where</em>. A classifier answers <em>what is this one picture of</em>. Putting them in that order - find the objects, cut them out, hand the pieces to something that knows more classes than the detector does - is the second thing people ask for after boxes, and it is the one join this package deliberately leaves to you.</p>
+<p>This page is that join, on <a href="https://github.com/Shenggan/BCCD_Dataset">BCCD</a>, the same 364 photographs of blood smears the <a href="blood-cells.html">detection vignette</a> uses. The detector is already trained and published, so nothing here has to find the cells again.</p>
+<p><strong>It does not end where it was meant to.</strong> The classifier learns the three cell types almost perfectly and fails completely at the one job it was added for, and the measurement that says why is the most useful thing on the page.</p>
+<p>Every number and every picture below was produced by running the code shown.</p>
+<section id="cutting-the-objects-out-which-is-a-decision-about-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="cutting-the-objects-out-which-is-a-decision-about-the-data">Cutting the objects out, which is a decision about the data</h2>
+<p><a href="../man/detection_crops.html"><code>detection_crops()</code></a> returns arrays, and a classification run reads a directory or a CSV. The step in between - writing the crops out - is not in the engine, and <code>crops()</code>’s own docstring says why: <em>which crops are worth keeping is a decision about the data rather than about either model.</em> So the decision is made here, in a few lines a reader can see and argue with.</p>
+<p>The data wrangling is the detection page’s, unchanged: BCCD arrives in Pascal VOC’s layout, one flat directory of images beside one flat directory of XML, which is neither of the two layouts the package reads.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>voc_split <span class="ot">&lt;-</span> <span class="cf">function</span>(root, listed) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  keys <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(root, <span class="st">"ImageSets"</span>, <span class="st">"Main"</span>, <span class="fu">paste0</span>(listed, <span class="st">".txt"</span>)))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  keys <span class="ot">&lt;-</span> keys[<span class="fu">nzchar</span>(keys)]</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  frame <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">key =</span> keys,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">images =</span> <span class="fu">file.path</span>(root, <span class="st">"JPEGImages"</span>, <span class="fu">paste0</span>(keys, <span class="st">".jpg"</span>)),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">annotations =</span> <span class="fu">file.path</span>(root, <span class="st">"Annotations"</span>, <span class="fu">paste0</span>(keys, <span class="st">".xml"</span>))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">tempdir</span>(), <span class="fu">paste0</span>(<span class="st">"bccd-"</span>, listed, <span class="st">".csv"</span>))</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write.csv</span>(frame, path, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  path</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>splits <span class="ot">&lt;-</span> <span class="fu">vapply</span>(<span class="fu">c</span>(<span class="st">"train"</span>, <span class="st">"val"</span>, <span class="st">"test"</span>), <span class="cf">function</span>(s) <span class="fu">voc_split</span>(data_dir, s), <span class="fu">character</span>(<span class="dv">1</span>))</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>cells <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"RBC"</span>, <span class="st">"WBC"</span>, <span class="st">"Platelets"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>kinds <span class="ot">&lt;-</span> <span class="fu">c</span>(cells, <span class="st">"nothing"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The annotation files are read twice below - once for what is in them and once to label a crop - so the reader is its own function:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>voc_boxes <span class="ot">&lt;-</span> <span class="cf">function</span>(path) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  xml <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">readLines</span>(path, <span class="at">warn =</span> <span class="cn">FALSE</span>), <span class="at">collapse =</span> <span class="st">""</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  nodes <span class="ot">&lt;-</span> <span class="fu">regmatches</span>(xml, <span class="fu">gregexpr</span>(<span class="st">"&lt;object&gt;.*?&lt;/object&gt;"</span>, xml))[[<span class="dv">1</span>]]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  pull <span class="ot">&lt;-</span> <span class="cf">function</span>(tag) {</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>(<span class="fu">sub</span>(<span class="fu">paste0</span>(<span class="st">".*&lt;"</span>, tag, <span class="st">"&gt;([^&lt;]*)&lt;/"</span>, tag, <span class="st">"&gt;.*"</span>), <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, nodes))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Pascal VOC is 1-based and inclusive of both ends, so a box written xmin=1 xmax=10 is</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 0..10 as a continuous interval. Reading it as 0-based shifts every box by a pixel.</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">xmin =</span> <span class="fu">pull</span>(<span class="st">"xmin"</span>) <span class="sc">-</span> <span class="dv">1</span>, <span class="at">ymin =</span> <span class="fu">pull</span>(<span class="st">"ymin"</span>) <span class="sc">-</span> <span class="dv">1</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">xmax =</span> <span class="fu">pull</span>(<span class="st">"xmax"</span>), <span class="at">ymax =</span> <span class="fu">pull</span>(<span class="st">"ymax"</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">name =</span> <span class="fu">sub</span>(<span class="st">".*&lt;name&gt;([^&lt;]*)&lt;/name&gt;.*"</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">1"</span>, nodes))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The detector is borrowed rather than trained - <code>fit = FALSE</code> loads the published weights, and the boxes come back in each photograph’s own pixels:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>detector <span class="ot">&lt;-</span> <span class="fu">platypus_fit</span>(<span class="fu">platypus_spec</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">detection_data</span>(splits[[<span class="st">"train"</span>]], splits[[<span class="st">"val"</span>]], <span class="at">test =</span> splits[[<span class="st">"test"</span>]],</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">classes =</span> cells, <span class="at">mode =</span> <span class="st">"config_file"</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">models =</span> <span class="fu">list</span>(<span class="fu">yolo3</span>(<span class="st">"cells"</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">416</span>, <span class="dv">416</span>),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">weights =</span> <span class="st">"bccd-yolo3"</span>, <span class="at">fit =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>), <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>one <span class="ot">&lt;-</span> <span class="fu">detection_crops</span>(detector, <span class="at">split =</span> <span class="st">"test"</span>, <span class="at">size =</span> <span class="fu">c</span>(<span class="dv">96</span>, <span class="dv">96</span>))[[<span class="dv">1</span>]]</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>one<span class="sc">$</span>key</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] "BloodImage_00007"</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(one<span class="sc">$</span>crops[[<span class="dv">1</span>]])</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 96 96  3</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">data.frame</span>(<span class="st">`</span><span class="at">colnames&lt;-</span><span class="st">`</span>(one<span class="sc">$</span>boxes, <span class="fu">c</span>(<span class="st">"xmin"</span>, <span class="st">"ymin"</span>, <span class="st">"xmax"</span>, <span class="st">"ymax"</span>)),</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">score =</span> <span class="fu">as.numeric</span>(one<span class="sc">$</span>scores), <span class="at">said =</span> one<span class="sc">$</span>names), <span class="dv">3</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        xmin     ymin     xmax     ymax     score said</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  19.93539 300.9871 139.2865 392.0793 0.9999792  RBC</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  27.77121 126.9517 140.5794 234.9014 0.9999719  RBC</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 492.09385 303.5892 603.1343 396.8544 0.9999502  RBC</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sides <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">read.csv</span>(splits[[<span class="st">"test"</span>]])<span class="sc">$</span>annotations, <span class="cf">function</span>(path) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  box <span class="ot">&lt;-</span> <span class="fu">voc_boxes</span>(path)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">name =</span> box<span class="sc">$</span>name, <span class="at">side =</span> <span class="fu">sqrt</span>((box<span class="sc">$</span>xmax <span class="sc">-</span> box<span class="sc">$</span>xmin) <span class="sc">*</span> (box<span class="sc">$</span>ymax <span class="sc">-</span> box<span class="sc">$</span>ymin)))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">tapply</span>(sides<span class="sc">$</span>side, sides<span class="sc">$</span>name, median))</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Platelets       RBC       WBC </span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        41       103       182</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong><code>size</code> letterboxes rather than stretches</strong>, so a tall box keeps its shape - and it also throws away the one thing that separates these three classes most cleanly. Those are the median side lengths in pixels, and they differ by a factor of 4; brought to 96 x 96 every one of them is the same size. The classifier below has to work from appearance alone, which is worth knowing before reading its score.</p>
+<section id="a-crop-needs-a-label-and-the-label-is-a-decision" class="level3">
+<h3 class="anchored" data-anchor-id="a-crop-needs-a-label-and-the-label-is-a-decision">A crop needs a label, and the label is a decision</h3>
+<p>Each crop is labelled by what it overlaps: the best unclaimed annotated object at an overlap of at least 0.5 gives its class, and a crop that matches nothing gets a fourth class. Naming that class rather than dropping those crops is the decision this section is about, and <code>?classification_data</code> argues for naming: <em>there is no background entry - an image is one of these, and a picture of nothing in particular is a class somebody has to name.</em> Dropping them would train a classifier that believes every crop it will ever see is a cell.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>overlap <span class="ot">&lt;-</span> <span class="cf">function</span>(box, truth) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  wide <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">0</span>, <span class="fu">pmin</span>(box[<span class="dv">3</span>], truth<span class="sc">$</span>xmax) <span class="sc">-</span> <span class="fu">pmax</span>(box[<span class="dv">1</span>], truth<span class="sc">$</span>xmin))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  tall <span class="ot">&lt;-</span> <span class="fu">pmax</span>(<span class="dv">0</span>, <span class="fu">pmin</span>(box[<span class="dv">4</span>], truth<span class="sc">$</span>ymax) <span class="sc">-</span> <span class="fu">pmax</span>(box[<span class="dv">2</span>], truth<span class="sc">$</span>ymin))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  both <span class="ot">&lt;-</span> wide <span class="sc">*</span> tall</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  either <span class="ot">&lt;-</span> (box[<span class="dv">3</span>] <span class="sc">-</span> box[<span class="dv">1</span>]) <span class="sc">*</span> (box[<span class="dv">4</span>] <span class="sc">-</span> box[<span class="dv">2</span>]) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    (truth<span class="sc">$</span>xmax <span class="sc">-</span> truth<span class="sc">$</span>xmin) <span class="sc">*</span> (truth<span class="sc">$</span>ymax <span class="sc">-</span> truth<span class="sc">$</span>ymin) <span class="sc">-</span> both</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ifelse</span>(either <span class="sc">&gt;</span> <span class="dv">0</span>, both <span class="sc">/</span> either, <span class="dv">0</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>write_crops <span class="ot">&lt;-</span> <span class="cf">function</span>(split, listed, into) {</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  found <span class="ot">&lt;-</span> <span class="fu">detection_crops</span>(detector, <span class="at">split =</span> split, <span class="at">size =</span> <span class="fu">c</span>(<span class="dv">96</span>, <span class="dv">96</span>))</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  files <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(splits[[listed]])</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(files) <span class="ot">&lt;-</span> files<span class="sc">$</span>key</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  labels <span class="ot">&lt;-</span> <span class="fu">character</span>(<span class="dv">0</span>); agreed <span class="ot">&lt;-</span> <span class="fu">logical</span>(<span class="dv">0</span>); kept <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">0</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  missed <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">0</span>); hit_score <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">0</span>); miss_score <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="dv">0</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (record <span class="cf">in</span> found) {</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    truth <span class="ot">&lt;-</span> <span class="fu">voc_boxes</span>(files[record<span class="sc">$</span>key, <span class="st">"annotations"</span>])</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    claimed <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">FALSE</span>, <span class="fu">nrow</span>(truth))</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Highest score first, so the best box gets the object and a second one on the same</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># object is what it is rather than what happened to be read first.</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">order</span>(<span class="fu">as.numeric</span>(record<span class="sc">$</span>scores), <span class="at">decreasing =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>      all_of_them <span class="ot">&lt;-</span> <span class="fu">overlap</span>(<span class="fu">as.numeric</span>(record<span class="sc">$</span>boxes[i, ]), truth)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>      free <span class="ot">&lt;-</span> all_of_them</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>      free[claimed] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>      best <span class="ot">&lt;-</span> <span class="fu">which.max</span>(free)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>      hit <span class="ot">&lt;-</span> <span class="fu">length</span>(best) <span class="sc">==</span> <span class="dv">1</span>L <span class="sc">&amp;&amp;</span> free[best] <span class="sc">&gt;=</span> <span class="fl">0.5</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (hit) {</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>        claimed[best] <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        kept <span class="ot">&lt;-</span> <span class="fu">c</span>(kept, free[best])</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        agreed <span class="ot">&lt;-</span> <span class="fu">c</span>(agreed, record<span class="sc">$</span>names[[i]] <span class="sc">==</span> truth<span class="sc">$</span>name[best])</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>        hit_score <span class="ot">&lt;-</span> <span class="fu">c</span>(hit_score, <span class="fu">as.numeric</span>(record<span class="sc">$</span>scores)[i])</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>        label <span class="ot">&lt;-</span> truth<span class="sc">$</span>name[best]</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Kept for the section that asks what these actually are: the best overlap with</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ANY annotated object, claimed or not. A box above 0.5 here can only be a second</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>        <span class="co"># box on an object some higher-scoring box already took.</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>        missed <span class="ot">&lt;-</span> <span class="fu">c</span>(missed, <span class="cf">if</span> (<span class="fu">length</span>(all_of_them)) <span class="fu">max</span>(all_of_them) <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>        miss_score <span class="ot">&lt;-</span> <span class="fu">c</span>(miss_score, <span class="fu">as.numeric</span>(record<span class="sc">$</span>scores)[i])</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>        label <span class="ot">&lt;-</span> <span class="st">"nothing"</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>      labels <span class="ot">&lt;-</span> <span class="fu">c</span>(labels, label)</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>      target <span class="ot">&lt;-</span> <span class="fu">file.path</span>(work, into, label)</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>      <span class="fu">dir.create</span>(target, <span class="at">recursive =</span> <span class="cn">TRUE</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>      png<span class="sc">::</span><span class="fu">writePNG</span>(record<span class="sc">$</span>crops[[i]],</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">file.path</span>(target, <span class="fu">sprintf</span>(<span class="st">"%s-%03d.png"</span>, record<span class="sc">$</span>key, i)))</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">counts =</span> <span class="fu">table</span>(<span class="fu">factor</span>(labels, kinds)), <span class="at">agreed =</span> agreed, <span class="at">overlaps =</span> kept,</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>       <span class="at">missed =</span> missed, <span class="at">hit_score =</span> hit_score, <span class="at">miss_score =</span> miss_score)</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>written <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>  <span class="at">train      =</span> <span class="fu">write_crops</span>(<span class="st">"train"</span>, <span class="st">"train"</span>, <span class="st">"train"</span>),</span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>  <span class="at">validation =</span> <span class="fu">write_crops</span>(<span class="st">"validation"</span>, <span class="st">"val"</span>, <span class="st">"valid"</span>),</span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>  <span class="at">test       =</span> <span class="fu">write_crops</span>(<span class="st">"test"</span>, <span class="st">"test"</span>, <span class="st">"test"</span>)</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The dataset’s own three-way split all the way through, as the detection page uses it. One photograph’s crops go to one directory, so no image has a part of itself on two sides - which matters more here than usual, because two crops from one smear share its staining, its focus and its patient.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>tally <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">names</span>(written), <span class="cf">function</span>(name) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  counts <span class="ot">&lt;-</span> written[[name]]<span class="sc">$</span>counts</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">split =</span> name, <span class="fu">as.list</span>(counts), <span class="at">crops =</span> <span class="fu">sum</span>(counts),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">nothing_share =</span> counts[[<span class="st">"nothing"</span>]] <span class="sc">/</span> <span class="fu">sum</span>(counts), <span class="at">check.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>tally</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        split  RBC WBC Platelets nothing crops nothing_share</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1      train 2367 214       209     129  2919    0.04419322</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 validation  787  87        76     380  1330    0.28571429</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3       test  638  71        64     312  1085    0.28755760</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Read the last column before anything else.</strong> On the images the detector trained on, 4.4% of its crops match no annotated object; on the two splits it has never seen, 28.6% and 28.8%. A detector’s output on its own training images is not the output it will give you, and the factor here is about 6.5. Everything below is trained on the first column and measured on the last, which is the ordinary arrangement and the reason that difference has to be stated rather than discovered.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>strip <span class="ot">&lt;-</span> <span class="cf">function</span>(label, <span class="at">from =</span> <span class="st">"test"</span>, <span class="at">n =</span> <span class="dv">8</span>) {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  files <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">list.files</span>(<span class="fu">file.path</span>(work, from, label), <span class="at">full.names =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  chosen <span class="ot">&lt;-</span> files[<span class="fu">round</span>(<span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">length</span>(files), <span class="at">length.out =</span> n))]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="dv">0</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">96</span>, <span class="dv">96</span> <span class="sc">*</span> n, <span class="dv">3</span>))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(chosen)) {</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    out[, (i <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">96</span> <span class="sc">+</span> <span class="fu">seq_len</span>(<span class="dv">96</span>), ] <span class="ot">&lt;-</span> png<span class="sc">::</span><span class="fu">readPNG</span>(chosen[i])[, , <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  out</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>montage <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="dv">0</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="fu">length</span>(cells), <span class="dv">96</span>, <span class="dv">96</span> <span class="sc">*</span> <span class="dv">8</span>, <span class="dv">3</span>))</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="fu">seq_along</span>(cells)) montage[j, , , ] <span class="ot">&lt;-</span> <span class="fu">strip</span>(cells[j])</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_masks</span>(montage <span class="sc">*</span> <span class="dv">255</span>, <span class="at">labels =</span> cells)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/cls-cls-what-a-crop-is-1.png" class="img-fluid figure-img"></p>
+<figcaption>plot of chunk cls-what-a-crop-is</figcaption>
+</figure>
+</div>
+<p>Eight crops of each cell type, evenly spaced through the test split rather than chosen. The grey at the edge of some of them is the letterbox: a box that was not square keeps its shape and the frame is padded. White cells are stained purple and unmistakable; platelets are blurred because a 40-pixel object brought to 96 is an object magnified two and a half times.</p>
+</section>
+</section>
+<section id="what-the-detector-already-answers" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-detector-already-answers">What the detector already answers</h2>
+<p>Before training anything it is worth asking what a second model could add, and the answer is measurable in one line. Of the crops that <strong>do</strong> match an annotated object, how often was the detector’s own class right?</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">split =</span> <span class="fu">names</span>(written),</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">matched =</span> <span class="fu">vapply</span>(written, <span class="cf">function</span>(w) <span class="fu">length</span>(w<span class="sc">$</span>agreed), <span class="fu">integer</span>(<span class="dv">1</span>)),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">agreed =</span> <span class="fu">vapply</span>(written, <span class="cf">function</span>(w) <span class="fu">sum</span>(w<span class="sc">$</span>agreed), <span class="fu">integer</span>(<span class="dv">1</span>)),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">overlap =</span> <span class="fu">round</span>(<span class="fu">vapply</span>(written, <span class="cf">function</span>(w) <span class="fu">mean</span>(w<span class="sc">$</span>overlaps), <span class="fu">numeric</span>(<span class="dv">1</span>)), <span class="dv">4</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="cn">NULL</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        split matched agreed overlap</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1      train    2790   2790  0.9099</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 validation     950    950  0.8118</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3       test     773    772  0.8160</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>1 wrong out of 1,723 on the two splits the detector never trained on.</strong> A detector’s class head sees the object at the scale it occurs, with the whole photograph around it; a classifier sees a 96 x 96 crop with the scale normalised away. On this dataset the first is already right essentially always, so naming the three cell types again is not work worth doing.</p>
+<p>What is left is the other column: between a quarter and a third of what the detector hands over matches no annotated object at all. <strong>So the question this page can usefully ask is not <em>what is this crop</em> but <em>is this crop anything</em></strong> - and that is the question the fourth class exists to answer.</p>
+</section>
+<section id="the-classifier-and-the-metric-that-is-not-accuracy" class="level2">
+<h2 class="anchored" data-anchor-id="the-classifier-and-the-metric-that-is-not-accuracy">The classifier, and the metric that is not accuracy</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>recipe <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">seed =</span> <span class="dv">1</span>, <span class="at">loss =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">platypus_spec</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> <span class="fu">classification_data</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">train =</span> <span class="fu">file.path</span>(work, <span class="st">"train"</span>),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">validation =</span> <span class="fu">file.path</span>(work, <span class="st">"valid"</span>),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">test =</span> <span class="fu">file.path</span>(work, <span class="st">"test"</span>),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">classes =</span> kinds,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">mode =</span> <span class="st">"nested_dirs"</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">models =</span> <span class="fu">list</span>(<span class="fu">classifier</span>(</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>      <span class="st">"cells"</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">96</span>, <span class="dv">96</span>),</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>      <span class="co"># No `encoder`, so this is the package's own contracting path. `block_width` rather</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>      <span class="co"># than another level: halving a 96-pixel crop four times leaves a platelet with</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>      <span class="co"># nothing, and `?classifier` names a crop of one cell as the case this lever is for.</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">blocks =</span> <span class="dv">3</span>, <span class="at">filters =</span> <span class="dv">16</span>, <span class="at">block_width =</span> <span class="dv">2</span>,</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">epochs =</span> <span class="dv">60</span>, <span class="at">batch_size =</span> <span class="dv">32</span>,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">optimizer =</span> <span class="fu">optimizer_adam</span>(<span class="at">learning_rate =</span> <span class="fl">1e-3</span>),</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>      <span class="co"># A smear has no up and no down, so all three of these are free.</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">augmentation =</span> <span class="fu">list</span>(</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>        <span class="fu">augmentation_step</span>(<span class="st">"HorizontalFlip"</span>, <span class="at">p =</span> <span class="fl">0.5</span>),</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>        <span class="fu">augmentation_step</span>(<span class="st">"VerticalFlip"</span>, <span class="at">p =</span> <span class="fl">0.5</span>),</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>        <span class="fu">augmentation_step</span>(<span class="st">"RandomRotate90"</span>, <span class="at">p =</span> <span class="fl">0.5</span>)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">loss =</span> loss,</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">metrics =</span> <span class="fu">list</span>(<span class="fu">metric_auc</span>(), <span class="fu">metric_balanced_accuracy</span>(), <span class="fu">metric_f1</span>()),</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">callbacks =</span> <span class="fu">list</span>(</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>        <span class="fu">callback_cosine_annealing</span>(),</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>        <span class="fu">callback_early_stopping</span>(<span class="at">monitor =</span> <span class="st">"val_auc"</span>, <span class="at">patience =</span> <span class="dv">15</span>, <span class="at">restore_best =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    )),</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> seed</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="fu">recipe</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><a href="../man/class_balance.html"><code>class_balance()</code></a> is worth running before the fit rather than after it, because the prevalence is what every later decision turns on:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class_balance</span>(spec)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      class    n      share</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        RBC 2367 0.81089414</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        WBC  214 0.07331278</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  Platelets  209 0.07159986</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    nothing  129 0.04419322</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2919 images in 4 classes</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   RBC                         2367  81.09%</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   WBC                          214   7.33%</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Platelets                    209   7.16%</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   nothing                      129   4.42%</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   rarest: nothing at 4.42%</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   below about 10% a metric read off the hard prediction stops telling a model from a collapse, so `auc` is the one to watch</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The sentence under that table is the engine’s own, printed rather than copied, and it is the reason <a href="../man/classification_metrics.html"><code>metric_accuracy()</code></a> is offered here and is not the default: four fifths of the training crops are red cells, so a model that answers <code>RBC</code> to everything scores four fifths on this split and has learned nothing at all. The scoring section below puts that pair of numbers side by side on the split it is measured on.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">platypus_fit</span>(spec, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>fit</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; platypus fit</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   models   : cells </span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   device   : NVIDIA GeForce GTX 1070 (torch 2.7.1+cu126) </span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   epochs   : cells=44 </span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   stopped  : cells - early stopping: val_auc has not improved on 0.88155 for 15 epochs </span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   next     : evaluate(fit), predict(fit, "cells")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/cls-cls-history-1.png" class="img-fluid figure-img"></p>
+<figcaption>plot of chunk cls-history</figcaption>
+</figure>
+</div>
+<p><strong>The gap between the two lines is the whole of what 2,919 crops buys.</strong> Training AUC reaches 0.9971 while validation stops at 0.8816, and the loss panel is the clearer half: the training loss falls to 0.047 while the validation loss <strong>rises</strong> from 1.54 to 1.94. The model is memorising crops. Early stopping restored epoch 29 of 44 - the best <code>val_auc</code>, which is what it was told to watch - and nothing after it was learning anything that transfers.</p>
+<p><strong>The <code>best_epoch</code> column in the table below says 18 instead, and that gap is worth a sentence rather than a second look.</strong> That column is the lowest validation <em>loss</em>, read off the history whatever the callback was watching, and on a run whose loss rises while its AUC improves the two are 11 epochs apart. The scores in that row are the restored epoch’s; the column names another one. <code>maju116/pyplatypus#398</code> asks which of the two the column should be.</p>
+</section>
+<section id="scoring-per-class-because-the-mean-is-the-commonest-class" class="level2">
+<h2 class="anchored" data-anchor-id="scoring-per-class-because-the-mean-is-the-commonest-class">Scoring per class, because the mean is the commonest class</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>score <span class="ot">&lt;-</span> <span class="fu">evaluate</span>(fit, <span class="at">split =</span> <span class="st">"test"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>score</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   model architecture loss_function parameters split epochs_run best_epoch</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 cells    plain_cnn           cce     294516  test         44         18</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       loss      auc balanced_accuracy        f1</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 1.712858 0.872728         0.7283742 0.6816569</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>said <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">split =</span> <span class="st">"test"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(said, <span class="dv">3</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                                  key     label predicted probability</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 Platelets/BloodImage_00011-008.png Platelets Platelets   0.9075906</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 Platelets/BloodImage_00015-007.png Platelets Platelets   0.9427061</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3 Platelets/BloodImage_00016-010.png Platelets Platelets   0.5885475</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="at">truth =</span> <span class="fu">factor</span>(said<span class="sc">$</span>label, kinds), <span class="at">said =</span> <span class="fu">factor</span>(said<span class="sc">$</span>predicted, kinds))</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            said</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; truth       RBC WBC Platelets nothing</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   RBC       637   0         0       1</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   WBC         0  71         0       0</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Platelets   0   1        52      11</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   nothing   253   5        22      32</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">accuracy =</span> <span class="fu">mean</span>(said<span class="sc">$</span>label <span class="sc">==</span> said<span class="sc">$</span>predicted),</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">always_the_commonest =</span> <span class="fu">max</span>(<span class="fu">table</span>(said<span class="sc">$</span>label)) <span class="sc">/</span> <span class="fu">nrow</span>(said))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;             accuracy always_the_commonest </span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;            0.7299539            0.5880184</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>An accuracy of 0.730 against 0.588 for a model that answers <code>RBC</code> to everything.</strong> That is the whole argument for the default metric in one pair of numbers: the gap is 0.142, and a reader told only the first would believe something had been learned about all four classes. Balanced accuracy, which weighs a rare class as much as a common one, reads 0.7284.</p>
+<p>The table above says where it went. The three cell types are nearly perfect - red cells 637 of 638, white cells 71 of 71, platelets 52 of 64. The fourth class is a rout: 32 of 312, with 253 of them called a red cell.</p>
+<section id="two-things-that-do-not-help-measured-rather-than-assumed" class="level3">
+<h3 class="anchored" data-anchor-id="two-things-that-do-not-help-measured-rather-than-assumed">Two things that do not help, measured rather than assumed</h3>
+<p>A second seed of the same recipe, and the loss that exists for exactly this problem - focal cross-entropy, which loses interest in what it already gets right:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>rejected <span class="ot">&lt;-</span> <span class="cf">function</span>(answers) {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(answers<span class="sc">$</span>label <span class="sc">==</span> <span class="st">"nothing"</span> <span class="sc">&amp;</span> answers<span class="sc">$</span>predicted <span class="sc">==</span> <span class="st">"nothing"</span>) <span class="sc">/</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sum</span>(answers<span class="sc">$</span>label <span class="sc">==</span> <span class="st">"nothing"</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>arms <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">`</span><span class="at">seed 2</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">recipe</span>(<span class="at">seed =</span> <span class="dv">2</span>), <span class="at">focal =</span> <span class="fu">recipe</span>(<span class="at">loss =</span> <span class="fu">loss_focal</span>(<span class="at">gamma =</span> <span class="dv">2</span>)))</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>others <span class="ot">&lt;-</span> <span class="fu">lapply</span>(arms, <span class="cf">function</span>(s) {</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  run <span class="ot">&lt;-</span> <span class="fu">platypus_fit</span>(s, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(<span class="fu">evaluate</span>(run, <span class="at">split =</span> <span class="st">"test"</span>), <span class="at">rejected =</span> <span class="fu">rejected</span>(<span class="fu">predict</span>(run, <span class="at">split =</span> <span class="st">"test"</span>)))</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(<span class="at">arm =</span> <span class="fu">c</span>(<span class="st">"seed 1"</span>, <span class="fu">names</span>(others)),</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">do.call</span>(rbind, <span class="fu">c</span>(<span class="fu">list</span>(<span class="fu">cbind</span>(score, <span class="at">rejected =</span> <span class="fu">rejected</span>(said))), others))[</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>        , <span class="fu">c</span>(<span class="st">"auc"</span>, <span class="st">"balanced_accuracy"</span>, <span class="st">"rejected"</span>)])</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           arm       auc balanced_accuracy   rejected</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1      seed 1 0.8727280         0.7283742 0.10256410</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; seed 2 seed 2 0.8656669         0.7458934 0.09294872</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; focal   focal 0.8803432         0.7237580 0.05128205</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Two seeds of one recipe differ by 0.0071 of AUC and focal loss moves it by 0.0076, which are the same order of magnitude - and <strong>two runs are not a spread</strong>, so neither figure is worth a conclusion on its own. The column that can carry one is the last: the share of the detector’s unmatched boxes that the model rejects runs from 0.05 to 0.10 across all three, which is to say that none of them does it. The arms differ in the figure that is noisy and agree in the one the page is about.</p>
+</section>
+</section>
+<section id="the-class-that-is-not-a-picture-of-anything" class="level2">
+<h2 class="anchored" data-anchor-id="the-class-that-is-not-a-picture-of-anything">The class that is not a picture of anything</h2>
+<p>The obvious repair is not to make the classifier choose, but to ask it for a probability and reject a crop when it is confident enough. The threshold is a decision about cost, so it is chosen on the validation split and only then read on the test split:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>reject_at <span class="ot">&lt;-</span> <span class="cf">function</span>(split, <span class="at">thresholds =</span> <span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">0.7</span>, <span class="fl">0.9</span>, <span class="fl">0.99</span>)) {</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  answers <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">split =</span> split)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  chance <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">split =</span> split, <span class="at">type =</span> <span class="st">"probability"</span>)[answers<span class="sc">$</span>key, <span class="st">"nothing"</span>]</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  cell <span class="ot">&lt;-</span> answers<span class="sc">$</span>label <span class="sc">!=</span> <span class="st">"nothing"</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(thresholds, <span class="cf">function</span>(t) {</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    dropped <span class="ot">&lt;-</span> chance <span class="sc">&gt;</span> t</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(<span class="at">split =</span> split, <span class="at">threshold =</span> t,</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">cells_kept =</span> <span class="fu">sum</span>(<span class="sc">!</span>dropped <span class="sc">&amp;</span> cell) <span class="sc">/</span> <span class="fu">sum</span>(cell),</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">alarms_dropped =</span> <span class="fu">sum</span>(dropped <span class="sc">&amp;</span> <span class="sc">!</span>cell) <span class="sc">/</span> <span class="fu">sum</span>(<span class="sc">!</span>cell),</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">precision =</span> <span class="fu">sum</span>(<span class="sc">!</span>dropped <span class="sc">&amp;</span> cell) <span class="sc">/</span> <span class="fu">sum</span>(<span class="sc">!</span>dropped))</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  }))</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>ladder <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">reject_at</span>(<span class="st">"validation"</span>), <span class="fu">reject_at</span>(<span class="st">"test"</span>))</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>ladder</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;         split threshold cells_kept alarms_dropped precision</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1  validation      0.10  0.9568421     0.15000000 0.7378247</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2  validation      0.30  0.9842105     0.11842105 0.7362205</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3  validation      0.50  0.9915789     0.09473684 0.7325039</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4  validation      0.70  0.9968421     0.06842105 0.7279016</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5  validation      0.90  1.0000000     0.02894737 0.7202426</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6  validation      0.99  1.0000000     0.00000000 0.7142857</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7        test      0.10  0.9573092     0.20192308 0.7482305</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8        test      0.30  0.9767141     0.13141026 0.7358674</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 9        test      0.50  0.9844761     0.09615385 0.7296261</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10       test      0.70  0.9909444     0.07371795 0.7260664</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11       test      0.90  0.9987063     0.03205128 0.7188082</span></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12       test      0.99  1.0000000     0.00000000 0.7124424</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Precision before any of this is 0.7124 - the share of what the detector hands over that is an annotated object. The best this buys on the test split is 0.7482, at the cost of 4.3% of the real cells: <strong>a gain of 0.036 of precision for 33 cells, from a second model, a second dataset and a second training run.</strong></p>
+<p>And a second model has to be worth more than the one number the first one already has. The detector’s <code>operating_point</code> buys the same trade with nothing trained:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>mine <span class="ot">&lt;-</span> <span class="fu">predict</span>(detector, <span class="at">split =</span> <span class="st">"test"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(splits[[<span class="st">"test"</span>]])</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(files) <span class="ot">&lt;-</span> files<span class="sc">$</span>key</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>detector_at <span class="ot">&lt;-</span> <span class="cf">function</span>(cut) {</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  boxes <span class="ot">&lt;-</span> <span class="dv">0</span>; hits <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (key <span class="cf">in</span> <span class="fu">names</span>(mine)) {</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    truth <span class="ot">&lt;-</span> <span class="fu">voc_boxes</span>(files[key, <span class="st">"annotations"</span>])</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    claimed <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">FALSE</span>, <span class="fu">nrow</span>(truth))</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    above <span class="ot">&lt;-</span> mine[[key]][mine[[key]]<span class="sc">$</span>score <span class="sc">&gt;=</span> cut, ]</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    above <span class="ot">&lt;-</span> above[<span class="fu">order</span>(above<span class="sc">$</span>score, <span class="at">decreasing =</span> <span class="cn">TRUE</span>), ]</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(above))) {</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>      ratios <span class="ot">&lt;-</span> <span class="fu">overlap</span>(<span class="fu">c</span>(above<span class="sc">$</span>xmin[i], above<span class="sc">$</span>ymin[i], above<span class="sc">$</span>xmax[i], above<span class="sc">$</span>ymax[i]), truth)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>      ratios[claimed] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>      best <span class="ot">&lt;-</span> <span class="fu">which.max</span>(ratios)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">length</span>(best) <span class="sc">==</span> <span class="dv">1</span>L <span class="sc">&amp;&amp;</span> ratios[best] <span class="sc">&gt;=</span> <span class="fl">0.5</span>) {</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>        claimed[best] <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>        hits <span class="ot">&lt;-</span> hits <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    boxes <span class="ot">&lt;-</span> boxes <span class="sc">+</span> <span class="fu">nrow</span>(above)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(<span class="at">operating_point =</span> cut, <span class="at">boxes =</span> boxes, <span class="at">cells_kept =</span> hits <span class="sc">/</span> <span class="fu">sum</span>(said<span class="sc">$</span>label <span class="sc">!=</span> <span class="st">"nothing"</span>),</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>             <span class="at">precision =</span> hits <span class="sc">/</span> boxes)</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>curve <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>, <span class="fl">0.95</span>, <span class="fl">0.99</span>), detector_at))</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>curve</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   operating_point boxes cells_kept precision</span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1            0.50  1085  1.0000000 0.7124424</span></span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2            0.70  1028  0.9715395 0.7305447</span></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3            0.80   990  0.9547219 0.7454545</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4            0.90   942  0.9275550 0.7611465</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5            0.95   907  0.8990944 0.7662624</span></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6            0.99   773  0.8111255 0.8111255</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The first row is the one everything above was measured at, and <code>boxes</code> reproduces the 1,085 crops as a control that this is the same set of predictions read a second way. The rest of the table is the same trade the classifier was making, made by one argument: at an <code>operating_point</code> of 0.8, the detector keeps 0.955 of the cells against the classifier’s 0.957, at a precision of 0.7455 against 0.7482. <strong>A number that is already in the specification is on the same curve as a second model</strong>, and that is the comparison a page like this owes before it recommends anything.</p>
+<p>So the rejector does not work, and the interesting question is why not. It is not the threshold and not the loss. It is the label.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>un <span class="ot">&lt;-</span> written<span class="sc">$</span>test</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">cut</span>(un<span class="sc">$</span>missed, <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="dv">0</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="cn">Inf</span>),</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"overlaps nothing annotated"</span>, <span class="st">"barely touches one (&lt; 0.25)"</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"off its object (0.25 to 0.5)"</span>, <span class="st">"a second box on a claimed object"</span>)))</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;       overlaps nothing annotated      barely touches one (&lt; 0.25) </span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               92                              182 </span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     off its object (0.25 to 0.5) a second box on a claimed object </span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                               31                                7</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">c</span>(<span class="at">unmatched =</span> <span class="fu">median</span>(un<span class="sc">$</span>miss_score), <span class="at">matched =</span> <span class="fu">median</span>(un<span class="sc">$</span>hit_score)), <span class="dv">4</span>)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; unmatched   matched </span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    0.9864    0.9999</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>The detector is not guessing.</strong> Those boxes carry a median score of 0.986 against 0.9999 for the ones that do match, and 92 of 312 of them overlap no annotated object whatsoever. A box that overlaps nothing, at a confidence of 0.99, on a picture of a blood smear, is either a mistake with no cause or a cell nobody wrote down. Looking at them settles which:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>pair <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"RBC"</span>, <span class="st">"nothing"</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>both <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="dv">0</span>, <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">96</span>, <span class="dv">96</span> <span class="sc">*</span> <span class="dv">8</span>, <span class="dv">3</span>))</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="fu">seq_along</span>(pair)) both[j, , , ] <span class="ot">&lt;-</span> <span class="fu">strip</span>(pair[j])</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_masks</span>(both <span class="sc">*</span> <span class="dv">255</span>, <span class="at">labels =</span> pair)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/cls-cls-the-fourth-row-1.png" class="img-fluid figure-img"></p>
+<figcaption>plot of chunk cls-the-fourth-row</figcaption>
+</figure>
+</div>
+<p>The bottom row is the fourth class, and it is the top row again: red cells, whole and overlapping, one out-of-focus smudge of exactly the kind the platelet row is made of, and at the end a patch of the purple a white cell is stained with. <strong><code>nothing</code> is not a picture of anything - it is a statement about the annotation</strong>, and the question <em>is this cell written down in the XML</em> is not answerable from a picture of the cell. The classifier is not failing; it is refusing a question that has no answer in its input.</p>
+<p>One photograph makes the point better than the table does:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>extra <span class="ot">&lt;-</span> <span class="fu">vapply</span>(<span class="fu">names</span>(mine), <span class="cf">function</span>(k) {</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nrow</span>(<span class="fu">subset</span>(mine[[k]], score <span class="sc">&gt;=</span> <span class="fl">0.5</span>)) <span class="sc">-</span> <span class="fu">nrow</span>(<span class="fu">voc_boxes</span>(files[k, <span class="st">"annotations"</span>]))</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>}, <span class="fu">numeric</span>(<span class="dv">1</span>))</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>pick <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">sort</span>(extra, <span class="at">decreasing =</span> <span class="cn">TRUE</span>))[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">key =</span> pick,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">annotated =</span> <span class="fu">vapply</span>(pick, <span class="cf">function</span>(k) <span class="fu">nrow</span>(<span class="fu">voc_boxes</span>(files[k, <span class="st">"annotations"</span>])),</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>                              <span class="fu">numeric</span>(<span class="dv">1</span>)),</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">found =</span> <span class="fu">vapply</span>(pick, <span class="cf">function</span>(k) <span class="fu">nrow</span>(<span class="fu">subset</span>(mine[[k]], score <span class="sc">&gt;=</span> <span class="fl">0.5</span>)),</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">numeric</span>(<span class="dv">1</span>)),</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;                key annotated found</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 BloodImage_00327         2    16</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 BloodImage_00249         3    16</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_boxes</span>(<span class="fu">read_images</span>(files[pick, <span class="st">"images"</span>], <span class="at">size =</span> <span class="cn">NULL</span>), mine[pick],</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>           <span class="at">truth =</span> <span class="fu">lapply</span>(pick, <span class="cf">function</span>(k) <span class="fu">voc_boxes</span>(files[k, <span class="st">"annotations"</span>])),</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>           <span class="at">min_score =</span> <span class="fl">0.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="figures/cls-cls-photograph-1.png" class="img-fluid figure-img"></p>
+<figcaption>plot of chunk cls-photograph</figcaption>
+</figure>
+</div>
+<p>Green is the annotation and orange is the detector. The extra boxes are not errors; they are red cells. BCCD annotates a subset of what is in some of its photographs, and a model trained on 205 images of it learned to find cells rather than to find annotations - which is the right thing to have learned and the reason a quarter of its output scores as wrong.</p>
+<p><strong>What this costs beyond this page</strong>: a precision measured against an incomplete annotation is a lower bound rather than an estimate, so the per-class precision in the <a href="blood-cells.html">detection vignette</a> understates the detector by an unknown amount. The figure is correct about the data and should not be read as a count of mistakes.</p>
+</section>
+<section id="what-this-does-not-do" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-does-not-do">What this does not do</h2>
+<p><strong>It does not show a classifier earning its place.</strong> On this dataset the detector already names its objects correctly 99.94% of the time, so the second model has nothing to add. Where one does earn its place is where the classes are <strong>finer than the detector’s</strong>: a detector that finds cells and a classifier that names twenty kinds of them, trained on crops whose labels come from somewhere other than the boxes. The surface on this page is the same one; only the labels would differ.</p>
+<p><strong>It is not a measurement of the annotation.</strong> That a detector finds cells no annotation mentions says the annotation is incomplete on those images; how incomplete, on which images and for which class is a question somebody would have to answer by looking, and nothing here did.</p>
+<p><strong>The crops lose the scale.</strong> Every one is 96 x 96 whatever it was cut from, so the single most separable property of these three classes is gone before the classifier sees anything. <code>size = NULL</code> keeps each crop as cut, and then they cannot be stacked into one batch without a decision of your own.</p>
+<p><strong>It is one small collection.</strong> 205 training photographs at one magnification, stained one way, and the three classes it holds are easy to tell apart by eye. <strong>It is not a diagnostic tool</strong>, and a result from it is not a laboratory result.</p>
+</section>
+<section id="notes-on-the-machine" class="level2">
+<h2 class="anchored" data-anchor-id="notes-on-the-machine">Notes on the machine</h2>
+<p>Trained on a GTX 1070, three runs of about two minutes each; the detector is loaded rather than trained, and cutting and writing 5,334 crops takes about a minute, which makes this the cheapest of the seven vignettes that run something.</p>
+<p>A card of that generation needs the CUDA 12 build of PyTorch, which <code>platypus_use_torch("pascal")</code> selects - see <code>?platypus_device</code>.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
