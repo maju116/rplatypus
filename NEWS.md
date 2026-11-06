@@ -20,6 +20,55 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-06 - The pin moves to `0.8.0a71`, one move for three releases - and the ledger caught a sentence here
+
+**One move rather than three**, which is what the pin is for. Of the three engine releases
+behind it, exactly one is something an R user can feel, and they feel it **only** because the
+pin moved:
+
+* `0.8.0a69` fixes a DICOM palette whose brightest colour is not white. A 16-bit lookup table
+  holding 8-bit values was stretched until its brightest entry became white, so a palette of
+  200 and 100 read as 1.0 and 0.5 instead of 0.7843 and 0.3922. `read_images()` forwards to
+  the engine's `read_image()`, which hands a DICOM file to the reader this fixes, so the fix
+  arrives here by the pin and by nothing else.
+
+  The first draft of that sentence named the reader itself - `read_dicom`, which is internal
+  to the engine and answers from neither namespace - and **this package's own test refused
+  it**: a reader told to call it would have found nothing. That is the second time the rule
+  holding `NEWS.md`'s newest entry to resolvable names has caught one, after
+  `platypus_engine_report`, which is why the rule exists.
+
+  Both dead names are written here **without the `()`**, which is the distinction that keeps
+  that rule worth having: a name in backticks with parentheses tells somebody to call it, and
+  one without is being cited. The test's pattern is the first form, and writing the second
+  draft with parentheses made it fail on the very name it was explaining.
+* `0.8.0a70` and `0.8.0a71` are guards and two deduplications with no behaviour in them -
+  field reads asked at their own sites, and one place that records which epoch a run's
+  weights came from. Nothing an R user calls moves.
+
+**And moving the pin is what found a false sentence in this package's own help page**, which
+is the field-prose ledger doing the one job it exists for. The engine rewrote `epochs`'
+description in `0.8.0a69` and the ledger named the four topics that document it; re-reading
+them turned up `?platypus_callbacks` saying `callback_cosine_annealing()` *"decays the
+learning rate from its initial value to `min_lr`"*. It decays **towards** it: a scheduler
+steps after each epoch, so the value computed for the epoch after the last one is `min_lr`
+and no epoch ever trains at it.
+
+That is the same loose sentence the engine corrected in itself, found here one release later
+by the mechanism built for it rather than by anybody reading the page.
+
+**The repair names a distinction rather than loosening a word**, because `min_lr` is the
+floor for four callbacks and **two of the four reach it**. Measured through the engine, six
+epochs from a rate of 1.0 with `min_lr = 0.1`:
+
+    cosine_annealing      1.0000  0.9397  0.7750  0.5500  0.3250  0.1603   never 0.1
+    linear_annealing      1.0000  0.8500  0.7000  0.5500  0.4000  0.2500   never 0.1
+    reduce_lr_on_plateau  1.0000  1.0000  0.1000  0.1000  0.1000  0.1000   trains at it
+    step_decay            1.0000  0.1000  0.1000  0.1000  0.1000  0.1000   trains at it
+
+So `?platypus_callbacks` now says which two do which, and that setting `epochs` shorter than
+the run is the only way an annealed run trains at `min_lr` at all.
+
 ### 2026-11-06 - `vignette("data-science-bowl")` is re-knitted, and two numbers in it were never measured (engine `0.8.0a68`, unchanged)
 
 **The pin does not move.** `0.8.0a68` already carries everything here; what moves is a page

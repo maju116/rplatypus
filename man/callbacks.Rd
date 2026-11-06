@@ -142,11 +142,14 @@ is written when the watched number improves \emph{and} every threshold holds. A 
 is a number about your data and does not transfer between datasets, and a run whose
 conditions never hold writes nothing and says so when it ends.}
 
-\item{factor, min_lr}{What the rate is multiplied by, and the floor it stops at.
+\item{factor, min_lr}{What the rate is multiplied by, and the floor it does not go below.
 \code{factor} is the cut on a plateau for \code{callback_reduce_lr_on_plateau()} and the drop
 at each step for \code{callback_step_decay()}, where it must be below 1 - a step schedule
 that raises the rate is a different idea and accepting it here would hide a typo.
-\code{min_lr} is the floor for all four.}
+\code{min_lr} is the floor for all four, and \strong{two of the four reach it and two do not}:
+a plateau cut and a step drop land on it and stay, while the two annealers approach it
+and write it only after the last epoch unless \code{epochs} is set shorter than the run.
+See the cosine section.}
 
 \item{epochs}{For \code{callback_cosine_annealing()} and \code{callback_linear_annealing()}, how
 many epochs to spread the decay over. Unset means the model's \code{epochs}, which is what
@@ -253,10 +256,17 @@ its constant rate after averaging begins, whatever position the callbacks sit in
 \section{Cosine annealing}{
 
 
-\code{callback_cosine_annealing()} decays the learning rate from its initial value to \code{min_lr}
-along a cosine. It watches nothing: it is a function of how far through the run you are
-rather than of how the run is going, which is the difference from
+\code{callback_cosine_annealing()} decays the learning rate from its initial value \strong{towards}
+\code{min_lr} along a cosine. It watches nothing: it is a function of how far through the run
+you are rather than of how the run is going, which is the difference from
 \code{callback_reduce_lr_on_plateau()} - and a run may legitimately want both.
+
+\strong{Towards rather than to}, which is the engine's \verb{0.8.0a69} and worth a sentence because
+the obvious reading is wrong: a scheduler steps after each epoch, so the value computed
+for the epoch \emph{after} the last one is \code{min_lr} and no epoch ever trains at it. The last
+epoch trains one step above. That is torch's own behaviour for the same schedule, and
+setting \code{epochs} shorter than the run is the only way a run trains at \code{min_lr} at all -
+the rate parks there for the remaining epochs.
 
 Each parameter group decays from its \strong{own} initial rate, so an \code{encoder_learning_rate}
 set on a model is not flattened at the first epoch. That would have been invisible: the

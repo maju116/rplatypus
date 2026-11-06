@@ -649,10 +649,17 @@ optimizer_nadam <- function(learning_rate = 1e-3, beta_1 = 0.9, beta_2 = 0.999,
 #'
 #' @section Cosine annealing:
 #'
-#' `callback_cosine_annealing()` decays the learning rate from its initial value to `min_lr`
-#' along a cosine. It watches nothing: it is a function of how far through the run you are
-#' rather than of how the run is going, which is the difference from
+#' `callback_cosine_annealing()` decays the learning rate from its initial value **towards**
+#' `min_lr` along a cosine. It watches nothing: it is a function of how far through the run
+#' you are rather than of how the run is going, which is the difference from
 #' `callback_reduce_lr_on_plateau()` - and a run may legitimately want both.
+#'
+#' **Towards rather than to**, which is the engine's `0.8.0a69` and worth a sentence because
+#' the obvious reading is wrong: a scheduler steps after each epoch, so the value computed
+#' for the epoch *after* the last one is `min_lr` and no epoch ever trains at it. The last
+#' epoch trains one step above. That is torch's own behaviour for the same schedule, and
+#' setting `epochs` shorter than the run is the only way a run trains at `min_lr` at all -
+#' the rate parks there for the remaining epochs.
 #'
 #' Each parameter group decays from its **own** initial rate, so an `encoder_learning_rate`
 #' set on a model is not flattened at the first epoch. That would have been invisible: the
@@ -709,11 +716,14 @@ optimizer_nadam <- function(learning_rate = 1e-3, beta_1 = 0.9, beta_2 = 0.999,
 #' @param save_best_only Only write when the watched quantity improves, which is the
 #'   default. `FALSE` writes every epoch, which is what to use when a run may be
 #'   interrupted rather than when the best epoch is what you want to keep.
-#' @param factor,min_lr What the rate is multiplied by, and the floor it stops at.
+#' @param factor,min_lr What the rate is multiplied by, and the floor it does not go below.
 #'   `factor` is the cut on a plateau for `callback_reduce_lr_on_plateau()` and the drop
 #'   at each step for `callback_step_decay()`, where it must be below 1 - a step schedule
 #'   that raises the rate is a different idea and accepting it here would hide a typo.
-#'   `min_lr` is the floor for all four.
+#'   `min_lr` is the floor for all four, and **two of the four reach it and two do not**:
+#'   a plateau cut and a step drop land on it and stay, while the two annealers approach it
+#'   and write it only after the last epoch unless `epochs` is set shorter than the run.
+#'   See the cosine section.
 #' @param epochs For `callback_cosine_annealing()` and `callback_linear_annealing()`, how
 #'   many epochs to spread the decay over. Unset means the model's `epochs`, which is what
 #'   you want: a curve that ends where the run ends.
