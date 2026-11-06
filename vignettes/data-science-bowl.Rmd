@@ -259,16 +259,26 @@ evaluate(fit)
 #>     model architecture loss_function parameters load_shape epochs_run
 #> 1    unet        u_net      cce_dice    1942594  160 x 160         12
 #> 2 linknet      linknet focal_tversky    1746754  160 x 160         12
-#>   best_epoch       loss foreground      dice       iou dice_worst iou_worst
-#> 1         11 0.10492591  0.1457751 0.8679105 0.7788040  0.3107798 0.1845319
-#> 2         11 0.08024277  0.1343505 0.8769452 0.7917425  0.3913118 0.2433291
+#>   best_epoch       loss foreground      dice       iou dice_worst  iou_worst
+#> 1         NA 0.08665965  0.1420502 0.8710260 0.7917381 0.02380952 0.01296296
+#> 2         11 0.06914807  0.1370018 0.8887836 0.8085569 0.51941985 0.35092962
 ```
 
 Read the `loss` column with care, and note that `loss_function` sits beside it. These two
-models were trained on different objectives, so their losses are not on a common scale -
-a Focal-Tversky of 0.31 is not better or worse than a CCE-Dice of 0.22, it is not the same
-question. The metrics are comparable, because they measure the mask rather than the
+models were trained on different objectives, so their losses are not on a common scale: the
+lower of the two figures there is not the better model, because the two are not readings of
+one quantity. No digits are quoted for them here on purpose - every re-knit of this page
+trains both models again, so a number in the prose would be a claim about a run that no
+longer exists. The metrics are comparable, because they measure the mask rather than the
 objective.
+
+`best_epoch` is `NA` for the first model and a number for the second, and that difference is
+the specification rather than a defect. The column names the epoch whose weights the run
+**ended on**, which is a question only a callback can answer: `linknet` carries
+`callback_early_stopping("val_dice")`, whose `restore_best` default puts the best monitored
+epoch's weights back, and `unet` carries no callback at all - so it ended on its last epoch,
+which `epochs_run` already names. Asking which epoch scored best by something else is
+`training_history(fit)`, not this table.
 
 ## Look at what it did
 
