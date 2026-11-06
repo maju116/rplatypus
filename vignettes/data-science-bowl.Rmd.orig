@@ -235,10 +235,20 @@ evaluate(fit)
 ```
 
 Read the `loss` column with care, and note that `loss_function` sits beside it. These two
-models were trained on different objectives, so their losses are not on a common scale -
-a Focal-Tversky of 0.31 is not better or worse than a CCE-Dice of 0.22, it is not the same
-question. The metrics are comparable, because they measure the mask rather than the
+models were trained on different objectives, so their losses are not on a common scale: the
+lower of the two figures there is not the better model, because the two are not readings of
+one quantity. No digits are quoted for them here on purpose - every re-knit of this page
+trains both models again, so a number in the prose would be a claim about a run that no
+longer exists. The metrics are comparable, because they measure the mask rather than the
 objective.
+
+`best_epoch` is `NA` for the first model and a number for the second, and that difference is
+the specification rather than a defect. The column names the epoch whose weights the run
+**ended on**, which is a question only a callback can answer: `linknet` carries
+`callback_early_stopping("val_dice")`, whose `restore_best` default puts the best monitored
+epoch's weights back, and `unet` carries no callback at all - so it ended on its last epoch,
+which `epochs_run` already names. Asking which epoch scored best by something else is
+`training_history(fit)`, not this table.
 
 ## Look at what it did
 

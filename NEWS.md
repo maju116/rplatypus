@@ -20,6 +20,32 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-06 - `vignette("data-science-bowl")` is re-knitted, and two numbers in it were never measured (engine `0.8.0a68`, unchanged)
+
+**The pin does not move.** `0.8.0a68` already carries everything here; what moves is a page
+that printed a column under its old meaning, and `vignette("classification")` was the only
+one checked when that column changed.
+
+`evaluate()`'s `best_epoch` read **11** for both models. Under the pinned engine the first
+one reports nothing at all - it carries no callback, so it ended on its last epoch and
+`epochs_run` says which - and the second reports the best `val_dice` epoch rather than the
+lowest `val_loss` one. Re-knitted, so both rows are what this engine produces, with a
+paragraph saying why one is empty and the other is not: the difference is the two
+specifications rather than a defect.
+
+**And a sentence under that table quoted two losses that no run has ever produced.** It read
+*"a Focal-Tversky of 0.31 is not better or worse than a CCE-Dice of 0.22"*, directly beneath
+a table printing 0.0715 and 0.0959 - the figures of the run it shipped with, in September.
+The point it makes is right and needs no digits, so it has none now: every re-knit trains
+both models again, and a number in the prose would be a claim about a run that no longer
+exists. Measured while fixing it, the same column moved between two re-knits taken an hour
+apart.
+
+**`vignette("retinal-vessels")` still prints `best_epoch 14` and is not fixed here.** That
+fit has no callback either, so the pinned engine reports nothing for it; the page costs
+2 h 32 to re-knit, of which 2 h 15 is the fit, so the correction rides its next one.
+`rplatypus#289`.
+
 ### 2026-11-05 (night) - `best_epoch` names the epoch a row's scores came from (engine `0.8.0a68`)
 
 **The pin moves to `0.8.0a68`**, and what it carries is one column of `evaluate()` meaning
