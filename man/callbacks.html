@@ -944,7 +944,7 @@ It is an <strong>extra gate beside <code>save_best_only</code></strong>, not a r
 <code id="factor">factor</code>, <code id="min_lr">min_lr</code>
 </td>
 <td>
-What the rate is multiplied by, and the floor it stops at. <code>factor</code> is the cut on a plateau for <code>callback_reduce_lr_on_plateau()</code> and the drop at each step for <code>callback_step_decay()</code>, where it must be below 1 - a step schedule that raises the rate is a different idea and accepting it here would hide a typo. <code>min_lr</code> is the floor for all four.
+What the rate is multiplied by, and the floor it does not go below. <code>factor</code> is the cut on a plateau for <code>callback_reduce_lr_on_plateau()</code> and the drop at each step for <code>callback_step_decay()</code>, where it must be below 1 - a step schedule that raises the rate is a different idea and accepting it here would hide a typo. <code>min_lr</code> is the floor for all four, and <strong>two of the four reach it and two do not</strong>: a plateau cut and a step drop land on it and stay, while the two annealers approach it and write it only after the last epoch unless <code>epochs</code> is set shorter than the run. See the cosine section.
 </td>
 </tr>
 <tr>
@@ -1017,7 +1017,8 @@ For <code>callback_terminate_on_collapse()</code>, the share of foreground below
 </section>
 <section id="cosine-annealing" class="level3">
 <h3 class="anchored" data-anchor-id="cosine-annealing">Cosine annealing</h3>
-<p><code>callback_cosine_annealing()</code> decays the learning rate from its initial value to <code>min_lr</code> along a cosine. It watches nothing: it is a function of how far through the run you are rather than of how the run is going, which is the difference from <code>callback_reduce_lr_on_plateau()</code> - and a run may legitimately want both.</p>
+<p><code>callback_cosine_annealing()</code> decays the learning rate from its initial value <strong>towards</strong> <code>min_lr</code> along a cosine. It watches nothing: it is a function of how far through the run you are rather than of how the run is going, which is the difference from <code>callback_reduce_lr_on_plateau()</code> - and a run may legitimately want both.</p>
+<p><strong>Towards rather than to</strong>, which is the engine’s <code style="white-space: pre;">0.8.0a69</code> and worth a sentence because the obvious reading is wrong: a scheduler steps after each epoch, so the value computed for the epoch <em>after</em> the last one is <code>min_lr</code> and no epoch ever trains at it. The last epoch trains one step above. That is torch’s own behaviour for the same schedule, and setting <code>epochs</code> shorter than the run is the only way a run trains at <code>min_lr</code> at all - the rate parks there for the remaining epochs.</p>
 <p>Each parameter group decays from its <strong>own</strong> initial rate, so an <code>encoder_learning_rate</code> set on a model is not flattened at the first epoch. That would have been invisible: the history records one <code>learning_rate</code>, the first group’s.</p>
 <p><code>epochs</code> unset means the model’s own <code>epochs</code>, which is what you want - a cosine that ends where the run ends.</p>
 </section>
