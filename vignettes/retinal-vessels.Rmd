@@ -153,7 +153,7 @@ spec <- platypus_spec(
 )
 spec
 #> platypus specification
-#>   data        : /tmp/RtmprzTrKo/train.csv 
+#>   data        : /tmp/RtmpLgvYTS/train.csv 
 #>   classes     : 2 
 #>   models      : 1 
 #>     vessels        u_net            512x512, tiled 4x4, cce_dice, 15 epochs
@@ -202,9 +202,16 @@ plot(fit)
 evaluate(fit)
 #>     model architecture loss_function parameters  load_shape epochs_run
 #> 1 vessels        u_net      cce_dice    1942594 2048 x 2048         15
-#>   best_epoch       loss foreground      dice       iou  dice_worst   iou_worst
-#> 1         14 0.08282537  0.0657948 0.8644989 0.7781636 0.005716131 0.002882404
+#>   best_epoch       loss foreground      dice       iou dice_worst  iou_worst
+#> 1         NA 0.07707521  0.0701509 0.8725505 0.7859755   0.100926 0.05315983
 ```
+
+`best_epoch` is empty, and it is worth a word because the column is new in the engine's
+`0.8.0a73` and reads as a gap otherwise. It names the epoch whose weights the run **ended
+on**, which only a callback that replaces weights can answer - `callback_early_stopping()`
+with its `restore_best` default, or one of the two averagers. The specification above asks
+for no callbacks at all, so nothing selected an epoch and this run ended on its last:
+`epochs_run` already says which.
 
 That is the whole test set as one row, and it is the least informative view of it. The
 distribution is the finding, and `summary()` gives it - including which case is the worst,
@@ -214,10 +221,10 @@ because the first thing anyone does with a low score is go and look at that imag
 ``` r
 per_case <- evaluate_cases(fit)
 summary(per_case)
-#>   metric   n      mean        sd    median         min       max worst_case
-#> 1   dice 200 0.8644989 0.1303245 0.8975915 0.005716131 0.9581814      122_G
-#> 2    iou 200 0.7781636 0.1506915 0.8142098 0.002882404 0.9197202      122_G
-#> 3 cldice 200 0.8121976 0.1533799 0.8567695 0.007349078 0.9516759      122_G
+#>   metric   n      mean        sd    median        min       max worst_case
+#> 1   dice 200 0.8725505 0.1075551 0.9028940 0.10092598 0.9557962      122_G
+#> 2    iou 200 0.7859755 0.1299171 0.8229785 0.05315983 0.9153351      122_G
+#> 3 cldice 200 0.7892405 0.1445759 0.8286990 0.15440816 0.9353433      122_G
 ```
 
 Now by the disease in the file name. `group_by` pools a group's cases into one score, the way
@@ -228,10 +235,10 @@ a patient's slices would be pooled:
 evaluate_cases(fit, group_by = "_([NADG])$")
 #> platypus scores by group (4 rows)
 #>  group      dice       iou    cldice
-#>      A 0.9136922 0.8410988 0.8645473
-#>      D 0.8849608 0.7936589 0.8120603
-#>      G 0.8849156 0.7935862 0.7343315
-#>      N 0.8900695 0.8019147 0.8378514
+#>      A 0.9129180 0.8397875 0.8297471
+#>      D 0.8900999 0.8019639 0.7770124
+#>      G 0.8916201 0.8044354 0.7302487
+#>      N 0.8843446 0.7926683 0.8199539
 ```
 
 Pooling answers "how good is it on this group". It does not show the spread, and the spread is
@@ -245,16 +252,17 @@ per_case$disease <- diseases[sub(".*_([NADG])$", "\\1", per_case$case)]
 spread <- function(x) c(n = length(x), mean = mean(x), sd = sd(x), worst = min(x))
 round(t(vapply(split(per_case$dice, per_case$disease), spread, numeric(4))), 4)
 #>                       n   mean     sd  worst
-#> AMD                  50 0.9050 0.0600 0.7045
-#> diabetic retinopathy 50 0.8666 0.0899 0.5545
-#> glaucoma             50 0.8013 0.2187 0.0057
-#> normal               50 0.8852 0.0573 0.6605
+#> AMD                  50 0.9065 0.0515 0.7030
+#> diabetic retinopathy 50 0.8753 0.0756 0.6137
+#> glaucoma             50 0.8267 0.1803 0.1009
+#> normal               50 0.8817 0.0520 0.6816
 ```
 
 Compare that table with the pooled one above and the reason for having both becomes concrete.
 Pooled, glaucoma and diabetic retinopathy are within a few thousandths of each other. Per
 case, glaucoma's mean is several points lower and its spread more than twice as wide, with a
-worst case near zero. (No figure is quoted here on purpose: the table is directly above, and a
+worst case far below its own group's mean. (No figure is quoted here on purpose: the table
+is directly above, and a
 number repeated in prose is a number that goes stale the next time this is rebuilt.) Pooling hid it because Dice is a ratio of sums: fifty images' counts
 added together are dominated by the ones with the most vessel to find, and a photograph the
 model failed on contributes little to the numerator *and* little to the denominator.
@@ -279,13 +287,13 @@ round(c(
   sd_of_difference = sd(per_case$cldice - per_case$dice)
 ), 4)
 #>      correlation  mean_difference sd_of_difference 
-#>           0.9350          -0.0523           0.0560
+#>           0.8581          -0.0833           0.0760
 ```
 
 Read those two numbers together, because they say different things. The **correlation** is
 high: the two metrics rank the cases much the same way, so clDice is not finding a different
-set of bad images. The **mean difference** is negative and not small: clDice sits about five
-points *below* Dice, which says the vessels this model draws are less connected than their
+set of bad images. The **mean difference** is negative and not small - clDice sits several
+points *below* Dice - which says the vessels this model draws are less connected than their
 pixel overlap suggests. It is getting the right pixels and breaking the lines.
 
 That gap is a property of the model rather than of the metric, and the engine's own run of the
@@ -294,10 +302,21 @@ correlation of 0.978 and a mean difference of +0.004. **The better-trained model
 gap.** So a large negative gap here is not clDice being pessimistic - it is clDice measuring
 the thing that fifteen epochs had not finished learning, and Dice not noticing.
 
+**Those two figures are the engine's and were measured before clDice's own definition
+changed**, which has to be said before anybody reads them against the numbers above.
+`0.8.0a72` made the soft skeleton erode with a four-neighbour cross rather than a 3 x 3
+square, because that is what the reference implementation does; a cross erodes less, leaves a
+thinner skeleton, and scores lower. How much lower depends on the prediction - measured on
+ten of these masks with the prediction thinned, between 0.004 and 0.074 - so a clDice from one
+definition and a clDice from the other are not a difference worth reading. Everything this
+document prints comes from the pinned engine. The engine's forty-epoch figures above and
+every clDice figure in the tables below do not.
+
 ## The worst case, drawn
 
-A table says a case scored near zero. A picture says why — and this is the panel that found
-the quality finding above, because the worst glaucoma photograph turns out to be nearly black.
+A table says one case scored far below the rest. A picture says why — and this is the panel
+that found the quality finding above, because the worst glaucoma photograph turns out to be
+nearly black.
 
 Drawing it needs two images out of two hundred, and the whole split at 2048 x 2048 is about
 6.7 GB, so `predict()` is asked for the two by name. It keeps one answer at a time and
@@ -336,6 +355,14 @@ The tables below are **transcriptions**. The runs live in the project's workbenc
 `measurements/fives/`, and each table is printed by a script that reads the stored records
 back: `losses-read.py`, `boundary-read.py` and `tiling-read.py`. Nothing in this document runs
 them, and no number below was produced by the knit you are reading.
+
+**Every arm below was measured between 2026-10-16 and 2026-10-22, which the `clDice - dice`
+column makes matter.** clDice's definition moved in `0.8.0a72`, after all of them had run,
+and the arms' checkpoints were not kept - so that column cannot be re-read under the current
+definition without retraining fifteen models, and it is left as it was measured rather than
+adjusted. Within each table the comparison is sound, because every arm in it was scored the
+same way; it is reading one of these columns against this document's own clDice that is not.
+The Dice columns are unaffected.
 
 **The setting is not this vignette's**, which is the first thing to know before comparing
 anything to the numbers above. Every arm trained on **148 of the 600 training retinas** - every

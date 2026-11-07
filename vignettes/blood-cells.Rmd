@@ -266,9 +266,9 @@ plot_anchors(fit, split = "validation", log = TRUE)
 tail(fit$history[, c("epoch", "train_loss", "train_coordinates", "train_objectness",
                      "val_loss")], 3)
 #>     epoch train_loss train_coordinates train_objectness val_loss
-#> 148   148   5.926517          5.922094     0.0006585576 10.13793
-#> 149   149   5.926129          5.921740     0.0006725759 10.15564
-#> 150   150   5.926410          5.921948     0.0007225743 10.22855
+#> 148   148   5.926365          5.922029     0.0006778951 9.845767
+#> 149   149   5.926085          5.921759     0.0006817855 9.866457
+#> 150   150   5.926337          5.921908     0.0007133317 9.967503
 ```
 
 
@@ -278,7 +278,7 @@ target bottoms out at the target's own entropy, so the coordinate term has a flo
 that depends on the data. Which is exactly why the four parts are reported separately: a
 total of 5.93 means nothing alone, while
 `coordinates 5.92` beside
-`objectness 7.2 &times; 10<sup>-4</sup>` says the model has learned what is where
+`objectness 7.1 &times; 10<sup>-4</sup>` says the model has learned what is where
 and is still refining the boxes.
 
 ## Scoring, and the number that is missing on purpose
@@ -286,15 +286,23 @@ and is still refining the boxes.
 
 ``` r
 evaluate(fit, split = "test")
-#>   model architecture parameters epochs_run    map_50 map_50_95 mean_matched_iou
-#> 1 cells        yolo3   61534504        150 0.8627735 0.5121223        0.8038798
-#>   n_truth n_predicted classes_without_truth
-#> 1     945        2496                     0
+#>   model architecture parameters epochs_run best_epoch    map_50 map_50_95
+#> 1 cells        yolo3   61534504        150         NA 0.8567534 0.5109749
+#>   mean_matched_iou n_truth n_predicted classes_without_truth
+#> 1         0.804311     945        2548                     0
 ```
 
 
 
-**This run's `map_50` of 0.8628 sits
+`best_epoch` is empty, and it is worth a word because the column is new in the engine's
+`0.8.0a73` and reads as a gap otherwise. It names the epoch whose weights the run **ended
+on**, which only a callback that replaces weights can answer - `callback_early_stopping()`
+with its `restore_best` default, or one of the two averagers. The only callback here is
+`callback_cosine_annealing()`, which changes the learning **rate** and never the weights, so
+nothing selected an epoch and this run ended on its last: `epochs_run` already says which.
+
+
+**This run's `map_50` of 0.8568 sits
 inside the range of the five in the
 table further down (0.853 to 0.887), and that
 is the point of the table rather than a problem with it.** A seed pins which random numbers
@@ -307,9 +315,9 @@ came to be written: the first version of it quoted a number, and the next knit d
 it.
 
 Which is the argument for reading `mean_matched_iou` first, and it holds here: the overlap
-came out at 0.8039 against the five-run mean of
+came out at 0.8043 against the five-run mean of
 0.8040, a difference of
-0.0002.
+0.0003.
 
 There is no overall precision and no overall recall in that table, and the absence is
 deliberate. Averaging them over classes needs a weighting, and every choice of weighting is a
@@ -322,13 +330,13 @@ Per class is the form in which they mean something:
 ``` r
 evaluate_classes(fit, split = "test")
 #>       class average_precision mean_matched_iou n_truth n_predicted precision
-#> 1       RBC         0.7991014        0.8065542     805         888 0.7207207
-#> 2       WBC         0.9637139        0.8553475      71          77 0.9220779
-#> 3 Platelets         0.8255051        0.7194421      69         106 0.5943396
+#> 1       RBC         0.8009974        0.8069091     805         929 0.7072121
+#> 2       WBC         0.9647242        0.8551024      71          76 0.9342105
+#> 3 Platelets         0.8045387        0.7223172      69         108 0.5925926
 #>      recall
-#> 1 0.7950311
+#> 1 0.8161491
 #> 2 1.0000000
-#> 3 0.9130435
+#> 3 0.9275362
 ```
 
 
@@ -437,10 +445,10 @@ for (key in names(mine)) {
 }
 c(reported = reported, unmatched = unmatched, touching_nothing = touching_nothing)
 #>         reported        unmatched touching_nothing 
-#>             1071              295               91
+#>             1113              319              103
 ```
 
-91 of the 295 unmatched boxes overlap **no annotated object at
+103 of the 319 unmatched boxes overlap **no annotated object at
 all** - not a duplicate, not a box half off its target - on photographs whose other cells are
 annotated. `vignette("classification")` cuts those crops out and looks at them: they are red
 cells BCCD does not mention. So a precision here is a **lower bound** on this detector rather
@@ -449,7 +457,7 @@ high by so much* is the one inference it does not support.
 
 Counting needs truth counted for counting, on your own data - and if you take the count from
 these boxes anyway, the threshold is the lever, not the model: at the operating point this
-page scores at, the tail is 295 boxes the annotation does not vouch for either way.
+page scores at, the tail is 319 boxes the annotation does not vouch for either way.
 
 **It is one small collection.** 205 training images at one magnification, stained one way.
 BCCD is a demonstration dataset.

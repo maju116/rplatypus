@@ -263,6 +263,14 @@ seeds_map <- c(0.8571, 0.8868, 0.8534, 0.8795, 0.8533)   # measured, see the tab
 seeds_iou <- c(0.8058, 0.8002, 0.8043, 0.8068, 0.8031)
 ```
 
+`best_epoch` is empty, and it is worth a word because the column is new in the engine's
+`0.8.0a73` and reads as a gap otherwise. It names the epoch whose weights the run **ended
+on**, which only a callback that replaces weights can answer - `callback_early_stopping()`
+with its `restore_best` default, or one of the two averagers. The only callback here is
+`callback_cosine_annealing()`, which changes the learning **rate** and never the weights, so
+nothing selected an epoch and this run ended on its last: `epochs_run` already says which.
+
+
 **This run's `map_50` of `r round(here$map_50, 4)` sits
 `r if (here$map_50 < min(seeds_map)) "below" else "inside"` the range of the five in the
 table further down (`r sprintf("%.3f to %.3f", min(seeds_map), max(seeds_map))`), and that

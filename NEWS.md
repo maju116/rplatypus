@@ -20,6 +20,46 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-07 - The pin moves to `0.8.0a73`: clDice is the paper's clDice now, and detection says which epoch its scores came from
+
+**One move for two releases**, and both are things an R user meets through the pin and by
+nothing else - §3E's *distinction* rather than its default.
+
+**`0.8.0a72` makes `metric_cldice()` compute the quantity the paper defines.** It is a
+metric and only a metric in both packages - neither offers clDice as an objective, so what
+moves is what you measure and never what you trained against. The soft skeleton cited Shit et al., CVPR 2021 and did not implement it: the
+reference code erodes with a **cross** and dilates with a **square**, and both of the
+engine's were squares. `monai.losses.cldice` is a port of that same code, so the two
+operators are what every clDice anybody compares ours against was computed with.
+
+**Your numbers will move, and the direction is one-sided: the cross is stricter.** Measured
+on 10 FIVES masks with the prediction thinned, the gap grows with how wrong the prediction
+is - about 0.004 at a clDice of 0.91 and 0.074 at 0.75. A three-pixel diagonal band is the
+sharpest single case: of its 190 pixels the old erosion kept 184 as "skeleton" where the new
+one keeps 64, which is one per row and is what a centreline of a diagonal is.
+
+**`0.8.0a73` adds `best_epoch` to what `evaluate()` returns for a detection fit.** Every
+other task reported it; detection carried `epochs_run` alone, so a detection run was the one
+place where `callback_early_stopping(restore_best = TRUE)` worked, the answer existed, and
+you could not see it. It is empty when a run selected no epoch - that run ended on its last,
+which `epochs_run` already names.
+
+**Both vignettes that print a figure these two change are re-knitted**, which is the author's
+decision rather than the cheap half: `vignette("blood-cells")` for the column, and
+`vignette("retinal-vessels")` for clDice **and** for the `best_epoch` it had been printing
+under the pre-`0.8.0a68` meaning. One run of the retinal page pays both of its debts.
+
+**And re-knitting that page found the half a re-knit cannot fix.** It transcribes three
+measurement tables from runs made between 2026-10-16 and 2026-10-22, and one of their columns
+is `clDice - dice`. Those arms' checkpoints were not kept, so the column cannot be re-scored
+under the new definition without retraining fifteen models: it is left as it was measured,
+with the date and the reason beside it. Each table is internally sound, since every arm in it
+was scored the same way - what the page now warns against is reading one of those columns
+against the clDice `evaluate_cases()` prints today.
+
+The field-prose ledger answered *nothing to re-read* across both releases - 117 fields, every
+digest holding, one line moved - which is the guard being cheap rather than quiet.
+
 ### 2026-11-06 - The pin moves to `0.8.0a71`, one move for three releases - and the ledger caught a sentence here
 
 **One move rather than three**, which is what the pin is for. Of the three engine releases
