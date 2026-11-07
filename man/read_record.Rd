@@ -12,9 +12,23 @@ read_record(path)
 }
 \value{
 A \code{platypus_record}: a list with \code{written}, \code{pyplatypus}, \code{model},
-\code{specification}, \code{derived} and \code{history}. Everything is plain R data, because a record
-describes what happened rather than being a live thing - except \code{history}, which comes
-back as a data frame with one row per epoch.
+\code{specification}, \code{derived}, \code{history}, and the two run-level facts that sit beside the
+history - \code{weights_epoch} and \code{stop_reason}. Everything is plain R data, because a
+record describes what happened rather than being a live thing - except \code{history}, which
+comes back as a data frame with one row per epoch.
+
+\code{weights_epoch} is the epoch the model's final weights came from, and it is \code{NULL} when
+they are not any one epoch's: an average left by \code{\link[=callback_ema]{callback_ema()}} or \code{\link[=callback_swa]{callback_swa()}},
+or a run that selected nothing and so ended on its last epoch, which \code{nrow(history)}
+already tells you. It is the same figure a score table reports as \code{best_epoch}, because
+both read the one place the engine records it.
+
+Both keys arrived with engine \verb{0.8.0a74}, and \strong{a record written by an older engine
+carries neither} - which matters because \code{record$weights_epoch} is \code{NULL} in that case
+too. Measured rather than assumed: \code{jsonlite} gives \code{NULL} for a JSON \code{null} \emph{and} for
+a key that is not there, and the two are told apart by
+\code{"weights_epoch" \%in\% names(record)}. So \code{is.null()} answers \emph{no single epoch} and \emph{an
+older engine} identically, and only the name test distinguishes them.
 
 That frame is \strong{not} quite what \code{\link[=training_history]{training_history()}} returns, and the difference is
 worth knowing before you \code{rbind()} them: a record belongs to one model, whose name is

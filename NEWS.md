@@ -20,6 +20,42 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-07 - The pin moves to `0.8.0a74`: a run record says which epoch its weights came from
+
+**`read_record()` gains two fields, and they are the two a record could not answer with.**
+`weights_epoch` is the epoch the model's final weights came from, and `stop_reason` is why
+the run ended. Both existed in the engine, both were readable from a fit in the session that
+produced it, and neither reached `run.json` - so a directory six months later said which
+epoch was best by every metric the run logged and not which epoch's weights it shipped.
+`maju116/pyplatypus#417`.
+
+They are siblings of `history` rather than fields inside it, which is the part that matters
+here rather than in the engine: `history` is the key this package turns into a data frame,
+one row per epoch, so a scalar in there would have changed its type for the only reader of
+it that exists.
+
+**`weights_epoch` is `NULL` when the weights are not any one epoch's** - an average left by
+`callback_ema()` or `callback_swa()`, or a run that selected nothing and so ended on its last
+epoch, which `nrow(record$history)` already tells you. With
+`callback_early_stopping(restore_best = TRUE)` it is a number, and it is the same number a
+score table reports as `best_epoch`, because both read the one place the engine records it.
+A test holds those two to each other rather than to a literal.
+
+**One thing was measured rather than assumed, and it changed what `print()` shows.**
+`jsonlite` returns `NULL` for a JSON `null` **and** for a key that is not there, so
+`is.null(record$weights_epoch)` reads *this run selected no epoch* exactly like *this record
+was written by an engine older than `0.8.0a74`*. Those are different facts - one is an answer,
+the other is a record that cannot answer - and `"weights_epoch" %in% names(record)` is what
+tells them apart. So the print method tests the name and says *no single epoch* in the first
+case and nothing at all in the second, and `?read_record` says so where a reader meets it.
+
+**The engine half also moved the published `fives-unet` weights onto the sidecar that can be
+reproduced**, which `available_weights()` lists and nothing in this package names: the
+registry pinned a Hub commit whose recorded clDice no definition in the current engine
+produces. `maju116/pyplatypus#413` and `#420` have the reproduction; the weights file itself
+is byte-identical at both commits, so what changed is the figure beside them and not the
+model.
+
 ### 2026-11-07 - The pin moves to `0.8.0a73`: clDice is the paper's clDice now, and detection says which epoch its scores came from
 
 **One move for two releases**, and both are things an R user meets through the pin and by

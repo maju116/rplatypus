@@ -41,9 +41,23 @@
 #' @param path The `run.json` to read, or the directory holding it - so both
 #'   `read_record("out/my_model")` and `read_record("out/my_model/run.json")` work.
 #' @return A `platypus_record`: a list with `written`, `pyplatypus`, `model`,
-#'   `specification`, `derived` and `history`. Everything is plain R data, because a record
-#'   describes what happened rather than being a live thing - except `history`, which comes
-#'   back as a data frame with one row per epoch.
+#'   `specification`, `derived`, `history`, and the two run-level facts that sit beside the
+#'   history - `weights_epoch` and `stop_reason`. Everything is plain R data, because a
+#'   record describes what happened rather than being a live thing - except `history`, which
+#'   comes back as a data frame with one row per epoch.
+#'
+#'   `weights_epoch` is the epoch the model's final weights came from, and it is `NULL` when
+#'   they are not any one epoch's: an average left by [callback_ema()] or [callback_swa()],
+#'   or a run that selected nothing and so ended on its last epoch, which `nrow(history)`
+#'   already tells you. It is the same figure a score table reports as `best_epoch`, because
+#'   both read the one place the engine records it.
+#'
+#'   Both keys arrived with engine `0.8.0a74`, and **a record written by an older engine
+#'   carries neither** - which matters because `record$weights_epoch` is `NULL` in that case
+#'   too. Measured rather than assumed: `jsonlite` gives `NULL` for a JSON `null` *and* for
+#'   a key that is not there, and the two are told apart by
+#'   `"weights_epoch" %in% names(record)`. So `is.null()` answers *no single epoch* and *an
+#'   older engine* identically, and only the name test distinguishes them.
 #'
 #'   That frame is **not** quite what [training_history()] returns, and the difference is
 #'   worth knowing before you `rbind()` them: a record belongs to one model, whose name is
@@ -98,6 +112,23 @@ print.platypus_record <- function(x, ...) {
   cat("  written     :", x$written %||% "(unrecorded)", "\n")
   cat("  engine      : pyplatypus", x$pyplatypus %||% "(unrecorded)", "\n")
   cat("  epochs      :", nrow(x$history), "\n")
+  # Named rather than inferred: the epoch the weights came from is not the last epoch and
+  # not the best row of the history - `pyplatypus#398` is the defect where it was read off
+  # the history, and `pyplatypus#417` is why it is in the record at all.
+  #
+  # `%in% names()` and NOT `is.null()`, which is the measured part: jsonlite gives NULL for
+  # a JSON null and for an absent key alike, so `is.null()` reads a run that selected no
+  # epoch exactly like a record written before engine 0.8.0a74. Those are different facts -
+  # one is an answer and the other is a record that cannot answer - and a print method that
+  # showed nothing in both cases would be hiding the one a reader can act on.
+  if ("weights_epoch" %in% names(x)) {
+    cat("  weights from:",
+        if (is.null(x$weights_epoch)) "no single epoch" else paste("epoch", x$weights_epoch),
+        "\n")
+  }
+  if ("stop_reason" %in% names(x)) {
+    cat("  stopped     :", x$stop_reason %||% "(ran to the last epoch)", "\n")
+  }
   derived <- names(x$derived %||% list())
   # Named rather than counted: "2 derived" says nothing, and for a detector the one that
   # matters is `anchors`, which exists nowhere else.
