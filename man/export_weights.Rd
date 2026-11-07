@@ -31,6 +31,26 @@ Anything in \code{...} joins the sidecar. The data they were trained on and its 
 weights whose provenance lives in somebody's memory cannot be used by anybody else, including
 you in a year.
 }
+\section{What the engine writes without being asked}{
+
+Two things, since engine \verb{0.8.0a75}, and they are the ones a caller is in no position to
+know: \code{trained_with}, the engine version that produced the file, and \code{measured_with} - the
+engine that measured the figures beside the weights \strong{and the configuration it measured
+them with}, resolved rather than as it was written.
+
+Resolved is the whole point. \code{metric_cldice()}'s \code{iterations} is the skeleton's peel count;
+it moves the number by about five points on one published set of weights, and before this
+it appeared in no file, because nobody had written it down - it was the metric's own
+default. A sidecar recording only what a configuration \emph{stated} would have recorded nothing
+about it. What is in the block is task-specific, because the question is: a segmentation or
+classification fit records its metrics, an instance fit adds how objects were separated and
+decoded, and a detection fit records the three thresholds its table moves with and has no
+metric list at all.
+
+Passing either of those names in \code{...} is refused rather than ignored, because a caller's
+copy of a fact only the engine knows is a copy that will drift.
+}
+
 \examples{
 \dontrun{
 export_weights(fit, "weights/my-run",

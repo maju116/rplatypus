@@ -1131,6 +1131,24 @@ available_weights <- function() {
 #' weights whose provenance lives in somebody's memory cannot be used by anybody else, including
 #' you in a year.
 #'
+#' @section What the engine writes without being asked:
+#' Two things, since engine `0.8.0a75`, and they are the ones a caller is in no position to
+#' know: `trained_with`, the engine version that produced the file, and `measured_with` - the
+#' engine that measured the figures beside the weights **and the configuration it measured
+#' them with**, resolved rather than as it was written.
+#'
+#' Resolved is the whole point. `metric_cldice()`'s `iterations` is the skeleton's peel count;
+#' it moves the number by about five points on one published set of weights, and before this
+#' it appeared in no file, because nobody had written it down - it was the metric's own
+#' default. A sidecar recording only what a configuration *stated* would have recorded nothing
+#' about it. What is in the block is task-specific, because the question is: a segmentation or
+#' classification fit records its metrics, an instance fit adds how objects were separated and
+#' decoded, and a detection fit records the three thresholds its table moves with and has no
+#' metric list at all.
+#'
+#' Passing either of those names in `...` is refused rather than ignored, because a caller's
+#' copy of a fact only the engine knows is a copy that will drift.
+#'
 #' @param object A [platypus_fit()].
 #' @param path Where to write, with or without the `.safetensors` extension.
 #' @param model Which model, by the name in the specification. Defaults to the first.

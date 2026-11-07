@@ -20,6 +20,40 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-07 - The pin moves to `0.8.0a75`: a weights sidecar says what its figures were measured with
+
+**`export_weights()` now writes two things you do not pass it.** `trained_with` is the engine
+version that produced the file, which the sidecar has always carried - and which four
+publishing scripts in the engine's repository each wrote by hand until this release.
+`measured_with` is new: the engine that measured the figures beside the weights, and the
+configuration it measured them with. `maju116/pyplatypus#419`.
+
+**Resolved rather than as written, and that is the whole design.** `metric_cldice()`'s
+`iterations` is the skeleton's peel count. It moves the number by about five points on one
+published set of weights, and before this it appeared in no file at all - not because anybody
+removed it, but because nobody had written it: it was the metric's own default. A sidecar
+recording only what a configuration *stated* would have recorded nothing about the one
+parameter that mattered. `maju116/pyplatypus#413` is the measurement that found this, and it
+cost a day of re-scoring to answer a question one key now answers.
+
+**What is in the block depends on the task**, because the question does. A semantic or
+classification fit records its metrics; an instance fit adds how objects were separated and
+decoded, since one trained model scores differently through each decoding and a number from
+it means nothing without the one it came from; a detection fit has no metric list and records
+the three thresholds its table moves with.
+
+**Passing either name through `...` is refused rather than ignored.** A caller's copy of a
+fact only the engine is in a position to know is a copy that will drift - which is exactly
+what happened to `trained_with`, four times over.
+
+Nothing an R user calls changes, and `?export_weights` says where the two keys come from. By
+§3E's *distinction*: an R user who exports weights meets both of them by the pin moving and by
+nothing else.
+
+**Not done, and deliberately**: the four older published weights keep their sidecars as they
+are. A sidecar states what the engine of its day measured, so writing today's reading into a
+record of another day would replace an honest silence with a certainty nobody measured.
+
 ### 2026-11-07 - The pin moves to `0.8.0a74`: a run record says which epoch its weights came from
 
 **`read_record()` gains two fields, and they are the two a record could not answer with.**
