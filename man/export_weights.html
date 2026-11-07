@@ -798,6 +798,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#arguments" id="toc-arguments" class="nav-link" data-scroll-target="#arguments">Arguments</a></li>
   <li><a href="#details" id="toc-details" class="nav-link" data-scroll-target="#details">Details</a></li>
   <li><a href="#value" id="toc-value" class="nav-link" data-scroll-target="#value">Value</a></li>
+  <li><a href="#what-the-engine-writes-without-being-asked" id="toc-what-the-engine-writes-without-being-asked" class="nav-link" data-scroll-target="#what-the-engine-writes-without-being-asked">What the engine writes without being asked</a></li>
   <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
   </ul></li>
   </ul>
@@ -864,6 +865,12 @@ Extra fields for the sidecar, for instance <code>data = “BBBC038v1”</code>, 
 <section id="value" class="level3">
 <h3 class="anchored" data-anchor-id="value">Value</h3>
 <p>The path written, invisibly, with the sidecar’s contents attached as the <code>recorded</code> attribute - so you can see what was put beside the weights without opening the file.</p>
+</section>
+<section id="what-the-engine-writes-without-being-asked" class="level3">
+<h3 class="anchored" data-anchor-id="what-the-engine-writes-without-being-asked">What the engine writes without being asked</h3>
+<p>Two things, since engine <code style="white-space: pre;">0.8.0a75</code>, and they are the ones a caller is in no position to know: <code>trained_with</code>, the engine version that produced the file, and <code>measured_with</code> - the engine that measured the figures beside the weights <strong>and the configuration it measured them with</strong>, resolved rather than as it was written.</p>
+<p>Resolved is the whole point. <a href="../man/metrics.html"><code>metric_cldice()</code></a>’s <code>iterations</code> is the skeleton’s peel count; it moves the number by about five points on one published set of weights, and before this it appeared in no file, because nobody had written it down - it was the metric’s own default. A sidecar recording only what a configuration <em>stated</em> would have recorded nothing about it. What is in the block is task-specific, because the question is: a segmentation or classification fit records its metrics, an instance fit adds how objects were separated and decoded, and a detection fit records the three thresholds its table moves with and has no metric list at all.</p>
+<p>Passing either of those names in <code>…</code> is refused rather than ignored, because a caller’s copy of a fact only the engine knows is a copy that will drift.</p>
 </section>
 <section id="examples" class="level3">
 <h3 class="anchored" data-anchor-id="examples">Examples</h3>
