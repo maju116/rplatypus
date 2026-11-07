@@ -104,6 +104,32 @@ test_that("a trained model's weights make the round trip through R", {
   expect_equal(recorded$data, "the tiny fixture")
   expect_equal(recorded$licence, "MIT")
 
+  # And two things NOBODY passed, since engine 0.8.0a75. This is R's receipt for the
+  # paragraph `?export_weights` gained with that pin: the page tells a reader the engine
+  # writes these without being asked, and until this the claim was prose about the other
+  # package's behaviour with nothing reading it. `maju116/pyplatypus#419`.
+  expect_match(recorded$trained_with, "^pyplatypus ")
+  expect_identical(sub("^pyplatypus ", "", recorded$trained_with),
+                   platypus_status()$engine_version)
+
+  # `measured_with` is the one the issue is about, and the assertion is on the parameter
+  # nobody wrote: `metric_dice()` above sets no `smooth`, so a block recording the
+  # configuration AS WRITTEN would carry nothing here. Resolved, it carries the default -
+  # which is the whole reason the key exists, since clDice's peel count arrived the same way
+  # and moved a published figure by about five points.
+  expect_identical(recorded$measured_with$engine, platypus_status()$engine_version)
+  metrics <- recorded$measured_with$metrics
+  expect_length(metrics, 1L)
+  expect_identical(metrics[[1]]$name, "dice")
+  expect_false(is.null(metrics[[1]]$smooth))
+
+  # The refusal, which is what makes the two keys the engine's answer rather than a default
+  # somebody can quietly replace.
+  expect_error(
+    export_weights(fit, file.path(withr::local_tempdir(), "clash"), trained_with = "mine"),
+    "trained_with"
+  )
+
   # And they load back into the same specification, which is the point of saving them.
   again <- platypus_spec(
     data = segmentation_data(root, root, colormap = binary_colormap),
