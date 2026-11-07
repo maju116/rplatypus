@@ -52,9 +52,15 @@ test_that("a record written by a real run reads back whole", {
   # Held to the writer rather than to this file's idea of a record: these are the keys
   # `pyplatypus/runs.py` writes, and a release that stopped writing one would fail here
   # rather than returning NULL somewhere later.
+  #
+  # `weights_epoch` and `stop_reason` arrived with engine 0.8.0a74, and this assertion is
+  # what went red when the pin moved - the ratchet rather than a break. The engine asserts
+  # the same set on its own side now, because an exact key set is the published format and
+  # until that release only this line held it.
   expect_setequal(
     names(record),
-    c("written", "pyplatypus", "model", "specification", "derived", "history")
+    c("written", "pyplatypus", "model", "specification", "derived", "history",
+      "weights_epoch", "stop_reason")
   )
   expect_identical(record$model, "tiny")
 
@@ -112,7 +118,54 @@ test_that("printing a record says what it is without dumping the specification",
   # `derived` is named rather than counted, because for a detector the name that matters is
   # `anchors` and "1 derived" would not say it.
   expect_match(shown, "derived", fixed = TRUE)
+  # The two run-level facts the record gained with engine 0.8.0a74. This fit asks for no
+  # callback that replaces weights, so it selected no epoch and the honest line is the words
+  # rather than a number - which is also the half `is.null()` cannot tell from a record
+  # written by an older engine, measured: jsonlite gives NULL for a JSON null and for an
+  # absent key alike, so the print method tests the NAME.
+  expect_match(shown, "weights from", fixed = TRUE)
+  expect_match(shown, "no single epoch", fixed = TRUE)
+  expect_false(grepl("weights from: epoch", shown, fixed = TRUE))
   # And the specification is summarised, not printed: a record carries the whole thing, and
   # a print method that dumps it is a print method nobody calls twice.
   expect_false(grepl("colormap", shown, fixed = TRUE))
+})
+
+test_that("a record names the epoch its weights came from, and the score table agrees", {
+  skip_if_no_engine()
+
+  # `callback_early_stopping(restore_best = TRUE)` is what makes the weights one epoch's
+  # rather than the last one's, so this is the arm where the record has a number to carry.
+  root <- tiny_dataset()
+  out <- withr::local_tempdir()
+  spec <- platypus_spec(
+    data = segmentation_data(root, root, colormap = binary_colormap),
+    models = list(u_net("selected", input_shape = c(32, 32), blocks = 2, filters = 4,
+                        epochs = 3, batch_size = 2,
+                        callbacks = list(callback_early_stopping(patience = 5,
+                                                                 restore_best = TRUE)))),
+    output_dir = out
+  )
+  fit <- platypus_fit(spec, device = "cpu")
+
+  record <- read_record(file.path(out, "selected"))
+  expect_true("weights_epoch" %in% names(record))
+  expect_false(is.null(record$weights_epoch))
+  expect_type(record$weights_epoch, "integer")
+
+  # Against the TABLE rather than against a number. Both read the one place the engine
+  # records it, so a record disagreeing with the score beside it is two copies of one fact
+  # falling out of step - which is the failure this release's own engine test is about.
+  scored <- evaluate(fit, split = "validation")
+  expect_identical(as.integer(scored$best_epoch[[1]]), record$weights_epoch)
+
+  # And the rows are still rows: `history` is the key R turns into a frame, which is the
+  # whole reason the two facts are siblings of it rather than fields inside it.
+  expect_s3_class(record$history, "data.frame")
+  expect_identical(nrow(record$history), 3L)
+  expect_false("weights_epoch" %in% names(record$history))
+
+  # The print method shows the number here, where the arm above shows the words.
+  shown <- paste(capture.output(print(record)), collapse = "\n")
+  expect_match(shown, paste("weights from: epoch", record$weights_epoch), fixed = TRUE)
 })
