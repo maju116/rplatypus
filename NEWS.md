@@ -20,6 +20,23 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-07 (later) - The retinal vignette's clDice gap is the metric's peel count, not the model's training
+
+**`vignette("retinal-vessels")` told a reader that a better-trained model closes the gap
+between clDice and Dice, and it had never been measured at one setting.** This page calls
+`metric_cldice()` with its default `iterations = 5`; the engine's article measures the same
+metric at 12. Re-scored on their own test split at five peels, the published forty-epoch
+weights give a correlation of 0.856 and a mean difference of -0.082 - this page's own 0.8581
+and -0.0833, to within 0.002 - so about 0.085 of the distance between the two pages is the
+peel count and 0.0015 is the training.
+
+The paragraph says that instead, both pages now name the peel count beside their figures, and
+the comparison the two pages make together is held at one setting rather than as an ordering
+of two. Nothing trained: the weights exist and a re-score takes four minutes.
+`maju116/rplatypus#298`, with the engine's half `maju116/pyplatypus#425`.
+
+**The engine it needs: none beyond the pin**, which stays at `0.8.0a75`.
+
 ### 2026-11-07 - The pin moves to `0.8.0a75`: a weights sidecar says what its figures were measured with
 
 **`export_weights()` now writes two things you do not pass it.** `trained_with` is the engine

@@ -296,21 +296,34 @@ set of bad images. The **mean difference** is negative and not small - clDice si
 points *below* Dice - which says the vessels this model draws are less connected than their
 pixel overlap suggests. It is getting the right pixels and breaking the lines.
 
-That gap is a property of the model rather than of the metric, and the engine's own run of the
-same configuration is the evidence: at forty epochs instead of fifteen the two agree to a
-correlation of 0.978 and a mean difference of +0.004. **The better-trained model closes the
-gap.** So a large negative gap here is not clDice being pessimistic - it is clDice measuring
-the thing that fifteen epochs had not finished learning, and Dice not noticing.
+That gap is the metric's **peel count** rather than the model's training, and the way to tell
+is to measure one set of weights two ways. `metric_cldice()` above takes its default
+`iterations = 5`; the engine's article measures the same metric at `iterations: 12`, a number
+it argues for against vessels nine pixels across. Those are two measurements rather than one,
+so reading this page's clDice against the article's says something about the metric before it
+says anything about either model.
 
-**Those two figures are the engine's and were measured before clDice's own definition
-changed**, which has to be said before anybody reads them against the numbers above.
-`0.8.0a72` made the soft skeleton erode with a four-neighbour cross rather than a 3 x 3
-square, because that is what the reference implementation does; a cross erodes less, leaves a
-thinner skeleton, and scores lower. How much lower depends on the prediction - measured on
-ten of these masks with the prediction thinned, between 0.004 and 0.074 - so a clDice from one
-definition and a clDice from the other are not a difference worth reading. Everything this
-document prints comes from the pinned engine. The engine's forty-epoch figures above and
-every clDice figure in the tables below do not.
+The published forty-epoch weights settle how much is which, because they can be re-scored
+without being retrained. On their own test split, at this page's own five peels, they give a
+correlation of 0.856 and a mean difference of -0.082 - this page's own 0.8581 and -0.0833, to
+within 0.002 on both. At twelve peels the same weights give 0.973 and -0.001.
+
+So of the distance between this page's figures and the article's, about 0.085 is the peel
+count and 0.0015 is the forty epochs. **A large negative gap here is a skeleton that was not
+thinned, rather than a model breaking lines.** Twelve peels is chosen so that the widest
+vessels in the set reach a centreline and not only the average one; at five they do not, and
+what is left of them is counted as skeleton - which makes part of this number a measure of
+thickness, the one thing clDice exists to ignore.
+
+**The article's own table was measured before clDice's definition changed, and the two
+re-scores quoted above were not.** `0.8.0a72` made the soft skeleton erode with a
+four-neighbour cross rather than a 3 x 3 square, because that is what the reference
+implementation does; a cross erodes less, leaves a thinner skeleton, and scores lower. How
+much lower depends on the prediction - measured on ten of these masks with the prediction
+thinned, between 0.004 and 0.074, and on the published weights at twelve peels, 0.004 - so a
+clDice from one definition and a clDice from the other are not a difference worth reading.
+Everything this document prints, and both re-scores above, come from the pinned engine. The
+article's forty-epoch table and every clDice figure in the tables below do not.
 
 ## The worst case, drawn
 
