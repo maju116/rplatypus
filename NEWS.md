@@ -20,9 +20,58 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
-### 2026-11-08 (last of the day) - Every table passes through one function, and it kept the first value of a cell that held several
+### 2026-11-08 (sixth of the day) - The pin moves to `0.8.0a79`, and a sentence that was true said less than the engine does
 
-`rows_to_frame()` is the seam every reported table crosses - ten callers, every scoring
+A weights sidecar records **how the data was read** from this engine on. `measured_with`
+already carried the model's half - how the figures were *computed* - and now carries the
+data's beside it: how the data was *read*, which decides what they were measured **on**.
+`window` for every task, and `channels_from` and `target_spacing` for a semantic
+segmentation fit. `maju116/pyplatypus#447`.
+
+**What R owed was prose, which is a release this package needs something from rather than
+one it only passes through.** The section of `?export_weights` that tells a reader what the
+block holds, task by task, was true in every clause and **incomplete as a whole** the moment
+the engine shipped: every task also records how its data was read. That is the failure this
+project keeps paying for one layer down, which is what the field-prose ledger exists for - a
+page that is true and says less than the code does, with nothing holding it.
+
+**The asymmetry is held by a test, because a reader would guess the other way.** The two
+halves of a specification inherit differently: an instance model extends the segmentation
+model and so has `splits`, while instance **data** extends the base data class and so has
+only `window`. So a semantic fit records `channels_from` and `target_spacing` and an instance
+fit records neither. I wrote the opposite into the help page first and the engine said so
+when asked.
+
+**Only what is set**, which is the engine's decision and the reason absence carries meaning
+here: a missing `target_spacing` says *this run named none*, not *resampled to nothing*. A
+record that wrote `null` could not be told from one written by an engine too old to answer -
+the distinction `0.8.0a74` drew in this package, where `jsonlite` returns `NULL` for a JSON
+`null` and for an absent key alike. `window` is the exception and is always there, because it
+always has a value: `"auto"` is a windowing rather than an absence, and it means *whatever
+window the file itself recorded*, so two datasets read with `"auto"` are not read alike.
+
+**The receipt runs in both directions**, beside the one that has held `trained_with` since
+the `a75` pin. A fit that names no window records `"auto"` - the value nobody wrote, which is
+the resolved-rather-than-as-written argument - and a fit built with
+`segmentation_data(window = "lung")` records `"lung"`. The first on its own is satisfied by a
+block recording a constant. The absence of the two semantic fields is asserted as well,
+because that is what *only what is set* means on the side a test can see.
+
+**The field-prose ledger answered *nothing to re-read*, and the prediction was written down
+before it ran.** 117 fields, one line moved - the version - and every digest held, because
+`0.8.0a79` added two methods and rewrote no `description=`. Fourth time that answer has come
+back, and it costs one command.
+
+**Two corrections to the fifth entry of today, both numbers in prose that a measurement
+contradicts.** `rows_to_frame()` has **nine** callers and that entry said ten, twice: one in
+`read_record()`'s path and eight in the fitting surface, counted off the source rather than
+remembered. And its heading said *last of the day*, which is a pointer to the end of a
+growing list and was falsified by this entry - the same shape `CLAUDE.md` records about
+naming the journal's last section. It says *fifth of the day* now.
+
+### 2026-11-08 (fifth of the day) - Every table passes through one function, and it kept the first value of a cell that held several
+
+`rows_to_frame()` is the seam every reported table crosses - nine callers, every scoring
 table, the run record's history and all nine catalogue listings - and a cell holding more
 than one value came back as its first, with nothing said. It now **refuses, naming the
 column and the row**.
@@ -44,7 +93,7 @@ reads `FAIL 0 | SKIP 0 | PASS 2187` and the refusal never fires. What was wrong 
 function being unable to say so if a row ever does arrive wide, and the flattening rule
 living somewhere other than in the thing that truncates.
 
-**A refusal rather than a warning, and the call graph is what decides it.** All ten callers
+**A refusal rather than a warning, and the call graph is what decides it.** All nine callers
 pass something the engine built, never anything a user wrote, so this can only ever fire on
 a defect in this package or in the engine - it is addressed to us, and a frame that is
 quietly wrong is the thing this project keeps measuring the cost of. The message says so and
