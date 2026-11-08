@@ -54,9 +54,15 @@ themselves are uncertain, which on a hand-drawn boundary they are.}
 provides. At 0 or 1 it is one of the two alone, which is worth knowing before tuning it
 as though it were a third thing.}
 
-\item{gamma}{For focal losses, how hard to discount what is already classified well -
-a pixel or voxel for a mask, a whole image for a label - so the gradient comes from
-what is not. 0 is plain cross-entropy and 2 is the usual value.}
+\item{gamma}{How hard to discount what is already scoring well, so the gradient comes
+from what is not - but it is \strong{two different parameters} and the defaults differ.
+For \code{loss_focal()} it is the exponent on a single prediction - a pixel or voxel for a
+mask, a whole image for a label, where 0 is plain cross-entropy exactly; the default
+is 2. For \code{loss_focal_tversky()} it is the exponent on \code{1 - TI} over a whole class,
+where 1 is plain Tversky and 0 is refused rather than meaning anything; the default
+is 1. And that second one is \strong{not} the \code{gamma} of Abraham and Khan
+(arXiv:1810.07842), who write the exponent as \code{1/gamma}: theirs is the reciprocal of
+this, so their recommended 4/3 is this argument's 0.75. The two agree only at 1.}
 
 \item{alpha}{For Tversky, the weight on false negatives; raising it buys recall.
 Note that \code{alpha = 0.5} is Dice exactly only when \code{smooth = 0}.}

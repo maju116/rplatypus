@@ -84,9 +84,15 @@ int1 <- function(x) whole(x, deparse(substitute(x)))
 #' engine refuses it at either task now (`pyplatypus#223`).
 #'
 #' @param smooth Added to numerator and denominator to keep an empty class finite.
-#' @param gamma For focal losses, how hard to discount what is already classified well -
-#'   a pixel or voxel for a mask, a whole image for a label - so the gradient comes from
-#'   what is not. 0 is plain cross-entropy and 2 is the usual value.
+#' @param gamma How hard to discount what is already scoring well, so the gradient comes
+#'   from what is not - but it is **two different parameters** and the defaults differ.
+#'   For `loss_focal()` it is the exponent on a single prediction - a pixel or voxel for a
+#'   mask, a whole image for a label, where 0 is plain cross-entropy exactly; the default
+#'   is 2. For `loss_focal_tversky()` it is the exponent on `1 - TI` over a whole class,
+#'   where 1 is plain Tversky and 0 is refused rather than meaning anything; the default
+#'   is 1. And that second one is **not** the `gamma` of Abraham and Khan
+#'   (arXiv:1810.07842), who write the exponent as `1/gamma`: theirs is the reciprocal of
+#'   this, so their recommended 4/3 is this argument's 0.75. The two agree only at 1.
 #' @param alpha For Tversky, the weight on false negatives; raising it buys recall.
 #'   Note that `alpha = 0.5` is Dice exactly only when `smooth = 0`.
 #' @param label_smoothing For cross-entropy, train towards `1 - label_smoothing` instead of

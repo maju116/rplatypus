@@ -6,7 +6,7 @@
 #
 # A digest that no longer matches is not the engine's failure. It is a question - does R's
 # prose still say the right thing? - asked at the only moment anybody would ask it.
-engine: 0.8.0a77
+engine: 0.8.0a78
 fields:
   - field: activation
     engine_digest: 4822b126e39826a504979a6b123cc241
@@ -138,7 +138,7 @@ fields:
     engine_digest: 45cd58ac6f554eb1de5604337c12e6d5
     documented_in: [classifier, models]
   - field: gamma
-    engine_digest: 5fb9af1e78b16e81d684b64be19cb696
+    engine_digest: 2e32b28708c34e0ebf350945ac66e655
     documented_in: [losses]
   - field: group_by
     engine_digest: 1d73b2ed9f89cd1de0934ae841e5bcd8
