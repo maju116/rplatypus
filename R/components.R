@@ -93,8 +93,15 @@ int1 <- function(x) whole(x, deparse(substitute(x)))
 #'   is 1. And that second one is **not** the `gamma` of Abraham and Khan
 #'   (arXiv:1810.07842), who write the exponent as `1/gamma`: theirs is the reciprocal of
 #'   this, so their recommended 4/3 is this argument's 0.75. The two agree only at 1.
-#' @param alpha For Tversky, the weight on false negatives; raising it buys recall.
-#'   Note that `alpha = 0.5` is Dice exactly only when `smooth = 0`.
+#' @param alpha **Four losses take an `alpha` and it means three different things**, so
+#'   read the one for the loss you are writing. For `loss_tversky()` and
+#'   `loss_focal_tversky()` it is the weight on false negatives; raising it buys recall, and
+#'   `alpha = 0.5` is Dice exactly only when `smooth = 0`; the default is 0.5. For
+#'   `loss_combo()` it is the cross-entropy half's **share of the total** - the objective is
+#'   `alpha * cross_entropy + (1 - alpha) * dice`, so raising it moves weight onto
+#'   cross-entropy and does nothing about recall, which in that loss is `ce_ratio`'s job;
+#'   the default is 0.5. For `loss_focal()` it is a **per-class weight**, `1 - alpha` on the
+#'   background class and `alpha` on the rest, and the default is `NULL`, meaning off.
 #' @param label_smoothing For cross-entropy, train towards `1 - label_smoothing` instead of
 #'   towards 1, so the model is not pushed to be certain. Worth having where the labels
 #'   themselves are uncertain, which on a hand-drawn boundary they are.
@@ -488,10 +495,12 @@ metric_auc <- function() list(name = "auc")
 #'   too slowly to tell from not improving at all. Each parameter group decays from its own
 #'   rate, so an `encoder_learning_rate` is not flattened by a schedule.
 #' @param weight_decay Pull the weights towards zero at every step, which is L2
-#'   regularisation. Off by default because it interacts with the loss and is not free: on a
-#'   small dataset it can cost more than the overfitting it prevents. In `optimizer_adamw()`
-#'   it is applied to the weights directly rather than through the gradient, which is the
-#'   whole difference between the two.
+#'   regularisation. **Seven of the eight optimisers here have the default 0, and
+#'   `optimizer_adamw()` has 0.01** - decay is what that optimiser is for, so turning it off
+#'   there leaves plain Adam with a different update rule. Elsewhere it is off because it
+#'   interacts with the loss and is not free: on a small dataset it can cost more than the
+#'   overfitting it prevents. In `optimizer_adamw()` it is applied to the weights directly
+#'   rather than through the gradient, which is the whole difference between the two.
 #' @param beta_1 Decay for the running average of the gradient. Lower reacts to the last few
 #'   batches, higher smooths over more of them; 0.9 is the usual value and rarely worth
 #'   moving.

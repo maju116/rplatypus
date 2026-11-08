@@ -64,8 +64,15 @@ is 1. And that second one is \strong{not} the \code{gamma} of Abraham and Khan
 (arXiv:1810.07842), who write the exponent as \code{1/gamma}: theirs is the reciprocal of
 this, so their recommended 4/3 is this argument's 0.75. The two agree only at 1.}
 
-\item{alpha}{For Tversky, the weight on false negatives; raising it buys recall.
-Note that \code{alpha = 0.5} is Dice exactly only when \code{smooth = 0}.}
+\item{alpha}{\strong{Four losses take an \code{alpha} and it means three different things}, so
+read the one for the loss you are writing. For \code{loss_tversky()} and
+\code{loss_focal_tversky()} it is the weight on false negatives; raising it buys recall, and
+\code{alpha = 0.5} is Dice exactly only when \code{smooth = 0}; the default is 0.5. For
+\code{loss_combo()} it is the cross-entropy half's \strong{share of the total} - the objective is
+\code{alpha * cross_entropy + (1 - alpha) * dice}, so raising it moves weight onto
+cross-entropy and does nothing about recall, which in that loss is \code{ce_ratio}'s job;
+the default is 0.5. For \code{loss_focal()} it is a \strong{per-class weight}, \code{1 - alpha} on the
+background class and \code{alpha} on the rest, and the default is \code{NULL}, meaning off.}
 
 \item{ce_ratio}{For \code{loss_combo()}, how its cross-entropy half is tilted between
 punishing missed foreground (towards 1) and false alarms (towards 0), while \code{alpha}

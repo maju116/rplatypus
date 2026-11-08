@@ -20,6 +20,50 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-08 (later again) - One `@param` for several functions is a class, and two more of them were wrong
+
+`#304` repaired `gamma`, which documented two losses with one sentence that was false about
+the second. That was one instance. The fourteenth review pass enumerated **every** `\item`
+in every help page against `formals()` of the functions that page documents, and the class
+has two more members.
+
+    48 shared items (two or more exported functions take them)
+     7 whose functions DISAGREE about the default
+     2 of the seven wrong
+
+**`?losses`' `alpha` documented four losses and described one of three meanings.** It said
+*"For Tversky, the weight on false negatives; raising it buys recall"*, which is right for
+`loss_tversky()` and `loss_focal_tversky()` and wrong for the other two. In `loss_combo()`
+`alpha` is the cross-entropy half's **share of the total** - measured on the running engine,
+and the decomposition is exact: `alpha * cross_entropy + (1 - alpha) * dice`. So a reader
+who writes `loss_combo(alpha = 0.7)` *to buy recall* moves weight onto cross-entropy and
+leaves the false-negative weighting alone, which in that loss is `ce_ratio`'s job. In
+`loss_focal()` it is a per-class weight with `1 - alpha` on the background and `NULL`
+meaning off.
+
+**`?optimizers`' `weight_decay` said *"Off by default"* and named `optimizer_adamw()` two
+sentences later without saying it is on there.** Seven of the eight optimisers default to 0;
+AdamW defaults to **0.01**, which is what that optimiser is for.
+
+Both items now state each meaning with the function it belongs to.
+
+**And the census is kept as a guard rather than as a reading**, `test-shared-param-census.R`.
+What it deliberately does NOT do is judge the prose, and the measurement is why: of the
+seven, two were wrong and five were right, and no mechanical signal separates them. A rule
+of *name at least two of the functions* catches both defects **and condemns `monitor`,
+`patience` and `eps`**, which are correct - there the argument means the same thing
+everywhere and only the default differs. So the guard does what the field-prose ledger does:
+it records the seven with a reason each and fails when an eighth appears, which guarantees
+somebody was asked. Both directions proven: a new disagreeing item fails it, and dropping a
+recorded one fails it too.
+
+Neither defect was visible to `R CMD check`, which is satisfied when an argument is
+documented once.
+
+`maju116/rplatypus#306`.
+
+**The engine it needs: none beyond the pin**, which stays at `0.8.0a78`.
+
 ### 2026-11-08 (later still) - The pin moves to `0.8.0a78`, and one `@param` was wrong about one of its two functions
 
 **This is a release this package needs something FROM**, which is rarer here than the usual
