@@ -20,6 +20,51 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-08 - The pin moves to `0.8.0a77`: a weights sidecar you can reproduce its clDice from
+
+**One move for two engine releases**, which is what the pin is for: a release this package
+needs nothing *from* does not move it, and a release whose fix reaches an R user **through**
+it does. Both of these are the second kind.
+
+**`0.8.0a76` records the tiling in a weights sidecar.** A source image is read at
+`splits * input_shape` and cut, so the tiling decides which pictures a reported figure was
+measured on while the weights and the data stay the same - and nothing was writing it down.
+Measured on the published `fives-unet` with nothing else changed: four tiles by four give a
+Dice of 0.8788833 and two by two give 0.8054393, **0.0734 on one file**, and the sidecar
+`export_weights()` wrote for those two runs was identical. This package forwards what the
+engine writes, so the key arrives rather than needing anything here.
+
+**A prediction was made before the pin moved and it held**: this package's suite does not go
+red. `test-weights.R` asserts the recorded engine, the metric list's length, the metric's
+name and that its resolved `smooth` is there - **not the key set** - unlike `test-records.R`,
+which pins a run record's names exactly and went red at `0.8.0a74`. Two releases that look
+identical from a distance, and the ratchet fires in only one.
+
+**`0.8.0a77` moves the published `fives-unet` weights to a corrected sidecar.** The file on
+the Hub recorded a clDice of 0.877906778305769 and said **nothing about the peel count**, so a
+reader holding it and `metric_cldice()` as it comes - `iterations = 5` - measures 0.7970546
+instead. 0.0809 apart, with nothing in the file to say why. It now carries
+`cldice_iterations: 12` beside the engine that measured it, and a model written with
+`weights = "fives-unet"` fetches that file - `platypus_fit()` brings it down on first use and
+the sidecar comes with it.
+
+`available_weights()` reads the registry from the engine, so **the listing does not change**:
+the description naming twelve peels and the default of five arrived with the previous pin
+move. What changes is the sidecar a reader gets.
+
+**And the first draft of this entry named a function this package does not have** -
+`load_weights`, invented twice while describing how an R user reaches published weights,
+which is through `weights = "fives-unet"` in a model and `platypus_fit()`. That is
+`maju116/rplatypus#229`'s defect exactly, in the entry whose own test exists because of it,
+caught by reading `NAMESPACE` before the gate ran rather than by the gate. The same invented
+name reached the engine's `CHANGELOG.md`, where **nothing** would have caught it - filed as
+`maju116/pyplatypus#440`.
+
+`maju116/rplatypus#300`, with the engine's halves `maju116/pyplatypus#427` and
+`maju116/pyplatypus#426`.
+
+**The engine it needs: none beyond the pin.**
+
 ### 2026-11-07 (later) - The retinal vignette's clDice gap is the metric's peel count, not the model's training
 
 **`vignette("retinal-vessels")` told a reader that a better-trained model closes the gap
