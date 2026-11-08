@@ -61,7 +61,26 @@ same volumes at a different \code{target_spacing} scores a different number of r
 an identical model input shape, and a scan read on a lung window is not the picture the
 same scan is on a soft-tissue one.
 
+And since engine \verb{0.8.0a80} the same block answers a second question about the data:
+\strong{which cases were scored}. \code{split} is recorded when a run partitions one folder instead
+of naming a second, and it is the companion to the paragraph above rather than more of it -
+that one says what the pictures looked like when they were measured, this one says which
+pictures there were. A reader who has the first and not the second can reproduce the
+windowing and still score a different set of images.
+
+It is recorded \strong{resolved}, which is where its value is. \code{fractions} alone describes a
+partition; \code{fractions} with \code{group_by} and \code{seed} and the files that were found determines
+it. So \code{seed} is there even when nobody wrote one - it defaults to 0 and arrives by
+resolution - and \code{group_by} is there because that is what makes a split by patient rather
+than by slice, which is the difference \code{\link[=split_dataset]{split_dataset()}} exists to let you keep.
+
+\strong{\code{split} is not \code{splits}}, and they now sit in the same block one letter apart. \code{split}
+is the data's partition: which cases were held out. \code{splits} is the model's tiling: a
+source image read at \code{splits} times \code{input_shape} and cut into pieces. One decides how
+many cases there are, the other which pictures a metric sees inside one case.
+
 \strong{The data's half records only what was set}, and that asymmetry is the useful part. A
+missing \code{split} means \emph{this run named a second folder}, so nothing was partitioned, and a
 missing \code{target_spacing} means \emph{this run named none}, not \emph{resampled to nothing}: the
 field defaults to \code{NULL}, and a record that wrote \code{null} could not be told apart from one
 written by an engine too old to answer. \code{window} is the exception and is always there,

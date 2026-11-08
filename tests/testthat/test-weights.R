@@ -269,3 +269,67 @@ test_that("a window somebody DID name reaches the sidecar", {
   # and that the block is this package's to read.
   expect_false("target_spacing" %in% names(recorded$measured_with))
 })
+
+test_that("the split a run partitioned with reaches the sidecar, resolved", {
+  # `maju116/pyplatypus#450`, and the companion to the `window` receipts above: those say what
+  # the pictures looked like when they were measured, this says WHICH pictures there were.
+  #
+  # `CLAUDE.md` §4 has what the silence cost. `dsbowl-unet`'s card reports Dice over "134
+  # held-out images"; the 134 case directories on that disk are a DIFFERENT 134, and the
+  # discrepancy that gave it away was 0.01 of Dice - which is also what a rounding difference
+  # looks like. `fractions`, `group_by` and `seed` with the files that were found turn *which
+  # 134* from a question into a reading.
+  #
+  # RESOLVED is the half that matters, and the seed is the proof of it: nothing below writes
+  # one, so a block recording the configuration as WRITTEN would carry a partition nobody can
+  # rebuild. `group_by` is in it for the other half - that is what makes a split by patient
+  # rather than by file, which is the difference `split_dataset()` exists to let you keep.
+  skip_if_no_weights_registry()
+  root <- tiny_dataset()
+  spec <- platypus_spec(
+    data = segmentation_data(
+      root,
+      colormap = binary_colormap,
+      split = list(fractions = c(0.7, 0.3), group_by = NULL)
+    ),
+    models = list(u_net("tiny", input_shape = c(32, 32), blocks = 2, filters = 4,
+                        epochs = 1, batch_size = 2,
+                        metrics = list(metric_dice())))
+  )
+  fit <- platypus_fit(spec, num_workers = 0)
+  written <- export_weights(fit, file.path(withr::local_tempdir(), "partitioned"))
+  recorded <- attr(written, "recorded")$measured_with
+
+  expect_identical(unlist(recorded$split$fractions), c(0.7, 0.3))
+  expect_identical(recorded$split$seed, 0L)
+  expect_true("group_by" %in% names(recorded$split))
+
+  # `split` is not `splits`, and they sit in this one block one letter apart: the first is
+  # which cases were held out, the second how a source image was cut into tiles. A reader
+  # meeting both reads one for the other, so the receipt says they are different keys.
+  expect_false("splits" %in% names(recorded$split))
+  expect_true("splits" %in% names(recorded))
+})
+
+test_that("a run that names a second folder records NO split, which is the absent case", {
+  # The other direction, and it is a real case rather than a theoretical one: the two ways of
+  # getting a validation set are exclusive, so a run with a second folder partitioned nothing
+  # and the record says so by saying nothing. Without this the test above passes on a block
+  # that records a split unconditionally.
+  skip_if_no_weights_registry()
+  root <- tiny_dataset()
+  spec <- platypus_spec(
+    data = segmentation_data(root, root, colormap = binary_colormap),
+    models = list(u_net("tiny", input_shape = c(32, 32), blocks = 2, filters = 4,
+                        epochs = 1, batch_size = 2,
+                        metrics = list(metric_dice())))
+  )
+  fit <- platypus_fit(spec, num_workers = 0)
+  written <- export_weights(fit, file.path(withr::local_tempdir(), "two-folders"))
+  recorded <- attr(written, "recorded")$measured_with
+
+  expect_false("split" %in% names(recorded))
+  # And the block is otherwise the same one, or this asserts that the key is missing because
+  # nothing was recorded at all.
+  expect_identical(recorded$window, "auto")
+})
