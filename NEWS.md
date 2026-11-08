@@ -20,6 +20,42 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-08 (eighth of the day) - A misspelt argument is refused rather than swallowed, and `evaluate_cases()` can be asked for a decoding
+
+Eight exported functions and methods took `...` and no body read one, so
+`predict(fit, splt = "test")` predicted on the default split and **said nothing**. The wrong
+answer is a correct answer to a different question. `maju116/rplatypus#315`.
+
+They check the dots now - `rlang::check_dots_empty()`, which costs no new dependency because
+`rlang` was already an import - and `detection_crops()` loses its `...` altogether, because
+it is a plain export rather than an S3 method and R's own `unused argument` is a better
+message than any check.
+
+**The check is the FIRST statement in each body**, and that is a decision rather than a
+style: put it after a method's own refusals and a typo on a classification fit reports the
+classification refusal instead, which sends the reader to the wrong sentence.
+
+**`evaluate_cases()` gains `decode`**, which is the same class with a real argument rather
+than a typo. `maju116/rplatypus#314`: an instance model with two decodings gets a row per
+decoding from `evaluate()`, and its per-case table could only ever be the first one's -
+with `decode = "watershed"` swallowed by the dots rather than refused. `dsbowl-instances`
+publishes one trained file whose three decodings are 0.0623 apart, which is exactly the
+comparison a per-case table exists to make readable. Refused by name off an instance fit,
+copying `predict()`'s own repair of the same shape.
+
+**And there is a limit to this, measured rather than assumed, because the help pages must
+not promise more than it does.** R matches a supplied name to a formal it is a **prefix** of
+before anything reaches `...`, so `plot(fit, metric = "dice")` sets `metrics` and the dots
+stay empty - no check anywhere can see it. `splt` is not a prefix of `split`, which is why
+that one is refused. So the promise is narrower than *a misspelt argument is refused*: a
+misspelling that is not a prefix of a formal is refused, and one that is becomes the
+argument it prefixes. Held by its own test.
+
+**Print methods and `as.list()` keep accepting and ignoring**, on purpose: R itself calls
+them, so a check there could fire on a call the user did not make. The census that holds all
+of this exempts them **by rule rather than by name**, which it earned on its first run - the
+first version listed five print methods and this package has eleven.
+
 ### 2026-11-08 (seventh of the day) - The pin moves to `0.8.0a80`: the sidecar said how the data was read and not which cases were scored
 
 `measured_with` gained *how the data was read* at `0.8.0a79`. This adds *which cases were

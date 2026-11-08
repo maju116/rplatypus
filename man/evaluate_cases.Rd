@@ -14,6 +14,7 @@ evaluate_cases(object, ...)
   split = "validation",
   group_by = NULL,
   at = NULL,
+  decode = NULL,
   ...
 )
 
@@ -22,7 +23,8 @@ evaluate_cases(object, ...)
 \arguments{
 \item{object}{A \code{platypus_cases} from \code{\link[=evaluate_cases]{evaluate_cases()}}.}
 
-\item{...}{Unused.}
+\item{...}{Must be empty. Accepted because the generic has it, and checked rather than
+ignored so that a misspelt argument is refused instead of changing the answer.}
 
 \item{model}{Which model, by the name in the specification. Defaults to the first.}
 
@@ -36,6 +38,11 @@ slices are pooled into one score, the way a volume would be.}
 \code{load_shape}; \code{"source"} reads each truth as stored and scores the prediction there,
 which is the only form in which rows from two models - or from two runs with different
 \code{target_spacing} - mean the same thing.}
+
+\item{decode}{Which decoding's cases to score, by the name used in the model's \code{decode}
+list. Unset takes the model's first, which is the engine's own default. Only an
+instance fit decodes anything, so naming it on any other task is refused rather than
+ignored - and \code{evaluate()} is where the per-decoding means are, one row each.}
 }
 \value{
 A data frame with one row per case, of class \code{platypus_cases}.

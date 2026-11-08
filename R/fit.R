@@ -171,7 +171,8 @@ print.platypus_fit <- function(x, ...) {
 #'   file it came from and scores it against the truth as stored, which is the form in
 #'   which rows from models of different shapes answer one question. Segmentation only: a
 #'   detection table has no grid to choose and says so rather than ignoring the argument.
-#' @param ... Unused.
+#' @param ... Must be empty; a misspelt argument is refused rather than ignored,
+#'   which is what it used to be. `maju116/rplatypus#315`.
 #' @return A data frame, one row per model.
 #' @export
 #' @examples
@@ -190,6 +191,18 @@ evaluate <- function(object, ...) UseMethod("evaluate")
 #' @rdname evaluate
 #' @export
 evaluate.platypus_fit <- function(object, split = "validation", at = NULL, ...) {
+  # THE DOTS ARE THE GENERIC'S CONTRACT AND NOT A PLACE TO PUT ARGUMENTS, so they are
+  # checked rather than ignored. `maju116/rplatypus#315`: eight exported functions took
+  # `...` and no body read one, so `evaluate(fit, splt = "test")` scored the default split
+  # and said nothing - the wrong answer is a correct answer to a different question.
+  #
+  # FIRST in the body, before any refusal this method makes about the task. Put after them
+  # and a typo on a classification fit reports the classification refusal instead, which
+  # sends the reader to the wrong sentence.
+  #
+  # `rlang` is already an import, so this costs no dependency, and the message is the one
+  # R users know from the tidyverse. There was no such check anywhere in `R/` before this.
+  rlang::check_dots_empty()
   result <- if (identical(object$task, "object_detection")) {
     if (!is.null(at)) {
       stop("`at` is for segmentation: a detection table reports average precision over ",
@@ -303,7 +316,8 @@ evaluate.platypus_fit <- function(object, split = "validation", at = NULL, ...) 
 #'   predictions being returned together. Whatever it returns is collected under the case's
 #'   name; return `NULL` from it and nothing accumulates. This is the form that does not
 #'   need the split to fit in memory.
-#' @param ... Unused.
+#' @param ... Must be empty; a misspelt argument is refused rather than ignored,
+#'   which is what it used to be. `maju116/rplatypus#315`.
 #' @return With `space = "model"`: for `"class"`, an integer array of
 #'   `image x height x width`, classes numbered from 1 to match the colormap; for
 #'   `"probability"`, the same with a trailing class axis. Tiled models return images at their
@@ -361,6 +375,7 @@ predict.platypus_fit <- function(object, model = NULL, split = "test",
                                  type = c("class", "probability", "channels"),
                                  space = c("model", "source"),
                                  cases = NULL, each = NULL, decode = NULL, ...) {
+  rlang::check_dots_empty()  # `#315`; see `evaluate.platypus_fit` for why it is first
   # Asked before `match.arg` assigns to them: in R, `missing()` on a formal argument stops
   # being true once the argument has been assigned to, so reading it after the two lines
   # below reports "the caller passed this" for every caller. The first version did exactly
@@ -660,7 +675,8 @@ as_box_frames <- function(found) {
 #' @param object A fit from [platypus_fit()] on a detection specification.
 #' @param model Which model, when the specification trained several.
 #' @param split Which split to score.
-#' @param ... Unused.
+#' @param ... Must be empty; a misspelt argument is refused rather than ignored,
+#'   which is what it used to be. `maju116/rplatypus#315`.
 #' @return A data frame, one row per class: average precision at IoU 0.5, the mean overlap
 #'   of the boxes that matched, the number of true boxes, and precision and recall at the
 #'   model's `operating_point`.
@@ -679,6 +695,7 @@ evaluate_classes <- function(object, ...) UseMethod("evaluate_classes")
 #' @export
 evaluate_classes.platypus_fit <- function(object, model = NULL,
                                           split = "validation", ...) {
+  rlang::check_dots_empty()  # `#315`; see `evaluate.platypus_fit` for why it is first
   if (!identical(object$task, "object_detection")) {
     stop("`evaluate_classes()` reports average precision per class, which is a detection ",
          "measure. For segmentation, `evaluate_cases()` reports per case and ",
@@ -724,7 +741,8 @@ evaluate_classes.platypus_fit <- function(object, model = NULL,
 #'   specification's `operating_point` is used, which is what it is for: "how many were
 #'   missed" is undefined over the whole ranking, where every box the model dimly considered
 #'   counts as a prediction.
-#' @param ... Unused.
+#' @param ... Must be empty; a misspelt argument is refused rather than ignored,
+#'   which is what it used to be. `maju116/rplatypus#315`.
 #' @return A data frame of class `platypus_images`, one row per image: `key`, `n_truth`,
 #'   `n_predicted`, `matched`, `missed`, `ignored`, `spurious` and `mean_matched_iou`.
 #'
@@ -749,6 +767,7 @@ evaluate_images <- function(object, ...) UseMethod("evaluate_images")
 #' @export
 evaluate_images.platypus_fit <- function(object, model = NULL, split = "validation",
                                          score_threshold = NULL, ...) {
+  rlang::check_dots_empty()  # `#315`; see `evaluate.platypus_fit` for why it is first
   if (!identical(object$task, "object_detection")) {
     stop("`evaluate_images()` counts boxes per image, which is a detection measure. ",
          "For segmentation, `evaluate_cases()` scores every case separately; for ",
@@ -863,7 +882,6 @@ detection_anchors <- function(object, model = NULL) {
 #' @param size `c(height, width)` every crop is brought to, or `NULL` to keep each as cut.
 #'   Crops of one image differ in size otherwise, which is why this returns a list either way.
 #' @param fit `"letterbox"` to preserve the aspect by padding, `"stretch"` to fill the frame.
-#' @param ... Unused.
 #' @return A list with one entry per image, each a list of `key`, `crops` (a list of
 #'   `height x width x channels` arrays), `boxes`, `scores`, `labels`, `names` and `dropped`.
 #' @export
@@ -877,7 +895,9 @@ detection_anchors <- function(object, model = NULL) {
 #' pieces <- unlist(lapply(found, `[[`, "crops"), recursive = FALSE)
 #' }
 detection_crops <- function(object, model = NULL, split = "test", score_threshold = NULL,
-                            context = 0, size = NULL, fit = "letterbox", ...) {
+                            context = 0, size = NULL, fit = "letterbox") {
+  # No `...` at all: this is a plain export rather than an S3 method, so nothing requires
+  # the dots and R's own `unused argument` is a better message than any check. `#315`.
   if (!inherits(object, "platypus_fit")) {
     stop("`object` must come from `platypus_fit()`.", call. = FALSE)
   }
@@ -1031,7 +1051,12 @@ rows_to_frame <- function(rows) {
 #'   `load_shape`; `"source"` reads each truth as stored and scores the prediction there,
 #'   which is the only form in which rows from two models - or from two runs with different
 #'   `target_spacing` - mean the same thing.
-#' @param ... Unused.
+#' @param decode Which decoding's cases to score, by the name used in the model's `decode`
+#'   list. Unset takes the model's first, which is the engine's own default. Only an
+#'   instance fit decodes anything, so naming it on any other task is refused rather than
+#'   ignored - and `evaluate()` is where the per-decoding means are, one row each.
+#' @param ... Must be empty. Accepted because the generic has it, and checked rather than
+#'   ignored so that a misspelt argument is refused instead of changing the answer.
 #' @return A data frame with one row per case, of class `platypus_cases`.
 #' @seealso [split_dataset()] for keeping a patient out of two sets in the first place.
 #' @examples
@@ -1051,7 +1076,22 @@ evaluate_cases <- function(object, ...) UseMethod("evaluate_cases")
 #' @rdname evaluate_cases
 #' @export
 evaluate_cases.platypus_fit <- function(object, model = NULL, split = "validation",
-                                        group_by = NULL, at = NULL, ...) {
+                                        group_by = NULL, at = NULL, decode = NULL, ...) {
+  rlang::check_dots_empty()  # `#315`; see `evaluate.platypus_fit` for why it is first
+  # `decode` IS the question an instance fit's per-case table is asked. `maju116/rplatypus#314`:
+  # an instance model with two decodings gets a row per decoding from `evaluate()`, and this
+  # could only ever return the FIRST one's cases - with `decode = "watershed"` swallowed by
+  # the dots rather than refused, so the reader got the other decoding's numbers under the
+  # name they asked for. `dsbowl-instances` publishes one trained file whose three decodings
+  # are 0.0623 apart, which is the comparison this table exists to make readable per case.
+  #
+  # Refused by name off an instance fit, copying `predict.platypus_fit`'s own repair of the
+  # same shape: there the detection branch returned before the check was reached, so
+  # `predict(fit, decode = )` on a detector was accepted and ignored.
+  if (!is.null(decode) && !identical(object$task, "instance_segmentation")) {
+    stop("`decode` names which decoding turns predicted channels into objects, which only ",
+         "an instance model does. This fit is ", object$task, ".", call. = FALSE)
+  }
   # Refused rather than returned, because the number it would report carries no
   # information. A case on the segmentation side is an image with hundreds of thousands of
   # voxels and a score of its own, which is what makes the minimum worth publishing; one
@@ -1071,7 +1111,7 @@ evaluate_cases.platypus_fit <- function(object, model = NULL, split = "validatio
          paste(object$models, collapse = ", "), call. = FALSE)
   }
   result <- shim()$case_table(
-    object$engine, model, split = split, group_by = group_by, at = at
+    object$engine, model, split = split, group_by = group_by, at = at, decode = decode
   )
   if (!isTRUE(result$ok)) abort_engine(result)
 
@@ -1083,6 +1123,7 @@ evaluate_cases.platypus_fit <- function(object, model = NULL, split = "validatio
 #' @rdname evaluate_cases
 #' @export
 summary.platypus_cases <- function(object, ...) {
+  rlang::check_dots_empty()  # `#315`; see `evaluate.platypus_fit` for why it is first
   rows <- lapply(seq_len(nrow(object)), function(i) as.list(object[i, , drop = FALSE]))
   result <- shim()$case_summary(rows)
   if (!isTRUE(result$ok)) abort_engine(result)

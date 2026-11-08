@@ -11,7 +11,8 @@
 
 \item{metrics}{Which columns to plot; defaults to the losses and metrics.}
 
-\item{...}{Unused.}
+\item{...}{Must be empty; a misspelt argument is refused rather than ignored,
+which is what it used to be. \code{maju116/rplatypus#315}.}
 }
 \value{
 A \code{ggplot}.

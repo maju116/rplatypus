@@ -74,7 +74,8 @@ in the model's \code{decode} list. Unset takes the model's first, which is the e
 default rather than one restated here. \strong{Instance models only}; for anything else it
 is refused, because a semantic or detection fit decodes nothing.}
 
-\item{...}{Unused.}
+\item{...}{Must be empty; a misspelt argument is refused rather than ignored,
+which is what it used to be. \code{maju116/rplatypus#315}.}
 }
 \value{
 With \code{space = "model"}: for \code{"class"}, an integer array of

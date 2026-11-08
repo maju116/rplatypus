@@ -12,7 +12,8 @@ evaluate(object, ...)
 \arguments{
 \item{object}{A \code{\link[=platypus_fit]{platypus_fit()}}.}
 
-\item{...}{Unused.}
+\item{...}{Must be empty; a misspelt argument is refused rather than ignored,
+which is what it used to be. \code{maju116/rplatypus#315}.}
 
 \item{split}{Which data to score on: \code{"validation"}, \code{"train"} or \code{"test"}.}
 
