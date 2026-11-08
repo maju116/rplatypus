@@ -20,6 +20,67 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-08 (last of the day) - Every table passes through one function, and it kept the first value of a cell that held several
+
+`rows_to_frame()` is the seam every reported table crosses - ten callers, every scoring
+table, the run record's history and all nine catalogue listings - and a cell holding more
+than one value came back as its first, with nothing said. It now **refuses, naming the
+column and the row**.
+
+    rows_to_frame(list(list(a = 1, b = c(2, 3)), list(a = 2, b = 4)))
+    #   a b
+    # 1 1 2        <- the 3 is gone
+    # 2 2 4
+
+**The defect is latent today and that is why it needed a guard rather than a fix.** Measured
+rather than assumed: every row the engine builds carries scalars - `summarise_cases`,
+`per_class`, `as_rows`, `answers` and `History.to_dict` were all read, and four of those
+five are methods on an engine object rather than anything a reader calls, which is why they
+are written here without parentheses. The one family that genuinely has a multi-element
+field, the catalogue listings' `arguments` and `chooses`, is flattened on the **engine's**
+side of the bridge, where `platypus_shim.py` joins a tuple with `", "`. So somebody met
+this class once and fixed it at the far end. With a refusal patched in, the whole suite
+reads `FAIL 0 | SKIP 0 | PASS 2187` and the refusal never fires. What was wrong is the
+function being unable to say so if a row ever does arrive wide, and the flattening rule
+living somewhere other than in the thing that truncates.
+
+**A refusal rather than a warning, and the call graph is what decides it.** All ten callers
+pass something the engine built, never anything a user wrote, so this can only ever fire on
+a defect in this package or in the engine - it is addressed to us, and a frame that is
+quietly wrong is the thing this project keeps measuring the cost of. The message says so and
+asks for a report.
+
+**And the flattening is `unlist()` rather than `[[1]]`, which fixed a second, quieter half -
+measured, and it is worse than the truncation.** A cell holding `list(NULL)` has length 1, so
+the old length test passed, `[[1]]` gave `NULL`, and assembling the column dropped it. The
+column is then one short, and `as.data.frame()` does not complain - it recycles:
+
+    #   key  iou
+    # 1   a 0.83
+    # 2   b 0.83        <- the engine sent nothing for b, and b reports a's number
+
+That is a figure attributed to the wrong case, which is `#223`'s defect in another costume,
+and it is quieter than a truncated cell because every column is the right length and every
+value is a real number. Flattening before the length is taken makes the two shapes one case:
+`unlist(list(NULL))` has length 0, so it becomes `NA`.
+
+Proven able to fail, seven mutations and an identity case:
+
+    IDENTITY                                                  FAIL 0  PASS 28
+    the whole pre-#307 body is back: [[1]] and no guard        FAIL 6
+    the guard is gone, the flattening stays                    FAIL 3
+    the refusal is a warning that keeps the first value        FAIL 5
+    the message no longer names the column                     FAIL 3
+    the message no longer names the row                        FAIL 1
+    the flattening is [[1]] again, the guard stays             FAIL 1
+
+The last one survived the first draft of its test and is the useful one: unwrapping a
+length-1 list by hand is indistinguishable from flattening at every depth the engine
+produces, and differs one layer further in, where one unwrap is not enough. What the test
+pins is the promise - one value per cell at any nesting - rather than the spelling.
+
+The engine it needs: `0.8.0a78`, unchanged. Nothing here crosses the bridge. `#307`.
+
 ### 2026-11-08 (later again) - One `@param` for several functions is a class, and two more of them were wrong
 
 `#304` repaired `gamma`, which documented two losses with one sentence that was false about
