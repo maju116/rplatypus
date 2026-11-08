@@ -20,6 +20,42 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-08 (later) - A vignette printed a weights commit two pin moves out of date
+
+**`vignette("data-science-bowl")` prints the registry's revisions as knitted output, and
+`fives-unet`'s cell had read `c4492f7a` since before `0.8.0a74`.** The registry has said
+`799fea5c` since that release and `d342f3ad` since `0.8.0a77`.
+
+**A revision is the worst column on that page to let rot**, because it is the one value a
+reader copies: `hf://maju116/platypus-weights/fives-unet.safetensors@c4492f7a...` is a
+supported form and it still resolves. What it fetches is the sidecar as it was before
+`maju116/pyplatypus#426` - no peel count beside its clDice figure, which is the file that
+defect was about. The stale cell does not fail; it hands back the superseded artefact, from
+the page that teaches borrowing published weights.
+
+**Nothing held it, and the two instruments that look like they do both answer a different
+question.** `test-weights.R` asserts every revision **in the registry** is forty hex
+characters and never reads a vignette; `test-precomputed-vignettes.R` compares the **prose**
+lines of each `.Rmd.orig` against its `.Rmd` and drops knitted output on purpose. So this
+was an omission rather than a drift, and it is closed by a guard before it is closed by a
+re-knit: `test-vignette-revisions.R` reads every forty-character commit printed in any
+shipped vignette and asks `available_weights()` whether the registry still pins it.
+
+The page is re-knitted, which moved three lines - the revision and two rows of a score table,
+because training on a card is not bit-reproducible. Nothing in the prose moved with them, and
+that is by the page's own design: it says in so many words that it quotes no digits for those
+models *because every re-knit trains them again*.
+
+**And a second defect on the same four lines, which had nothing to do with the pin.** The
+sentence under the table read *"the description in that table is the part to read"* and the
+table prints `name` and `revision` - there is no description column, and there never was.
+The prose now says what a revision **is**, a commit, which is why a published name means one
+set of numbers for ever, and sends a reader to `available_weights()` for the descriptions.
+
+`maju116/rplatypus#301`.
+
+**The engine it needs: none beyond the pin**, which stays at `0.8.0a77`.
+
 ### 2026-11-08 - The pin moves to `0.8.0a77`: a weights sidecar you can reproduce its clDice from
 
 **One move for two engine releases**, which is what the pin is for: a release this package
