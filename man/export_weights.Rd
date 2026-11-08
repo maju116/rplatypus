@@ -42,10 +42,32 @@ Resolved is the whole point. \code{metric_cldice()}'s \code{iterations} is the s
 it moves the number by about five points on one published set of weights, and before this
 it appeared in no file, because nobody had written it down - it was the metric's own
 default. A sidecar recording only what a configuration \emph{stated} would have recorded nothing
-about it. What is in the block is task-specific, because the question is: a segmentation or
-classification fit records its metrics, an instance fit adds how objects were separated and
-decoded, and a detection fit records the three thresholds its table moves with and has no
-metric list at all.
+about it.
+
+What is in the block is task-specific, because the question is. The MODEL's half asks how
+the figures were computed: a segmentation or classification fit records its metrics, an
+instance fit adds how objects were separated and decoded, and a detection fit records the
+three thresholds its table moves with and has no metric list at all.
+
+And since engine \verb{0.8.0a79} the block carries the DATA's half beside it - how the data was
+\emph{read}, which decides what the figures were measured \strong{on} rather than how they were
+computed. \code{window} for every task, and \code{channels_from} and \code{target_spacing} for a
+SEMANTIC segmentation fit only - an instance fit records neither, because the two halves
+of a specification inherit differently: an instance model extends the segmentation model
+and so has \code{splits}, while instance \emph{data} extends the base data class and so has only
+\code{window}. The reason they belong there is the reason \code{splits} does:
+they change a reported number while the weights and the data stay the same. Reading the
+same volumes at a different \code{target_spacing} scores a different number of real voxels at
+an identical model input shape, and a scan read on a lung window is not the picture the
+same scan is on a soft-tissue one.
+
+\strong{The data's half records only what was set}, and that asymmetry is the useful part. A
+missing \code{target_spacing} means \emph{this run named none}, not \emph{resampled to nothing}: the
+field defaults to \code{NULL}, and a record that wrote \code{null} could not be told apart from one
+written by an engine too old to answer. \code{window} is the exception and is always there,
+because it always has a value - \code{"auto"} is a windowing rather than an absence, and it
+means \emph{whatever window the file itself recorded}, so two datasets read with \code{"auto"} are
+not necessarily read alike.
 
 Passing either of those names in \code{...} is refused rather than ignored, because a caller's
 copy of a fact only the engine knows is a copy that will drift.

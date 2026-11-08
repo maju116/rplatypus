@@ -123,6 +123,28 @@ test_that("a trained model's weights make the round trip through R", {
   expect_identical(metrics[[1]]$name, "dice")
   expect_false(is.null(metrics[[1]]$smooth))
 
+  # And the DATA's half, since engine 0.8.0a79: how the data was READ, which decides what the
+  # figures were measured ON rather than how they were computed. `maju116/pyplatypus#447`.
+  # The receipt is for the same reason as the two above - `?export_weights` tells a reader
+  # this block carries it, and until something reads it that is prose about the other
+  # package's behaviour.
+  #
+  # `window` is asserted rather than merely present, and `"auto"` is the value: nothing in
+  # the specification above names a window, so a block recording only what a configuration
+  # STATED would carry nothing here. It is the same argument `measured_with$metrics` makes
+  # one assertion up, one layer out.
+  expect_identical(recorded$measured_with$window, "auto")
+
+  # The asymmetry, held because a reader would guess the other way and the help page says so:
+  # the two halves of a specification inherit DIFFERENTLY. An instance model extends the
+  # segmentation model and so has `splits`; instance DATA extends the base data class, so a
+  # semantic fit records `channels_from` and `target_spacing` and an instance fit records
+  # neither. This specification names neither either, so their ABSENCE is the assertion -
+  # "only what is set", which is what separates *this run named none* from *written by an
+  # engine that could not answer*.
+  expect_false("channels_from" %in% names(recorded$measured_with))
+  expect_false("target_spacing" %in% names(recorded$measured_with))
+
   # The refusal, which is what makes the two keys the engine's answer rather than a default
   # somebody can quietly replace.
   expect_error(
@@ -217,4 +239,33 @@ test_that("the fetal-head entry is the one not to choose on its Dice", {
   # the nearest one has to report no millimetres at all.
   vessels <- listing[listing$name == "fives-unet", ]
   expect_false(grepl(" mm", vessels$description))
+})
+
+test_that("a window somebody DID name reaches the sidecar", {
+  # The other direction of `maju116/pyplatypus#447`. The test above asserts `"auto"` - the
+  # value nobody wrote, which is the resolved-rather-than-as-written argument - and on its own
+  # that is satisfied by a block recording a constant. This names one.
+  #
+  # A window is ignored for ordinary pictures, and these are PNGs, which is exactly why the
+  # RECORD matters: the number beside the weights was measured under whatever windowing the
+  # specification asked for, and nothing else in the file says which. Recording it where it
+  # had no effect is cheaper than a reader having to know.
+  skip_if_no_weights_registry()
+  root <- tiny_dataset()
+  spec <- platypus_spec(
+    data = segmentation_data(root, root, colormap = binary_colormap, window = "lung"),
+    models = list(u_net("tiny", input_shape = c(32, 32), blocks = 2, filters = 4,
+                        epochs = 1, batch_size = 2,
+                        metrics = list(metric_dice())))
+  )
+  fit <- platypus_fit(spec, num_workers = 0)
+  written <- export_weights(fit, file.path(withr::local_tempdir(), "windowed"))
+  recorded <- attr(written, "recorded")
+
+  expect_identical(recorded$measured_with$window, "lung")
+  # `channels_from` and `target_spacing` are a SEMANTIC data field and this is one, so their
+  # absence here is still *this run named none* rather than *this task has none*. The engine's
+  # own suite holds the set direction for those two; what R holds is that the forward exists
+  # and that the block is this package's to read.
+  expect_false("target_spacing" %in% names(recorded$measured_with))
 })

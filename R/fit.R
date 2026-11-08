@@ -1163,10 +1163,32 @@ available_weights <- function() {
 #' it moves the number by about five points on one published set of weights, and before this
 #' it appeared in no file, because nobody had written it down - it was the metric's own
 #' default. A sidecar recording only what a configuration *stated* would have recorded nothing
-#' about it. What is in the block is task-specific, because the question is: a segmentation or
-#' classification fit records its metrics, an instance fit adds how objects were separated and
-#' decoded, and a detection fit records the three thresholds its table moves with and has no
-#' metric list at all.
+#' about it.
+#'
+#' What is in the block is task-specific, because the question is. The MODEL's half asks how
+#' the figures were computed: a segmentation or classification fit records its metrics, an
+#' instance fit adds how objects were separated and decoded, and a detection fit records the
+#' three thresholds its table moves with and has no metric list at all.
+#'
+#' And since engine `0.8.0a79` the block carries the DATA's half beside it - how the data was
+#' *read*, which decides what the figures were measured **on** rather than how they were
+#' computed. `window` for every task, and `channels_from` and `target_spacing` for a
+#' SEMANTIC segmentation fit only - an instance fit records neither, because the two halves
+#' of a specification inherit differently: an instance model extends the segmentation model
+#' and so has `splits`, while instance *data* extends the base data class and so has only
+#' `window`. The reason they belong there is the reason `splits` does:
+#' they change a reported number while the weights and the data stay the same. Reading the
+#' same volumes at a different `target_spacing` scores a different number of real voxels at
+#' an identical model input shape, and a scan read on a lung window is not the picture the
+#' same scan is on a soft-tissue one.
+#'
+#' **The data's half records only what was set**, and that asymmetry is the useful part. A
+#' missing `target_spacing` means *this run named none*, not *resampled to nothing*: the
+#' field defaults to `NULL`, and a record that wrote `null` could not be told apart from one
+#' written by an engine too old to answer. `window` is the exception and is always there,
+#' because it always has a value - `"auto"` is a windowing rather than an absence, and it
+#' means *whatever window the file itself recorded*, so two datasets read with `"auto"` are
+#' not necessarily read alike.
 #'
 #' Passing either of those names in `...` is refused rather than ignored, because a caller's
 #' copy of a fact only the engine knows is a copy that will drift.
