@@ -53,16 +53,31 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
-          # The name clash with the archived CRAN package `Platypus` is an error under
-          # --as-cran and is being taken up with CRAN separately. Checking without it
-          # here keeps the signal useful in the meantime; the `--as-cran` run is done by
-          # hand before any submission.
+          # NO `args` OVERRIDE, which is the whole of `maju116/rplatypus#316`. This step
+          # used to pass `c("--no-manual")` to drop `--as-cran`, and the reason it gave was
+          # that the name clash with the archived CRAN package `Platypus` is an error under
+          # that flag "and is being taken up with CRAN separately". That ended: the package
+          # was renamed on 2026-10-14 and accepted on 2026-11-04, so there is no clash and
+          # nothing is being taken up with anybody.
+          #
+          # The action's own default is already `c("--no-manual", "--as-cran")`, so the
+          # repair is deleting the override rather than adding anything - and its
+          # `error-on` default is `"warning"`, which is what makes this a gate rather than
+          # an upload nobody reads: it fails on a WARNING or an ERROR and NOT on a NOTE.
+          # That matters, because `--as-cran` always emits NOTEs here that are about the
+          # submission and not the package: `Maintainer`, and `Days since last update`.
+          #
+          # What it buys, measured rather than argued: `CLAUDE.md` §8 records five days,
+          # 2026-10-29 to 2026-11-03, when `--as-cran` carried a WARNING - `codetools` used
+          # by `::` and undeclared - and nothing said so. CRAN does not accept a WARNING and
+          # `main` is the submission candidate, so a submission on any of those days would
+          # have been sent back. No gate run before a push asked that question.
+          #
           # Vignettes are built here on purpose. They are precomputed, so building them
           # runs no model and needs no Python - and skipping the build is not free: it
           # leaves inst/doc empty, which R CMD check reports as two WARNINGs, which this
           # action then fails on. Checking a package differently from how it is shipped
           # only produces failures that say nothing.
-          args: 'c("--no-manual")'
 
   # Style and the defects a linter finds, in both languages the package is written in.
   lint:
