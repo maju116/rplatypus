@@ -921,7 +921,7 @@ Added to the denominator so a parameter whose gradient has been zero for a while
 <code id="weight_decay">weight_decay</code>
 </td>
 <td>
-Pull the weights towards zero at every step, which is L2 regularisation. Off by default because it interacts with the loss and is not free: on a small dataset it can cost more than the overfitting it prevents. In <code>optimizer_adamw()</code> it is applied to the weights directly rather than through the gradient, which is the whole difference between the two.
+Pull the weights towards zero at every step, which is L2 regularisation. <strong>Seven of the eight optimisers here have the default 0, and <code>optimizer_adamw()</code> has 0.01</strong> - decay is what that optimiser is for, so turning it off there leaves plain Adam with a different update rule. Elsewhere it is off because it interacts with the loss and is not free: on a small dataset it can cost more than the overfitting it prevents. In <code>optimizer_adamw()</code> it is applied to the weights directly rather than through the gradient, which is the whole difference between the two.
 </td>
 </tr>
 <tr>

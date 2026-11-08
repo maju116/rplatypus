@@ -885,7 +885,7 @@ How hard to discount what is already scoring well, so the gradient comes from wh
 <code id="alpha">alpha</code>
 </td>
 <td>
-For Tversky, the weight on false negatives; raising it buys recall. Note that <code>alpha = 0.5</code> is Dice exactly only when <code>smooth = 0</code>.
+<strong>Four losses take an <code>alpha</code> and it means three different things</strong>, so read the one for the loss you are writing. For <code>loss_tversky()</code> and <code>loss_focal_tversky()</code> it is the weight on false negatives; raising it buys recall, and <code>alpha = 0.5</code> is Dice exactly only when <code>smooth = 0</code>; the default is 0.5. For <code>loss_combo()</code> it is the cross-entropy half’s <strong>share of the total</strong> - the objective is <code>alpha * cross_entropy + (1 - alpha) * dice</code>, so raising it moves weight onto cross-entropy and does nothing about recall, which in that loss is <code>ce_ratio</code>’s job; the default is 0.5. For <code>loss_focal()</code> it is a <strong>per-class weight</strong>, <code>1 - alpha</code> on the background class and <code>alpha</code> on the rest, and the default is <code>NULL</code>, meaning off.
 </td>
 </tr>
 <tr>
