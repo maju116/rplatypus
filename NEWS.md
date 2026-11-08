@@ -20,6 +20,52 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-08 (seventh of the day) - The pin moves to `0.8.0a80`: the sidecar said how the data was read and not which cases were scored
+
+`measured_with` gained *how the data was read* at `0.8.0a79`. This adds *which cases were
+scored*, and it is a companion question rather than more of the same one: the first says what
+the pictures looked like when they were measured, the second says which pictures there were.
+A reader who has one and not the other can reproduce the windowing exactly and still score a
+different set of images. `maju116/pyplatypus#450`.
+
+**`split` is recorded resolved, and the seed is the proof that this matters.** `fractions`
+alone *describes* a partition; `fractions` with `group_by` and `seed` and the files that were
+found *determines* it. So the seed is in the record even when nobody wrote one - it defaults
+to 0 and arrives by resolution - and `group_by` is in it because that is what makes a split by
+patient rather than by file, which is the difference `split_dataset()` exists to let you keep.
+
+**Absent when a run names a second folder**, which is a real second case: the two ways of
+getting a validation set are exclusive, so such a run partitioned nothing and the record says
+so by saying nothing.
+
+**`split` is not `splits`**, and the help page now says so, because they sit in one block one
+letter apart. `split` is the data's partition - which cases were held out. `splits` is the
+model's tiling - a source image read at `splits` times `input_shape` and cut. One decides how
+many cases there are, the other which pictures a metric sees inside one case.
+
+**The engine's own issue named three fields and shipped one**, which is worth knowing here
+because the other two are decisions rather than omissions: `shuffle` is training-only, so it
+changes what the weights learnt rather than how they were scored, and `validation` gates
+whether a validation split exists rather than changing a figure's value. Both are pinned as
+absent in the engine's test with the reasoning.
+
+**Two receipts rather than one**, because the first alone passes on a block that records a
+split unconditionally: a fit built with `segmentation_data(split = ...)` records `fractions`,
+`seed` and `group_by`, and a fit built with two folders records no `split` at all. Proven
+against an `0.8.0a79` engine tree rather than a mutated test - R forwards this and holds
+nothing, so no edit here could break it - with the running engine asked which version it
+loaded. Under a79 the three new assertions fail and the `window` ones still pass, which is a
+sharper reading than an older tree would have given.
+
+**The field-prose ledger answered *nothing to re-read*, predicted before it ran**: 117 fields,
+one line moved, every digest holding. Fifth time.
+
+**And the pin move needed `uv cache clean pyplatypus` before the first gate would run.**
+reticulate resolves the engine through the **shared** uv cache, which was still refusing
+`0.8.0a80` while a throwaway one had installed it half an hour earlier - so the gate failed as
+*reticulate reported no Python*, which reads like a broken bridge rather than a stale listing.
+239 files, 4.6 MiB, and the engine answered `0.8.0a80` immediately after.
+
 ### 2026-11-08 (sixth of the day) - The pin moves to `0.8.0a79`, and a sentence that was true said less than the engine does
 
 A weights sidecar records **how the data was read** from this engine on. `measured_with`

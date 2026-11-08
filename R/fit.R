@@ -1182,7 +1182,26 @@ available_weights <- function() {
 #' an identical model input shape, and a scan read on a lung window is not the picture the
 #' same scan is on a soft-tissue one.
 #'
+#' And since engine `0.8.0a80` the same block answers a second question about the data:
+#' **which cases were scored**. `split` is recorded when a run partitions one folder instead
+#' of naming a second, and it is the companion to the paragraph above rather than more of it -
+#' that one says what the pictures looked like when they were measured, this one says which
+#' pictures there were. A reader who has the first and not the second can reproduce the
+#' windowing and still score a different set of images.
+#'
+#' It is recorded **resolved**, which is where its value is. `fractions` alone describes a
+#' partition; `fractions` with `group_by` and `seed` and the files that were found determines
+#' it. So `seed` is there even when nobody wrote one - it defaults to 0 and arrives by
+#' resolution - and `group_by` is there because that is what makes a split by patient rather
+#' than by slice, which is the difference [split_dataset()] exists to let you keep.
+#'
+#' **`split` is not `splits`**, and they now sit in the same block one letter apart. `split`
+#' is the data's partition: which cases were held out. `splits` is the model's tiling: a
+#' source image read at `splits` times `input_shape` and cut into pieces. One decides how
+#' many cases there are, the other which pictures a metric sees inside one case.
+#'
 #' **The data's half records only what was set**, and that asymmetry is the useful part. A
+#' missing `split` means *this run named a second folder*, so nothing was partitioned, and a
 #' missing `target_spacing` means *this run named none*, not *resampled to nothing*: the
 #' field defaults to `NULL`, and a record that wrote `null` could not be told apart from one
 #' written by an engine too old to answer. `window` is the exception and is always there,
