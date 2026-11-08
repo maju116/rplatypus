@@ -92,10 +92,12 @@ each parameter's step. Below about 0.99 training gets noticeably noisier. In
 while does not take an enormous step. A guard, not a knob.}
 
 \item{weight_decay}{Pull the weights towards zero at every step, which is L2
-regularisation. Off by default because it interacts with the loss and is not free: on a
-small dataset it can cost more than the overfitting it prevents. In \code{optimizer_adamw()}
-it is applied to the weights directly rather than through the gradient, which is the
-whole difference between the two.}
+regularisation. \strong{Seven of the eight optimisers here have the default 0, and
+\code{optimizer_adamw()} has 0.01} - decay is what that optimiser is for, so turning it off
+there leaves plain Adam with a different update rule. Elsewhere it is off because it
+interacts with the loss and is not free: on a small dataset it can cost more than the
+overfitting it prevents. In \code{optimizer_adamw()} it is applied to the weights directly
+rather than through the gradient, which is the whole difference between the two.}
 
 \item{amsgrad}{Keep the largest squared-gradient average seen so far rather than the
 current one, so the step size never grows back. It fixes a convergence case in Adam's
