@@ -968,15 +968,37 @@ resolve_workers <- function(x) {
 #'
 #' The engine reports tables as lists of rows, which is what survives the crossing
 #' intact. Missing entries become NA rather than shifting a column.
+#'
+#' A cell has to hold exactly one value, and a cell that holds several is **refused by
+#' column and by row** rather than truncated to its first. Every one of this function's
+#' callers passes something the engine built, so a column arriving here with two values is
+#' a defect in this package or in the engine - never a caller's mistake - and taking the
+#' first would hand back a frame that is wrong and reads as right. The flattening that
+#' makes the catalogue listings fit a frame lives on the engine's side of the bridge, in
+#' `platypus_shim.py`, where a tuple is joined with `", "`; this refusal is what says so
+#' out loud. `rplatypus#307`.
+#'
+#' The flattening here is `unlist()` rather than `[[1]]` for the same reason, one level in:
+#' a cell holding a list of one vector, or a list of one NULL, defeats a length taken
+#' before flattening - the first would widen the column and the second would shift it.
 #' @keywords internal
 #' @noRd
 rows_to_frame <- function(rows) {
   if (!length(rows)) return(data.frame())
   columns <- unique(unlist(lapply(rows, names)))
   frame <- lapply(columns, function(column) {
-    values <- lapply(rows, function(row) {
-      value <- row[[column]]
-      if (is.null(value) || !length(value)) NA else value[[1]]
+    values <- lapply(seq_along(rows), function(index) {
+      value <- unlist(rows[[index]][[column]], use.names = FALSE)
+      if (!length(value)) return(NA)
+      if (length(value) > 1) {
+        stop("the engine's column `", column, "` holds ", length(value),
+             " values in row ", index, ", and one cell of a data frame holds one. ",
+             "A listing's row is flattened before it crosses the bridge, so this is a ",
+             "defect in rplatypus or in the engine rather than something you did - ",
+             "please report it. Keeping the first value would hide the rest.",
+             call. = FALSE)
+      }
+      value
     })
     unlist(values)
   })
