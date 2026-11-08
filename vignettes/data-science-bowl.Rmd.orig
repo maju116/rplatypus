@@ -89,8 +89,11 @@ measured on a held-out split when the weights were published, and travel with th
 available_weights()[, c("name", "revision")]
 ```
 
-The description in that table is the part to read before trusting them - these are *semantic*, so
-touching nuclei come back as one region and a count taken from them would be wrong.
+A revision is a **commit**, which is what makes a published name mean one set of numbers
+for ever: later edits to the repository cannot move it. `available_weights()` carries a
+`description` column too, not shown here because it is a paragraph each, and that is the part
+to read before trusting any of them - these are *semantic*, so touching nuclei come back as
+one region and a count taken from them would be wrong.
 
 One thing worth meeting here rather than later. Weights belong to an exact model, not to a task,
 and the rest of this vignette trains at 160 x 160 while these were trained at 256:
