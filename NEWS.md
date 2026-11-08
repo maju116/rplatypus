@@ -20,6 +20,38 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-08 (later still) - The pin moves to `0.8.0a78`, and one `@param` was wrong about one of its two functions
+
+**This is a release this package needs something FROM**, which is rarer here than the usual
+shape. `0.8.0a78` gives the four losses nothing could catch a formula error in a value from
+outside, and among those it rewrote `focal_tversky`'s `gamma` description - so the
+field-prose ledger's digest moved, this package regenerated its fixture, and re-reading the
+topic it named is where the finding is.
+
+**`?losses` documented `gamma` once for two constructors and was wrong about one.** It said
+*"0 is plain cross-entropy and 2 is the usual value"*. Measured against the running engine:
+
+    loss_focal()          default 2   accepts gamma = 0   and at 0 it IS cross-entropy
+    loss_focal_tversky()  default 1   REFUSES gamma = 0   the field is declared gt=0
+
+So the sentence is right for the first and wrong in both halves for the second, whose usual
+value is 1 - this package's own constructor default, three lines below the prose that
+contradicted it. They are different parameters sharing a name: one is an exponent on a
+single prediction, the other on `1 - TI` over a whole class.
+
+**And a third thing it never said.** Abraham and Khan (arXiv:1810.07842) write the focal
+Tversky exponent as `1/gamma`; this argument **is** the exponent, so their recommended 4/3 is
+this argument's 0.75. The two agree only at 1.
+
+`?losses` now separates the two, states each default in the same words, and gives the
+conversion. Held by `test-shared-param-prose.R`, which compares the default each half states
+with the default `formals()` reports, and by a second test asking the engine for the premise
+underneath - one accepts 0 and the other refuses it.
+
+`maju116/rplatypus#304`, with the engine's half `maju116/pyplatypus#429`.
+
+**The engine it needs: `0.8.0a78`**, for the description that set this off.
+
 ### 2026-11-08 (later) - A vignette printed a weights commit two pin moves out of date
 
 **`vignette("data-science-bowl")` prints the registry's revisions as knitted output, and
