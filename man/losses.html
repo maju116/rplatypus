@@ -877,7 +877,7 @@ For <code>loss_cce_dice()</code>, how much of the total the cross-entropy half p
 <code id="gamma">gamma</code>
 </td>
 <td>
-For focal losses, how hard to discount what is already classified well - a pixel or voxel for a mask, a whole image for a label - so the gradient comes from what is not. 0 is plain cross-entropy and 2 is the usual value.
+How hard to discount what is already scoring well, so the gradient comes from what is not - but it is <strong>two different parameters</strong> and the defaults differ. For <code>loss_focal()</code> it is the exponent on a single prediction - a pixel or voxel for a mask, a whole image for a label, where 0 is plain cross-entropy exactly; the default is 2. For <code>loss_focal_tversky()</code> it is the exponent on <code>1 - TI</code> over a whole class, where 1 is plain Tversky and 0 is refused rather than meaning anything; the default is 1. And that second one is <strong>not</strong> the <code>gamma</code> of Abraham and Khan (arXiv:1810.07842), who write the exponent as <code>1/gamma</code>: theirs is the reciprocal of this, so their recommended 4/3 is this argument’s 0.75. The two agree only at 1.
 </td>
 </tr>
 <tr>
