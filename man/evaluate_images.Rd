@@ -18,7 +18,8 @@ evaluate_images(object, ...)
 \arguments{
 \item{object}{A \code{\link[=platypus_fit]{platypus_fit()}} on a detection specification.}
 
-\item{...}{Unused.}
+\item{...}{Must be empty; a misspelt argument is refused rather than ignored,
+which is what it used to be. \code{maju116/rplatypus#315}.}
 
 \item{model}{Which model, by the name in the specification. Defaults to the first.}
 

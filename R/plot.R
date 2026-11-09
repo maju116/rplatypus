@@ -176,7 +176,8 @@ plot_masks <- function(images, prediction = NULL, truth = NULL,
 #'
 #' @param x A [platypus_fit()].
 #' @param metrics Which columns to plot; defaults to the losses and metrics.
-#' @param ... Unused.
+#' @param ... Must be empty; a misspelt argument is refused rather than ignored,
+#'   which is what it used to be. `maju116/rplatypus#315`.
 #' @return A `ggplot`.
 #' @importFrom rlang .data
 #' @export
@@ -186,6 +187,7 @@ plot_masks <- function(images, prediction = NULL, truth = NULL,
 #' plot(fit, metrics = "dice")
 #' }
 plot.platypus_fit <- function(x, metrics = NULL, ...) {
+  rlang::check_dots_empty()  # `#315`; see `evaluate.platypus_fit` for why it is first
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
     stop("plotting a fit needs the ggplot2 package.", call. = FALSE)
   }

@@ -11,8 +11,7 @@ detection_crops(
   score_threshold = NULL,
   context = 0,
   size = NULL,
-  fit = "letterbox",
-  ...
+  fit = "letterbox"
 )
 }
 \arguments{
@@ -31,8 +30,6 @@ detection_crops(
 Crops of one image differ in size otherwise, which is why this returns a list either way.}
 
 \item{fit}{\code{"letterbox"} to preserve the aspect by padding, \code{"stretch"} to fill the frame.}
-
-\item{...}{Unused.}
 }
 \value{
 A list with one entry per image, each a list of \code{key}, \code{crops} (a list of

@@ -1002,12 +1002,22 @@ def case_table(
     split: str = "validation",
     group_by: str | None = None,
     at: str | None = None,
+    decode: str | None = None,
 ) -> dict:
-    """One row per case - or per group, with `group_by` - instead of one per model."""
+    """One row per case - or per group, with `group_by` - instead of one per model.
+
+    `decode` reaches only an instance engine, which is why it is passed the way `at` is
+    rather than always: `Engine.evaluate_cases` has no such parameter, so sending it to a
+    semantic fit would be a `TypeError` from the bridge instead of the refusal R already
+    makes by name. `maju116/rplatypus#314` - R could ask for the three decodings' means
+    through `evaluate()` and could not ask which cases made the difference.
+    """
     import pyplatypus
 
     try:
         extra = {} if at is None else {"at": str(at)}
+        if decode is not None:
+            extra["decode"] = str(decode)
         rows = engine.evaluate_cases(model_name, split=split, group_by=group_by, **extra)
     except pyplatypus.PlatypusError as error:
         return _failure(error)
