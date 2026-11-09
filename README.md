@@ -45,13 +45,16 @@ There is nothing to set up afterwards. The first call that needs the engine buil
 isolated Python environment for it, and everything after that uses the cache. You never
 choose an interpreter, activate anything, or match a version.
 
-**Two things are worth knowing before that first call, and both are about PyTorch rather
-than about this package.** It downloads about 5 GB, because the wheel carries CUDA whether
-or not there is a GPU - cached afterwards, and portable to a machine with no connection.
-And **on a GeForce GTX 10-series card or older, call `platypus_use_torch("pascal")` first**:
-current builds target CUDA 13, which dropped that generation, so without it everything
-trains on the processor - perhaps ten times slower, with nothing obviously wrong.
-`platypus_device()` says which one you got. *About the engine*, below, has both in full.
+**Three things are worth knowing before that first call, and all three are about PyTorch
+rather than about this package.** It downloads about 5 GB, because the wheel carries CUDA
+whether or not there is a GPU - cached afterwards, and portable to a machine with no
+connection. **On a GeForce GTX 10-series card or older, call `platypus_use_torch("pascal")`
+first**: current builds target CUDA 13, which dropped that generation, so without it
+everything trains on the processor - perhaps ten times slower, with nothing obviously
+wrong. `platypus_device()` says which one you got. And **on macOS this needs Apple
+Silicon**: torch has published no macOS x86_64 wheel since 2.2.2, so on an Intel Mac the
+engine cannot be built at all, and the first call is where you find that out. *About the
+engine*, below, has all three in full.
 
 **The package was called `platypus` until 2026-10-14** and is `rplatypus` now - one name per
 language, beside the `pyplatypus` engine on PyPI. The repository moved with it, so
@@ -449,7 +452,7 @@ Python on the machine. This matters because the R keras and tensorflow packages 
 shared one installation with everything else, and an unrelated change could break an R
 session. Nothing here touches a Python anyone else uses.
 
-Three things worth knowing.
+Four things worth knowing.
 
 **The first call downloads about 5 GB**, most of it CUDA libraries that PyTorch ships by
 default whether or not there is a GPU. It is cached afterwards, and everything works
@@ -467,18 +470,35 @@ PyTorch 2.8 onwards ships CUDA 13 builds, and CUDA 13 dropped that whole generat
 cards. Without this, everything runs on the processor instead — perhaps ten times slower,
 with nothing obviously wrong. `platypus_device()` will tell you which is happening.
 
+**On macOS this needs Apple Silicon.** torch has published no macOS x86_64 wheel since
+2.2.2, which was March 2024, and the engine asks for at least 2.7 - so on an Intel Mac
+there is no PyTorch it will accept and the environment cannot be built. Nothing goes
+wrong until it is needed: the package installs from CRAN like any other, loads, and the
+first call that wants the engine is where it stops. This is not something either package
+can work around, and the engine's own README carries the measurement and why its floor
+stays where it is.
+
 **If the engine will not start and the error says there is no such version of
 pyplatypus**, the version does exist and uv is answering from a cached copy of the package
-index — likely because the engine was published minutes ago. Clear the index cache:
+index — likely because the engine was published minutes ago. Clear that one package:
+
+```bash
+uv cache clean pyplatypus
+```
+
+**That is enough, and this page said the opposite until 2026-11-09.** It said the command
+leaves the index response behind, and that the index directory had to be cleared instead.
+Measured on six engine releases, most recently `0.8.0a83`: both caches refused the version
+that had just been published, `uv cache clean pyplatypus` removed 271 files and 2.9 MiB, and
+the very next install succeeded with nothing else done. If it ever is not enough, the heavier
+lever is the index and nothing else:
 
 ```bash
 rm -rf "$(uv cache dir)"/simple-v*
 ```
 
-Only the index: that directory is tens of megabytes, while the wheels beside it are tens of
-gigabytes and include PyTorch. `uv cache clean pyplatypus` is *not* enough — it removes that
-package's built artifacts and leaves behind the index response saying the version does not
-exist.
+Only that directory: it is tens of megabytes, while the wheels beside it are tens of
+gigabytes and include PyTorch.
 
 ## About the author
 
