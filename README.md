@@ -488,6 +488,7 @@ Both halves of this are by **Michał Maj** — this R package, and the Python en
 
 - [LinkedIn](https://www.linkedin.com/in/michal-maj116/)
 - [GitHub](https://github.com/maju116)
+- [Blog — Data Science Guts](https://datascienceguts.com/)
 
 The first version was a Keras and TensorFlow package in 2020, and it is still on `master`
 with the stars and the open issues it earned. Everything here was written from scratch in
