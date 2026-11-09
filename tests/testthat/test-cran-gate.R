@@ -103,6 +103,33 @@ test_that("the CRAN gate carries both halves, the flag and a verdict", {
   guard <- block[verdict:length(block)]
   expect_true(any(grepl("00check.log", guard, fixed = TRUE)))
   expect_true(any(grepl("grep -qE '^Status:'", guard, fixed = TRUE)))
+
+  # HALF THREE: the step has to RUN, and its failure has to fail the job. The two halves
+  # above hold that a verdict step exists and asks the right question, and
+  # `maju116/rplatypus#330` is the measurement that this is not enough: with
+  # `continue-on-error: true` added to it, or with `if: false`, the whole file still
+  # passed - the state before `#324` with the test green over it. That is the
+  # "guard in name only" the comment above rules out, one attribute further along.
+  #
+  # SCOPED TO THE STEP'S OWN LINES rather than to the rest of the job, because an `if:`
+  # belonging to a later step would otherwise be read as this one's - the same mistake
+  # the `Status:` grep made against the `env:` comment, one direction over.
+  own <- grep("^      - ", block)
+  after <- own[own > verdict]
+  lines_of_step <- guard[seq_len(if (length(after)) after[1] - verdict else length(guard))]
+  expect_gt(length(lines_of_step), 5L)
+
+  expect_identical(
+    paste(trimws(grep("^\\s*if:", lines_of_step, value = TRUE)), collapse = "; "),
+    "",
+    label = "`if:` conditions on the verdict step"
+  )
+  skipped <- grep("^\\s*continue-on-error:\\s*true", lines_of_step, value = TRUE)
+  expect_identical(
+    paste(trimws(skipped), collapse = "; "),
+    "",
+    label = "`continue-on-error: true` on the verdict step"
+  )
 })
 
 test_that("the verdict guard's own question is the one a truncated check fails", {
