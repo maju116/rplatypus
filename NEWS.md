@@ -20,6 +20,48 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-09 (later still) - On macOS this needs Apple Silicon, and the sentence is held against the engine's own page
+
+`maju116/rplatypus#327`, which is `maju116/pyplatypus#459`'s other half. torch has published
+no macOS x86_64 wheel since 2.2.2 - March 2024 - and the engine asks for at least 2.7, so on
+an Intel Mac there is no PyTorch it will accept. Found by a probe coming back from a real
+machine rather than by anybody reading.
+
+**R's half is a different half, which is why it is prose rather than a refusal.** The
+engine's install fails on that platform; this package's **succeeds**, because
+`install.packages()` is R and a CRAN binary and nothing here needs Python until something
+asks for it. So what an Intel Mac meets is a package that installs, loads, and then cannot
+make its first call. The README now says so in both places it already keeps facts of this
+kind - beside the ~5 GB CUDA wheel and the Pascal cap, which are the other two things about
+PyTorch rather than about this package.
+
+**And it is a second copy of somebody else's fact, so it is held rather than written.**
+`test-platform-note.R` fetches the engine's README from its default branch, reads the torch
+version out of the engine's own claim, and compares it with both of the copies on this page -
+`test-brand.R`'s shape, including the kind of positive control that section needs, because a
+network answering no for its own reasons is otherwise indistinguishable from a page that
+changed. The version is read out of each document by its role rather than compared as a
+formatted string.
+
+**What is deliberately NOT here is a refusal.** Unlike the engine, this package has code
+running on that machine before uv does - `Sys.info()` answers Darwin and x86_64 - so it could
+refuse by name, which would be better than whatever reticulate says today. Two things have to
+be measured before that is written: **where** it may fire, since CRAN runs an x86_64 macOS
+flavour and a package that refuses to load there is a package that gets archived, and **what
+it replaces**, since nobody here has read the message it would improve on. `#327` carries
+both, and it waits on a machine rather than on a decision.
+
+**And one sentence on that page was false, found while editing the section it is in.**
+*About the engine* told a reader that `uv cache clean pyplatypus` is not enough to clear a
+stale index response and that the whole index directory had to go. It is enough, and this
+project's own record has it enough on six engine releases - most recently `0.8.0a83`, where
+both caches refused the version minutes after it was published, that command removed 271
+files and 2.9 MiB, and the very next install succeeded with nothing else done. The heavy
+lever is still named, as the fallback it is.
+
+**The engine it needs: none beyond the pin**, which stays at `0.8.0a80`. The fact is the
+engine's `0.8.0a83` README, and reading that page is what the new test does.
+
 ### 2026-11-09 (later again) - The CRAN gate is `--as-cran` minus one section, and a check that dies before its verdict now fails
 
 `maju116/rplatypus#322`, which is this morning's own entry corrected - and then the repair
