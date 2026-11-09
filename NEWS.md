@@ -20,6 +20,56 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-09 (later) - Three functions in the shim had no caller, and a census says so next time
+
+`inst/python/platypus_shim.py` is this package's R-facing edge of the engine, and every
+call into it comes through one internal function, `shim()`. Three of its functions were
+never on the other end of one: `anchor_report`, `target_survey` and `model_names`.
+`maju116/rplatypus#317`. Measured over `R/` and `tests/` - zero references each, against one
+apiece for `case_table`, `anchor_shapes` and `instance_predictions` as the control that the
+search can find a reference at all.
+
+**They are deleted rather than wired up**, which is the argument the engine's own
+`DetectionMetrics.as_rows` was deleted on: a shim function with no caller is a second copy
+of an engine signature that nothing holds, so it can drift from the engine's with nothing to
+notice - the class `maju116/rplatypus#314` is, found by reading rather than by anything
+failing. Reinstating one costs ten lines; carrying three untested ones costs a reader every
+time they open that file.
+
+**No capability goes with them, which is what made this a deletion rather than a loss.** The
+figure `anchor_report` forwarded is the engine's own `anchor_coverage`, a method on its
+detection engine and a function in `pyplatypus.detection`; the survey is
+`pyplatypus.data.TargetSurvey`; and `model_names` was `list(engine.runs)`. All three are on
+the engine's public surface, so a Python user has had them throughout and an R user never
+did. If either report is wanted from R it is an R function, a help page and a receipt, which
+is work rather than a wrapper.
+
+**And the issue's own reading of the engine was half wrong, checked rather than carried.**
+It named `AnchorReport` and `TargetSurvey` as the two engine classes behind these; there is
+no `AnchorReport` anywhere in the engine - `anchor_coverage` returns a dictionary - and
+`TargetSurvey` is a class. A finding's description of the other side is evidence too.
+
+**A census replaces the reading that found them.** Every function the shipped shim exports
+is now asserted to be reached from this package's code or from its suite, asked of the
+**deparsed namespace** rather than of `R/`: the sources are not in an installed package, so
+a grep over them would skip under `R CMD check` and in the `engine` job, which are the two
+runs where this question matters most. It carries no exemption list, measured rather than
+hoped for - with these three gone every remaining function is reached, four of them by the
+suite rather than by `R/`: `volume_support`, `series_support` and `window_presets` are the
+probes the helpers ask before skipping, and `drawing_style` says in its own docstring that
+it is there for the test that mirrors the engine's colours.
+
+**The engine: nothing.** No release, no pin move - this is one file R ships and three
+functions out of it, and `0.8.0a80` stays where it is.
+
+**Five mutations, five caught, identity case first.** A callerless function reinstated is
+named by the census; the enumeration finding nothing, and a matcher answering TRUE to
+everything, are each caught by their own control; and the suite no longer counting as a
+caller is caught by the three skip probes. The fifth says the exclusion of the census's own
+file is load-bearing, and it was caught one assertion earlier than expected - by
+`zzz_not_a_shim_function`, the name nothing uses, which is written in that file and so is
+found there the moment it reads itself.
+
 ### 2026-11-09 - CI checks the package the way CRAN will, because the reason it did not ended with the rename
 
 `R CMD check` in CI dropped `--as-cran`, and the comment that justified it said the name

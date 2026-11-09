@@ -533,22 +533,6 @@ def detection_crops(
     }
 
 
-def anchor_report(engine: Any, model_name: str, split: str = "train") -> dict:
-    """How well the anchors in use cover a split's boxes.
-
-    Worth asking of a split they were *not* fitted on: 0.92 on training and 0.70 on
-    validation says the two hold different objects, and no training curve shows that.
-    """
-    import pyplatypus
-
-    try:
-        return {"ok": True, "coverage": engine.anchor_coverage(model_name, split)}
-    except pyplatypus.PlatypusError as error:
-        return _failure(error)
-    except Exception as error:  # noqa: BLE001
-        return _engine_failure(error)
-
-
 def run_anchors(engine: Any, model_name: str) -> dict:
     """The anchors a run used, and whether they were fitted or given.
 
@@ -593,19 +577,6 @@ def anchor_shapes(engine: Any, model_name: str, split: str = "train") -> dict:
         return _engine_failure(error)
 
 
-def target_survey(engine: Any, model_name: str) -> dict:
-    """What the target could and could not hold, measured before training."""
-    try:
-        run = engine.runs[model_name]
-    except KeyError:
-        return _failure_message(f"no model called '{model_name}'")
-    if run.survey is None:
-        return _failure_message(
-            f"'{model_name}' was not trained, so its targets were never surveyed."
-        )
-    return {"ok": True, "survey": run.survey.to_dict()}
-
-
 def drawing_style() -> dict:
     """The engine's drawing decisions, for the test that holds R's copy to them.
 
@@ -621,10 +592,6 @@ def drawing_style() -> dict:
             "PLATYPUS_ENGINE_PATH at a newer source tree."
         )
     return {"ok": True, "style": pyplatypus.drawing_style()}
-
-
-def model_names(engine: Any) -> list:
-    return list(engine.runs)
 
 
 def device_report() -> dict:
