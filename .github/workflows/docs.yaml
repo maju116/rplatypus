@@ -34,6 +34,19 @@ permissions: read-all
 jobs:
   docs:
     runs-on: ubuntu-latest
+    # A CEILING, BECAUSE WITHOUT ONE A HUNG JOB RUNS TO GITHUB'S 360-MINUTE DEFAULT.
+    # `maju116/pyplatypus#457`: the reviewer's sixteenth pass saw the engine's suite deadlock
+    # once at a two-worker detection test - the main process asleep, both children at zero
+    # CPU, `utime` unmoved across two reads - and nothing in either repository set a timeout.
+    #
+    # 45 minutes is set against the WORST DAY SEEN rather than the typical one, which is the
+    # mistake this figure invites in both directions: too low turns a slow runner into a
+    # false red, too high is the default. Measured over the last 30 workflow runs of each
+    # repository, the longest job is 11.8 minutes in `pyplatypus` and 7.6 in `rplatypus` -
+    # and §7 of the workbench records `setup-r@v2` alone taking 22m55s once, OUTSIDE that
+    # window, which is why the ceiling is set against that outlier rather than against the
+    # sample. A sample of thirty runs understates the worst day by construction.
+    timeout-minutes: 45
     concurrency:
       group: docs-${{ github.event_name != 'pull_request' || github.run_id }}
     env:
