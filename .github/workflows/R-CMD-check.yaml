@@ -33,6 +33,36 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      # `_R_CHECK_CRAN_INCOMING_` IS DELIBERATELY NOT SET HERE, and the reason is a
+      # measurement rather than a preference. `check-r-package@v2` runs, before
+      # `rcmdcheck`, a line that sets that variable to the string `false` whenever it is
+      # empty - and `tools:::.check_packages` consults `--as-cran` for the *CRAN incoming
+      # feasibility* section ONLY when the variable is unset, taking the variable's own
+      # value otherwise. So this job runs `--as-cran` with that section skipped, which is
+      # what `maju116/rplatypus#322` is about: three documents said otherwise.
+      #
+      # Setting it to `true` was tried and made the gate WORSE, in CI, on this very
+      # workflow. The section needs CRAN's own package database, and from a GitHub runner
+      # the fetch of `https://CRAN.R-project.org/src/contrib/PACKAGES.in` timed out at 60
+      # seconds, `read.dcf` could not open the connection, and `R CMD check` printed
+      # `Execution halted`. `rcmdcheck` then reported success:
+      #
+      #     the section on, in CI          7 checking steps, NO Status: line, job GREEN
+      #     the section on, locally       50 checking steps, Status: 2 NOTEs, 38 s of URLs
+      #     the section off (this job)    48 checking steps, Status: 1 NOTE
+      #
+      # So on a runner it does not check more, it checks SEVEN STEPS AND STOPS - and the
+      # package's tests, examples and everything after step seven are never reached.
+      # `_R_CHECK_CRAN_INCOMING_REMOTE_: false` avoids the network and the halt, and buys
+      # nothing worth having: `if (localOnly) return(out)` sits before both the database
+      # fetch and the URL checks, so the version comparison and the URLs - the two things
+      # anybody would turn this on for - are on the far side of it. Measured: that arm adds
+      # one NOTE naming the maintainer.
+      #
+      # What catches the version and the URLs is the local `--as-cran` run before a
+      # submission, which §7 carries, and CRAN's own pretest, which refuses loudly within
+      # minutes. What catches a WARNING anywhere else - `codetools` undeclared, the case
+      # §8 records - is this job, unchanged.
 
     steps:
       - uses: actions/checkout@v7
@@ -64,8 +94,12 @@ jobs:
           # repair is deleting the override rather than adding anything - and its
           # `error-on` default is `"warning"`, which is what makes this a gate rather than
           # an upload nobody reads: it fails on a WARNING or an ERROR and NOT on a NOTE.
-          # That matters, because `--as-cran` always emits NOTEs here that are about the
-          # submission and not the package: `Maintainer`, and `Days since last update`.
+          #
+          # WHAT THIS GATE IS, EXACTLY, because the first version of this comment claimed
+          # more: `--as-cran` **minus** the CRAN-incoming section, which the action switches
+          # off and the `env:` above explains. It had said that `--as-cran` "always emits
+          # NOTEs here" naming `Maintainer` and `Days since last update`, and this job emits
+          # neither - they come from the section that does not run. `maju116/rplatypus#322`.
           #
           # What it buys, measured rather than argued: `CLAUDE.md` §8 records five days,
           # 2026-10-29 to 2026-11-03, when `--as-cran` carried a WARNING - `codetools` used
@@ -78,6 +112,31 @@ jobs:
           # leaves inst/doc empty, which R CMD check reports as two WARNINGs, which this
           # action then fails on. Checking a package differently from how it is shipped
           # only produces failures that say nothing.
+
+      # A CHECK THAT DIES BEFORE ITS VERDICT READS AS A CLEAN CHECK, which is what `#322`
+      # found by making one die: `rcmdcheck` reported `conclusion=success` over a log with
+      # seven `* checking` lines and no `Status:` at all, so the job was green and nothing
+      # in the package had been checked past step seven. That is §4's own warning - a step
+      # with no repair chained to a check whose result nobody reads - and it is not about
+      # the incoming section, which merely supplied a reason to die.
+      #
+      # So the verdict is asserted to exist. Absence of `00check.log` is a failure too,
+      # because a missing log and a log with no verdict are the same silence.
+      - name: The check has to have reached a verdict
+        shell: bash
+        run: |
+          log=$(find check -name '00check.log' -print -quit 2>/dev/null)
+          if [ -z "$log" ]; then
+            echo "no 00check.log anywhere under check/ - the check left no log to read"
+            exit 1
+          fi
+          if ! grep -qE '^Status:' "$log"; then
+            echo "$log has no Status: line, so R CMD check stopped before its verdict."
+            echo "Steps it did reach: $(grep -cE '^\* checking' "$log")"
+            tail -40 "$log"
+            exit 1
+          fi
+          echo "$log says: $(grep -E '^Status:' "$log")"
 
   # Style and the defects a linter finds, in both languages the package is written in.
   lint:
