@@ -20,6 +20,61 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-09 (later again) - The CRAN gate is `--as-cran` minus one section, and a check that dies before its verdict now fails
+
+`maju116/rplatypus#322`, which is this morning's own entry corrected - and then the repair
+corrected by a measurement.
+
+`#319` stopped the workflow overriding `check-r-package`'s default `args`, so `--as-cran`
+reached `R CMD check`. The flag is only half of that gate: before calling `rcmdcheck` the
+action sets `_R_CHECK_CRAN_INCOMING_` to the string `false` whenever it is empty, and R
+consults the flag for the *CRAN incoming feasibility* section **only when that variable is
+unset**. So the section never ran - and that is where the URL and DOI checks live, the
+maintainer line, `Days since last update`, and `bad_version`, an insufficient package
+version, which is the one WARNING-level item in there.
+
+**Turning it on was the obvious repair, it was tried, and it made the gate worse.** The
+section needs CRAN's own package database, and from a GitHub runner the fetch of
+`PACKAGES.in` timed out at 60 seconds: `read.dcf` could not open the connection,
+`R CMD check` printed `Execution halted`, and `rcmdcheck` reported success. Measured on one
+tarball, three ways, and in CI:
+
+    the section on, IN CI           7 checking steps, no Status: line, job GREEN
+    the section on, locally        50 checking steps, Status: 2 NOTEs, 38 s of URL work
+    the section off (what ships)   48 checking steps, Status: 1 NOTE
+
+Seven steps and a stop means the package's tests, examples and everything after step seven
+were never checked, and nothing said so. The same configuration that works on this machine
+kills the gate on a runner, which is the usual lesson about a gate depending on the machine
+it ran on, with the sign reversed.
+
+**`_R_CHECK_CRAN_INCOMING_REMOTE_: false` avoids the network and buys nothing worth having**:
+`if (localOnly) return(out)` sits before both the database fetch and the URL checks, so the
+version comparison and the URLs - the two reasons to want this - are on the far side of it.
+Measured, that arm adds one NOTE naming the maintainer.
+
+**So the section stays off and the prose says so.** The gate is `--as-cran` minus the
+CRAN-incoming section: it still fails on a WARNING or an ERROR anywhere else, which is the
+`codetools` case that justified `#319`. What it does not check is the version and the URLs,
+and those are caught by the local `--as-cran` run before a submission and by CRAN's own
+pretest, which refuses within minutes.
+
+**And the branch produced something better than what it was for.** A check that dies before
+its verdict is indistinguishable from a clean one: `rcmdcheck` read a log with seven
+`* checking` lines and no `Status:` and reported success. The job asserts the verdict now,
+and fails naming the step count if there is none - which is the repair for any early death,
+not only this one. Proven in three directions on real logs: a finished log passes, a log
+truncated the way CI's was fails after naming two steps, and no log at all fails.
+
+Both halves of the gate are held by one receipt - the flag arriving (no `args:` override) and
+the verdict being asserted (the step, and what it greps for). Four mutations, four caught,
+identity first: the step deleted, the step left in place but grepping for the wrong string,
+an override restored, and the job renamed so the extraction finds nothing. The grep check is
+scoped to the step's own lines because the first draft was satisfied by the word `Status:`
+appearing in a comment, which is a guard in name only.
+
+Nothing about the package changes.
+
 ### 2026-11-09 (later) - Three functions in the shim had no caller, and a census says so next time
 
 `inst/python/platypus_shim.py` is this package's R-facing edge of the engine, and every
@@ -82,9 +137,17 @@ definition changed: `r-lib/actions/check-r-package`'s default `args` are already
 flag. The override is gone and nothing was added.
 
 **And its `error-on` default is `"warning"`**, which is what makes this a gate rather than
-noise: it fails on a WARNING or an ERROR and **not** on a NOTE. `--as-cran` always emits
-NOTEs here that are about the submission rather than the package - `Maintainer`, and
-`Days since last update` - and a job failing on those would be deleted within a week.
+noise: it fails on a WARNING or an ERROR and **not** on a NOTE. That matters because
+`--as-cran` emits NOTEs that are about the submission rather than about the package -
+`Maintainer`, and `Days since last update` - and a job failing on those would be deleted
+within a week.
+
+**The two NOTEs named above are NOT emitted by this job, and the entry below is the
+repair.** `maju116/rplatypus#322`: the action switches off the section they come from, and
+it stays switched off deliberately - turning it on was measured and made the gate worse. So
+this gate is `--as-cran` minus its CRAN-incoming half, which is what the newest entry says
+out loud. The sentence is corrected here rather than deleted, because a changelog is a
+record.
 
 **What it buys is measured rather than argued.** There were five days, 2026-10-29 to
 2026-11-03, when `--as-cran` carried a WARNING and nothing said so: `codetools` used by `::`
