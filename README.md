@@ -479,26 +479,30 @@ can work around, and the engine's own README carries the measurement and why its
 stays where it is.
 
 **If the engine will not start and the error says there is no such version of
-pyplatypus**, the version does exist and uv is answering from a cached copy of the package
-index — likely because the engine was published minutes ago. Clear that one package:
+pyplatypus**, the version does exist and something is answering from a cached copy of the
+package index — likely because the engine was published minutes ago. Remove this one
+package's index entry, from both of the places it can live:
 
 ```bash
-uv cache clean pyplatypus
+rm -rf ~/.cache/uv/simple-v*/pypi/pyplatypus.rkyv \
+       ~/.cache/R/reticulate/uv/cache/simple-v*/pypi/pyplatypus.rkyv
 ```
 
-**That is enough, and this page said the opposite until 2026-11-09.** It said the command
-leaves the index response behind, and that the index directory had to be cleared instead.
-Measured on six engine releases, most recently `0.8.0a83`: both caches refused the version
-that had just been published, `uv cache clean pyplatypus` removed 271 files and 2.9 MiB, and
-the very next install succeeded with nothing else done. If it ever is not enough, the heavier
-lever is the index and nothing else:
+**Two places, because there may be two caches, and this page named only one until
+2026-11-09.** reticulate uses a `uv` from your `PATH` if you have one and otherwise
+installs and manages its own — which is the ordinary case for the reader this page is
+written for, the one who never chooses an interpreter. A managed `uv` keeps its cache under
+`~/.cache/R/reticulate/uv/cache`, so `uv cache clean pyplatypus` in a terminal either fails
+with *command not found* or cleans a cache your failing install never read. The command
+above needs no `uv` on your `PATH` and touches one file per cache.
 
-```bash
-rm -rf "$(uv cache dir)"/simple-v*
-```
+If you do have `uv` and want the shorter form, `uv cache clean pyplatypus` is enough for
+*that* `uv`'s cache — measured on six engine releases — and nothing for the other one.
 
-Only that directory: it is tens of megabytes, while the wheels beside it are tens of
-gigabytes and include PyTorch.
+**And neither command fixes the other cause.** A freshly published version can be missing
+from the package index your machine happens to reach, with every cache empty; then there is
+nothing to clear and waiting a few minutes is the whole remedy. That is why a refusal is
+worth reading twice before anybody deletes anything.
 
 ## About the author
 

@@ -20,6 +20,42 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-09 (the evening) - Two guards that held the name of their subject, and a cache this page was clearing on the wrong machine
+
+The reviewer's seventeenth pass, which is the second repeat pass and the one that met the
+stopping rule. Both of these are its findings about work merged earlier the same day.
+
+**`maju116/rplatypus#329`: the stale-index advice was for the wrong `uv`.** This page gained
+*"That is enough"* in the morning, on six readings taken here - and every one of them was
+taken on a machine whose reticulate picks up a `uv` from `PATH`. Measured now:
+`reticulate:::uv_binary()` answers `~/miniconda3/bin/uv` with this shell's `PATH` and
+`~/.cache/R/reticulate/uv/bin/uv` under `env -i PATH=/usr/bin:/bin`, which is the shape of a
+desktop-launched RStudio. The managed copy keeps its own cache, holding its own
+`simple-v27/pypi/pyplatypus.rkyv`, while `uv cache dir` in a terminal says `~/.cache/uv` and
+`simple-v15`. So for the reader this page is written for - the one who *"never chooses an
+interpreter"* - the old command either failed outright or cleaned a cache the failing install
+had never read.
+
+It names one file per cache now, in both places, with no `uv` needed on `PATH`; the glob was
+run here before it was written down. **And the sentence the morning's edit removed is back**:
+a version missing from whichever index your machine reaches is the other cause, no command
+touches it, and waiting is the whole remedy.
+
+**`maju116/rplatypus#330`: the verdict step is asserted to RUN, not merely to exist.** The
+morning's `#324` added a step that fails the job when `R CMD check` stops before its
+`Status:` line - the defect being a check that halted at step seven and reported success. Its
+test held the step's presence and its grep, and measured, that was not enough: with
+`continue-on-error: true` added to that step, or with `if: false`, the whole file still
+passed - the state before `#324`, with a green test over it. Its own comment rules that out
+in so many words, which is why it is worth a line.
+
+Three assertions now, scoped to the step's **own** lines rather than to the rest of the job,
+because an `if:` belonging to a later step would otherwise read as this one's - the same
+mistake the `Status:` grep made against the `env:` comment above it, one direction over. Two
+mutations caught, and a control that an `if:` on another job still passes.
+
+**The engine it needs: none beyond the pin**, which stays at `0.8.0a80`.
+
 ### 2026-11-09 (later still) - On macOS this needs Apple Silicon, and the sentence is held against the engine's own page
 
 `maju116/rplatypus#327`, which is `maju116/pyplatypus#459`'s other half. torch has published
