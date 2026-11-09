@@ -827,6 +827,7 @@ evaluate_cases(
   split = "validation",
   group_by = NULL,
   at = NULL,
+  decode = NULL,
   ...
 )
 
@@ -850,7 +851,7 @@ A <code>platypus_cases</code> from <code>evaluate_cases()</code>.
 <code id="...">…</code>
 </td>
 <td>
-Unused.
+Must be empty. Accepted because the generic has it, and checked rather than ignored so that a misspelt argument is refused instead of changing the answer.
 </td>
 </tr>
 <tr>
@@ -883,6 +884,14 @@ A pattern picking a group out of each case’s name, as in <a href="../man/split
 </td>
 <td>
 Which grid to score on, as in <code>evaluate()</code>. Unset is the model’s own <code>load_shape</code>; <code>“source”</code> reads each truth as stored and scores the prediction there, which is the only form in which rows from two models - or from two runs with different <code>target_spacing</code> - mean the same thing.
+</td>
+</tr>
+<tr>
+<td style="white-space: collapse; font-family: monospace; vertical-align: top">
+<code id="decode">decode</code>
+</td>
+<td>
+Which decoding’s cases to score, by the name used in the model’s <code>decode</code> list. Unset takes the model’s first, which is the engine’s own default. Only an instance fit decodes anything, so naming it on any other task is refused rather than ignored - and <code>evaluate()</code> is where the per-decoding means are, one row each.
 </td>
 </tr>
 </tbody></table>
