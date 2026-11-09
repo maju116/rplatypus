@@ -111,6 +111,40 @@ test_that("a misspelt argument is refused by every method that takes the dots fo
                        digitz = 2), "digitz")
 })
 
+test_that("the typo wins over the method's own task refusal, on every task", {
+  # `maju116/rplatypus#323`. The comment above `evaluate.platypus_fit`'s check says what the
+  # ORDER buys - *put it after a refusal this method makes about the task and a typo on a
+  # classification fit reports the classification refusal instead* - and until this test
+  # nothing asked it. The test above uses a SEMANTIC stub, and `evaluate_cases()` refuses
+  # only a classification fit or a stray `decode`, so its check could be moved to just
+  # before the shim call and the suite stayed green. `evaluate_classes()` and
+  # `evaluate_images()` refuse a semantic fit, which is why the same move IS caught there -
+  # so the gap was in exactly the method whose refusal the comment names.
+  #
+  # Asked of every task rather than of the one that happened to be found: the promise is
+  # about the order, and a method that refuses a task is the only place the order can be
+  # observed. A task is also the cheapest axis to enumerate - the stub carries nothing else
+  # the check could reach past.
+  tasks <- c(
+    "semantic_segmentation", "instance_segmentation", "classification", "object_detection"
+  )
+  for (task in tasks) {
+    fit <- stub_fit(task)
+    expect_error(evaluate(fit, splt = "test"), "splt", info = task)
+    expect_error(evaluate_cases(fit, splt = "test"), "splt", info = task)
+    expect_error(evaluate_classes(fit, splt = "test"), "splt", info = task)
+    expect_error(evaluate_images(fit, splt = "test"), "splt", info = task)
+    expect_error(predict(fit, splt = "test"), "splt", info = task)
+    expect_error(plot(fit, metricz = "dice"), "metricz", info = task)
+  }
+
+  # The control, and it is what makes the loop above mean something: on the task each
+  # method refuses, the refusal IS what a reader gets when there is no typo. If these
+  # passed quietly the loop could be satisfied by methods that refuse nothing.
+  expect_error(evaluate_cases(stub_fit("classification")), "scores every case separately")
+  expect_error(evaluate_classes(stub_fit("semantic_segmentation")), "per-class")
+})
+
 test_that("a misspelling that is a PREFIX of a real argument still binds, and that is R", {
   # The limit of this whole repair, measured rather than reasoned about, and it is what made
   # the first draft of the test above fail: R matches a supplied name to a formal it is a
