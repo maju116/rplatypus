@@ -20,6 +20,40 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-09 - CI checks the package the way CRAN will, because the reason it did not ended with the rename
+
+`R CMD check` in CI dropped `--as-cran`, and the comment that justified it said the name
+clash with the archived `Platypus` *"is being taken up with CRAN separately"*. That ended:
+this package was renamed on 2026-10-14 and accepted on 2026-11-04. `maju116/rplatypus#316`.
+
+**The repair is a deletion rather than an addition**, which is what reading the action's own
+definition changed: `r-lib/actions/check-r-package`'s default `args` are already
+`c("--no-manual", "--as-cran")`, so the step had been *overriding* that default to drop the
+flag. The override is gone and nothing was added.
+
+**And its `error-on` default is `"warning"`**, which is what makes this a gate rather than
+noise: it fails on a WARNING or an ERROR and **not** on a NOTE. `--as-cran` always emits
+NOTEs here that are about the submission rather than the package - `Maintainer`, and
+`Days since last update` - and a job failing on those would be deleted within a week.
+
+**What it buys is measured rather than argued.** There were five days, 2026-10-29 to
+2026-11-03, when `--as-cran` carried a WARNING and nothing said so: `codetools` used by `::`
+in the tests and not declared. CRAN does not accept a WARNING, and the default branch is the
+submission candidate, so a submission on any of those days would have been sent back. No
+gate run before a push asked that question - the only thing that did was a run by hand
+before a submission, which is a person remembering.
+
+**This heading is not an ordinal, and that is deliberate.** Every other entry today counts -
+*fifth of the day*, *sixth*, and so on - and that breaks the moment two branches are in
+flight, which is exactly what happened here: this one was written while the eighth was still
+an open pull request, so both would have claimed the same number and neither insert point
+would have existed on the other's branch. It is the same flaw as *last of the day*, which
+this file corrected this morning: **a heading that names a position in a growing sequence is
+falsified by whatever lands next.** A heading that names its subject is not.
+
+Nothing about the package changes. This is the gate reading what ships the way its reader
+will.
+
 ### 2026-11-08 (eighth of the day) - A misspelt argument is refused rather than swallowed, and `evaluate_cases()` can be asked for a decoding
 
 Eight exported functions and methods took `...` and no body read one, so

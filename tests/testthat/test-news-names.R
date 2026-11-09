@@ -32,14 +32,22 @@ test_that("every `name()` in the newest NEWS.md entry resolves", {
   expect_gt(length(starts), 1)  # control: the entry markers were found at all
   newest <- news[starts[1]:(starts[2] - 1)]
 
-  mentioned <- unlist(regmatches(
-    newest, gregexpr("`[a-zA-Z.][a-zA-Z0-9._]*\\(\\)`", newest)
-  ))
+  pattern <- "`[a-zA-Z.][a-zA-Z0-9._]*\\(\\)`"
+  mentioned <- unlist(regmatches(newest, gregexpr(pattern, newest)))
   mentioned <- unique(gsub("[`()]", "", mentioned))
 
-  # Control: an entry with no function names would pass by having nothing to check, which
-  # reads exactly like a silent instrument. Every entry this project writes names something.
-  expect_gt(length(mentioned), 0)
+  # CONTROL, and it is asked of the WHOLE FILE rather than of the newest entry. It used to
+  # be `length(mentioned) > 0` on the newest entry, with a comment saying "every entry this
+  # project writes names something" - and that premise expired the first time an entry was
+  # about a workflow file rather than about the package's surface. The entry below this one
+  # is that: it changes what `R CMD check` is passed in CI and names no R function at all,
+  # which is correct content and made this test red.
+  #
+  # §4's own category, in the file that already records this test as an instance of it: a
+  # check tight enough to fail on correct content is as useless as one loose enough to pass
+  # on wrong content. So the control now proves what a control is for - that the regex finds
+  # anything at all - and the RULE stays where it belongs, on the entry being written now.
+  expect_gt(length(unlist(regmatches(news, gregexpr(pattern, news)))), 10)
 
   ours <- c(
     getNamespaceExports("rplatypus"),
