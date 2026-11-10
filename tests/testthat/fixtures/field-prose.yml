@@ -6,7 +6,7 @@
 #
 # A digest that no longer matches is not the engine's failure. It is a question - does R's
 # prose still say the right thing? - asked at the only moment anybody would ask it.
-engine: 0.8.0a80
+engine: 0.8.0a85
 fields:
   - field: activation
     engine_digest: 4822b126e39826a504979a6b123cc241
@@ -94,7 +94,7 @@ fields:
     documented_in: [callbacks]
   - field: decode
     engine_digest: 5642c906a2fb2f7632264753ca46ac26
-    documented_in: [models, predict.platypus_fit]
+    documented_in: [evaluate_cases, models, predict.platypus_fit]
   - field: deep_supervision
     engine_digest: 7c93647b6037dd1848a527d6171a91bd
     documented_in: [models]

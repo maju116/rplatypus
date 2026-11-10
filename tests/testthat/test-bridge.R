@@ -221,8 +221,14 @@ test_that("a backend that is not CUDA is named, and CUDA is not", {
   # The printing rule, tested without a machine of either kind: every published set of
   # weights was trained on CUDA, so that is the unremarkable case, and an `mps` run is the
   # one worth saying out loud because its numbers are not directly comparable.
+  # `cuda_build = "none"` since engine `0.8.0a85`, and the old literal here is why this
+  # fixture is worth a comment: it said `"cpu-only build"` beside `backend = "mps"`, which
+  # is a machine that cannot exist - a macOS wheel has no CUDA and a working `mps` backend
+  # at once, so the engine was calling the build CPU-only on a machine about to train on
+  # its GPU. Nothing in either suite compared the two, so the impossible pair sat here as
+  # expected output while `print()` stayed indifferent to the value. `pyplatypus#468`.
   mps <- structure(
-    list(torch = "2.7.1", cuda_build = "cpu-only build", device = "mps", backend = "mps"),
+    list(torch = "2.15.0", cuda_build = "none", device = "mps", backend = "mps"),
     class = "platypus_device"
   )
   cuda <- structure(
