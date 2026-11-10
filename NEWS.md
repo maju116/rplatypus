@@ -20,6 +20,51 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-10 - The pin moves to `0.8.0a85`: an Apple machine was told its build was CPU-only
+
+**The engine it needs: `0.8.0a85`**, and this is a release whose whole value to an R user
+arrives through the pin moving.
+
+`maju116/pyplatypus#468`: the engine answered `cuda_build` with `"cpu-only build"` whenever
+`torch.version.cuda` was falsy, which on a macOS wheel it always is - while that same wheel
+carries a working `mps` backend. `platypus_device()` forwards the engine's `device_report()`
+verbatim, so an Apple Silicon user read three consecutive lines with the first denying the
+two under it:
+
+    torch      : 2.15.0
+    cuda build : cpu-only build      <- and the fit ran on the GPU
+    device     : mps
+    backend    : mps - not CUDA, so scores are not directly
+                 comparable with the published weights, which were trained on it
+
+Measured on a borrowed **Apple M3 Pro**, macOS 26.7.2, torch 2.15.0, and it is the first
+time that path has executed anywhere: the machine this package is developed on is Linux with
+an NVIDIA card, and the macOS CI runner is a virtual machine whose graphics device has no
+Metal 2.0, so torch skips MPS there. The value answers about CUDA and about nothing else
+now - `none` where there is no CUDA build - because `backend`, `device` and
+`gpu_present_but_unusable` already carry everything the old string was reaching for.
+
+**One move for five releases.** The pin sat at `0.8.0a80` on purpose: `0.8.0a81` is a pad
+colour this package does not expose, `0.8.0a82` is three sentences of that release's own
+refusal, and `0.8.0a83` and `0.8.0a84` are prose and metadata whose R half was the sentence
+`maju116/rplatypus#327` added. `0.8.0a85` is the first of the five an R user can feel, which
+is the ratchet working rather than a gap.
+
+**This package had written the impossible pair down as well.** `tests/testthat/test-bridge.R`
+pinned `cuda_build = "cpu-only build"` beside `backend = "mps"` as its Apple Silicon
+fixture - a machine that cannot exist, since a macOS wheel has no CUDA and a working `mps`
+backend at once - and nothing in either suite compared the two, so it sat there as expected
+output while the printing method stayed indifferent to the value.
+
+**And the pin move produced a reading from the ledger of field prose that is new.** All 117
+engine digests held, so no description was rewritten; what moved was `decode`'s list of help
+topics, which gained `evaluate_cases()`. That list is read off this package's own roxygen
+rather than the engine's schema, so it went stale when `evaluate_cases()` gained the argument
+in `maju116/rplatypus#318` the day before, the suite stayed green, and the regeneration a pin
+move triggers repaired it silently. The test holds a claimed topic to one that really
+documents the field and not the other direction - it says so in its own comment -
+so `maju116/rplatypus#333` is that direction.
+
 ### 2026-11-09 (the evening) - Two guards that held the name of their subject, and a cache this page was clearing on the wrong machine
 
 The reviewer's seventeenth pass, which is the second repeat pass and the one that met the
