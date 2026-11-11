@@ -16,7 +16,12 @@ platypus_fit(
 \arguments{
 \item{spec}{A \code{\link[=platypus_spec]{platypus_spec()}}.}
 
-\item{device}{\code{"cuda"}, \code{"cpu"}, or \code{NULL} to use a GPU when one is present.}
+\item{device}{Where the work happens. The value is handed to torch as given rather than
+checked against a list, so \code{"cuda"}, \code{"mps"} and \code{"cpu"} all reach it, and \code{"xpu"} is
+forwarded as well - offered rather than promised, since nothing here has run on one.
+\code{NULL}, the default, takes the first accelerator this machine can actually use and the
+processor when there is none. \code{\link[=platypus_device]{platypus_device()}} reports which it will be, and why a
+card that is present can still be unusable.}
 
 \item{num_workers}{Processes used to read and decode images. \code{"auto"} picks a small
 number based on the machine. This matters more than it sounds: reading in the main

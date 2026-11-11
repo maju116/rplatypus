@@ -80,15 +80,16 @@ argument_locations <- function(db = rd_database()) {
 }
 
 
-#' How long each documented argument's text is, in the Rd a reader sees
+#' What each documented argument's entry SAYS, in the Rd a reader sees
 #'
-#' Beside `documented_arguments()`, which answers whether a name is documented at all. This
-#' answers whether the entry says anything, which is a different question and the one
-#' platypus#135's third part is about. Keyed by name, longest where a name appears twice.
+#' Keyed by name, taking the longest where a name appears more than once - the same choice
+#' `argument_text_lengths()` makes, and that function is `nchar()` over this one rather than
+#' a second walk of the database. The markup is flattened, so `\code{"cuda"}` arrives as
+#' `"cuda"` with its quotes and without its tag: what a reader is offered, in text.
 #'
 #' @keywords internal
 #' @noRd
-argument_text_lengths <- function(db = rd_database()) {
+argument_texts <- function(db = rd_database()) {
   tag_of <- function(x) {
     tag <- attr(x, "Rd_tag")
     if (is.null(tag)) "" else tag
@@ -100,16 +101,34 @@ argument_text_lengths <- function(db = rd_database()) {
       items <- block[vapply(block, tag_of, character(1)) == "\\item"]
       for (item in items) {
         names_text <- paste(unlist(lapply(item[[1]], as.character)), collapse = "")
-        body <- nchar(trimws(paste(unlist(lapply(item[[2]], as.character)), collapse = "")))
+        body <- trimws(paste(unlist(lapply(item[[2]], as.character)), collapse = ""))
         for (name in trimws(strsplit(names_text, ",")[[1]])) {
           if (nzchar(name)) {
-            found[[name]] <- max(c(found[[name]], body))
+            # Not `%||%`: base R gained that operator in 4.4 and `DESCRIPTION` admits 4.1,
+            # so a helper that leans on it would fail on a version this package claims.
+            seen <- if (is.null(found[[name]])) "" else found[[name]]
+            if (nchar(body) > nchar(seen)) found[[name]] <- body
           }
         }
       }
     }
   }
   found
+}
+
+
+#' How long each documented argument's text is, in the Rd a reader sees
+#'
+#' Beside `documented_arguments()`, which answers whether a name is documented at all. This
+#' answers whether the entry says anything, which is a different question and the one
+#' platypus#135's third part is about. Keyed by name, longest where a name appears twice -
+#' which is `argument_texts()`'s own choice, so this is that function measured rather than
+#' a second traversal that could disagree with it.
+#'
+#' @keywords internal
+#' @noRd
+argument_text_lengths <- function(db = rd_database()) {
+  lapply(argument_texts(db), nchar)
 }
 
 
