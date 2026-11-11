@@ -843,7 +843,7 @@ A <a href="../man/platypus_spec.html"><code>platypus_spec()</code></a>.
 <code id="device">device</code>
 </td>
 <td>
-<code>“cuda”</code>, <code>“cpu”</code>, or <code>NULL</code> to use a GPU when one is present.
+Where the work happens. The value is handed to torch as given rather than checked against a list, so <code>“cuda”</code>, <code>“mps”</code> and <code>“cpu”</code> all reach it, and <code>“xpu”</code> is forwarded as well - offered rather than promised, since nothing here has run on one. <code>NULL</code>, the default, takes the first accelerator this machine can actually use and the processor when there is none. <a href="../man/platypus_device.html"><code>platypus_device()</code></a> reports which it will be, and why a card that is present can still be unusable.
 </td>
 </tr>
 <tr>
