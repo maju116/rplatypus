@@ -17,6 +17,34 @@
 #' @noRd
 pyplatypus_version <- "0.8.0a85"
 
+#' The Python the engine needs, declared rather than left to whatever uv picks
+#'
+#' This is the engine's OWN floor - `requires-python` in `maju116/pyplatypus`'s manifest -
+#' and `tests/testthat/test-python-floor.R` holds the two together, so a floor that moves
+#' there turns this package red until it follows. The pin's ratchet, one field over.
+#'
+#' Until `rplatypus#338` nothing here said anything about the interpreter, and
+#' `py_require()` takes a `python_version` it was never given. Measured on 2026-11-11:
+#' reticulate filters uv's candidate list by these constraints and takes the FIRST that
+#' satisfies them, so the declaration changes the answer in exactly one case - a machine
+#' whose first candidate is below the floor - and that is the case worth fixing. On this
+#' machine the list begins `3.11.11, 3.10.16, 3.12.9, 3.9.21, 3.13.2`, unsorted, and both
+#' with and without the constraint the answer is 3.11.11: a no-op where it does not bite.
+#'
+#' What it buys where it does bite is the SHAPE of the failure. With no constraint, a
+#' machine offering 3.10 first builds an environment uv then cannot resolve, and the user
+#' reads that no version of `pyplatypus==<pin>` matches - on a route where they never chose
+#' a Python at all. With it, reticulate stops first and names the constraint and the versions
+#' it found, in R, before anything is downloaded. Measured both ways: `">=3.14"` and a
+#' `">=3.99"` control each refuse here with that message.
+#'
+#' It is declared ONCE, in `.onLoad`. Asked for rather than assumed, on 2026-11-11: a
+#' constraint survives `py_require(..., action = "remove")` and the add that follows it, so
+#' [platypus_use_torch()] rebuilding the package list does not drop it.
+#' @keywords internal
+#' @noRd
+pyplatypus_python <- ">=3.11"
+
 #' What this session will ask for. Set by [platypus_use_torch()] before the engine starts.
 #' @keywords internal
 #' @noRd
@@ -244,7 +272,10 @@ check_engine_version_once <- function() {
   # point can change what the environment will be without a restart.
   requested <- torch_build_requested()
   if (!is.null(requested)) .platypus_requirement(requested)
-  reticulate::py_require(.platypus_requirement())
+  # `python_version` as well as the packages: without it the interpreter is whatever uv's
+  # candidate list happens to offer first, which on a machine with an old Python is a
+  # resolver failure about the engine's version rather than a readable word about Python.
+  reticulate::py_require(.platypus_requirement(), python_version = pyplatypus_python)
 
   .platypus$engine <- reticulate::import(
     "pyplatypus",
