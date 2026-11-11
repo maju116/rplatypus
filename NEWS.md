@@ -20,6 +20,36 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-11 (later) - This package now says which Python it needs
+
+**The engine it needs: `0.8.0a85`**, unchanged. This is about the interpreter the isolated
+environment is built on, which is R's own question and not the engine's.
+
+`maju116/rplatypus#338`: `reticulate::py_require()` takes a `python_version` and this package
+passed none, so the Python of that environment was whatever uv's candidate list offered
+first. Measured: that list begins `3.11.11, 3.10.16, 3.12.9, 3.9.21, 3.13.2` and **is not
+sorted by version**, so with no constraint the choice came off the head of a list this
+package had no opinion about.
+
+It now asks for the engine's own floor, `>=3.11`, and what that changes is the shape of the
+failure rather than the usual case. On this machine the answer is 3.11.11 either way - a
+no-op where it does not bite. Where it bites is a machine whose first candidate is below the
+floor: without the constraint uv builds an environment it then cannot resolve, and the user
+reads that no version of `pyplatypus==0.8.0a85` matches, on a route where they never chose a
+Python at all. With it, reticulate stops first and names the constraint and the versions it
+found, in R, before anything is downloaded.
+
+The floor is not a second opinion: `tests/testthat/test-python-floor.R` fetches the engine's
+manifest and holds the two together, so a floor that moves there turns this package red until
+it follows - the pin's ratchet one field over, and `test-linter-pin.R`'s shape because that
+is the same relationship about ruff.
+
+Both escape hatches were measured rather than assumed. `PLATYPUS_ENGINE_PATH` resolves
+exactly as before, 3.11.11, and the warning that route prints was confirmed to predate this
+change by running the same probe without it. `RETICULATE_PYTHON` overrides `py_require()`
+entirely, so the constraint is recorded and has no effect there, and both of its startup
+messages still fire.
+
 ### 2026-11-11 - `?platypus_fit` offered two devices where the engine takes any torch name
 
 **The engine it needs: `0.8.0a85`**, unchanged - this is R's own prose about the engine's
