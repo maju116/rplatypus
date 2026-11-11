@@ -20,6 +20,36 @@ drifted underneath it.
 
 ## [0.3.0] - unreleased
 
+### 2026-11-11 - `?platypus_fit` offered two devices where the engine takes any torch name
+
+**The engine it needs: `0.8.0a85`**, unchanged - this is R's own prose about the engine's
+table, and the engine has been right the whole time.
+
+`maju116/rplatypus#336`: `platypus_fit(device = )` was documented as `"cuda"`, `"cpu"` or
+`NULL`, and the value is handed to torch as given - nothing in this package, the shipped shim
+or the engine checks it against a list. The engine's own order of preference is three
+accelerators, `cuda`, `mps` and `xpu`, so `"mps"` was a value this argument has always taken
+and the help page did not mention.
+
+The page is also the one place a reader would look for it. `platypus_device()` exists
+*because* of that backend - its own help page explains that a Mac reported `cpu` with a
+working `mps` backend in the same installation - so this package named `mps` where somebody
+diagnoses a problem and not where they ask for it.
+
+The sentence now names `"cuda"`, `"mps"`, `"cpu"` and `NULL`, says the value is passed to
+torch rather than matched against a list, and offers `"xpu"` as forwarded rather than
+promised, because nothing in this project has run on one. The only claim it makes about
+`mps` is the one that was measured: an Apple M3 chose it and the same fit agreed with the
+processor on every figure the probe compared.
+
+**And the reason this was possible is the half worth having.** `device` is an argument of
+the engine's constructor rather than a specification field, so it is not one of the 117
+names in the field-prose ledger - the one mechanism here that asks whether R's prose still
+says the right thing. One function takes it, so the shared-`@param` census does not reach it
+either. It was unheld prose about a table in another language, and it has a receipt now:
+`tests/testthat/test-device-param.R` compares the devices the sentence offers against the
+engine's own list, in both directions, through the running engine.
+
 ### 2026-11-10 - The pin moves to `0.8.0a85`: an Apple machine was told its build was CPU-only
 
 **The engine it needs: `0.8.0a85`**, and this is a release whose whole value to an R user

@@ -18,7 +18,12 @@
 #' waiting and wondering.
 #'
 #' @param spec A [platypus_spec()].
-#' @param device `"cuda"`, `"cpu"`, or `NULL` to use a GPU when one is present.
+#' @param device Where the work happens. The value is handed to torch as given rather than
+#'   checked against a list, so `"cuda"`, `"mps"` and `"cpu"` all reach it, and `"xpu"` is
+#'   forwarded as well - offered rather than promised, since nothing here has run on one.
+#'   `NULL`, the default, takes the first accelerator this machine can actually use and the
+#'   processor when there is none. [platypus_device()] reports which it will be, and why a
+#'   card that is present can still be unusable.
 #' @param num_workers Processes used to read and decode images. `"auto"` picks a small
 #'   number based on the machine. This matters more than it sounds: reading in the main
 #'   process alone leaves the GPU waiting on the disk, and on the Data Science Bowl at
