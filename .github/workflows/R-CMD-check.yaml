@@ -46,6 +46,31 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      # AND THIS IS WHAT MAKES THE JOB WITHOUT PYTHON. The comment above this job has
+      # claimed that since the job was written and nothing implemented it: a runner ships a
+      # Python and has a network, so `reticulate::py_require()` resolves the engine through
+      # uv the first moment a test touches the bridge. Measured on `c0aa6c1`, the commit
+      # submitted as `0.3.0`: during `checking tests` this job downloaded
+      # `cpython-3.13.18`, `torch (120.9MiB)`, `torchvision` and `opencv-python-headless`,
+      # so it ran WITH the engine on all five platforms.
+      #
+      # What that cost is the one thing this job exists to prevent. Two tests reaching the
+      # bridge with no `skip_if_no_*` passed here and failed on CRAN's own Windows machine -
+      # a Python, no network - and `0.3.0` came back with 1 ERROR:
+      #
+      #     this job, five platforms   FAIL 0 | SKIP 313 | PASS 1047
+      #     CRAN, r-devel-windows      FAIL 2 | SKIP 313 | PASS 1045
+      #
+      # The same skip count and two passes fewer, which is exactly those two tests: a skip
+      # count cannot see this, because an unguarded test is not a skipped one.
+      #
+      # `RETICULATE_PYTHON` is the lever rather than unsetting `PLATYPUS_TEST_ENGINE`,
+      # measured both ways: unsetting the flag makes `engine_available()` false, which only
+      # decides what the GUARDED tests do and does nothing to a test that never asks. This
+      # variable overrides `py_require()` entirely, so a path that does not exist removes
+      # the engine instead of declining to ask for it - which is also how `cran-comments.md`
+      # verified that no runnable example starts an interpreter.
+      RETICULATE_PYTHON: /nonexistent/python
       # `_R_CHECK_CRAN_INCOMING_` IS DELIBERATELY NOT SET HERE, and the reason is a
       # measurement rather than a preference. `check-r-package@v2` runs, before
       # `rcmdcheck`, a line that sets that variable to the string `false` whenever it is
@@ -150,6 +175,43 @@ jobs:
             exit 1
           fi
           echo "$log says: $(grep -E '^Status:' "$log")"
+
+      # AND THE ENGINE HAS TO HAVE BEEN ABSENT, which is the EFFECT rather than the
+      # declaration. `RETICULATE_PYTHON` in this job's `env:` removes the engine and
+      # `tests/testthat/test-cran-gate.R` holds that line in place - and both of those are
+      # assertions about CONFIGURATION. Neither can see a reticulate that stops honouring
+      # the variable, a route that reaches an interpreter some other way, or a runner image
+      # that changes under us. `0.3.0`'s rejection is what that costs: these five jobs ran
+      # with an engine they downloaded themselves, every number anybody reads stayed green,
+      # and CRAN found the two tests that needed it.
+      #
+      # A FLOOR rather than a count, because the figure moves with every test added - 285
+      # skipped that way in the local CRAN-shaped run and 283 in CRAN's own Windows log, so
+      # 200 is a floor no plausible suite crosses while the bridge is genuinely out of
+      # reach. The summary line is read first, because a suite that died before printing one
+      # has no skip count to be low: §4's verdict read from the absence of a line.
+      - name: And the engine has to have been out of reach while it ran
+        shell: bash
+        run: |
+          out=$(find check -name 'testthat.Rout*' -print -quit 2>/dev/null)
+          if [ -z "$out" ]; then
+            echo "no testthat.Rout under check/ - nothing to read the engine's absence from"
+            exit 1
+          fi
+          if ! grep -qE '^\[ FAIL' "$out"; then
+            echo "$out carries no testthat summary line, so the suite left no reading at all"
+            tail -20 "$out"
+            exit 1
+          fi
+          n=$(grep 'engine not started' "$out" | head -1 | grep -oE '\([0-9]+\):' | tr -d '():')
+          if [ -z "$n" ] || [ "$n" -lt 200 ]; then
+            echo "THE ENGINE WAS REACHABLE during this check: ${n:-0} tests skipped for its"
+            echo "absence, where a machine without Python skips about 283. Something resolved"
+            echo "it, so this job is not the gate its own comment says it is."
+            grep -E '^\[ FAIL' "$out" | tail -1
+            exit 1
+          fi
+          echo "the engine was absent: $n tests skipped for it, $(grep -E '^\[ FAIL' "$out" | tail -1)"
 
   # Style and the defects a linter finds, in both languages the package is written in.
   lint:

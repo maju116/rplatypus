@@ -143,3 +143,76 @@ test_that("the verdict guard's own question is the one a truncated check fails",
   expect_length(grep("^Status:", finished), 1L)
   expect_length(grep("^Status:", truncated), 0L)
 })
+
+# AND THE OTHER CLAIM THAT JOB MAKES ABOUT ITSELF, which is `0.3.0`'s rejection rather than
+# a precaution. Its comment reads *"Deliberately without Python. This is how CRAN sees the
+# package"*, and for as long as the job existed nothing implemented that: a runner ships a
+# Python and has a network, so `reticulate::py_require()` resolves the engine through uv the
+# first moment a test touches the bridge. The submitted commit's own Windows job downloaded
+# `cpython-3.13.18`, torch, torchvision and opencv-python-headless during `checking tests`.
+#
+# So two tests that reached the bridge with no `skip_if_no_*` passed on all five platforms
+# here and failed on CRAN's own Windows machine - a Python, no network:
+#
+#     this job, five platforms   FAIL 0 | SKIP 313 | PASS 1047
+#     CRAN, r-devel-windows      FAIL 2 | SKIP 313 | PASS 1045
+#
+# The same skip count and two passes fewer. That is why this is held here rather than left to
+# a skip count: an unguarded test is not a skipped one, so the number a reader would check
+# cannot move.
+#
+# `RETICULATE_PYTHON` is the lever, measured against the alternative: an unset
+# `PLATYPUS_TEST_ENGINE` only decides what the guarded tests do, while this variable
+# overrides `py_require()` entirely. Both arms were run locally over the whole suite - a
+# Python without the engine, and no Python at all - and they fail identically.
+test_that("the job that says it is without Python is made without Python", {
+  path <- find_workflow()
+  skip_if(
+    is.null(path),
+    "the workflow is not in the build - run the suite from the repository to check the gate"
+  )
+
+  lines <- readLines(path, warn = FALSE)
+  block <- job_block(lines, "R-CMD-check")
+
+  # The same controls as above: a block that came back empty reports every absence as a pass.
+  expect_false(is.null(block))
+  expect_gt(length(block), 30L)
+
+  # The job's OWN `env:` block, at six spaces, rather than a step's: a step-level `env:` is
+  # indented further and would set the variable for one step of the several that run R.
+  declared <- grep("^      RETICULATE_PYTHON:[[:space:]]*[^[:space:]]+[[:space:]]*$",
+                   block, value = TRUE)
+  expect_length(declared, 1L)
+
+  # And it has to point at nothing. A real interpreter here would be worse than no variable
+  # at all: `py_require()` would be overridden AND the engine's absence would depend on
+  # whatever that interpreter happens to have installed.
+  pointed_at <- trimws(sub("^[[:space:]]*RETICULATE_PYTHON:", "", declared))
+  expect_gt(nchar(pointed_at), 0L)
+  expect_false(file.exists(pointed_at))
+
+  # The claim and the mechanism in one assertion, so that deleting the comment and keeping
+  # the variable is as loud as the reverse. The words are the job's own.
+  expect_true(any(grepl("Deliberately without Python", lines, fixed = TRUE)))
+
+  # AND THE EFFECT IS MEASURED IN THE JOB rather than only declared here. Everything above
+  # this line is a reading of CONFIGURATION: it cannot see a reticulate that stops honouring
+  # the variable, a route to an interpreter nobody thought of, or a runner image that
+  # changes. The step does - it refuses a check whose own test output says the engine was
+  # reachable - and it is held by its presence AND by what it reads, for the verdict step's
+  # reason one test up: a step looking for the wrong string is a guard in name only.
+  control <- grep("^      - name: And the engine has to have been out of reach", block)
+  expect_length(control, 1L)
+  shell <- block[control:length(block)]
+  expect_true(any(grepl("engine not started", shell, fixed = TRUE)))
+
+  # A bound on the bound rather than a second copy of it: the floor is the job's to choose -
+  # it moves when the suite does - and what this holds is that there IS one and that it is
+  # high enough to mean something. 285 tests skipped for the engine's absence in the local
+  # CRAN-shaped run and 283 in CRAN's own Windows log, so anything under 100 would pass over
+  # a check that reached the engine for all but a handful of them.
+  floor <- regmatches(shell, regexpr("-lt[[:space:]]+[0-9]+", shell))
+  expect_length(floor, 1L)
+  expect_gte(as.integer(sub("^-lt[[:space:]]+", "", floor)), 100L)
+})

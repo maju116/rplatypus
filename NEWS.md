@@ -18,7 +18,37 @@ this package reach it - so the pin moving is part of a change here, not housekee
 alongside it. The pin is what stops a release of this package breaking because the engine
 drifted underneath it.
 
-## [0.3.0] - unreleased
+## [0.3.1] - unreleased
+
+### 2026-11-13 - Two tests reached the engine on a machine that has none
+
+**The engine it needs: `0.8.0a85`**, unchanged. Nothing about the package's behaviour moves
+here: this is a test that was missing a guard, and the gate that should have found it.
+
+`0.3.0` was submitted to CRAN and came back from the incoming checks with **1 ERROR on
+r-devel-windows** and OK on r-devel-linux. Two tests of `save_class_volumes()` called it and
+expected a refusal, on a machine with a Python and no `pyplatypus`, so what arrived was
+`ModuleNotFoundError: No module named 'pyplatypus'` where a message about class names was
+expected. Both refusals are the **engine's** - `save_class_volumes()` checks `reference` and
+`names` in R and forwards the rest, and the per-class filenames and the channel count against
+the class names have lived in the engine since `pyplatypus 0.8.0a29` - so both tests need the
+engine and neither carried the `skip_if_no_volumes` their neighbours do. They are the only
+two in the suite in that state, counted by running the whole of it with the engine made
+unreachable: `FAIL 2 | SKIP 287 | PASS 1180` before, `FAIL 0 | SKIP 289 | PASS 1180` after.
+
+**The reason nothing here caught it is the other half of this entry.** The `R-CMD-check` jobs
+are commented *"Deliberately without Python. This is how CRAN sees the package"*, and nothing
+implemented that: a runner ships a Python and has a network, so `reticulate::py_require()`
+resolved the engine through uv the first moment a test touched the bridge. The submitted
+commit's own Windows job downloaded `cpython-3.13.18`, `torch (120.9MiB)`, `torchvision` and
+`opencv-python-headless` during `checking tests` and reported
+`FAIL 0 | SKIP 313 | PASS 1047`, against CRAN's `FAIL 2 | SKIP 313 | PASS 1045` - the same
+skip count and two passes fewer, because an unguarded test is not a skipped one and no skip
+count can see this. Those five jobs now set `RETICULATE_PYTHON` to a path that does not
+exist, which overrides `py_require()` entirely and removes the engine rather than merely
+declining to ask for it, and `tests/testthat/test-cran-gate.R` holds that line to the
+comment in both directions, so removing either one is loud. The `engine` job is unchanged and
+still exercises the bridge.
 
 ### 2026-11-11 (later) - This package now says which Python it needs
 
