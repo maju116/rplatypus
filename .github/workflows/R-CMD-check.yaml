@@ -46,6 +46,31 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      # AND THIS IS WHAT MAKES THE JOB WITHOUT PYTHON. The comment above this job has
+      # claimed that since the job was written and nothing implemented it: a runner ships a
+      # Python and has a network, so `reticulate::py_require()` resolves the engine through
+      # uv the first moment a test touches the bridge. Measured on `c0aa6c1`, the commit
+      # submitted as `0.3.0`: during `checking tests` this job downloaded
+      # `cpython-3.13.18`, `torch (120.9MiB)`, `torchvision` and `opencv-python-headless`,
+      # so it ran WITH the engine on all five platforms.
+      #
+      # What that cost is the one thing this job exists to prevent. Two tests reaching the
+      # bridge with no `skip_if_no_*` passed here and failed on CRAN's own Windows machine -
+      # a Python, no network - and `0.3.0` came back with 1 ERROR:
+      #
+      #     this job, five platforms   FAIL 0 | SKIP 313 | PASS 1047
+      #     CRAN, r-devel-windows      FAIL 2 | SKIP 313 | PASS 1045
+      #
+      # The same skip count and two passes fewer, which is exactly those two tests: a skip
+      # count cannot see this, because an unguarded test is not a skipped one.
+      #
+      # `RETICULATE_PYTHON` is the lever rather than unsetting `PLATYPUS_TEST_ENGINE`,
+      # measured both ways: unsetting the flag makes `engine_available()` false, which only
+      # decides what the GUARDED tests do and does nothing to a test that never asks. This
+      # variable overrides `py_require()` entirely, so a path that does not exist removes
+      # the engine instead of declining to ask for it - which is also how `cran-comments.md`
+      # verified that no runnable example starts an interpreter.
+      RETICULATE_PYTHON: /nonexistent/python
       # `_R_CHECK_CRAN_INCOMING_` IS DELIBERATELY NOT SET HERE, and the reason is a
       # measurement rather than a preference. `check-r-package@v2` runs, before
       # `rcmdcheck`, a line that sets that variable to the string `false` whenever it is

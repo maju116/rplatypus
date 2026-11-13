@@ -1,14 +1,26 @@
 # cran-comments
 
-**An update.** `rplatypus 0.2.1` is on CRAN, published 2026-11-04; this is `0.3.0`. The
+**A resubmission.** `0.3.0` was submitted on 2026-11-13 and the incoming checks returned
+**1 ERROR on r-devel-windows**, with r-devel-linux OK. Two tests of `save_class_volumes()`
+expected a refusal that the Python engine raises, and did not declare that they need the
+engine - so on a machine with a Python and no `pyplatypus` they got
+`ModuleNotFoundError: No module named 'pyplatypus'` instead of a message about class names.
+They now carry the same skip their neighbours do, and the whole suite was re-run with the
+engine made unreachable in order to count whether any other test was in that state: these
+two were the only ones, `FAIL 2` before and `FAIL 0` after, with the two moving into the
+skip count. Nothing about the package's behaviour changed - the diff is two test lines, one
+line of CI configuration so that those jobs are genuinely without Python with a test holding
+it there, the version and this file.
+
+**An update.** `rplatypus 0.2.1` is on CRAN, published 2026-11-04; this is `0.3.1`. The
 previous version of this file described a first submission and is replaced rather than
 amended, because every claim in it that began *"this is a first submission"* stopped being
 true on that date.
 
 `NEWS.md` is the record of what changed. The short form, counted inside CRAN's own `0.2.1`
 tarball rather than remembered: **95 exported names to 120**, 17 S3 methods to 19, 59 help
-pages to 72, and **5 vignettes to 8**. Twenty-five new exported functions is why the version
-is `0.3.0` rather than `0.2.2`.
+pages to 72, and **5 vignettes to 8**. Twenty-five new exported functions is why the minor
+version moved rather than the patch one; the patch digit is the resubmission above.
 
 ## Test environments
 

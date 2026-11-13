@@ -704,6 +704,14 @@ test_that("save_class_volumes writes one NIfTI per class, carrying the scan's ge
 })
 
 test_that("save_class_volumes counts its class names against the channels", {
+  # THE ENGINE'S REFUSAL RATHER THAN THIS PACKAGE'S, which is why it needs the skip its
+  # neighbours have. `save_class_volumes()` checks `reference` and `names` in R and forwards
+  # the rest, and the comment at that call says so by name: the channel count against the
+  # class names is the engine's, and the copy that used to live here went with
+  # `pyplatypus 0.8.0a29`. Without this line the call reaches the bridge on a machine with no
+  # engine, and that is how `0.3.0` was rejected by CRAN's incoming checks - 1 ERROR on
+  # r-devel-windows, `No module named 'pyplatypus'` raised where a refusal was expected.
+  skip_if_no_volumes()
   expect_error(
     save_class_volumes(overlapping_volumes(), withr::local_tempdir(),
                        reference = c("a", "b"), classes = "only one"),
@@ -712,6 +720,8 @@ test_that("save_class_volumes counts its class names against the channels", {
 })
 
 test_that("save_class_volumes refuses two class names that become one file", {
+  # The engine's too - it owns the per-class filenames. See the test above.
+  skip_if_no_volumes()
   expect_error(
     save_class_volumes(overlapping_volumes(), withr::local_tempdir(),
                        reference = c("a", "b"), classes = c("core 1", "core_1")),
