@@ -71,9 +71,100 @@ if ("fetal-head" %in% which) {
 # knitr pasted "could not find function" into the document instead of failing.
 pkgload::load_all(".", quiet = TRUE)
 
+# The figures ARE the tarball, and each one ships TWICE: once under `vignettes/figures/` and
+# once as a base64 copy inside the self-contained `inst/doc/<name>.html`, which is why every
+# row of the per-vignette table reads `html ~ 1.45 x figures`. So a byte saved here is saved
+# twice, and on 2026-11-13 that was the difference between `R CMD check --as-cran` reporting
+# `Size of tarball: 7770967 bytes` and reporting nothing: R emits that NOTE above
+# `_R_CHECK_CRAN_INCOMING_TARBALL_THRESHOLD_`, default 5e6, and CRAN's policy puts
+# documentation under the same 5 MB.
+#
+# This runs HERE rather than over the files once, because knitr writes `figures/*.png` and the
+# `![](figures/...)` lines that point at them - so a shrink applied to the shipped `.Rmd` alone
+# is undone by the next run of this script, silently, and the next `--as-cran` is what would
+# say so.
+#
+# THE FORMAT IS CHOSEN PER FIGURE BY UNIQUE COLOUR COUNT, NOT BY A QUALITY FLOOR. A PSNR floor
+# of 40 dB was tried first and passed a conversion that spoils a figure: `instances-agreement-1`
+# as PNG8 scores 40.2 dB while going from 12911 colours to 237, and its dark field turns
+# mottled - on microscopy that artefact reads as noise in the data. Colour count splits these
+# files cleanly, measured over all 24: 248..3822 for plots and flat overlays against
+# 10868..89228 for photographs and microscopy. PNG8 is near-free on the first group and
+# posterises the second; JPEG is the other way round - it is BIGGER than PNG on a line plot
+# (`volumes-plot-1` 22832 -> 62879) and much smaller on a photograph.
+#
+# Lossless recompression alone was measured and is not enough: `optipng -o7` over all 28 PNGs
+# took the tarball from 7770967 to 7131065, still 1.43x the threshold.
+#
+# A candidate is kept only when it is SMALLER, so a figure that neither format helps stays the
+# lossless PNG - two of the 24 are in that state.
+flat_colours <- 4096
+
+shrink_figures <- function(name) {
+  tools <- c(identify = "identify", convert = "convert", optipng = "optipng")
+  missing <- tools[!nzchar(Sys.which(tools))]
+  if (length(missing)) {
+    stop("shrink_figures needs ", paste(names(missing), collapse = ", "),
+         " on PATH - install ImageMagick and optipng, or the vignettes will knit to a tarball ",
+         "CRAN reports as oversized", call. = FALSE)
+  }
+
+  knitted <- paste0(name, ".Rmd")
+  text <- readLines(knitted, warn = FALSE)
+  # Only the figures THIS vignette points at: knitting one document must not rewrite another's.
+  refs <- unique(unlist(regmatches(
+    text, gregexpr("figures/[A-Za-z0-9._-]+\\.png", text)
+  )))
+  refs <- refs[file.exists(refs)]
+  if (!length(refs)) return(invisible(FALSE))
+
+  renamed <- character(0)
+  for (ref in refs) {
+    system2("optipng", c("-quiet", "-o7", "-strip", "all", shQuote(ref)))
+    before <- file.size(ref)
+    colours <- suppressWarnings(as.integer(
+      system2("identify", c("-format", "%k", shQuote(ref)), stdout = TRUE)[1]
+    ))
+    if (is.na(colours)) stop("could not read the colour count of ", ref, call. = FALSE)
+
+    if (colours <= flat_colours) {
+      candidate <- paste0(ref, ".png8")
+      system2("convert", c(shQuote(ref), "-strip", "-colors", "256", "+dither",
+                           shQuote(paste0("PNG8:", candidate))))
+      if (file.exists(candidate)) system2("optipng", c("-quiet", "-o7", "-strip", "all",
+                                                       shQuote(candidate)))
+      if (file.exists(candidate) && file.size(candidate) < before) {
+        file.rename(candidate, ref)
+      } else if (file.exists(candidate)) {
+        unlink(candidate)
+      }
+    } else {
+      candidate <- sub("\\.png$", ".jpg", ref)
+      system2("convert", c(shQuote(ref), "-strip", "-quality", "92", shQuote(candidate)))
+      if (file.exists(candidate) && file.size(candidate) < before) {
+        unlink(ref)
+        renamed[ref] <- candidate
+      } else if (file.exists(candidate)) {
+        unlink(candidate)
+      }
+    }
+  }
+
+  # The references last, so a failure above leaves a document pointing at files that exist.
+  if (length(renamed)) {
+    for (from in names(renamed)) text <- gsub(from, renamed[[from]], text, fixed = TRUE)
+    writeLines(text, knitted)
+  }
+  message("  figures: ", length(refs), " kept at ",
+          format(sum(file.size(c(setdiff(refs, names(renamed)), unname(renamed))))),
+          " bytes, ", length(renamed), " as jpeg")
+  invisible(TRUE)
+}
+
 withr::with_dir("vignettes", {
   for (name in which) {
     message("knitting ", name)
     knitr::knit(paste0(name, ".Rmd.orig"), paste0(name, ".Rmd"))
+    shrink_figures(name)
   }
 })

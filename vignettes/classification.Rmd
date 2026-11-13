@@ -10,10 +10,7 @@ vignette: >
 <!--
 THIS PROSE HAS A COUNTERPART, AND THIS FILE IS THE SOURCE.
 
-The engine mirrors it as pyplatypus's `classification.qmd`. It does not exist yet, so this
-vignette is listed in `awaiting` in tests/testthat/test-article-pairs.R with the issue that
-will write it - and that list is read in both directions, so the entry has to come out the
-moment the article appears.
+The engine mirrors it as pyplatypus's `classification.qmd`. It exists as `classification.qmd`.
 
 By maju116/rplatypus#117 the vignette is the source and the article is the copy, so an edit
 here is an edit there. What is held by a test is the walk: the `##` headings and their order,
@@ -252,7 +249,7 @@ for (j in seq_along(cells)) montage[j, , , ] <- strip(cells[j])
 plot_masks(montage * 255, labels = cells)
 ```
 
-![plot of chunk cls-what-a-crop-is](figures/cls-cls-what-a-crop-is-1.png)
+![plot of chunk cls-what-a-crop-is](figures/cls-cls-what-a-crop-is-1.jpg)
 
 Eight crops of each cell type, evenly spaced through the test split rather than chosen. The
 grey at the edge of some of them is the letterbox: a box that was not square keeps its shape
@@ -628,7 +625,7 @@ for (j in seq_along(pair)) both[j, , , ] <- strip(pair[j])
 plot_masks(both * 255, labels = pair)
 ```
 
-![plot of chunk cls-the-fourth-row](figures/cls-cls-the-fourth-row-1.png)
+![plot of chunk cls-the-fourth-row](figures/cls-cls-the-fourth-row-1.jpg)
 
 The bottom row is the fourth class, and it is the top row again: red cells, whole and
 overlapping, one out-of-focus smudge of exactly the kind the platelet row is made of, and at
@@ -661,7 +658,7 @@ plot_boxes(read_images(files[pick, "images"], size = NULL), mine[pick],
            min_score = 0.5)
 ```
 
-![plot of chunk cls-photograph](figures/cls-cls-photograph-1.png)
+![plot of chunk cls-photograph](figures/cls-cls-photograph-1.jpg)
 
 Green is the annotation and orange is the detector. The extra boxes are not errors; they are
 red cells. BCCD annotates a subset of what is in some of its photographs, and a model trained
