@@ -36,12 +36,12 @@ actually run there.
 Two NOTEs that an earlier draft of this file described are gone, and both absences are a
 measurement rather than luck. **`checking CRAN incoming feasibility` now reports nothing at
 all.** It carried `Size of tarball: 6170691 bytes` while the documentation outgrew the 5 MB
-the policy names; this tarball is **4,494,877 bytes**, against the published `0.2.1`'s
-3,418,519, and the difference is how the vignette figures are stored rather than what they
-show - each is kept in whichever of PNG, 8-bit PNG or JPEG is smaller for that picture, which
-halved them. And **`checking for future file timestamps`** fires only when this machine cannot
-reach the time server the check consults; it did not on this run, and it does not on every
-run.
+the policy names; this one is **about 4.5 MB** - comfortably under it - against the
+published `0.2.1`'s 3,418,519 bytes, and the difference is how the vignette figures are
+stored rather than what they show - each is kept in whichever of PNG, 8-bit PNG or JPEG is
+smaller for that picture, which halved them. And **`checking for future file timestamps`**
+fires only when this machine cannot reach the time server the check consults; it did not on
+this run, and it does not on every run.
 
 The run was made with the manual built (`R_RD4PDF='times,hyper'`, which drops the
 `inconsolata` font this machine does not carry). That matters rather than being a detail:
