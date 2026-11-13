@@ -195,4 +195,24 @@ test_that("the job that says it is without Python is made without Python", {
   # The claim and the mechanism in one assertion, so that deleting the comment and keeping
   # the variable is as loud as the reverse. The words are the job's own.
   expect_true(any(grepl("Deliberately without Python", lines, fixed = TRUE)))
+
+  # AND THE EFFECT IS MEASURED IN THE JOB rather than only declared here. Everything above
+  # this line is a reading of CONFIGURATION: it cannot see a reticulate that stops honouring
+  # the variable, a route to an interpreter nobody thought of, or a runner image that
+  # changes. The step does - it refuses a check whose own test output says the engine was
+  # reachable - and it is held by its presence AND by what it reads, for the verdict step's
+  # reason one test up: a step looking for the wrong string is a guard in name only.
+  control <- grep("^      - name: And the engine has to have been out of reach", block)
+  expect_length(control, 1L)
+  shell <- block[control:length(block)]
+  expect_true(any(grepl("engine not started", shell, fixed = TRUE)))
+
+  # A bound on the bound rather than a second copy of it: the floor is the job's to choose -
+  # it moves when the suite does - and what this holds is that there IS one and that it is
+  # high enough to mean something. 285 tests skipped for the engine's absence in the local
+  # CRAN-shaped run and 283 in CRAN's own Windows log, so anything under 100 would pass over
+  # a check that reached the engine for all but a handful of them.
+  floor <- regmatches(shell, regexpr("-lt[[:space:]]+[0-9]+", shell))
+  expect_length(floor, 1L)
+  expect_gte(as.integer(sub("^-lt[[:space:]]+", "", floor)), 100L)
 })
