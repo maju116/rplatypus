@@ -793,7 +793,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#change-log" id="toc-change-log" class="nav-link active" data-scroll-target="#change-log">Change Log</a>
   <ul class="collapse">
-  <li><a href="#unreleased" id="toc-unreleased" class="nav-link" data-scroll-target="#unreleased">[0.3.1] - unreleased</a>
+  <li><a href="#unreleased" id="toc-unreleased" class="nav-link" data-scroll-target="#unreleased">[0.3.2] - unreleased</a>
+  <ul class="collapse">
+  <li><a href="#later---the-number-moves-because-0.3.1-is-published" id="toc-later---the-number-moves-because-0.3.1-is-published" class="nav-link" data-scroll-target="#later---the-number-moves-because-0.3.1-is-published">2026-11-13 (later) - The number moves, because 0.3.1 is published</a></li>
+  </ul></li>
+  <li><a href="#on-cran-since-2026-11-13" id="toc-on-cran-since-2026-11-13" class="nav-link" data-scroll-target="#on-cran-since-2026-11-13">[0.3.1] - on CRAN since 2026-11-13</a>
   <ul class="collapse">
   <li><a href="#two-tests-reached-the-engine-on-a-machine-that-has-none" id="toc-two-tests-reached-the-engine-on-a-machine-that-has-none" class="nav-link" data-scroll-target="#two-tests-reached-the-engine-on-a-machine-that-has-none">2026-11-13 - Two tests reached the engine on a machine that has none</a></li>
   <li><a href="#later---this-package-now-says-which-python-it-needs" id="toc-later---this-package-now-says-which-python-it-needs" class="nav-link" data-scroll-target="#later---this-package-now-says-which-python-it-needs">2026-11-11 (later) - This package now says which Python it needs</a></li>
@@ -897,10 +901,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="change-log" class="level1">
 <h1>Change Log</h1>
 <p>All notable changes to this package will be documented in this file. Two things about its shape are worth stating, because neither is the usual one.</p>
-<p><strong>Entries are dated rather than numbered, and that is still true now that there is a release.</strong> <code>rplatypus 0.2.1</code> reached CRAN on 2026-11-04, so there are two ways to have this package and they are different: <code>install.packages()</code> gives the submitted version, and <code>remotes::install_github("maju116/rplatypus")</code> gives the default branch, which is where work lands between submissions. A heading here is the version in <code>DESCRIPTION</code> - the one the next submission will carry - and the dated entries under it are what a commit gives you before it is sent. The <code>0.1.1</code> at the bottom is the 2020 package this one replaced.</p>
+<p><strong>Entries are dated rather than numbered, and that is still true now that there is a release.</strong> <code>rplatypus 0.3.1</code> reached CRAN on 2026-11-13, and there are now <strong>three</strong> ways to have this package rather than two, which is the part this paragraph had wrong until that day: <code>install.packages()</code> gives the published version; the default branch is the submission <strong>candidate</strong>, so <code>remotes::install_github("maju116/rplatypus")</code> serves what has been sent or is about to be; and <code>@new-release</code> is where work lands between submissions. A heading here is the version <code>DESCRIPTION</code> carries - once that version is published the heading carries its date, and the next heading opens when the version moves on <code>new-release</code> - and the dated entries under it are what a commit gives you before it is sent. The <code>0.1.1</code> at the bottom is the 2020 package this one replaced.</p>
 <p><strong>Every entry names the engine it needs.</strong> The computation lives in <a href="https://github.com/maju116/pyplatypus">pyplatypus</a> and this package pins one exact version of it. A feature lands in the engine, the engine is published to PyPI, and only then can this package reach it - so the pin moving is part of a change here, not housekeeping alongside it. The pin is what stops a release of this package breaking because the engine drifted underneath it.</p>
 <section id="unreleased" class="level2">
-<h2 class="anchored" data-anchor-id="unreleased">[0.3.1] - unreleased</h2>
+<h2 class="anchored" data-anchor-id="unreleased">[0.3.2] - unreleased</h2>
+<section id="later---the-number-moves-because-0.3.1-is-published" class="level3">
+<h3 class="anchored" data-anchor-id="later---the-number-moves-because-0.3.1-is-published">2026-11-13 (later) - The number moves, because 0.3.1 is published</h3>
+<p><strong>The engine it needs: <code>0.8.0a85</code></strong>, unchanged. Nothing about what the package does moves here: this is the version the work branch carries, and two sentences that described the release model.</p>
+<p><code>rplatypus 0.3.1</code> reached CRAN the same evening it was submitted, so that number now names something published and this branch is not it. Two readings say why it had to move rather than wait for the next feature. A local <code>R CMD check --as-cran</code> reports <code>Insufficient package version (submitted: 0.3.1, existing: 0.3.1)</code> as a WARNING, which would sit on every gate run here until the next submission - and a WARNING carried as <em>expected</em> is how a real one hides. And installing this branch with <code>@new-release</code> would hand a reader a version number CRAN already holds for different content, which is exactly the confusion the README’s three states are written against.</p>
+<p><code>0.3.2</code> rather than <code>0.4.0</code> because a correction to prose is a patch. The number moves again when something arrives that is not, which is the same judgement that put <code>0.3.0</code> on the line rather than <code>0.2.1</code> when ten exported names had accumulated.</p>
+</section>
+</section>
+<section id="on-cran-since-2026-11-13" class="level2">
+<h2 class="anchored" data-anchor-id="on-cran-since-2026-11-13">[0.3.1] - on CRAN since 2026-11-13</h2>
 <section id="two-tests-reached-the-engine-on-a-machine-that-has-none" class="level3">
 <h3 class="anchored" data-anchor-id="two-tests-reached-the-engine-on-a-machine-that-has-none">2026-11-13 - Two tests reached the engine on a machine that has none</h3>
 <p><strong>The engine it needs: <code>0.8.0a85</code></strong>, unchanged. Nothing about the package’s behaviour moves here: this is a test that was missing a guard, and the gate that should have found it.</p>
