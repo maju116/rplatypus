@@ -30,16 +30,19 @@ install.packages("rplatypus")
 ```
 
 ```r
-# or the development version, which is ahead of CRAN
+# or the branch where work lands between submissions
 # install.packages("remotes")
-remotes::install_github("maju116/rplatypus")
+remotes::install_github("maju116/rplatypus@new-release")
 ```
 
-**The two are not the same thing.** CRAN carries the version that was submitted and
-accepted; `install_github` serves the default branch, which is where work lands and is
-therefore usually ahead of it - including fixes that have not been sent to CRAN yet, since
-the policy asks for no more than one submission every one to two months. Take CRAN unless
-you are waiting on something specific.
+**There are three states here rather than two, and the middle one is easy to miss.** CRAN
+carries the version that was submitted and accepted. The default branch is the submission
+**candidate** - what has been sent, or is about to be - so `install_github("maju116/rplatypus")`
+serves that rather than the newest work. `new-release` is where the work lands, which means a
+fix made after a submission is frozen lives there and nowhere else until the next one goes
+out, and the policy asks for no more than one every one to two months. Take CRAN unless you
+are waiting on something specific, and `@new-release` when that something was fixed after the
+last submission left.
 
 There is nothing to set up afterwards. The first call that needs the engine builds an
 isolated Python environment for it, and everything after that uses the cache. You never

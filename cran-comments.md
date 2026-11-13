@@ -5,52 +5,43 @@ previous version of this file described a first submission and is replaced rathe
 amended, because every claim in it that began *"this is a first submission"* stopped being
 true on that date.
 
-`NEWS.md` is the record of what changed. The short form, measured against the published
-tarball rather than remembered: **95 exported names to 120**, 17 S3 methods to 19, and **5
-vignettes to 7**. Twenty-five new exported functions is why the version is `0.3.0` rather
-than `0.2.2`.
+`NEWS.md` is the record of what changed. The short form, counted inside CRAN's own `0.2.1`
+tarball rather than remembered: **95 exported names to 120**, 17 S3 methods to 19, 59 help
+pages to 72, and **5 vignettes to 8**. Twenty-five new exported functions is why the version
+is `0.3.0` rather than `0.2.2`.
 
 ## Test environments
 
 - local: Ubuntu 24.04, R 4.5.3
 - GitHub Actions, on every push: Ubuntu (R devel, release, oldrel-1), macOS (release),
   Windows (release)
-- CRAN's own daily checks of `0.2.1`, read before preparing this submission: **OK on all
-  six flavours that have reported** - both Fedora R-devels and four macOS - with no other
-  status present on the page at all. The Windows and Linux r-release and r-oldrel flavours
-  had not yet reported, which is the *"at least 48 hours after a publication"* the policy
-  describes
+- CRAN's own daily checks of `0.2.1`, read the day this submission was prepared: **OK on
+  all 13 flavours**, with no other status present on the page at all. Enumerated rather
+  than counted - four R-devel Linux, R-devel Windows, patched Linux, release Linux, two
+  release macOS, release Windows, two oldrel macOS and oldrel Windows - because the last
+  time this file described that page only six flavours had reported and the sentence said
+  so; they all have now
 
 ## R CMD check results
 
 `R CMD check --as-cran`, with the manual, on the maintainer's machine: **no ERRORs, no
-WARNINGs, three NOTEs**, and none of the three is a finding about the package.
-
-    * checking CRAN incoming feasibility ... NOTE
-      Maintainer: 'Michal Maj <michalmaj116@gmail.com>'
-      Days since last update: <n>
-      Size of tarball: 6170691 bytes
-
-    * checking for future file timestamps ... NOTE
-      unable to verify current time
+WARNINGs, one NOTE**, and it is about this machine rather than about the package.
 
     * checking HTML version of manual ... NOTE
       Skipping checking HTML validation: no command 'tidy' found.
 
-The first NOTE's first two lines are about the submission rather than the package, and the
-*Days since last update* line is arithmetic against the day the check was run.
+`tidy` is not installed here and is present on CRAN's machines, so that validation will
+actually run there.
 
-**The size line is worth a word, because it is new.** The published `0.2.1` tarball is
-3,418,519 bytes and this one is 6,170,691, so this is the first version of this package to
-pass the 5 MB the policy names. **No data is shipped.** It is documentation: seven vignettes,
-each one precomputed from an `.Rmd.orig` so that no model is trained on a CRAN machine, and
-`inst/doc`'s rendered HTML embeds the figures it shows, so each figure is carried once as a
-file and once inside the page that displays it. Measured on this tarball: `inst/doc` 3.6 MB,
-`vignettes/` 2.4 MB, `man/figures` 1.1 MB.
-
-The second NOTE is this machine being unable to reach the time server the check consults, and
-it does not fire on every run. The third is a local tool that is not installed here; it is
-present on CRAN's machines, so the HTML validation will actually run there.
+Two NOTEs that an earlier draft of this file described are gone, and both absences are a
+measurement rather than luck. **`checking CRAN incoming feasibility` now reports nothing at
+all.** It carried `Size of tarball: 6170691 bytes` while the documentation outgrew the 5 MB
+the policy names; this tarball is **4,494,877 bytes**, against the published `0.2.1`'s
+3,418,519, and the difference is how the vignette figures are stored rather than what they
+show - each is kept in whichever of PNG, 8-bit PNG or JPEG is smaller for that picture, which
+halved them. And **`checking for future file timestamps`** fires only when this machine cannot
+reach the time server the check consults; it did not on this run, and it does not on every
+run.
 
 The run was made with the manual built (`R_RD4PDF='times,hyper'`, which drops the
 `inconsolata` font this machine does not carry). That matters rather than being a detail:
@@ -110,15 +101,18 @@ stating plainly because it would surprise a *user* rather than a check: the firs
 downloads a PyTorch wheel of a few gigabytes, which is documented in `?platypus_status` and in
 the README, together with how to point the package at an existing install instead.
 
-`SystemRequirements` names Python 3.10 for completeness, though it is not a prerequisite the
-user installs.
+`SystemRequirements` names Python (>= 3.11), raised from 3.10 in this version because the
+engine's own `requires-python` moved and this package now passes that floor to
+`reticulate::py_require()` instead of letting it pick the first interpreter on a candidate
+list. It is still not a prerequisite the user installs: it describes the environment the
+package provisions for itself.
 
 ## Downstream dependencies
 
 **None.** Checked rather than assumed, and with a control, because a zero is the answer a
 broken probe gives too: `tools::package_dependencies(reverse = TRUE)` over `Depends`,
-`Imports`, `LinkingTo`, `Suggests` and `Enhances` across the 25,608 packages in the index
-returns **0** for `rplatypus` and **354** for `reticulate`, with `rplatypus` confirmed
+`Imports`, `LinkingTo`, `Suggests` and `Enhances` across the 25,696 packages in the index
+returns **0** for `rplatypus` and **356** for `reticulate`, with `rplatypus` confirmed
 present in that index so the zero is not an unknown name.
 
 So there is nobody the policy's two weeks' notice is owed to, and no maintainer has been

@@ -23,7 +23,7 @@
 
 on:
   push:
-    branches: [main]
+    branches: [main, new-release]
   pull_request:
   workflow_dispatch:
 
