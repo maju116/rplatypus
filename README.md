@@ -437,8 +437,7 @@ Resampling volumes to isotropic spacing is deliberate rather than automatic: `vo
 reads and reports the spacing, and `target_spacing` applies it, but applying it changes the
 voxel grid the model sees, which is a decision to take rather than a default to inherit.
 
-**The package is on CRAN**: `0.2.1`, published 2026-11-04, after `0.2.0` was submitted on
-2026-10-14 and sent back for two documentation points. Its
+**The package is on CRAN**: `0.3.1`, published 2026-11-13. Its
 [page on CRAN](https://CRAN.R-project.org/package=rplatypus) is the live answer rather than
 this sentence, which can only say what was true when it was written - and the check page
 beside it is the one that matters, since CRAN runs the checks daily on more platforms than

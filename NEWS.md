@@ -4,12 +4,15 @@ All notable changes to this package will be documented in this file. Two things 
 shape are worth stating, because neither is the usual one.
 
 **Entries are dated rather than numbered, and that is still true now that there is a
-release.** `rplatypus 0.2.1` reached CRAN on 2026-11-04, so there are two ways to have this
-package and they are different: `install.packages()` gives the submitted version, and
-`remotes::install_github("maju116/rplatypus")` gives the default branch, which is where work
-lands between submissions. A heading here is the version in `DESCRIPTION` - the one the next
-submission will carry - and the dated entries under it are what a commit gives you before it
-is sent. The `0.1.1` at the bottom is the 2020 package this one replaced.
+release.** `rplatypus 0.3.1` reached CRAN on 2026-11-13, and there are now **three** ways to
+have this package rather than two, which is the part this paragraph had wrong until that day:
+`install.packages()` gives the published version; the default branch is the submission
+**candidate**, so `remotes::install_github("maju116/rplatypus")` serves what has been sent or
+is about to be; and `@new-release` is where work lands between submissions. A heading here is
+the version `DESCRIPTION` carries - once that version is published the heading carries its
+date, and the next heading opens when the version moves on `new-release` - and the dated
+entries under it are what a commit gives you before it is sent. The `0.1.1` at the bottom is
+the 2020 package this one replaced.
 
 **Every entry names the engine it needs.** The computation lives in
 [pyplatypus](https://github.com/maju116/pyplatypus) and this package pins one exact version
@@ -18,7 +21,28 @@ this package reach it - so the pin moving is part of a change here, not housekee
 alongside it. The pin is what stops a release of this package breaking because the engine
 drifted underneath it.
 
-## [0.3.1] - unreleased
+## [0.3.2] - unreleased
+
+### 2026-11-13 (later) - The number moves, because 0.3.1 is published
+
+**The engine it needs: `0.8.0a85`**, unchanged. Nothing about what the package does moves
+here: this is the version the work branch carries, and two sentences that described the
+release model.
+
+`rplatypus 0.3.1` reached CRAN the same evening it was submitted, so that number now names
+something published and this branch is not it. Two readings say why it had to move rather
+than wait for the next feature. A local `R CMD check --as-cran` reports
+`Insufficient package version (submitted: 0.3.1, existing: 0.3.1)` as a WARNING, which would
+sit on every gate run here until the next submission - and a WARNING carried as *expected* is
+how a real one hides. And installing this branch with `@new-release` would hand a reader a
+version number CRAN already holds for different content, which is exactly the confusion the
+README's three states are written against.
+
+`0.3.2` rather than `0.4.0` because a correction to prose is a patch. The number moves again
+when something arrives that is not, which is the same judgement that put `0.3.0` on the line
+rather than `0.2.1` when ten exported names had accumulated.
+
+## [0.3.1] - on CRAN since 2026-11-13
 
 ### 2026-11-13 - Two tests reached the engine on a machine that has none
 
