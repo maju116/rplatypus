@@ -66,7 +66,7 @@ plot_masks(images, prediction = masks[1:3, , ], colormap = binary_colormap,
            which = 1:3)
 ```
 
-![plot of chunk published-plot](figures/published-plot-1.png)
+![plot of chunk published-plot](figures/published-plot-1.jpg)
 
 The weights came down from the Hub on first use and are cached afterwards, so running this again
 costs nothing.

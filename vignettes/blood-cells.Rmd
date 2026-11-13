@@ -111,7 +111,7 @@ images <- read_images(files$images[1:2], size = NULL)
 plot_boxes(images, found[1:2], min_score = 0.5)
 ```
 
-![plot of chunk bccd-published-plot](figures/bccd-bccd-published-plot-1.png)
+![plot of chunk bccd-published-plot](figures/bccd-bccd-published-plot-1.jpg)
 
 ### And here, unlike the nuclei vignette, a score means something
 
@@ -399,7 +399,7 @@ mine <- predict(fit, split = "test")
 plot_boxes(images, mine[1:2], truth = truth, min_score = 0.5)
 ```
 
-![plot of chunk bccd-compare](figures/bccd-bccd-compare-1.png)
+![plot of chunk bccd-compare](figures/bccd-bccd-compare-1.jpg)
 
 A detector that found the right number of objects in the wrong places and one that found the
 wrong number in the right places score similarly and look nothing alike, which is why this

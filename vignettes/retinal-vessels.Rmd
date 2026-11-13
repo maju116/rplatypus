@@ -353,7 +353,7 @@ plot_masks(
 ```
 
 <div class="figure">
-<img src="figures/retinal-vessels-worst-1.png" alt="The best and the worst validation case: image, truth and prediction"  />
+<img src="figures/retinal-vessels-worst-1.jpg" alt="The best and the worst validation case: image, truth and prediction"  />
 <p class="caption">plot of chunk worst</p>
 </div>
 

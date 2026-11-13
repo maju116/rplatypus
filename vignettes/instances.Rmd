@@ -112,7 +112,7 @@ plot(as.raster(overlay_instances(picture, merged[[worst]]) / 255),
      main = "connected_components")
 ```
 
-![plot of chunk instances-decoded-two-ways](figures/instances-decoded-two-ways-1.png)
+![plot of chunk instances-decoded-two-ways](figures/instances-decoded-two-ways-1.jpg)
 
 One file of weights, one forward pass, two answers to *how many nuclei are in this
 picture*. Neither colour map is decoration: adjacent objects are guaranteed different
@@ -168,7 +168,7 @@ plot(as.raster(overlay_instances(picture, objects[[worst]]) / 255),
      main = "dsbowl-instances: which is which")
 ```
 
-![plot of chunk instances-mask-beside-objects](figures/instances-mask-beside-objects-1.png)
+![plot of chunk instances-mask-beside-objects](figures/instances-mask-beside-objects-1.jpg)
 
 The left-hand picture is not worse. It answers a different question, and if the answer you
 need is *what fraction of this slide is nuclei* it is the one to use. The right-hand one is
@@ -389,7 +389,7 @@ plot(as.raster(overlay_instance_agreement(picture, mine[[worst]], actual) / 255)
      main = "mine, 40 epochs")
 ```
 
-![plot of chunk instances-agreement](figures/instances-agreement-1.png)
+![plot of chunk instances-agreement](figures/instances-agreement-1.jpg)
 
 Green is a true object matched by a prediction, red one that nothing matched, yellow a
 prediction matching nothing. The threshold is an IoU of 0.5 and it cannot be lowered below
